@@ -9,6 +9,7 @@ import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
 import { Suspense } from "react";
+import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
 export const metadata: Metadata = {
   title: "Budget Ndio Story - Home",
 };

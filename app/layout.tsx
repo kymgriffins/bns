@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import Footer from "@/components/footer";
+// import Footer from "@/components/footer";
 import { SmoothScrollProvider } from "@/components/scroll";
+import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -52,7 +53,7 @@ export default function RootLayout({
           >
             <div className="min-h-screen flex flex-col">
               {children}
-              <Footer />
+              <Footer2 />
             </div>
           </SmoothScrollProvider>
         </ThemeProvider>
