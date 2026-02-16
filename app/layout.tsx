@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import Footer from "@/components/footer";
+import { SmoothScrollProvider } from "@/components/scroll";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -39,7 +41,20 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SmoothScrollProvider
+            options={{
+              enabled: true,
+              duration: 1.2,
+              smoothness: 1,
+              mouseWheelMultiplier: 1,
+              touchMultiplier: 2,
+            }}
+          >
+            <div className="min-h-screen flex flex-col">
+              {children}
+              <Footer />
+            </div>
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>
