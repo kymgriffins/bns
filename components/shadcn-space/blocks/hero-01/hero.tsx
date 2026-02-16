@@ -4,6 +4,7 @@ import { Instrument_Serif } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -55,14 +56,16 @@ function HeroSection({ avatarList }: HeroSectionProps) {
                 transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
                 className="flex items-center flex-col md:flex-row justify-center gap-8"
               >
-                <Button className="relative text-sm font-medium rounded-full h-12 p-1 ps-6 pe-14 group transition-all duration-500 hover:ps-14 hover:pe-6 w-fit overflow-hidden">
-                  <span className="relative z-10 transition-all duration-500">
-                    Get Started
-                  </span>
-                  <div className="absolute right-1 w-10 h-10 bg-background text-foreground rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-44px)] group-hover:rotate-45">
-                    <ArrowUpRight size={16} />
-                  </div>
-                </Button>
+                <Link href="/auth/sign-up">
+                  <Button className="relative text-sm font-medium rounded-full h-12 p-1 ps-6 pe-14 group transition-all duration-500 hover:ps-14 hover:pe-6 w-fit overflow-hidden">
+                    <span className="relative z-10 transition-all duration-500">
+                      Get Started
+                    </span>
+                    <div className="absolute right-1 w-10 h-10 bg-background text-foreground rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-44px)] group-hover:rotate-45">
+                      <ArrowUpRight size={16} />
+                    </div>
+                  </Button>
+                </Link>
                 <div className="flex items-center sm:gap-7 gap-3">
                   <ul className="avatar flex flex-row items-center">
                     {avatarList.map((avatar, index) => (
