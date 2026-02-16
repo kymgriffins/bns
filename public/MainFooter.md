@@ -114,7 +114,7 @@ export default function MainFooter() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
             {/* Tagline */}
             <p className="font-NeueMontreal text-white/70 text-lg md:text-xl font-light max-w-md">
-              Your tax money. Your right to know.
+              Follow The Budget. Find The Sory
             </p>
 
             {/* Copyright + Legal Links */}
