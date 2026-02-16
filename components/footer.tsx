@@ -3,7 +3,7 @@ import { Mail, MapPin, Phone, Sun, Moon, Laptop } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import Newsletter from "./newsletter";
+// import Newsletter from "./newsletter";
 import { Button } from "./ui/button";
 
 const navLinks = [
@@ -116,11 +116,11 @@ export default function Footer() {
             <p className="font-NeueMontreal text-gray-600 dark:text-white/60 mb-4 max-w-md">
               Reports, participation windows, and training alerts—straight to you.
             </p>
-            <Newsletter
+            {/* <Newsletter
               variant="dark"
               placeholder="Your email"
               buttonText="Subscribe"
-            />
+            /> */}
           </div>
           {/* Navigation Links */}
           <div className="flex flex-col">

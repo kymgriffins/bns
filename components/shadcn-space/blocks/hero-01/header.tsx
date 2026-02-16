@@ -16,12 +16,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export type NavigationSection = {
   title: string;
@@ -33,10 +31,10 @@ type HeaderProps = {
   className?: string;
 };
 
-const SubscribeButton = ({ className }: { className?: string }) => (
+const CollaborateButton = ({ className }: { className?: string }) => (
   <Button className={cn("relative text-sm font-medium rounded-full h-10 p-1 ps-4 pe-12 group transition-all duration-500 hover:ps-12 hover:pe-4 w-fit overflow-hidden", className)}>
     <span className="relative z-10 transition-all duration-500">
-      Subscribe
+      Let's Collaborate
     </span>
     <div className="absolute right-1 w-8 h-8 bg-background text-foreground rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-36px)] group-hover:rotate-45">
       <ArrowUpRight size={16} />
@@ -44,7 +42,7 @@ const SubscribeButton = ({ className }: { className?: string }) => (
   </Button>
 );
 
-export default function Navbar() {
+const Header = ({ navigationData, className }: HeaderProps) => {
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -66,33 +64,6 @@ export default function Navbar() {
     };
   }, [handleScroll, handleResize]);
 
-  const navigationData: NavigationSection[] = [
-    // {
-    //   title: "Budget Reports",
-    //   href: "/reports",
-    // },
-    {
-      title: "Budget Insights",
-      href: "/insights",
-    },
-    {
-      title: "Budget Tracker",
-      href: "/tracker",
-    },
-    // {
-    //   title: "Take Action",
-    //   href: "/take-action",
-    // },
-    {
-      title: "Learn",
-      href: "/learn",
-    },
-    {
-      title: "News",
-      href: "/news",
-    },
-  ];
-
   return (
     <motion.header
       initial={{ opacity: 0, y: -32 }}
@@ -101,6 +72,7 @@ export default function Navbar() {
       transition={{ duration: 0.7, ease: "easeInOut" }}
       className={cn(
         "inset-x-0 z-50 px-4 flex items-center justify-center sticky top-0 h-20",
+        className,
       )}
     >
       <div
@@ -113,17 +85,16 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div>
-          <Link href="/">
+          <a href="#">
             <div className="relative h-10 w-32">
               <Image
                 src="/logo.svg"
                 alt="Budget Ndio Story"
                 fill
                 className="object-contain"
-                priority
               />
             </div>
-          </Link>
+          </a>
         </div>
 
         {/* Desktop Navigation */}
@@ -145,12 +116,8 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="flex gap-4 items-center">
-          <ThemeSwitcher />
-          <Link href="/about" className="hidden lg:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            About
-          </Link>
-          <SubscribeButton className="hidden lg:flex" />
+        <div className="flex gap-4">
+          <CollaborateButton className="hidden lg:flex" />
 
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -171,7 +138,7 @@ export default function Navbar() {
                 className="w-full sm:w-96 p-0 border-l-0"
               >
                 <div className="flex items-center justify-between p-6">
-                  <Link href="/">
+                  <a href="#">
                     <div className="relative h-10 w-32">
                       <Image
                         src="/logo.svg"
@@ -180,7 +147,7 @@ export default function Navbar() {
                         className="object-contain"
                       />
                     </div>
-                  </Link>
+                  </a>
                   <SheetClose>
                     <div className="rounded-full border border-border p-2.5">
                       <Icon icon="lucide:x" width={16} height={16} />
@@ -210,19 +177,16 @@ export default function Navbar() {
                     </NavigationMenu>
 
                     <div className="w-fit">
-                      <SubscribeButton />
+                      <CollaborateButton />
                     </div>
                   </div>
 
                   <div className="mt-auto flex flex-col gap-4">
-                    <Link href="/about" className="text-lg font-medium">
-                      About
-                    </Link>
-                    
                     <div className="flex gap-3">
                       {[
-                        "lucide:twitter",
+                        "lucide:dribbble",
                         "lucide:instagram",
+                        "lucide:twitter",
                         "lucide:linkedin",
                       ].map((icon) => (
                         <a
@@ -236,7 +200,7 @@ export default function Navbar() {
                     </div>
 
                     <p className="text-sm text-muted-foreground">
-                      © 2026 Budget Ndio Story
+                      © 2026 Shadcn Space
                     </p>
                   </div>
                 </div>
@@ -247,4 +211,6 @@ export default function Navbar() {
       </div>
     </motion.header>
   );
-}
+};
+
+export default Header;

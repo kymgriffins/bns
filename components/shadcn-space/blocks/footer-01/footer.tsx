@@ -1,8 +1,8 @@
-import Logo from "@/assets/logo/logo";
 import { Separator } from "@/components/ui/separator";
 import { Twitter, Linkedin, Instagram, Facebook, Mail, MapPin, Phone, Youtube, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import Newsletter from "@/components/newsletter";
+import Image from "next/image";
+// import Newsletter from "@/components/newsletter";
 
 type FooterData = {
   title: string;
@@ -117,7 +117,14 @@ const Footer2 = () => {
               <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
                 {/* Logo */}
                 <Link href="/">
-                  <Logo />
+                  <div className="relative h-10 w-32">
+                    <Image
+                      src="/logo.svg"
+                      alt="Budget Ndio Story"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                 </Link>
 
                 <p className="text-base font-normal text-muted-foreground max-w-md">

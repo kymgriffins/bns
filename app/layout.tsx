@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 // import Footer from "@/components/footer";
 import { SmoothScrollProvider } from "@/components/scroll";
+import Navbar from "@/components/navbar";
 import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -52,7 +53,10 @@ export default function RootLayout({
             }}
           >
             <div className="min-h-screen flex flex-col">
-              {children}
+              <Navbar />
+              <main>
+                {children}
+              </main>
               <Footer2 />
             </div>
           </SmoothScrollProvider>
