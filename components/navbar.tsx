@@ -150,7 +150,43 @@ export default function Navbar() {
           <Link href="/about" className="hidden lg:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             About
           </Link>
-          <SubscribeButton className="hidden lg:flex" />
+          <div className="hidden lg:flex items-center gap-2">
+            <a
+              href="https://www.facebook.com/profile.php?id=61586898487932"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2"
+            >
+              <Icon icon="lucide:facebook" width={18} height={18} />
+            </a>
+            <a
+              href="https://www.instagram.com/budgetndiostory"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2"
+            >
+              <Icon icon="lucide:instagram" width={18} height={18} />
+            </a>
+            <a
+              href="https://www.youtube.com/@BudgetNdioStory"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2"
+            >
+              <Icon icon="lucide:youtube" width={18} height={18} />
+            </a>
+            <a
+              href="https://x.com/BudgetNdioStory"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2"
+            >
+              <Icon icon="lucide:twitter" width={18} height={18} />
+            </a>
+          </div>
+          <Link href="/subscribe">
+            <SubscribeButton className="hidden lg:flex" />
+          </Link>
 
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -210,7 +246,9 @@ export default function Navbar() {
                     </NavigationMenu>
 
                     <div className="w-fit">
-                      <SubscribeButton />
+                      <Link href="/subscribe">
+                        <SubscribeButton />
+                      </Link>
                     </div>
                   </div>
 
