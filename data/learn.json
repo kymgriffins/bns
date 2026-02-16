@@ -1,0 +1,22 @@
+{
+  "page": "Learn",
+  "title": "Budget 101",
+  "description": "Practical lessons designed for Kenyan youth; precise and usable.",
+  "header": {
+    "title": "Budget 101",
+    "intro": "Practical lessons designed for Kenyan youth; precise and usable."
+  },
+  "modules": [
+    "Basics",
+    "Advanced Tracks",
+    "Budget Cycle",
+    "Roles",
+    "Reading tables",
+    "Participation",
+    "Tracking"
+  ],
+  "ctas": [
+    { "text": "Start Learning", "url": "/learn" },
+    { "text": "View Reports", "url": "/reports" }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "page": "Budget News",
+  "title": "News",
+  "description": "Stories, videos, and updates—built for clarity and action.",
+  "newsHub": {
+    "title": "News",
+    "intro": "Stories, videos, and updates—built for clarity and action.",
+    "tabs": ["Stories", "Videos", "Updates"]
+  },
+  "stories": {
+    "title": "Emerging Stories",
+    "intro": "Investigations and explainers connecting budgets to real life in Kenya.",
+    "filters": [
+      "Investigations",
+      "Explainers",
+      "County",
+      "Sector",
+      "Youth Voices",
+      "Field Reports"
+    ],
+    "ctaStrip": {
+      "buttons": [
+        { "text": "Submit a Tip", "url": "/take-action" },
+        { "text": "Request a Brief", "url": "/reports" }
+      ]
+    }
+  },
+  "videos": {
+    "title": "Videos",
+    "intro": "Short explainers made for mobile.",
+    "categories": [
+      "Basics",
+      "Finance Bill",
+      "National",
+      "County",
+      "Sector",
+      "Tracker Stories"
+    ],
+    "ctaStrip": {
+      "buttons": [
+        { "text": "Request a Topic", "url": "/take-action" },
+        { "text": "Join Training", "url": "/take-action" }
+      ]
+    }
+  },
+  "updates": {
+    "title": "Updates",
+    "intro": "Explore Budget participation windows, document releases, trainings, tracker changes.",
+    "tags": [
+      "Participation",
+      "Release",
+      "Training",
+      "Event",
+      "Tracker",
+      "New Report"
+    ],
+    "ctaStrip": {
+      "buttons": [
+        { "text": "Subscribe", "url": "/#subscribe" },
+        { "text": "Join Community", "url": "/take-action" }
+      ]
+    }
+  }
+}

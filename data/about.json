@@ -1,0 +1,53 @@
+{
+  "page": "About",
+  "title": "About Us",
+  "description": "Budget Ndio Story is a Kenya wide consortium translating public budgets into clear, usable, youth friendly information.",
+  "about": {
+    "title": "About Us",
+    "intro": "Budget Ndio Story is a Kenya wide consortium led by The Continental Pot, Colour Twist Media, and Sen Media & Events, translating public budgets into clear, usable, youth friendly information. We convene creators, civil society, universities, and partners to pair fiscal analysis with creator-led storytelling, grow budget literacy, and strengthen accountability from priorities to results.",
+    "mission": "We make Kenya's budget information clear, usable, and youth-friendly—so young people can participate, shape priorities, and track results.",
+    "partners": "Budget Ndio Story is a consortium led by The Continental Pot, Colour Twist Media, and Sen Media & Events, working with creators, influencers, civil society, universities, and partners across Kenya to grow budget literacy and strengthen accountability.",
+    "values": ["Clarity", "Evidence", "Respect", "Inclusion", "Accountability"],
+    "approach": "Research → Verify → Explain → Support Action"
+  },
+  "partner": {
+    "title": "Partner With Us",
+    "intro": "We work with universities, youth networks, civil society, media, and institutions to expand budget literacy and civic action.",
+    "options": [
+      "Trainings",
+      "Forums",
+      "Co-created briefs",
+      "Multimedia campaigns",
+      "Research & verification"
+    ],
+    "ctas": [
+      { "text": "Become a Partner", "url": "/take-action" },
+      { "text": "Request a Training", "url": "/take-action" }
+    ]
+  },
+  "footer": {
+    "subscribe": {
+      "title": "Get budget updates",
+      "body": "Reports, participation windows, and training alerts—straight to you.",
+      "cta": "Subscribe"
+    },
+    "links": [
+      "Reports",
+      "Analysis",
+      "Tracker",
+      "Take Action",
+      "Learn",
+      "News",
+      "Partner",
+      "About",
+      "Contact"
+    ],
+    "transparency": [
+      "Accuracy Commitment",
+      "Corrections",
+      "Sources"
+    ],
+    "signature": "Follow the Budget. Find the Story.",
+    "copyright": "© Budget Ndio Story 2026"
+  }
+}

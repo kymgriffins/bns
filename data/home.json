@@ -1,0 +1,66 @@
+{
+  "page": "Home",
+  "title": "Follow the Budget. Find the Story.",
+  "description": "We turn national and county budgets into clear insights, practical analysis, and trackable evidence to enhance youth participation, and accountability by leaders.",
+  "hero": {
+    "headline": "Follow the Budget. Find the Story.",
+    "subhead": "We turn national and county budgets into clear insights, practical analysis, and trackable evidence to enhance youth participation, and accountability by leaders.",
+    "primaryCTA": "View Latest Report",
+    "secondaryCTA": "Take Action",
+    "trustLine": "Plain language • Source-linked • Youth-first"
+  },
+  "startHere": {
+    "title": "Start Here",
+    "links": [
+      { "text": "Budget Basics", "url": "/learn" },
+      { "text": "National vs County", "url": "/learn" },
+      { "text": "Budget Calendar", "url": "/learn" }
+    ],
+    "cta": "Start Learning"
+  },
+  "latest": {
+    "title": "Latest",
+    "tabs": ["Stories", "Videos", "Updates"],
+    "linkText": "View all",
+    "linkUrl": "/news"
+  },
+  "whatYouCanDo": {
+    "title": "What you can do today",
+    "features": [
+      {
+        "title": "Simplified Reports",
+        "description": "Key takeaways from major budget documents—fast, clear, shareable.",
+        "cta": "Browse Reports",
+        "url": "/reports"
+      },
+      {
+        "title": "Budget Analysis",
+        "description": "What changed, what it means, and what to watch—national, county, sector.",
+        "cta": "Explore Analysis",
+        "url": "/insights"
+      },
+      {
+        "title": "Budget Tracker",
+        "description": "Follow selected lines from allocation → release → delivery (where visible).",
+        "cta": "Open Tracker",
+        "url": "/tracker"
+      }
+    ]
+  },
+  "takeActionThisWeek": {
+    "title": "Take Action This Week",
+    "body": "Pick one action—start in minutes.",
+    "buttons": [
+      { "text": "Join a Training", "url": "/take-action" },
+      { "text": "Use Submission Template", "url": "/take-action" },
+      { "text": "Join a County Chapter", "url": "/take-action" }
+    ]
+  },
+  "ctaStrip": {
+    "line": "Follow the Budget. Find the Story.",
+    "buttons": [
+      { "text": "Subscribe", "url": "/#subscribe" },
+      { "text": "View Latest Report", "url": "/reports" }
+    ]
+  }
+}

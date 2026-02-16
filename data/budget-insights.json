@@ -1,0 +1,70 @@
+{
+  "page": "Budget Insights",
+  "title": "Budget Insights",
+  "description": "National, county, and sector breakdowns built for clarity and accountability.",
+  "overview": {
+    "title": "Budget Insights",
+    "intro": "National, county, and sector breakdowns built for clarity and accountability.",
+    "sections": [
+      { "title": "National Analysis", "cta": "Explore", "url": "/insights#national" },
+      { "title": "County Analysis", "cta": "Explore", "url": "/insights#county" },
+      { "title": "Sector Analysis", "cta": "Explore", "url": "/insights#sector" }
+    ]
+  },
+  "nationalAnalysis": {
+    "title": "National Budget Analysis",
+    "intro": "The big shifts explained simply, with youth implications.",
+    "sections": [
+      "Big picture: revenue, spending, deficit, borrowing",
+      "What changed: increases, cuts, flat lines",
+      "Youth lens: jobs, education, health, digital economy, cost of living",
+      "What to watch: risks + participation points"
+    ],
+    "ctas": [
+      { "text": "Read Reports", "url": "/reports" },
+      { "text": "See Updates", "url": "/news" },
+      { "text": "Join Training", "url": "/take-action" }
+    ]
+  },
+  "countyAnalysis": {
+    "title": "County Budget Analysis",
+    "intro": "County budgets shape daily life. Understand what's planned and what to track.",
+    "sections": [
+      "Priorities explained",
+      "Allocations by department/programme",
+      "Watchlist (lines to track)",
+      "Questions for public participation",
+      "Related county briefs + sources"
+    ],
+    "ctas": [
+      { "text": "Choose County", "url": "/insights#county" },
+      { "text": "Download Brief", "url": "/reports" },
+      { "text": "Take Action", "url": "/take-action" }
+    ]
+  },
+  "sectorAnalysis": {
+    "title": "Sector Budget Analysis",
+    "intro": "What Kenya is prioritising and what outcomes to demand.",
+    "sectors": [
+      "Youth Budget Perception Surveys",
+      "Education",
+      "Health",
+      "Agriculture",
+      "Water",
+      "Roads & Transport",
+      "Creative",
+      "Social Protection",
+      "Housing & Urban",
+      "ICT/Digital",
+      "Climate",
+      "ASAL"
+    ],
+    "sectorPageSections": [
+      "Overview",
+      "Trend (what changed + why)",
+      "Expected results (3–5 indicators)",
+      "Questions to ask (5–7)",
+      "Related reports + stories"
+    ]
+  }
+}

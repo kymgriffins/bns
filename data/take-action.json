@@ -1,0 +1,30 @@
+{
+  "page": "Take Action",
+  "title": "Take Action",
+  "description": "Know the budget. Use it. Follow up.",
+  "header": {
+    "title": "Take Action",
+    "intro": "Know the budget. Use it. Follow up."
+  },
+  "pathways": [
+    "Budget calendar + participation points",
+    "Submission support (memoranda)",
+    "Public forum question bank",
+    "Community tracking guides",
+    "County Chapters + organisers",
+    "Budget Champion pathway",
+    "Campus Budget Voices"
+  ],
+  "toolkit": [
+    "Budget Calendar",
+    "Submission Template",
+    "Citizen Question Bank",
+    "Glossary",
+    "National vs County Guide"
+  ],
+  "ctas": [
+    { "text": "Join the Community", "url": "/take-action" },
+    { "text": "Attend Training", "url": "/take-action" },
+    { "text": "Start a County Chapter", "url": "/take-action" }
+  ]
+}

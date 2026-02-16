@@ -1,0 +1,32 @@
+{
+  "page": "Budget Tracker",
+  "title": "Budget Tracker",
+  "description": "Track delivery, not promises.",
+  "header": {
+    "title": "Budget Tracker",
+    "intro": "Track delivery, not promises."
+  },
+  "whatYouCanTrack": {
+    "description": "Selected programmes and budget lines",
+    "stages": [
+      "Allocated",
+      "Released",
+      "Delivered"
+    ],
+    "additional": "Evidence notes and community leads"
+  },
+  "categories": [
+    "Youth livelihoods",
+    "Health",
+    "Education",
+    "Water",
+    "Agriculture",
+    "Roads",
+    "Markets",
+    "Climate resilience"
+  ],
+  "ctas": [
+    { "text": "Open Tracker", "url": "/tracker" },
+    { "text": "Submit a Tip", "url": "/take-action" }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "page": "Budget Reports",
+  "title": "Simplified Reports",
+  "description": "Explore short briefs from major budget documents. Uncover what changed, what it means, what to do next.",
+  "header": {
+    "title": "Simplified Reports",
+    "intro": "Explore short briefs from major budget documents. Uncover what changed, what it means, what to do next."
+  },
+  "reportSections": [
+    "What report?",
+    "Key takeaways (5–8)",
+    "What changed",
+    "Why it matters (youth + communities)",
+    "Questions to ask",
+    "Next step in the cycle",
+    "Sources (links)"
+  ],
+  "categories": {
+    "national": [
+      "Budget Policy Statement (BPS)",
+      "Estimates of Revenue & Expenditure",
+      "Finance Bill / Finance Act",
+      "Appropriation Bill / Act"
+    ],
+    "county": [
+      "County Fiscal Strategy Paper (CFSP)",
+      "County Budget Estimates",
+      "County \"Budget at a Glance\" briefs"
+    ],
+    "oversight": [
+      "Selected Audit & Accountability Highlights Simplified"
+    ]
+  },
+  "filters": [
+    "Document Type",
+    "Year",
+    "National",
+    "County",
+    "Sector"
+  ],
+  "ctaStrip": {
+    "text": "Need a brief for your county or sector?",
+    "buttons": [
+      { "text": "Request a Report", "url": "/take-action" },
+      { "text": "Take Action", "url": "/take-action" }
+    ]
+  }
+}
