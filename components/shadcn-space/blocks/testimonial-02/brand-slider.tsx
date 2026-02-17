@@ -25,7 +25,7 @@ function BrandSlider({ brandList }: { brandList: BrandList[] }) {
             className="flex flex-col gap-6 pt-12 border-t border-border"
           >
             <p className="text-base font-normal sm:px-2 px-10 text-muted-foreground text-center">
-              More than 12,000 businesses delight their customers with Shadcn Space
+              Media partners supporting budget transparency in Kenya
             </p>
             {brandList && brandList.length > 0 && (
               <div className="py-4">
