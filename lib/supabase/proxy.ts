@@ -49,7 +49,7 @@ export async function updateSession(request: NextRequest) {
 
   // Only require authentication for specific protected routes (admin, protected)
   // All other pages are publicly accessible
-  const protectedRoutes = ["/admin", "/protected"];
+  const protectedRoutes = ["/admin", "/admin/organization", "/protected"];
   const isProtectedRoute = protectedRoutes.some(route => 
     request.nextUrl.pathname.startsWith(route)
   );

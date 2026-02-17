@@ -112,39 +112,6 @@ export default function HomePage() {
       {/* Statistics/Impact Section */}
    
     
-      {/* Start Here Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Start Here</h2>
-            <p className="text-lg text-muted-foreground">New to budgets? Start your journey here.</p>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-6">
-            {startHereLinks.map((link) => (
-              <Link
-                key={link.text}
-                href={link.href}
-                className="group flex items-center justify-center gap-3 p-6 bg-background rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg"
-              >
-                <BookOpen className="h-5 w-5 text-primary" />
-                <span className="font-medium group-hover:text-primary transition-colors">
-                  {link.text}
-                </span>
-                <ChevronRight className="h-4 w-4 opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all text-primary" />
-              </Link>
-            ))}
-          </div>
-
-          <div className="text-center mt-8">
-            <Button asChild variant="link">
-              <Link href="/learn">
-                Start Learning <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* How It Works Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
@@ -163,9 +130,7 @@ export default function HomePage() {
                   {item.step}
                 </div>
                 <div className="p-8 bg-background rounded-2xl border border-border hover:border-primary/50 transition-all hover:shadow-xl h-full">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 text-primary mb-6">
-                    <item.icon className="h-7 w-7" />
-                  </div>
+                  
                   <h3 className="text-xl font-bold mb-3">{item.title}</h3>
                   <p className="text-muted-foreground">{item.description}</p>
                 </div>
@@ -179,7 +144,12 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
+ {/* Testimonials Section */}
+      <section className="py-0 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <Testimonial01 />
+        </div>
+      </section>
       {/* Latest Reports Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary/30">
         <div className="max-w-6xl mx-auto">
@@ -268,32 +238,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <Testimonial01 />
-        </div>
-      </section>
+     
 
-      {/* Take Action This Week Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">Take Action This Week</h2>
-          <p className="text-lg text-muted-foreground mb-10">
-            Know the budget. Use it. Follow up.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4">
-            {actionItems.map((item) => (
-              <Button key={item.text} asChild variant="default" size="lg" className="px-6">
-                <Link href={item.href}>
-                  {item.text}
-                </Link>
-              </Button>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
       
     </main>

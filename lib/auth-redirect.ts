@@ -12,6 +12,8 @@ const ALLOWED_PATHS = [
   '/',
   '/home',
   '/admin',
+  '/admin/organization',
+  '/organization',
   '/protected',
   '/dashboard-shell-01',
   '/insights',

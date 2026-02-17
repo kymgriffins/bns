@@ -102,6 +102,10 @@ export default function Navbar() {
       title: "News",
       href: "/news",
     },
+    {
+      title: "About",
+      href: "/organization",
+    },
   ];
 
   return (
