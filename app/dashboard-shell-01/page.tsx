@@ -21,24 +21,24 @@ async function AuthCheck({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export default function AdminPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <AuthCheck>
-        <AppSidebar>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full">
-            <div className="col-span-1 md:col-span-12">
-              <StatisticsBlock />
-            </div>
-            <div className="col-span-1 md:col-span-12">
-              <TopProductTable />
-            </div>
-            <div className="col-span-1 md:col-span-12">
-              <SalesByCountryWidget />
-            </div>
-          </div>
-        </AppSidebar>
-      </AuthCheck>
-    </Suspense>
-  );
+export default async function Page() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <AuthCheck>
+                <AppSidebar>
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full">
+                        <div className="col-span-1 md:col-span-12">
+                            <StatisticsBlock />
+                        </div>
+                        <div className="col-span-1 md:col-span-12">
+                            <TopProductTable />
+                        </div>
+                        <div className="col-span-1 md:col-span-12">
+                            <SalesByCountryWidget />
+                        </div>
+                    </div>
+                </AppSidebar>
+            </AuthCheck>
+        </Suspense>
+    )
 }

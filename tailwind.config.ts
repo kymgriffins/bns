@@ -57,6 +57,11 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        "founders-grotesk": ["FoundersGrotesk", "sans-serif"],
+        "neue-montreal": ["NeueMontreal", "sans-serif"],
+        sans: ["var(--font-neue-montreal)", "sans-serif"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

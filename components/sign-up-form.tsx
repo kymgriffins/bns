@@ -48,6 +48,19 @@ export function SignUpForm({
         },
       });
       if (error) throw error;
+
+      // Send welcome email via Resend API
+      try {
+        await fetch("/api/auth/welcome", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+      } catch (emailError) {
+        // Log but don't fail the signup if email fails
+        console.error("Failed to send welcome email:", emailError);
+      }
+
       router.push("/auth/sign-up-success");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");

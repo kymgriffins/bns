@@ -22,6 +22,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { usePathname } from "next/navigation";
 
 export type NavigationSection = {
   title: string;
@@ -47,6 +48,16 @@ const SubscribeButton = ({ className }: { className?: string }) => (
 export default function Navbar() {
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Routes where Navbar should be hidden (admin/dashboard routes)
+  const hideNavbarRoutes = ["/admin", "/dashboard-shell-01", "/protected"];
+  const shouldHideNavbar = hideNavbarRoutes.some((route) => pathname.startsWith(route));
+
+  // Don't render Navbar on admin routes
+  if (shouldHideNavbar) {
+    return null;
+  }
 
   const handleScroll = useCallback(() => {
     setSticky(window.scrollY >= 50);
@@ -75,10 +86,10 @@ export default function Navbar() {
       title: "Budget Insights",
       href: "/insights",
     },
-    {
-      title: "Budget Tracker",
-      href: "/tracker",
-    },
+    // {
+    //   title: "Budget Tracker",
+    //   href: "/tracker",
+    // },
     // {
     //   title: "Take Action",
     //   href: "/take-action",

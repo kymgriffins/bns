@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 // import Footer from "@/components/footer";
 import { SmoothScrollProvider } from "@/components/scroll";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
 import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
+import { cookies } from "next/headers";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -17,17 +19,34 @@ export const metadata: Metadata = {
   description: "Kenyan budget transparency platform for young citizens",
 };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const neueMontreal = localFont({
+  src: [
+    {
+      path: "../components/ui/NeueMontreal.woff",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-neue-montreal",
   display: "swap",
-  subsets: ["latin"],
 });
+
+// Routes that should not show Navbar and Footer (admin/dashboard routes)
+const NO_NAVBAR_ROUTES = [
+  "/admin",
+  "/dashboard-shell-01",
+  "/protected",
+];
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Check if current route should hide Navbar/Footer
+  // Note: In server components, we can't directly get the pathname
+  // We'll handle this via client-side check or layout props
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -36,7 +55,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${neueMontreal.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -52,13 +71,15 @@ export default function RootLayout({
               touchMultiplier: 2,
             }}
           >
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main>
-                {children}
-              </main>
-              <Footer2 />
-            </div>
+            <TooltipProvider>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <main>
+                  {children}
+                </main>
+                <Footer2 />
+              </div>
+            </TooltipProvider>
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

@@ -18,8 +18,11 @@ import { useState } from "react";
 
 export function LoginForm({
   className,
+  defaultRedirectUrl = "/",
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: React.ComponentPropsWithoutRef<"div"> & {
+  defaultRedirectUrl?: string;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -38,8 +41,8 @@ export function LoginForm({
         password,
       });
       if (error) throw error;
-      // Redirect to the protected homepage
-      router.push("/");
+      // Redirect to the intended URL or default
+      router.push(defaultRedirectUrl);
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {

@@ -1,7 +1,10 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
 import { Twitter, Linkedin, Instagram, Facebook, Mail, MapPin, Phone, Youtube, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 // import Newsletter from "@/components/newsletter";
 
 type FooterData = {
@@ -107,6 +110,17 @@ const contactInfo = [
 ];
 
 const Footer2 = () => {
+  const pathname = usePathname();
+  
+  // Routes where Footer should be hidden (admin/dashboard routes)
+  const hideFooterRoutes = ["/admin", "/dashboard-shell-01", "/protected"];
+  const shouldHideFooter = hideFooterRoutes.some((route) => pathname.startsWith(route));
+
+  // Don't render Footer on admin routes
+  if (shouldHideFooter) {
+    return null;
+  }
+
   return (
     <footer className="py-10 bg-white dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-white/10">
       <div className="max-w-7xl xl:px-16 lg:px-8 px-4 mx-auto">

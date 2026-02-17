@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Mail, CheckCircle, ArrowRight, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
+import { NewsletterForm } from "@/components/newsletter-form";
+import { CheckCircle, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -25,7 +24,7 @@ export default function SubscribePage() {
           <div className="bg-muted/30 rounded-3xl p-8 lg:p-12 border border-border/50">
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
-                <Mail className="w-8 h-8 text-primary" />
+                <CheckCircle className="w-8 h-8 text-primary" />
               </div>
               <h2 className="text-2xl font-semibold mb-2">Join Our Newsletter</h2>
               <p className="text-muted-foreground">
@@ -33,24 +32,7 @@ export default function SubscribePage() {
               </p>
             </div>
 
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="email" className="sr-only">
-                  Email address
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="h-12 rounded-full px-6"
-                  required
-                />
-              </div>
-              <Button type="submit" size="lg" className="w-full rounded-full group">
-                Subscribe
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </form>
+            <NewsletterForm />
 
             <p className="text-xs text-muted-foreground text-center mt-4">
               We respect your privacy. Unsubscribe at any time.

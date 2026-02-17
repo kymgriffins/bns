@@ -1,19 +1,22 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { createLoginRedirectUrl } from "@/lib/auth-redirect";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import { Suspense } from "react";
 
 async function UserDetails() {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
+  const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data?.claims) {
-    redirect("/auth/login");
+  if (error || !data?.user) {
+    // Capture the current path for redirect after login
+    const loginUrl = createLoginRedirectUrl("/protected");
+    redirect(loginUrl);
   }
 
-  return JSON.stringify(data.claims, null, 2);
+  return JSON.stringify(data.user, null, 2);
 }
 
 export default function ProtectedPage() {
