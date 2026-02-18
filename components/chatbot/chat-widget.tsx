@@ -57,7 +57,7 @@ const faqItems: FAQ[] = [
     category: "technical"
   },
   { 
-    question: "I can't find specific budget data", 
+    
     question: "How do I submit a support ticket?",
     answer: "You can submit a support ticket by clicking the 'Submit Ticket' button in this chat. Fill in your issue details and our team will respond within 24-48 hours.",
     category: "general"
