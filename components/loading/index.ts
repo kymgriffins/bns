@@ -31,6 +31,11 @@ export {
   HeroSkeleton,
   SidebarSkeleton,
   FeedSkeleton,
+  // Admin-specific skeletons
+  AdminTableSkeleton,
+  AdminCardSkeleton,
+  AdminFormSkeleton,
+  DetailPageSkeleton,
 } from './skeleton-loaders';
 
 // Re-export Skeleton from UI for convenience

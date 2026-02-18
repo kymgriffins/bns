@@ -348,6 +348,291 @@ export function FeedSkeleton({
   );
 }
 
+// =============================================================================
+// Admin-specific Skeleton Loaders
+// =============================================================================
+
+/**
+ * Admin table skeleton with search, filters, and actions
+ */
+export function AdminTableSkeleton({
+  rows = 5,
+  columns = 5,
+  showSearch = true,
+  showActions = true,
+  className,
+}: {
+  rows?: number;
+  columns?: number;
+  showSearch?: boolean;
+  showActions?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={cn('space-y-4', className)}>
+      {/* Header with search and actions */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between">
+        {showSearch && (
+          <Skeleton className="h-10 w-full max-w-md bg-muted/50" />
+        )}
+        <div className="flex gap-2">
+          {showActions && (
+            <>
+              <Skeleton className="h-10 w-24 bg-muted/50" />
+              <Skeleton className="h-10 w-24 bg-muted/30" />
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-md border">
+        {/* Table Header */}
+        <div className="border-b bg-muted/30">
+          <div
+            className="grid gap-4 px-4 py-3"
+            style={{ gridTemplateColumns: `repeat(${columns}, 1fr)${showActions ? ' 100px' : ''}` }}
+          >
+            {Array.from({ length: columns }).map((_, i) => (
+              <Skeleton key={i} className="h-4 bg-muted/50" />
+            ))}
+            {showActions && <Skeleton className="h-4 bg-muted/50" />}
+          </div>
+        </div>
+
+        {/* Table Body */}
+        {Array.from({ length: rows }).map((_, rowIndex) => (
+          <div
+            key={rowIndex}
+            className="border-b last:border-0"
+          >
+            <div
+              className="grid gap-4 px-4 py-4"
+              style={{ gridTemplateColumns: `repeat(${columns}, 1fr)${showActions ? ' 100px' : ''}` }}
+            >
+              {Array.from({ length: columns }).map((_, colIndex) => (
+                <Skeleton
+                  key={colIndex}
+                  className={cn(
+                    'h-4 bg-muted/30 rounded',
+                    colIndex === 0 && 'w-3/4'
+                  )}
+                  style={{
+                    animationDelay: `${rowIndex * 50 + colIndex * 25}ms`,
+                  }}
+                />
+              ))}
+              {showActions && (
+                <div className="flex gap-2">
+                  <Skeleton className="h-8 w-8 bg-muted/30 rounded" />
+                  <Skeleton className="h-8 w-8 bg-muted/30 rounded" />
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-4 w-32 bg-muted/30" />
+        <div className="flex gap-2">
+          <Skeleton className="h-8 w-20 bg-muted/30" />
+          <Skeleton className="h-8 w-20 bg-muted/30" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Admin card skeleton for dashboard or card grid layouts
+ */
+export function AdminCardSkeleton({
+  cards = 4,
+  showImage = true,
+  className,
+}: {
+  cards?: number;
+  showImage?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4', className)}>
+      {Array.from({ length: cards }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-lg border bg-card p-4 space-y-3"
+          style={{ animationDelay: `${i * 75}ms` }}
+        >
+          {/* Card header */}
+          <div className="flex items-start justify-between">
+            <div className="space-y-2 flex-1">
+              <Skeleton className="h-5 w-3/4 bg-muted/50" />
+              <Skeleton className="h-4 w-1/2 bg-muted/30" />
+            </div>
+            <Skeleton className="h-6 w-16 rounded-full bg-muted/30" />
+          </div>
+
+          {showImage && (
+            <Skeleton className="h-32 w-full rounded-md bg-muted/30" />
+          )}
+
+          {/* Card content */}
+          <TextSkeleton lines={2} />
+
+          {/* Card footer */}
+          <div className="flex items-center justify-between pt-2">
+            <Skeleton className="h-4 w-24 bg-muted/30" />
+            <div className="flex gap-2">
+              <Skeleton className="h-8 w-8 bg-muted/30 rounded" />
+              <Skeleton className="h-8 w-8 bg-muted/30 rounded" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Admin form skeleton with various field types
+ */
+export function AdminFormSkeleton({
+  fields = 5,
+  showImageUpload = true,
+  showSlug = true,
+  showStatus = true,
+  showSubmit = true,
+  className,
+}: {
+  fields?: number;
+  showImageUpload?: boolean;
+  showSlug?: boolean;
+  showStatus?: boolean;
+  showSubmit?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={cn('space-y-6', className)}>
+      {/* Title field */}
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-24 bg-muted/50" />
+        <Skeleton className="h-10 w-full bg-muted/30" />
+      </div>
+
+      {/* Slug field */}
+      {showSlug && (
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-16 bg-muted/50" />
+          <Skeleton className="h-10 w-full bg-muted/30" />
+        </div>
+      )}
+
+      {/* Image upload */}
+      {showImageUpload && (
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-20 bg-muted/50" />
+          <Skeleton className="h-40 w-full bg-muted/30 rounded-lg" />
+        </div>
+      )}
+
+      {/* Dynamic fields */}
+      {Array.from({ length: fields }).map((_, i) => (
+        <div key={i} className="space-y-2">
+          <Skeleton className="h-4 w-20 bg-muted/50" />
+          {i % 2 === 0 ? (
+            <Skeleton className="h-24 w-full bg-muted/30" />
+          ) : (
+            <Skeleton className="h-10 w-full bg-muted/30" />
+          )}
+        </div>
+      ))}
+
+      {/* Status select */}
+      {showStatus && (
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-16 bg-muted/50" />
+          <Skeleton className="h-10 w-full bg-muted/30" />
+        </div>
+      )}
+
+      {/* Submit button */}
+      {showSubmit && (
+        <div className="flex gap-3 pt-4">
+          <Skeleton className="h-10 w-24 bg-muted/50" />
+          <Skeleton className="h-10 w-32 bg-primary/50" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Detail page skeleton for viewing single items
+ */
+export function DetailPageSkeleton({
+  showImage = true,
+  showMetadata = true,
+  showActions = true,
+  className,
+}: {
+  showImage?: boolean;
+  showMetadata?: boolean;
+  showActions?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={cn('space-y-6', className)}>
+      {/* Header with title and actions */}
+      <div className="flex items-start justify-between">
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-8 w-2/3 bg-muted/50" />
+          <Skeleton className="h-4 w-1/3 bg-muted/30" />
+        </div>
+        {showActions && (
+          <div className="flex gap-2">
+            <Skeleton className="h-10 w-20 bg-muted/50" />
+            <Skeleton className="h-10 w-20 bg-muted/50" />
+          </div>
+        )}
+      </div>
+
+      {/* Main image */}
+      {showImage && (
+        <Skeleton className="h-64 w-full bg-muted/30 rounded-lg" />
+      )}
+
+      {/* Content sections */}
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-1/4 bg-muted/50" />
+          <Skeleton className="h-4 w-full bg-muted/30" />
+          <Skeleton className="h-4 w-full bg-muted/30" />
+          <Skeleton className="h-4 w-3/4 bg-muted/30" />
+        </div>
+
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-1/4 bg-muted/50" />
+          <Skeleton className="h-4 w-full bg-muted/30" />
+        </div>
+      </div>
+
+      {/* Metadata */}
+      {showMetadata && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="space-y-1">
+              <Skeleton className="h-3 w-16 bg-muted/30" />
+              <Skeleton className="h-4 w-24 bg-muted/50" />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default {
   TextSkeleton,
   CardSkeleton,
@@ -361,4 +646,9 @@ export default {
   HeroSkeleton,
   SidebarSkeleton,
   FeedSkeleton,
+  // Admin-specific skeletons
+  AdminTableSkeleton,
+  AdminCardSkeleton,
+  AdminFormSkeleton,
+  DetailPageSkeleton,
 };

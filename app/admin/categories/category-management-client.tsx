@@ -31,6 +31,8 @@ import {
   Loader2,
   Folder
 } from "lucide-react";
+import { useToast, useDangerAlert } from "@/components/feedback";
+import { AdminTableSkeleton } from "@/components/loading";
 
 interface Category {
   id: string;
@@ -89,6 +91,10 @@ export default function CategoryManagementClient() {
   const [formData, setFormData] = useState<CategoryFormData>(initialFormData);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+
+  // Feedback hooks
+  const { successToast, errorToast } = useToast();
+  const confirmDelete = useDangerAlert();
 
   useEffect(() => {
     fetchCategories();
@@ -160,9 +166,10 @@ export default function CategoryManagementClient() {
       setEditingCategory(null);
       setFormData(initialFormData);
       fetchCategories();
+      successToast(editingCategory ? "Category updated successfully" : "Category created successfully");
     } catch (error: any) {
       console.error("Error saving category:", error);
-      alert(error.message || "Failed to save category. Please try again.");
+      errorToast("Failed to save category");
     } finally {
       setSaving(false);
     }
@@ -183,16 +190,24 @@ export default function CategoryManagementClient() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this category?")) return;
+    const categoryItem = categories.find(c => c.id === id);
+    const confirmed = await confirmDelete({
+      title: "Delete Category",
+      description: `Are you sure you want to delete "${categoryItem?.name || 'this category'}"? This action cannot be undone.`,
+      confirmText: "Delete",
+    });
+    
+    if (!confirmed) return;
     
     setDeleting(id);
     try {
       const { error } = await supabase.from("categories").delete().eq("id", id);
       if (error) throw error;
       fetchCategories();
+      successToast("Category deleted successfully");
     } catch (error) {
       console.error("Error deleting category:", error);
-      alert("Failed to delete category. It may have blogs assigned to it.");
+      errorToast("Failed to delete category. It may have items assigned to it.");
     } finally {
       setDeleting(null);
     }
@@ -363,9 +378,7 @@ export default function CategoryManagementClient() {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-            </div>
+            <AdminTableSkeleton rows={5} columns={6} showSearch={false} />
           ) : filteredCategories.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Folder className="h-12 w-12 mx-auto mb-4 opacity-50" />

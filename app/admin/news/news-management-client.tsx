@@ -34,16 +34,15 @@ import {
   Plus, 
   Pencil, 
   Trash2, 
-  Eye, 
   Search,
   Loader2,
   FileText,
-  X
+  ExternalLink
 } from "lucide-react";
 import { useToast, useDangerAlert } from "@/components/feedback";
 import { AdminTableSkeleton } from "@/components/loading";
 
-interface Blog {
+interface News {
   id: string;
   title: string;
   slug: string;
@@ -53,7 +52,6 @@ interface Blog {
   author_id: string | null;
   category_id: string | null;
   status: "draft" | "published" | "archived" | "review";
-  is_premium: boolean;
   is_featured: boolean;
   reading_time_minutes: number | null;
   view_count: number;
@@ -62,6 +60,8 @@ interface Blog {
   updated_at: string;
   seo_title: string | null;
   seo_description: string | null;
+  source: string | null;
+  source_url: string | null;
   category?: Category;
 }
 
@@ -72,7 +72,7 @@ interface Category {
   color: string;
 }
 
-interface BlogFormData {
+interface NewsFormData {
   title: string;
   slug: string;
   excerpt: string;
@@ -80,14 +80,15 @@ interface BlogFormData {
   cover_image: string;
   category_id: string;
   status: "draft" | "published" | "archived" | "review";
-  is_premium: boolean;
   is_featured: boolean;
   reading_time_minutes: string;
   seo_title: string;
   seo_description: string;
+  source: string;
+  source_url: string;
 }
 
-const initialFormData: BlogFormData = {
+const initialFormData: NewsFormData = {
   title: "",
   slug: "",
   excerpt: "",
@@ -95,22 +96,23 @@ const initialFormData: BlogFormData = {
   cover_image: "",
   category_id: "",
   status: "draft",
-  is_premium: false,
   is_featured: false,
   reading_time_minutes: "",
   seo_title: "",
   seo_description: "",
+  source: "",
+  source_url: "",
 };
 
-export default function BlogManagementClient() {
+export default function NewsManagementClient() {
   const supabase = createClient();
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [newsItems, setNewsItems] = useState<News[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
-  const [formData, setFormData] = useState<BlogFormData>(initialFormData);
+  const [editingNews, setEditingNews] = useState<News | null>(null);
+  const [formData, setFormData] = useState<NewsFormData>(initialFormData);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
 
@@ -119,15 +121,15 @@ export default function BlogManagementClient() {
   const confirmDelete = useDangerAlert();
 
   useEffect(() => {
-    fetchBlogs();
+    fetchNews();
     fetchCategories();
   }, []);
 
-  const fetchBlogs = async () => {
+  const fetchNews = async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from("blogs")
+        .from("news")
         .select(`
           *,
           category:categories(id, name, slug, color)
@@ -135,9 +137,9 @@ export default function BlogManagementClient() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setBlogs(data || []);
+      setNewsItems(data || []);
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      console.error("Error fetching news:", error);
     } finally {
       setLoading(false);
     }
@@ -169,7 +171,7 @@ export default function BlogManagementClient() {
     setFormData({
       ...formData,
       title,
-      slug: editingBlog ? formData.slug : generateSlug(title),
+      slug: editingNews ? formData.slug : generateSlug(title),
     });
   };
 
@@ -178,7 +180,7 @@ export default function BlogManagementClient() {
     setSaving(true);
 
     try {
-      const blogData = {
+      const newsData = {
         title: formData.title,
         slug: formData.slug,
         excerpt: formData.excerpt,
@@ -186,19 +188,20 @@ export default function BlogManagementClient() {
         cover_image: formData.cover_image || null,
         category_id: formData.category_id || null,
         status: formData.status,
-        is_premium: formData.is_premium,
         is_featured: formData.is_featured,
         reading_time_minutes: formData.reading_time_minutes ? parseInt(formData.reading_time_minutes) : null,
         published_at: formData.status === "published" ? new Date().toISOString() : null,
         seo_title: formData.seo_title || null,
         seo_description: formData.seo_description || null,
+        source: formData.source || null,
+        source_url: formData.source_url || null,
       };
 
-      if (editingBlog) {
+      if (editingNews) {
         const { error } = await supabase
-          .from("blogs")
-          .update(blogData)
-          .eq("id", editingBlog.id);
+          .from("news")
+          .update(newsData)
+          .eq("id", editingNews.id);
 
         if (error) throw error;
       } else {
@@ -210,9 +213,9 @@ export default function BlogManagementClient() {
         
         // author_id references auth.users(id), not user_profiles
         const { error } = await supabase
-          .from("blogs")
+          .from("news")
           .insert({
-            ...blogData,
+            ...newsData,
             author_id: user.id,
           });
 
@@ -220,42 +223,43 @@ export default function BlogManagementClient() {
       }
 
       setIsDialogOpen(false);
-      setEditingBlog(null);
+      setEditingNews(null);
       setFormData(initialFormData);
-      fetchBlogs();
-      successToast(editingBlog ? "Blog updated successfully" : "Blog created successfully");
+      fetchNews();
+      successToast(editingNews ? "News updated successfully" : "News created successfully");
     } catch (error) {
-      console.error("Error saving blog:", error);
-      errorToast("Failed to save blog");
+      console.error("Error saving news:", error);
+      errorToast("Failed to save news");
     } finally {
       setSaving(false);
     }
   };
 
-  const handleEdit = (blog: Blog) => {
-    setEditingBlog(blog);
+  const handleEdit = (news: News) => {
+    setEditingNews(news);
     setFormData({
-      title: blog.title,
-      slug: blog.slug,
-      excerpt: blog.excerpt || "",
-      content: typeof blog.content === 'string' ? blog.content : blog.content?.html || "",
-      cover_image: blog.cover_image || "",
-      category_id: blog.category_id || "",
-      status: blog.status,
-      is_premium: blog.is_premium,
-      is_featured: blog.is_featured,
-      reading_time_minutes: blog.reading_time_minutes?.toString() || "",
-      seo_title: blog.seo_title || "",
-      seo_description: blog.seo_description || "",
+      title: news.title,
+      slug: news.slug,
+      excerpt: news.excerpt || "",
+      content: typeof news.content === 'string' ? news.content : news.content?.html || "",
+      cover_image: news.cover_image || "",
+      category_id: news.category_id || "",
+      status: news.status,
+      is_featured: news.is_featured,
+      reading_time_minutes: news.reading_time_minutes?.toString() || "",
+      seo_title: news.seo_title || "",
+      seo_description: news.seo_description || "",
+      source: news.source || "",
+      source_url: news.source_url || "",
     });
     setIsDialogOpen(true);
   };
 
   const handleDelete = async (id: string) => {
-    const blogItem = blogs.find(b => b.id === id);
+    const newsItem = newsItems.find(n => n.id === id);
     const confirmed = await confirmDelete({
-      title: "Delete Blog Post",
-      description: `Are you sure you want to delete "${blogItem?.title || 'this blog post'}"? This action cannot be undone.`,
+      title: "Delete News Article",
+      description: `Are you sure you want to delete "${newsItem?.title || 'this news article'}"? This action cannot be undone.`,
       confirmText: "Delete",
     });
     
@@ -263,27 +267,27 @@ export default function BlogManagementClient() {
     
     setDeleting(id);
     try {
-      const { error } = await supabase.from("blogs").delete().eq("id", id);
+      const { error } = await supabase.from("news").delete().eq("id", id);
       if (error) throw error;
-      fetchBlogs();
-      successToast("Blog post deleted successfully");
+      fetchNews();
+      successToast("News article deleted successfully");
     } catch (error) {
-      console.error("Error deleting blog:", error);
-      errorToast("Failed to delete blog");
+      console.error("Error deleting news:", error);
+      errorToast("Failed to delete news");
     } finally {
       setDeleting(null);
     }
   };
 
   const openCreateDialog = () => {
-    setEditingBlog(null);
+    setEditingNews(null);
     setFormData(initialFormData);
     setIsDialogOpen(true);
   };
 
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    blog.excerpt?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredNews = newsItems.filter((news) =>
+    news.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    news.excerpt?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getStatusColor = (status: string) => {
@@ -308,7 +312,7 @@ export default function BlogManagementClient() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search blogs..."
+            placeholder="Search news..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -318,18 +322,18 @@ export default function BlogManagementClient() {
           <DialogTrigger asChild>
             <Button onClick={openCreateDialog}>
               <Plus className="h-4 w-4 mr-2" />
-              Create Blog
+              Create News
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
-                {editingBlog ? "Edit Blog" : "Create New Blog"}
+                {editingNews ? "Edit News Article" : "Create New News Article"}
               </DialogTitle>
               <DialogDescription>
-                {editingBlog 
-                  ? "Update the blog post details below." 
-                  : "Fill in the details to create a new blog post."}
+                {editingNews 
+                  ? "Update the news article details below." 
+                  : "Fill in the details to create a new news article."}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -340,7 +344,7 @@ export default function BlogManagementClient() {
                     id="title"
                     value={formData.title}
                     onChange={(e) => handleTitleChange(e.target.value)}
-                    placeholder="Enter blog title"
+                    placeholder="Enter news title"
                     required
                   />
                 </div>
@@ -351,7 +355,7 @@ export default function BlogManagementClient() {
                     id="slug"
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                    placeholder="blog-url-slug"
+                    placeholder="news-url-slug"
                     required
                   />
                 </div>
@@ -362,7 +366,7 @@ export default function BlogManagementClient() {
                     id="excerpt"
                     value={formData.excerpt}
                     onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                    placeholder="Brief description of the blog post"
+                    placeholder="Brief description of the news article"
                     rows={3}
                   />
                 </div>
@@ -373,7 +377,7 @@ export default function BlogManagementClient() {
                     id="content"
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    placeholder="Write your blog content here (supports HTML)"
+                    placeholder="Write your news content here (supports HTML)"
                     rows={10}
                     className="font-mono text-sm"
                   />
@@ -389,6 +393,32 @@ export default function BlogManagementClient() {
                   />
                 </div>
 
+                {/* Source Information */}
+                <div className="border-t pt-4 mt-4">
+                  <h3 className="text-sm font-semibold mb-3">Source Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <label htmlFor="source" className="text-sm font-medium">Source Name</label>
+                      <Input
+                        id="source"
+                        value={formData.source}
+                        onChange={(e) => setFormData({ ...formData, source: e.target.value })}
+                        placeholder="e.g., BBC News, Reuters"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <label htmlFor="source_url" className="text-sm font-medium">Source URL</label>
+                      <Input
+                        id="source_url"
+                        value={formData.source_url}
+                        onChange={(e) => setFormData({ ...formData, source_url: e.target.value })}
+                        placeholder="https://example.com/article"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* SEO Settings */}
                 <div className="border-t pt-4 mt-4">
                   <h3 className="text-sm font-semibold mb-3">SEO Settings</h3>
                   <div className="grid gap-2">
@@ -397,7 +427,7 @@ export default function BlogManagementClient() {
                       id="seo_title"
                       value={formData.seo_title}
                       onChange={(e) => setFormData({ ...formData, seo_title: e.target.value })}
-                      placeholder="SEO optimized title (defaults to blog title if empty)"
+                      placeholder="SEO optimized title (defaults to news title if empty)"
                     />
                   </div>
                   <div className="grid gap-2 mt-3">
@@ -452,7 +482,7 @@ export default function BlogManagementClient() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
                     <label htmlFor="reading_time" className="text-sm font-medium">Reading Time (min)</label>
                     <Input
@@ -463,17 +493,6 @@ export default function BlogManagementClient() {
                       onChange={(e) => setFormData({ ...formData, reading_time_minutes: e.target.value })}
                       placeholder="5"
                     />
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-6">
-                    <input
-                      type="checkbox"
-                      id="is_premium"
-                      checked={formData.is_premium}
-                      onChange={(e) => setFormData({ ...formData, is_premium: e.target.checked })}
-                      className="h-4 w-4"
-                    />
-                    <label htmlFor="is_premium" className="text-sm font-medium">Premium Content</label>
                   </div>
 
                   <div className="flex items-center gap-2 pt-6">
@@ -499,7 +518,7 @@ export default function BlogManagementClient() {
                 </Button>
                 <Button type="submit" disabled={saving}>
                   {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                  {editingBlog ? "Update Blog" : "Create Blog"}
+                  {editingNews ? "Update News" : "Create News"}
                 </Button>
               </div>
             </form>
@@ -507,24 +526,24 @@ export default function BlogManagementClient() {
         </Dialog>
       </div>
 
-      {/* Blog List */}
+      {/* News Table */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            All Blog Posts
-          </CardTitle>
+          <CardTitle>All News Articles</CardTitle>
           <CardDescription>
-            {filteredBlogs.length} blog post{filteredBlogs.length !== 1 ? "s" : ""} found
+            Manage your news content. {filteredNews.length} article(s) found.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
             <AdminTableSkeleton rows={5} columns={5} showSearch={false} />
-          ) : filteredBlogs.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>No blogs found. Create your first blog post!</p>
+          ) : filteredNews.length === 0 ? (
+            <div className="text-center py-8">
+              <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <p className="text-muted-foreground">No news articles found.</p>
+              <Button variant="link" onClick={openCreateDialog}>
+                Create your first news article
+              </Button>
             </div>
           ) : (
             <Table>
@@ -533,71 +552,81 @@ export default function BlogManagementClient() {
                   <TableHead>Title</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Views</TableHead>
+                  <TableHead>Source</TableHead>
+                  <TableHead>Featured</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredBlogs.map((blog) => (
-                  <TableRow key={blog.id}>
+                {filteredNews.map((news) => (
+                  <TableRow key={news.id}>
                     <TableCell className="font-medium">
-                      <div className="flex flex-col">
-                        <span>{blog.title}</span>
-                        {blog.excerpt && (
-                          <span className="text-xs text-muted-foreground truncate max-w-[300px]">
-                            {blog.excerpt}
-                          </span>
-                        )}
-                        <div className="flex gap-1 mt-1">
-                          {blog.is_featured && (
-                            <Badge variant="secondary" className="text-xs">Featured</Badge>
-                          )}
-                          {blog.is_premium && (
-                            <Badge variant="secondary" className="text-xs">Premium</Badge>
-                          )}
-                        </div>
+                      <div>
+                        <div>{news.title}</div>
+                        <div className="text-sm text-muted-foreground">{news.slug}</div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      {blog.category ? (
+                      {news.category ? (
                         <Badge 
-                          style={{ backgroundColor: blog.category.color + "20", color: blog.category.color }}
+                          style={{ backgroundColor: news.category.color || '#6b7280' }}
                         >
-                          {blog.category.name}
+                          {news.category.name}
                         </Badge>
                       ) : (
                         <span className="text-muted-foreground">-</span>
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(blog.status)}>
-                        {blog.status.charAt(0).toUpperCase() + blog.status.slice(1)}
+                      <Badge className={getStatusColor(news.status)}>
+                        {news.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>{blog.view_count.toLocaleString()}</TableCell>
                     <TableCell>
-                      {new Date(blog.created_at).toLocaleDateString()}
+                      {news.source ? (
+                        <a 
+                          href={news.source_url || '#'} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                        >
+                          {news.source}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {news.is_featured ? (
+                        <Badge variant="secondary">Featured</Badge>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(news.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleEdit(blog)}
+                          onClick={() => handleEdit(news)}
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(blog.id)}
-                          disabled={deleting === blog.id}
+                          onClick={() => handleDelete(news.id)}
+                          disabled={deleting === news.id}
                         >
-                          {deleting === blog.id ? (
+                          {deleting === news.id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            <Trash2 className="h-4 w-4 text-destructive" />
+                            <Trash2 className="h-4 w-4 text-red-500" />
                           )}
                         </Button>
                       </div>

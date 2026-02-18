@@ -67,6 +67,8 @@ export async function POST(request: NextRequest) {
       is_premium = false,
       is_featured = false,
       reading_time_minutes,
+      seo_title,
+      seo_description,
     } = body;
 
     // Validate required fields
@@ -106,6 +108,8 @@ export async function POST(request: NextRequest) {
         is_featured,
         reading_time_minutes,
         published_at: status === "published" ? new Date().toISOString() : null,
+        seo_title,
+        seo_description,
       })
       .select()
       .single();
@@ -148,6 +152,8 @@ export async function PUT(request: NextRequest) {
       is_premium,
       is_featured,
       reading_time_minutes,
+      seo_title,
+      seo_description,
     } = body;
 
     // Validate required fields
@@ -183,6 +189,8 @@ export async function PUT(request: NextRequest) {
       is_premium,
       is_featured,
       reading_time_minutes,
+      seo_title,
+      seo_description,
     };
 
     if (status) {

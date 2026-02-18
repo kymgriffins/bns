@@ -7,6 +7,8 @@ import { SmoothScrollProvider } from "@/components/scroll";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
 import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
+import { CombinedFeedbackProvider } from "@/components/feedback";
+import { ChatWidget } from "@/components/chatbot";
 import { cookies } from "next/headers";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -72,13 +74,16 @@ export default function RootLayout({
             }}
           >
             <TooltipProvider>
-              <div className="min-h-screen flex flex-col">
-                <Navbar />
-                <main>
-                  {children}
-                </main>
-                <Footer2 />
-              </div>
+              <CombinedFeedbackProvider>
+                <div className="min-h-screen flex flex-col">
+                  <Navbar />
+                  <main>
+                    {children}
+                  </main>
+                  <Footer2 />
+                </div>
+                <ChatWidget />
+              </CombinedFeedbackProvider>
             </TooltipProvider>
           </SmoothScrollProvider>
         </ThemeProvider>

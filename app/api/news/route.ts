@@ -1,72 +1,311 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createServerClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 
 /**
  * GET /api/news
- * Fetch all news data (stories, videos, updates) from Supabase
- * Public endpoint - no authentication required
+ * Fetch all news data (public - no authentication required)
+ * Returns published news as stories
  */
 export async function GET(request: NextRequest) {
   try {
-    // Use server client for server-side operations
-    const supabase = await createClient();
+    const supabase = await createServerClient();
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get("status");
+    const category = searchParams.get("category");
+    const limit = searchParams.get("limit") || "10";
+    const offset = searchParams.get("offset") || "0";
 
-    // Fetch published blogs as stories
-    const { data: blogs, error: blogsError } = await supabase
-      .from('blogs')
+    let query = supabase
+      .from("news")
       .select(`
         *,
-        categories!inner(name)
+        category:categories(id, name, slug, color)
       `)
-      .eq('status', 'published')
-      .order('published_at', { ascending: false })
-      .limit(50);
+      .order("created_at", { ascending: false })
+      .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
 
-    if (blogsError) {
-      console.error('Error fetching blogs:', blogsError);
-      return NextResponse.json(
-        { error: 'Failed to fetch stories', details: blogsError.message },
-        { status: 500 }
-      );
+    if (status) {
+      query = query.eq("status", status);
+    } else {
+      // Default to published for public API
+      query = query.eq("status", "published");
     }
 
-    // Map blogs to stories format
-    const stories = (blogs || []).map((blog: any) => ({
-      id: blog.id,
-      title: blog.title,
-      category: blog.categories?.name || 'News',
-      date: blog.published_at ? new Date(blog.published_at).toLocaleDateString('en-US', { 
+    if (category) {
+      query = query.eq("category_id", category);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+
+    // Transform to stories format for the NewsHub component
+    const stories = (data || []).map((news: any) => ({
+      id: news.id,
+      title: news.title,
+      category: news.category?.name || 'News',
+      date: news.published_at ? new Date(news.published_at).toLocaleDateString('en-US', { 
         year: 'numeric', 
         month: 'long', 
         day: 'numeric' 
-      }) : new Date(blog.created_at).toLocaleDateString('en-US', { 
+      }) : new Date(news.created_at).toLocaleDateString('en-US', { 
         year: 'numeric', 
         month: 'long', 
         day: 'numeric' 
       }),
-      excerpt: blog.excerpt || '',
+      excerpt: news.excerpt || '',
       author: 'GR8 Team',
-      image_url: blog.cover_image,
-      is_featured: blog.is_featured || false,
+      image_url: news.cover_image,
+      is_featured: news.is_featured || false,
+      source: news.source,
+      source_url: news.source_url,
     }));
 
-    // For now, return empty arrays for videos and updates
-    // These would need separate tables or can be added later
-    const videos: any[] = [];
-    const updates: any[] = [];
-
-    return NextResponse.json(
-      {
-        stories,
-        videos,
-        updates
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({ 
+      data: stories,
+      stories,
+      videos: [],
+      updates: [],
+      success: true 
+    });
   } catch (error) {
-    console.error('Unexpected error:', error);
+    console.error("Error fetching news:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Failed to fetch news" },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * POST /api/news
+ * Create new news article (requires authentication)
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const supabase = await createServerClient();
+    
+    // Check authentication
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const {
+      title,
+      slug,
+      excerpt,
+      content,
+      cover_image,
+      category_id,
+      status = "draft",
+      is_featured = false,
+      reading_time_minutes,
+      source,
+      source_url,
+      seo_title,
+      seo_description,
+    } = body;
+
+    // Validate required fields
+    if (!title || !slug) {
+      return NextResponse.json(
+        { error: "Title and slug are required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if slug already exists
+    const { data: existing } = await supabase
+      .from("news")
+      .select("id")
+      .eq("slug", slug)
+      .single();
+
+    if (existing) {
+      return NextResponse.json(
+        { error: "A news article with this slug already exists" },
+        { status: 400 }
+      );
+    }
+
+    const { data, error } = await supabase
+      .from("news")
+      .insert({
+        title,
+        slug,
+        excerpt,
+        content: JSON.stringify({ html: content, plain: content?.replace(/<[^>]*>/g, "") || "" }),
+        cover_image,
+        category_id,
+        author_id: user.id,
+        status,
+        is_featured,
+        reading_time_minutes,
+        published_at: status === "published" ? new Date().toISOString() : null,
+        source,
+        source_url,
+        seo_title,
+        seo_description,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({ data, success: true }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating news:", error);
+    return NextResponse.json(
+      { error: "Failed to create news" },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * PUT /api/news
+ * Update existing news article (requires authentication)
+ */
+export async function PUT(request: NextRequest) {
+  try {
+    const supabase = await createServerClient();
+    
+    // Check authentication
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const {
+      id,
+      title,
+      slug,
+      excerpt,
+      content,
+      cover_image,
+      category_id,
+      status,
+      is_featured,
+      reading_time_minutes,
+      source,
+      source_url,
+      seo_title,
+      seo_description,
+    } = body;
+
+    // Validate required fields
+    if (!id || !title || !slug) {
+      return NextResponse.json(
+        { error: "ID, title, and slug are required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if slug already exists for another news article
+    const { data: existing } = await supabase
+      .from("news")
+      .select("id")
+      .eq("slug", slug)
+      .neq("id", id)
+      .single();
+
+    if (existing) {
+      return NextResponse.json(
+        { error: "A news article with this slug already exists" },
+        { status: 400 }
+      );
+    }
+
+    const updateData: any = {
+      title,
+      slug,
+      excerpt,
+      content: JSON.stringify({ html: content, plain: content?.replace(/<[^>]*>/g, "") || "" }),
+      cover_image,
+      category_id,
+      is_featured,
+      reading_time_minutes,
+      source,
+      source_url,
+      seo_title,
+      seo_description,
+    };
+
+    if (status) {
+      updateData.status = status;
+      if (status === "published") {
+        updateData.published_at = new Date().toISOString();
+      }
+    }
+
+    const { data, error } = await supabase
+      .from("news")
+      .update(updateData)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({ data, success: true });
+  } catch (error) {
+    console.error("Error updating news:", error);
+    return NextResponse.json(
+      { error: "Failed to update news" },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * DELETE /api/news
+ * Delete news article (requires authentication)
+ */
+export async function DELETE(request: NextRequest) {
+  try {
+    const supabase = await createServerClient();
+    
+    // Check authentication
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "News ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabase
+      .from("news")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting news:", error);
+    return NextResponse.json(
+      { error: "Failed to delete news" },
       { status: 500 }
     );
   }

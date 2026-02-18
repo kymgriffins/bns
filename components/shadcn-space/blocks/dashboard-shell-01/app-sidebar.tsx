@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Logo from "@/assets/logo/logo";
 import { NavMain } from "@/components/shadcn-space/blocks/dashboard-shell-01/nav-main";
-import { AlignStartVertical, BarChart3, CircleUserRound, ClipboardList, Languages, LucideIcon, Notebook, NotepadText, Table, Ticket, ChevronLeft, ChevronRight, FileText, Folder } from "lucide-react";
+import { AlignStartVertical, BarChart3, CircleUserRound, ClipboardList, Languages, LucideIcon, Notebook, NotepadText, Table, Ticket, ChevronLeft, ChevronRight, FileText, Folder, Newspaper } from "lucide-react";
 import { SiteHeader } from "@/components/shadcn-space/blocks/dashboard-shell-01/site-header";
 import { type User } from "@/components/shadcn-space/blocks/dashboard-shell-01/user-dropdown";
 import { createClient } from "@/lib/supabase/client";
@@ -34,7 +34,7 @@ export const navData: NavItem[] = [
 
     // Content Section
     { label: "Content", isSection: true },
-    { title: "News", icon: Table, href: "/news" },
+    { title: "News", icon: Newspaper, href: "/admin/news" },
     { title: "Blog", icon: FileText, href: "/admin/blog" },
     { title: "Categories", icon: Folder, href: "/admin/categories" },
     { title: "Learn", icon: Notebook, href: "/learn" },
