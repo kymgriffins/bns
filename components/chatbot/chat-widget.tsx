@@ -89,7 +89,7 @@ const initialMessages: Message[] = [
   {
     id: "1",
     role: "assistant",
-    content: "Welcome to **BudgetNdia Support Desk**! 👋\n\nI'm here to help you with any questions or issues you may have. How can I assist you today?",
+    content: "Welcome to **BudgetNdioStory Support Desk**! 👋\n\nI'm here to help you with any questions or issues you may have. How can I assist you today?",
     timestamp: new Date(),
   },
 ]

@@ -8,32 +8,32 @@ interface ChatMessage {
 // Support desk responses by category
 const supportResponses: Record<string, Record<string, string>> = {
   general: {
-    greeting: "Hello! Welcome to BudgetNdia Support Desk. I'm here to help you with any questions about our platform, budget data, or general inquiries. How can I assist you today?",
+    greeting: "Hello! Welcome to BudgetNdioStory Support Desk. I'm here to help you with any questions about our platform, budget data, or general inquiries. How can I assist you today?",
     help: "I can help you with:\n\n📊 **Budget Information** - Understanding Kenya's national budget\n🔍 **Data Access** - Finding specific budget data\n📑 **Reports** - Downloading and interpreting reports\n📍 **County Data** - Exploring county-level information\n❓ **General Questions** - Any other questions\n\nWhat would you like to know more about?",
     budget_overview: "Kenya's national budget is prepared annually by the National Treasury and presented to Parliament. The current budget covers:\n\n• **Recurrent Expenditure** - Salaries, operations\n• **Development Expenditure** - Infrastructure projects\n• **County Allocation** - Funds to 47 counties\n\nWould you like more details on any specific area?",
     reports: "We offer various reports:\n\n• Annual budget statements\n• County budget analyses\n• Sector performance reports\n• Monthly expenditure trackers\n\nCheck the Reports section for downloads!",
-    default: "That's a great question! I'm here to help you with BudgetNdia. Try asking about:\n\n• Budget overview and data\n• How to access reports\n• County information\n• Platform features\n\nWhat would you like to explore?",
+    default: "That's a great question! I'm here to help you with BudgetNdioStory. Try asking about:\n\n• Budget overview and data\n• How to access reports\n• County information\n• Platform features\n\nWhat would you like to explore?",
   },
   technical: {
-    greeting: "Hello! I'm here to help with any technical issues you might be experiencing with BudgetNdia. Please describe the problem you're facing.",
+    greeting: "Hello! I'm here to help with any technical issues you might be experiencing with BudgetNdioStory. Please describe the problem you're facing.",
     help: "I can help with:\n\n🐛 **Bug Reports** - Report errors or glitches\n📱 **Mobile Issues** - Problems accessing on mobile\n🔐 **Login Issues** - Account access problems\n⚡ **Performance** - Slow loading or errors\n📊 **Data Issues** - Missing or incorrect data\n\nPlease describe your issue in detail.",
     login: "Having trouble logging in? Here are some solutions:\n\n1. **Reset Password** - Use the forgot password link\n2. **Clear Cache** - Clear browser cookies and cache\n3. **Check Email** - Make sure you're using the correct email\n4. **Browser** - Try a different browser\n\nIf the issue persists, please submit a support ticket.",
     performance: "Experiencing slow performance? Try these steps:\n\n1. **Refresh the page** - Clear any stuck processes\n2. **Clear cache** - Remove stored data\n3. **Check internet** - Ensure stable connection\n4. **Disable extensions** - Some browser extensions can interfere\n\nIf problems continue, please submit a technical support ticket.",
     default: "I'm sorry to hear you're experiencing technical issues. To help you better, please include:\n\n• What browser/device you're using\n• What steps led to the issue\n• Any error messages you see\n\nYou can also submit a support ticket for more detailed assistance.",
   },
   billing: {
-    greeting: "Hello! Welcome to BudgetNdia Billing Support. I'm here to help with payment-related questions and issues.",
+    greeting: "Hello! Welcome to BudgetNdioStory Billing Support. I'm here to help with payment-related questions and issues.",
     help: "I can assist with:\n\n💳 **Payment Methods** - Available payment options\n💰 **Pricing** - Subscription plans and fees\n🧾 **Invoices** - Billing statements and receipts\n🔄 **Refunds** - Refund requests and policies\n📊 **Usage** - Understanding your billing\n\nHow can I help you today?",
     payment: "We accept the following payment methods:\n\n• **M-Pesa** - Mobile money (Kenya)\n• **Credit/Debit Cards** - Visa, Mastercard\n• **Bank Transfer** - Direct bank payments\n• **PayPal** - International payments\n\nFor any payment issues, please contact our billing team.",
     refund: "Our refund policy:\n\n• Refund requests are processed within 5-7 business days\n• Original payment method will be used for refund\n• Partial refunds may apply for partial subscriptions\n\nTo request a refund, please submit a billing support ticket with your transaction details.",
-    pricing: "BudgetNdia offers flexible pricing plans:\n\n• **Free Tier** - Basic budget data access\n• **Pro Tier** - Advanced analytics & reports\n• **Enterprise** - Custom solutions for organizations\n\nVisit our pricing page for more details or contact sales.",
-    default: "For billing inquiries, please provide more details about your question. You can also:\n\n• Submit a billing support ticket\n• Email billing@budgetndia.ke\n• Call our billing hotline\n\nWhat would you like to know more about?",
+    pricing: "BudgetNdioStory offers flexible pricing plans:\n\n• **Free Tier** - Basic budget data access\n• **Pro Tier** - Advanced analytics & reports\n• **Enterprise** - Custom solutions for organizations\n\nVisit our pricing page for more details or contact sales.",
+    default: "For billing inquiries, please provide more details about your question. You can also:\n\n• Submit a billing support ticket\n• Email billing@BudgetNdioStory.ke\n• Call our billing hotline\n\nWhat would you like to know more about?",
   },
   feedback: {
-    greeting: "Thank you for reaching out to BudgetNdia Feedback! We value your input and are constantly working to improve our platform.",
+    greeting: "Thank you for reaching out to BudgetNdioStory Feedback! We value your input and are constantly working to improve our platform.",
     help: "I'd love to hear your feedback on:\n\n💡 **Suggestions** - Ideas for new features\n⭐ **Reviews** - Rate your experience\n🐛 **Issues** - Report problems you've encountered\n💬 **General Feedback** - Any thoughts or comments\n\nPlease share what's on your mind!",
-    suggestion: "That's a great suggestion! We appreciate you taking the time to share ideas. Your suggestion will be reviewed by our product team.\n\nTo ensure your suggestion is properly recorded, please submit it through the Feedback form or email us directly at feedback@budgetndia.ke",
-    default: "Thank you for your feedback! We're always looking to improve BudgetNdia. Please share more details about:\n\n• What you liked or didn't like\n• Any specific features\n• Suggestions for improvement\n\nYour input helps us serve you better!",
+    suggestion: "That's a great suggestion! We appreciate you taking the time to share ideas. Your suggestion will be reviewed by our product team.\n\nTo ensure your suggestion is properly recorded, please submit it through the Feedback form or email us directly at feedback@BudgetNdioStory.ke",
+    default: "Thank you for your feedback! We're always looking to improve BudgetNdioStory. Please share more details about:\n\n• What you liked or didn't like\n• Any specific features\n• Suggestions for improvement\n\nYour input helps us serve you better!",
   },
 }
 
@@ -109,14 +109,14 @@ export async function POST(request: NextRequest) {
     if (openaiApiKey) {
       try {
         // Determine system prompt based on category
-        let systemPrompt = `You are BudgetNdia Support Desk, a helpful assistant for Kenya's budget transparency platform. You help users with general inquiries, technical support, billing questions, and feedback. Be friendly, concise, and informative. Provide accurate information about Kenya's budget data, platform features, and help users resolve their issues.`
+        let systemPrompt = `You are BudgetNdioStory Support Desk, a helpful assistant for Kenya's budget transparency platform. You help users with general inquiries, technical support, billing questions, and feedback. Be friendly, concise, and informative. Provide accurate information about Kenya's budget data, platform features, and help users resolve their issues.`
         
         if (category === "technical") {
-          systemPrompt = `You are BudgetNdia Technical Support, assisting users with technical issues. Help troubleshoot problems, guide users through solutions, and recommend next steps for unresolved issues. Be patient and clear in your instructions.`
+          systemPrompt = `You are BudgetNdioStory Technical Support, assisting users with technical issues. Help troubleshoot problems, guide users through solutions, and recommend next steps for unresolved issues. Be patient and clear in your instructions.`
         } else if (category === "billing") {
-          systemPrompt = `You are BudgetNdia Billing Support, assisting with payment, pricing, and invoicing questions. Provide accurate information about payment methods, pricing plans, and refund policies. Be professional and helpful.`
+          systemPrompt = `You are BudgetNdioStory Billing Support, assisting with payment, pricing, and invoicing questions. Provide accurate information about payment methods, pricing plans, and refund policies. Be professional and helpful.`
         } else if (category === "feedback") {
-          systemPrompt = `You are BudgetNdia Feedback Team, warmly receiving user feedback, suggestions, and reviews. Thank users for their input and encourage them to share more.`
+          systemPrompt = `You are BudgetNdioStory Feedback Team, warmly receiving user feedback, suggestions, and reviews. Thank users for their input and encourage them to share more.`
         }
 
         const openaiResponse = await fetch(

@@ -166,21 +166,8 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="flex gap-4 items-center">
           <ThemeSwitcher />
-          <Link href="/about" className="hidden lg:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            About
-          </Link>
-          <Link href="/news" className="hidden lg:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            News
-          </Link>
-          <Link href="/learn" className="hidden lg:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Learn
-          </Link>
-          <Link href="/media-hub" className="hidden lg:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Media Hub
-          </Link>
-          <Link href="/insights" className="hidden lg:flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Insights
-          </Link>
+          
+         
           <div className="hidden lg:flex items-center gap-2">
             <a
               href="https://www.facebook.com/profile.php?id=61586898487932"
