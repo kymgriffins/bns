@@ -188,32 +188,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* What You Can Do Today Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">What you can do today</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="group p-8 bg-background rounded-2xl border border-border hover:border-primary/50 transition-all hover:shadow-xl"
-              >
-                
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground mb-6">{feature.description}</p>
-                <Button asChild variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                  <Link href={feature.href}>
-                    {feature.cta}
-                  </Link>
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
       {/* Newsletter Signup Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 dark:from-primary/5 dark:via-primary/2 dark:to-primary/5">
