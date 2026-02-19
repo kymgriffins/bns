@@ -301,7 +301,9 @@ export function NewsHub({ initialData }: NewsHubProps) {
                           {featuredStory.category}
                         </span>
                         <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
-                          {featuredStory.title}
+                          <Link href={`/news/${featuredStory.id}`} className="hover:text-primary transition-colors">
+                            {featuredStory.title}
+                          </Link>
                         </h2>
                         <p className="text-muted-foreground mb-6 line-clamp-3">
                           {featuredStory.excerpt}
@@ -314,8 +316,10 @@ export function NewsHub({ initialData }: NewsHubProps) {
                           <span>•</span>
                           <span>{featuredStory.author}</span>
                         </div>
-                        <Button className="rounded-full">
-                          Read Full Story <ArrowRight className="ml-2 h-4 w-4" />
+                        <Button asChild className="rounded-full">
+                          <Link href={`/news/${featuredStory.id}`}>
+                            Read Full Story <ArrowRight className="ml-2 h-4 w-4" />
+                          </Link>
                         </Button>
                       </div>
                       <div className="hidden md:flex items-center justify-center">
@@ -348,13 +352,17 @@ export function NewsHub({ initialData }: NewsHubProps) {
                         {story.date} • {story.author}
                       </p>
                       <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                        {story.title}
+                        <Link href={`/news/${story.id}`} className="focus:outline-none">
+                          {story.title}
+                        </Link>
                       </h3>
                       <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                         {story.excerpt}
                       </p>
-                      <Button variant="link" className="p-0 h-auto text-sm">
-                        Read More <ArrowRight className="h-4 w-4 ml-1" />
+                      <Button variant="link" asChild className="p-0 h-auto text-sm">
+                        <Link href={`/news/${story.id}`}>
+                          Read More <ArrowRight className="h-4 w-4 ml-1" />
+                        </Link>
                       </Button>
                     </article>
                   ))}

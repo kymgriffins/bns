@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 /**
  * GET /api/news
  * Fetch all news data (public - no authentication required)
- * Returns published news as stories
+ * Returns only published news (no blogs)
  */
 export async function GET(request: NextRequest) {
   try {
@@ -13,8 +13,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const category = searchParams.get("category");
-    const limit = searchParams.get("limit") || "10";
-    const offset = searchParams.get("offset") || "0";
+    const limit = parseInt(searchParams.get("limit") || "50");
+    const offset = parseInt(searchParams.get("offset") || "0");
 
     let query = supabase
       .from("news")
@@ -22,13 +22,12 @@ export async function GET(request: NextRequest) {
         *,
         category:categories(id, name, slug, color)
       `)
-      .order("created_at", { ascending: false })
-      .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
+      .order("published_at", { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (status) {
       query = query.eq("status", status);
     } else {
-      // Default to published for public API
       query = query.eq("status", "published");
     }
 
@@ -40,7 +39,7 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error;
 
-    // Transform to stories format for the NewsHub component
+    // Transform to stories format
     const stories = (data || []).map((news: any) => ({
       id: news.id,
       title: news.title,
