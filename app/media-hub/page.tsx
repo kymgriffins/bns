@@ -429,7 +429,7 @@ function EngagementButtons({ platform }: { platform: typeof socialPlatforms[0] }
         asChild
         className={cn(
           'gap-2 text-white',
-          platform.id === 'tiktok' && 'bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:opacity-90',
+          platform.id === 'tiktok' && 'bg-black hover:bg-gray-800',
           platform.id === 'twitter' && 'bg-black hover:bg-black/80',
           platform.id === 'youtube' && 'bg-red-600 hover:bg-red-700'
         )}
@@ -477,7 +477,7 @@ export default function MediaHubPage() {
       
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-cyan-500/10" />
+        <div className="absolute inset-0 bg-gray-100" />
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -498,7 +498,7 @@ export default function MediaHubPage() {
                   rel="noopener noreferrer"
                   className={cn(
                     'inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium text-white transition-transform hover:scale-105',
-                    platform.id === 'tiktok' && 'bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500',
+                    platform.id === 'tiktok' && 'bg-black',
                     platform.id === 'twitter' && 'bg-black',
                     platform.id === 'youtube' && 'bg-red-600'
                   )}
@@ -558,7 +558,7 @@ export default function MediaHubPage() {
 
       {/* CTA Section */}
       <section className="container py-12">
-        <div className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 rounded-2xl p-8 md:p-12 text-center">
+        <div className="bg-gray-100 rounded-2xl p-8 md:p-12 text-center">
           <h2 className="text-2xl font-bold mb-4">Want to learn more?</h2>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
             Join our training programs and get hands-on experience with Kenya's budget process. 
