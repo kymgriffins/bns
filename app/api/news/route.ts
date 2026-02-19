@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 /**
  * GET /api/news
  * Fetch all news data (public - no authentication required)
- * Returns only published news (no blogs)
+ * Returns only published news AND blogs
  */
 export async function GET(request: NextRequest) {
   try {
@@ -16,7 +16,8 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "50");
     const offset = parseInt(searchParams.get("offset") || "0");
 
-    let query = supabase
+    // Fetch published news
+    let newsQuery = supabase
       .from("news")
       .select(`
         *,
@@ -26,21 +27,45 @@ export async function GET(request: NextRequest) {
       .range(offset, offset + limit - 1);
 
     if (status) {
-      query = query.eq("status", status);
+      newsQuery = newsQuery.eq("status", status);
     } else {
-      query = query.eq("status", "published");
+      newsQuery = newsQuery.eq("status", "published");
     }
 
     if (category) {
-      query = query.eq("category_id", category);
+      newsQuery = newsQuery.eq("category_id", category);
     }
 
-    const { data, error } = await query;
+    const { data: newsData, error: newsError } = await newsQuery;
 
-    if (error) throw error;
+    if (newsError) throw newsError;
 
-    // Transform to stories format
-    const stories = (data || []).map((news: any) => ({
+    // Fetch published blogs
+    let blogsQuery = supabase
+      .from("blogs")
+      .select(`
+        *,
+        category:categories(id, name, slug, color)
+      `)
+      .order("published_at", { ascending: false })
+      .range(offset, offset + limit - 1);
+
+    if (status) {
+      blogsQuery = blogsQuery.eq("status", status);
+    } else {
+      blogsQuery = blogsQuery.eq("status", "published");
+    }
+
+    if (category) {
+      blogsQuery = blogsQuery.eq("category_id", category);
+    }
+
+    const { data: blogsData, error: blogsError } = await blogsQuery;
+
+    if (blogsError) throw blogsError;
+
+    // Transform news to stories format
+    const newsStories = (newsData || []).map((news: any) => ({
       id: news.id,
       title: news.title,
       category: news.category?.name || 'News',
@@ -59,11 +84,40 @@ export async function GET(request: NextRequest) {
       is_featured: news.is_featured || false,
       source: news.source,
       source_url: news.source_url,
+      source_type: 'news',
     }));
 
+    // Transform blogs to stories format
+    const blogStories = (blogsData || []).map((blog: any) => ({
+      id: blog.id,
+      title: blog.title,
+      category: blog.category?.name || 'Blog',
+      date: blog.published_at ? new Date(blog.published_at).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      }) : new Date(blog.created_at).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      }),
+      excerpt: blog.excerpt || '',
+      author: 'GR8 Team',
+      image_url: blog.cover_image,
+      is_featured: blog.is_featured || false,
+      source: blog.source,
+      source_url: blog.source_url,
+      source_type: 'blog',
+    }));
+
+    // Combine and sort by date (most recent first)
+    const allStories = [...newsStories, ...blogStories].sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+
     return NextResponse.json({ 
-      data: stories,
-      stories,
+      data: allStories,
+      stories: allStories,
       videos: [],
       updates: [],
       success: true 

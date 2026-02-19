@@ -24,13 +24,26 @@ async function getNewsData() {
     .order('published_at', { ascending: false })
     .limit(50);
 
+  // Fetch published blogs as well
+  const { data: blogs, error: blogsError } = await supabase
+    .from('blogs')
+    .select(`
+      *,
+      category:categories(id, name, slug, color)
+    `)
+    .eq('status', 'published')
+    .order('published_at', { ascending: false })
+    .limit(50);
+
   if (newsError) {
     console.error('Error fetching news:', newsError);
-    return { stories: [], videos: [], updates: [] };
+  }
+  if (blogsError) {
+    console.error('Error fetching blogs:', blogsError);
   }
 
   // Map news to stories format
-  const stories = (news || []).map((item: any) => ({
+  const newsStories = (news || []).map((item: any) => ({
     id: item.id,
     title: item.title,
     category: item.category?.name || 'News',
@@ -47,10 +60,37 @@ async function getNewsData() {
     author: 'GR8 Team',
     image_url: item.cover_image,
     is_featured: item.is_featured || false,
+    source_type: 'news',
   }));
 
+  // Map blogs to stories format
+  const blogStories = (blogs || []).map((item: any) => ({
+    id: item.id,
+    title: item.title,
+    category: item.category?.name || 'Blog',
+    date: item.published_at ? new Date(item.published_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }) : new Date(item.created_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }),
+    excerpt: item.excerpt || '',
+    author: 'GR8 Team',
+    image_url: item.cover_image,
+    is_featured: item.is_featured || false,
+    source_type: 'blog',
+  }));
+
+  // Combine news and blogs, then sort by date (most recent first)
+  const allStories = [...newsStories, ...blogStories].sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
   return {
-    stories,
+    stories: allStories,
     videos: [],
     updates: []
   };

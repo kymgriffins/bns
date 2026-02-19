@@ -28,6 +28,7 @@ interface Story {
   author: string;
   image_url?: string;
   is_featured?: boolean;
+  source_type?: string;
 }
 
 interface Video {
