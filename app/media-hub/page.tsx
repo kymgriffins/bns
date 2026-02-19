@@ -13,7 +13,7 @@ const socialPlatforms = [
     id: 'tiktok',
     name: 'TikTok',
     username: 'budget.ndio.story',
-    color: 'from-pink-500 via-purple-500 to-cyan-500',
+    color: 'bg-black',
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
         <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
@@ -160,7 +160,7 @@ function EmailPopup() {
           <X className="w-5 h-5" />
         </button>
         
-        <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 p-6 text-white">
+        <div className="bg-black p-6 text-white">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/20 rounded-lg">
               <Mail className="w-6 h-6" />
@@ -196,7 +196,7 @@ function EmailPopup() {
               />
               <Button 
                 type="submit" 
-                className="w-full h-12 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:opacity-90"
+                className="w-full h-12 bg-black hover:bg-gray-800"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -229,7 +229,7 @@ function TikTokFeed({ username, count = 6 }: { username: string; count?: number 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
           <span className="text-2xl font-bold text-white">B</span>
         </div>
         <div>

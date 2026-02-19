@@ -12,36 +12,36 @@ export const metadata: Metadata = {
 // Server-side data fetching
 async function getNewsData() {
   const supabase = await createClient();
-  
-  // Fetch published blogs (news are the blogs)
-  const { data: blogs, error: blogsError } = await supabase
-    .from('blogs')
+
+  // Fetch published news
+  const { data: news, error: newsError } = await supabase
+    .from('news')
     .select(`
       *,
-      category:categories(name)
+      category:categories(id, name, slug, color)
     `)
     .eq('status', 'published')
     .order('published_at', { ascending: false })
     .limit(50);
 
-  if (blogsError) {
-    console.error('Error fetching blogs:', blogsError);
+  if (newsError) {
+    console.error('Error fetching news:', newsError);
     return { stories: [], videos: [], updates: [] };
   }
 
-  // Map blogs to stories format
-  const stories = (blogs || []).map((item: any) => ({
+  // Map news to stories format
+  const stories = (news || []).map((item: any) => ({
     id: item.id,
     title: item.title,
-    category: item.category?.name || 'Blog',
-    date: item.published_at ? new Date(item.published_at).toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    }) : new Date(item.created_at).toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    category: item.category?.name || 'News',
+    date: item.published_at ? new Date(item.published_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }) : new Date(item.created_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     }),
     excerpt: item.excerpt || '',
     author: 'GR8 Team',
