@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, GraduationCap, Calendar, Users, FileText, BarChart3, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/page-hero";
+import { BentoCard, BentoSection } from "@/components/ui/bento-frame";
+import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader, BentoCTASection } from "@/components/ui/bento-animations";
 
 export const metadata: Metadata = {
   title: "Budget 101 - Learn - Budget Ndio Story",

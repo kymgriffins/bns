@@ -3,6 +3,8 @@ import { PageHero } from "@/components/page-hero";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { CheckCircle, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 import Link from "next/link";
+import { BorderFrame, SectionFrame, AnimatedCard } from "@/components/ui/border-frame";
+import { ScrollAnimation, StaggerContainer, StaggerItem, InteractiveCard } from "@/components/ui/enhanced-animations";
 
 export const metadata: Metadata = {
   title: "Subscribe - Budget Ndio Story",

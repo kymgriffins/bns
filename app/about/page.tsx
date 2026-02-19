@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight, Target, Heart, Users, Shield, CheckCircle, GraduationCap, Building2, Megaphone, Video, Search, Mail, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/page-hero";
+import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
+import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
 export const metadata: Metadata = {
   title: "About Us - Budget Ndio Story",
@@ -50,147 +52,147 @@ export default function AboutPage() {
         secondaryCta={{ text: "Take Action", href: "/take-action" }}
       />
 
-      {/* Mission Statement */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-6">Our Mission</h2>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            We make Kenya's budget information clear, usable, and youth-friendly—so young people can participate, shape priorities, and track results.
-          </p>
-        </div>
-      </section>
+      {/* Mission Statement - Bento */}
+      <BentoSection>
+        <BentoScrollAnimation animation="scaleIn">
+          <BentoCard padding="xl" accentColor="green" className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              We make Kenya's budget information clear, usable, and youth-friendly—so young people can participate, shape priorities, and track results.
+            </p>
+          </BentoCard>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Consortium Partners */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8 text-center">Consortium Partners</h2>
-          <p className="text-center text-muted-foreground mb-8">
-            Budget Ndio Story is led by three organizations with complementary expertise
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {consortiumPartners.map((partner) => (
-              <div
-                key={partner.name}
-                className="p-6 bg-background rounded-xl border border-border text-center"
-              >
-                <Building2 className="h-10 w-10 text-primary mx-auto mb-4" />
+      {/* Consortium Partners - Bento */}
+      <BentoSection className="bg-secondary/10">
+        <BentoSectionHeader
+          title="Consortium Partners"
+          subtitle="Budget Ndio Story is led by three organizations with complementary expertise"
+        />
+        <BentoStaggerGrid stagger={0.1} className="grid-cols-1 md:grid-cols-3 gap-6">
+          {consortiumPartners.map((partner, index) => (
+            <BentoGridItem key={partner.name} animation="fadeInUp" delay={index * 0.1}>
+              <BentoCard padding="lg" accentColor="teal" hover className="text-center">
+                <div className="h-14 w-14 rounded-2xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center mx-auto mb-4">
+                  <Building2 className="h-7 w-7 text-teal-600 dark:text-teal-400" />
+                </div>
                 <h3 className="text-lg font-bold mb-1">{partner.name}</h3>
                 <p className="text-sm text-muted-foreground">{partner.role}</p>
-              </div>
-            ))}
-          </div>
-
+              </BentoCard>
+            </BentoGridItem>
+          ))}
+        </BentoStaggerGrid>
+        <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
           <p className="text-center mt-8 text-muted-foreground">
             Working with creators, influencers, civil society, universities, and partners across Kenya to grow budget literacy and strengthen accountability.
           </p>
-        </div>
-      </section>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Values */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8 text-center">Our Values</h2>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {values.map((value) => (
-              <div
-                key={value.title}
-                className="p-4 bg-background rounded-xl border border-border text-center"
-              >
-                <value.icon className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h3 className="font-bold mb-2">{value.title}</h3>
-                <p className="text-sm text-muted-foreground">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Approach */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8 text-center">Our Approach</h2>
-          <p className="text-center text-muted-foreground mb-12">
-            How we turn budget data into civic action
-          </p>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {approachSteps.map((step) => (
-              <div key={step.number} className="relative">
-                <div className="p-6 bg-background rounded-xl border border-border h-full">
-                  <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold mb-4">
-                    {step.number}
-                  </div>
-                  <h3 className="text-lg font-bold mb-2">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground">{step.description}</p>
+      {/* Values - Bento */}
+      <BentoSection>
+        <BentoSectionHeader title="Our Values" />
+        <BentoStaggerGrid stagger={0.08} className="grid-cols-2 md:grid-cols-5 gap-4">
+          {values.map((value, index) => (
+            <BentoGridItem key={value.title} animation="scaleIn" delay={index * 0.08}>
+              <BentoCard padding="md" accentColor="green" hover className="text-center">
+                <div className="h-10 w-10 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-3">
+                  <value.icon className="h-5 w-5 text-green-600 dark:text-green-400" />
                 </div>
+                <h3 className="font-bold mb-2 text-sm">{value.title}</h3>
+                <p className="text-xs text-muted-foreground">{value.description}</p>
+              </BentoCard>
+            </BentoGridItem>
+          ))}
+        </BentoStaggerGrid>
+      </BentoSection>
+
+      {/* Approach - Bento */}
+      <BentoSection className="bg-secondary/10">
+        <BentoSectionHeader
+          title="Our Approach"
+          subtitle="How we turn budget data into civic action"
+        />
+        <BentoStaggerGrid stagger={0.1} className="grid-cols-2 md:grid-cols-4 gap-6">
+          {approachSteps.map((step, index) => (
+            <BentoGridItem key={step.number} animation="fadeInUp" delay={index * 0.1}>
+              <BentoCard padding="lg" accentColor="blue" hover className="relative">
+                <div className="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center font-bold mb-4 text-blue-600 dark:text-blue-400">
+                  {step.number}
+                </div>
+                <h3 className="text-lg font-bold mb-2">{step.title}</h3>
+                <p className="text-sm text-muted-foreground">{step.description}</p>
                 {step.number < 4 && (
-                  <ArrowRight className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
+                  <ArrowRight className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              </BentoCard>
+            </BentoGridItem>
+          ))}
+        </BentoStaggerGrid>
+      </BentoSection>
 
-      {/* Partner Section */}
-      <section id="partner" className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4 text-center">Partner With Us</h2>
-          <p className="text-center text-muted-foreground mb-12">
-            We work with universities, youth networks, civil society, media, and institutions to expand budget literacy and civic action.
-          </p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {partnerOptions.map((option) => (
-              <div
-                key={option.title}
-                className="p-6 bg-background rounded-xl border border-border hover:border-primary/50 transition-all"
-              >
-                <option.icon className="h-8 w-8 text-primary mb-4" />
+      {/* Partner Section - Bento */}
+      <BentoSection id="partner">
+        <BentoSectionHeader
+          title="Partner With Us"
+          subtitle="We work with universities, youth networks, civil society, media, and institutions to expand budget literacy and civic action."
+        />
+        <BentoStaggerGrid stagger={0.1} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {partnerOptions.map((option, index) => (
+            <BentoGridItem key={option.title} animation="fadeInUp" delay={index * 0.1}>
+              <BentoCard padding="lg" accentColor="orange" hover>
+                <div className="h-10 w-10 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-4">
+                  <option.icon className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                </div>
                 <h3 className="text-lg font-bold mb-2">{option.title}</h3>
                 <p className="text-sm text-muted-foreground">{option.description}</p>
-              </div>
-            ))}
-          </div>
+              </BentoCard>
+            </BentoGridItem>
+          ))}
+        </BentoStaggerGrid>
 
+        <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
           <div className="flex flex-wrap justify-center gap-4 mt-10">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="rounded-full">
               <Link href="/take-action">
                 Become a Partner <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="outline" size="lg" className="rounded-full">
               <Link href="/take-action">
                 <Mail className="mr-2 h-4 w-4" />
                 Request a Training
               </Link>
             </Button>
           </div>
-        </div>
-      </section>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Contact Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-primary/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">Get In Touch</h2>
-          <p className="text-muted-foreground mb-8">
-            Have questions about budget literacy or want to collaborate? We'd love to hear from you.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild>
-              <Link href="mailto:info@budgetndiostory.org">
-                <Mail className="mr-2 h-4 w-4" />
-                Contact Us
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/take-action">Join the Community</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Contact Section - Bento */}
+      <BentoSection className="bg-secondary/10">
+        <BentoScrollAnimation animation="scaleIn">
+          <BentoCTASection>
+            <div className="text-center">
+              <h2 className="text-2xl font-bold mb-4">Get In Touch</h2>
+              <p className="text-muted-foreground mb-8">
+                Have questions about budget literacy or want to collaborate? We'd love to hear from you.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button asChild className="rounded-full">
+                  <Link href="mailto:info@budgetndiostory.org">
+                    <Mail className="mr-2 h-4 w-4" />
+                    Contact Us
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="rounded-full">
+                  <Link href="/take-action">Join the Community</Link>
+                </Button>
+              </div>
+            </div>
+          </BentoCTASection>
+        </BentoScrollAnimation>
+      </BentoSection>
     </main>
   );
 }

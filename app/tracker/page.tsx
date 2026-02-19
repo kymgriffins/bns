@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight, MapPin, Wallet, CheckCircle, Clock, AlertCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/page-hero";
+import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
+import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
 export const metadata: Metadata = {
   title: "Budget Tracker - Budget Ndio Story",
@@ -87,92 +89,103 @@ export default function TrackerPage() {
         secondaryCta={{ text: "Submit a Tip", href: "/take-action" }}
       />
 
-      {/* How It Works */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8 text-center">What You Can Track</h2>
-          
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="p-6 bg-background rounded-xl border border-border">
-              <Wallet className="h-8 w-8 text-primary mb-4" />
+      {/* How It Works - Bento */}
+      <BentoSection>
+        <BentoSectionHeader title="What You Can Track" />
+        
+        <BentoStaggerGrid stagger={0.1} className="grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <BentoGridItem animation="fadeInUp">
+            <BentoCard padding="lg" accentColor="blue" hover>
+              <div className="h-10 w-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
+                <Wallet className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
               <h3 className="font-semibold mb-2">Selected Programmes</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Track specific budget lines that matter to your community
               </p>
-            </div>
-            <div className="p-6 bg-background rounded-xl border border-border">
-              <MapPin className="h-8 w-8 text-primary mb-4" />
+            </BentoCard>
+          </BentoGridItem>
+          <BentoGridItem animation="fadeInUp" delay={0.1}>
+            <BentoCard padding="lg" accentColor="orange" hover>
+              <div className="h-10 w-10 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-4">
+                <MapPin className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              </div>
               <h3 className="font-semibold mb-2">Budget Journey</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Follow funds from Allocated → Released → Delivered
               </p>
-            </div>
-            <div className="p-6 bg-background rounded-xl border border-border">
-              <AlertCircle className="h-8 w-8 text-primary mb-4" />
+            </BentoCard>
+          </BentoGridItem>
+          <BentoGridItem animation="fadeInUp" delay={0.2}>
+            <BentoCard padding="lg" accentColor="red" hover>
+              <div className="h-10 w-10 rounded-2xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+              </div>
               <h3 className="font-semibold mb-2">Evidence & Notes</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Community reports and evidence notes from the field
               </p>
-            </div>
-          </div>
+            </BentoCard>
+          </BentoGridItem>
+        </BentoStaggerGrid>
 
-          {/* Progress Stages */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            {stages.map((stage, index) => (
-              <div key={stage.name} className="flex items-center">
-                <div className="flex items-center gap-3">
-                  <div className={`w-4 h-4 rounded-full ${stage.color}`} />
-                  <div className="text-center">
-                    <p className="font-semibold text-sm">{stage.name}</p>
-                    <p className="text-xs text-muted-foreground hidden sm:block">{stage.description}</p>
+        {/* Progress Stages */}
+        <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
+          <BentoCard padding="lg" accentColor="default">
+            <div className="flex items-center justify-center gap-4 flex-wrap">
+              {stages.map((stage, index) => (
+                <div key={stage.name} className="flex items-center">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-4 h-4 rounded-full ${stage.color}`} />
+                    <div className="text-center">
+                      <p className="font-semibold text-sm">{stage.name}</p>
+                      <p className="text-xs text-muted-foreground hidden sm:block">{stage.description}</p>
+                    </div>
                   </div>
+                  {index < stages.length - 1 && (
+                    <div className="w-8 sm:w-16 h-0.5 bg-border mx-2" />
+                  )}
                 </div>
-                {index < stages.length - 1 && (
-                  <div className="w-8 sm:w-16 h-0.5 bg-border mx-2" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              ))}
+            </div>
+          </BentoCard>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Categories */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8 text-center">Track by Category</h2>
+      {/* Categories - Bento */}
+      <BentoSection className="bg-secondary/10">
+        <BentoSectionHeader title="Track by Category" />
+        <BentoScrollAnimation animation="fadeInUp">
           <div className="flex flex-wrap justify-center gap-3">
             {categories.map((category) => (
-              <Button key={category} variant="outline" asChild>
+              <Button key={category} variant="outline" asChild className="rounded-full">
                 <Link href={`/tracker?category=${encodeURIComponent(category)}`}>
                   {category}
                 </Link>
               </Button>
             ))}
           </div>
-        </div>
-      </section>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Tracked Items */}
-      <section id="trackers" className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8">Currently Tracking</h2>
-          
-          <div className="space-y-6">
-            {trackedItems.map((item, index) => (
-              <div
-                key={index}
-                className="p-6 bg-background rounded-xl border border-border hover:border-primary/50 transition-all"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+      {/* Tracked Items - Bento */}
+      <BentoSection id="trackers">
+        <BentoSectionHeader title="Currently Tracking" />
+        
+        <div className="space-y-5">
+          {trackedItems.map((item, index) => (
+            <BentoScrollAnimation key={index} animation="fadeInUp" delay={index * 0.1}>
+              <BentoCard padding="lg" accentColor="green" hover>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-5">
                   <div>
-                    <span className="inline-block px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded mb-2">
+                    <span className="inline-block px-3 py-1 text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full mb-2">
                       {item.category}
                     </span>
                     <h3 className="text-lg font-bold">{item.title}</h3>
                     <p className="text-sm text-muted-foreground">Last updated: {item.lastUpdate}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-primary">{item.progress}%</p>
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{item.progress}%</p>
                     <p className="text-xs text-muted-foreground">Overall Progress</p>
                   </div>
                 </div>
@@ -184,7 +197,7 @@ export default function TrackerPage() {
                       <span className="text-muted-foreground">Allocated</span>
                       <span className="font-medium">{formatCurrency(item.allocated)}</span>
                     </div>
-                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                    <div className="h-2.5 bg-secondary rounded-full overflow-hidden">
                       <div className="h-full bg-blue-500 rounded-full" style={{ width: '100%' }} />
                     </div>
                   </div>
@@ -193,10 +206,10 @@ export default function TrackerPage() {
                       <span className="text-muted-foreground">Released</span>
                       <span className="font-medium">{formatCurrency(item.released)}</span>
                     </div>
-                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-yellow-500 rounded-full" 
-                        style={{ width: `${(item.released / item.allocated) * 100}%` }} 
+                    <div className="h-2.5 bg-secondary rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-yellow-500 rounded-full"
+                        style={{ width: `${(item.released / item.allocated) * 100}%` }}
                       />
                     </div>
                   </div>
@@ -205,52 +218,58 @@ export default function TrackerPage() {
                       <span className="text-muted-foreground">Delivered</span>
                       <span className="font-medium">{formatCurrency(item.delivered)}</span>
                     </div>
-                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-green-500 rounded-full" 
-                        style={{ width: `${(item.delivered / item.allocated) * 100}%` }} 
+                    <div className="h-2.5 bg-secondary rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-green-500 rounded-full"
+                        style={{ width: `${(item.delivered / item.allocated) * 100}%` }}
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-border">
-                  <Button variant="link" className="p-0 h-auto">
+                <div className="mt-4 pt-4 border-t border-border/50">
+                  <Button variant="link" className="p-0 h-auto text-green-600 dark:text-green-400">
                     View Details <ArrowRight className="h-4 w-4 ml-1" />
                   </Button>
                 </div>
-              </div>
-            ))}
-          </div>
+              </BentoCard>
+            </BentoScrollAnimation>
+          ))}
+        </div>
 
+        <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
           <div className="text-center mt-10">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="rounded-full">
               <Link href="/tracker">View All Trackers</Link>
             </Button>
           </div>
-        </div>
-      </section>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Submit a Tip */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-primary/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">Know Something About Budget Delivery?</h2>
-          <p className="text-muted-foreground mb-8">
-            Submit a tip about budget implementation in your area. Your information helps track delivery and hold leaders accountable.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild>
-              <Link href="/take-action">
-                <Send className="mr-2 h-4 w-4" />
-                Submit a Tip
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/take-action">Learn More</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Submit a Tip - Bento */}
+      <BentoSection className="bg-secondary/10">
+        <BentoScrollAnimation animation="scaleIn">
+          <BentoCTASection>
+            <div className="text-center">
+              <h2 className="text-2xl font-bold mb-4">Know Something About Budget Delivery?</h2>
+              <p className="text-muted-foreground mb-8">
+                Submit a tip about budget implementation in your area. Your information helps track delivery and hold leaders accountable.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button asChild className="rounded-full">
+                  <Link href="/take-action">
+                    <Send className="mr-2 h-4 w-4" />
+                    Submit a Tip
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="rounded-full">
+                  <Link href="/take-action">Learn More</Link>
+                </Button>
+              </div>
+            </div>
+          </BentoCTASection>
+        </BentoScrollAnimation>
+      </BentoSection>
     </main>
   );
 }

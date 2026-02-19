@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { 
-  ArrowRight, 
-  BarChart3, 
-  Building2, 
-  Users, 
-  TrendingUp, 
-  TrendingDown, 
+import {
+  ArrowRight,
+  BarChart3,
+  Building2,
+  Users,
+  TrendingUp,
+  TrendingDown,
   AlertCircle,
   Globe,
   MapPin,
@@ -16,9 +16,10 @@ import {
   ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { BentoCard, BentoSection, BentoStat, BentoCTASection } from "@/components/ui/bento-frame";
+import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
 export const metadata: Metadata = {
   title: "Budget Insights - Budget Ndio Story",
@@ -220,228 +221,222 @@ const budgetStats = [
 export default function InsightsPage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section with Gradient Background */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/10" />
-        <div className="absolute inset-0 opacity-30" style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                           radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
-                           radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)`
-        }} />
-        
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4 px-4 py-1 text-sm">
+      {/* Hero Section - Bento Style */}
+      <BentoSection className="bg-secondary/10">
+        <div className="max-w-4xl mx-auto text-center">
+          <BentoScrollAnimation animation="fadeInUp">
+            <Badge variant="secondary" className="mb-4 px-4 py-1 text-sm rounded-full">
               <BarChart3 className="w-4 h-4 mr-2" />
               Budget Analysis
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-              Budget Insights
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              National, county, and sector breakdowns built for clarity and accountability. 
+          </BentoScrollAnimation>
+          <BentoScrollAnimation animation="fadeInUp" delay={0.1}>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Budget Insights</h1>
+          </BentoScrollAnimation>
+          <BentoScrollAnimation animation="fadeInUp" delay={0.2}>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              National, county, and sector breakdowns built for clarity and accountability.
               Understand where money goes and what it means for you.
             </p>
-          </div>
+          </BentoScrollAnimation>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          {/* Quick Stats - Bento Grid */}
+          <BentoStaggerGrid stagger={0.1} className="grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {budgetStats.map((stat, index) => (
-              <div 
-                key={stat.label}
-                className="p-4 bg-background/80 backdrop-blur-sm rounded-xl border border-border/50 text-center"
-              >
-                <div className="text-2xl font-bold text-primary">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-                <div className={`text-xs font-medium mt-1 ${stat.positive ? 'text-green-600' : 'text-orange-600'}`}>
-                  {stat.change}
-                </div>
-              </div>
+              <BentoGridItem key={stat.label} animation="scaleIn" delay={index * 0.1}>
+                <BentoCard padding="md" accentColor={stat.positive ? "green" : "orange"} hover>
+                  <div className="text-2xl font-bold mb-1">{stat.value}</div>
+                  <div className="text-xs text-muted-foreground mb-1">{stat.label}</div>
+                  <div className={`text-xs font-medium ${stat.positive ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400'}`}>
+                    {stat.change}
+                  </div>
+                </BentoCard>
+              </BentoGridItem>
             ))}
-          </div>
+          </BentoStaggerGrid>
 
-          <div className="flex justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="#national">
-                Explore Analysis <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/reports">View Reports</Link>
-            </Button>
-          </div>
+          <BentoScrollAnimation animation="fadeInUp" delay={0.5}>
+            <div className="flex justify-center gap-4">
+              <Button asChild size="lg" className="rounded-full">
+                <Link href="#national">
+                  Explore Analysis <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-full">
+                <Link href="/reports">View Reports</Link>
+              </Button>
+            </div>
+          </BentoScrollAnimation>
         </div>
-      </section>
+      </BentoSection>
 
-      {/* Overview Sections - Interactive Cards */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* National Analysis */}
-            <Card className="group relative overflow-hidden border-2 border-transparent hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <CardHeader className="relative">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-4 shadow-lg">
-                  <BarChart3 className="h-7 w-7 text-white" />
+      {/* Overview Sections - Bento Cards */}
+      <BentoSection>
+        <BentoStaggerGrid stagger={0.1} className="grid-cols-1 md:grid-cols-3 gap-6">
+          {/* National Analysis */}
+          <BentoGridItem animation="fadeInUp">
+            <Link href="#national" className="block h-full">
+              <BentoCard padding="lg" accentColor="blue" hover className="h-full group">
+                <div className="h-14 w-14 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-5">
+                  <BarChart3 className="h-7 w-7 text-blue-600 dark:text-blue-400" />
                 </div>
-                <CardTitle className="text-xl">National Analysis</CardTitle>
-              </CardHeader>
-              <CardContent className="relative">
-                <p className="text-muted-foreground text-sm mb-4">
+                <h3 className="text-xl font-bold mb-3">National Analysis</h3>
+                <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                   The big shifts explained simply, with youth implications. Understand the national budget direction.
                 </p>
-                <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
+                <div className="flex items-center text-primary font-medium gap-1">
                   <span>Explore</span>
-                  <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </div>
-              </CardContent>
-            </Card>
+              </BentoCard>
+            </Link>
+          </BentoGridItem>
 
-            {/* County Analysis */}
-            <Card className="group relative overflow-hidden border-2 border-transparent hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <CardHeader className="relative">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4 shadow-lg">
-                  <Building2 className="h-7 w-7 text-white" />
+          {/* County Analysis */}
+          <BentoGridItem animation="fadeInUp" delay={0.1}>
+            <Link href="#county" className="block h-full">
+              <BentoCard padding="lg" accentColor="green" hover className="h-full group">
+                <div className="h-14 w-14 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-5">
+                  <Building2 className="h-7 w-7 text-green-600 dark:text-green-400" />
                 </div>
-                <CardTitle className="text-xl">County Analysis</CardTitle>
-              </CardHeader>
-              <CardContent className="relative">
-                <p className="text-muted-foreground text-sm mb-4">
+                <h3 className="text-xl font-bold mb-3">County Analysis</h3>
+                <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                   County budgets shape daily life. Understand what's planned in your county.
                 </p>
-                <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
+                <div className="flex items-center text-primary font-medium gap-1">
                   <span>Explore</span>
-                  <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </div>
-              </CardContent>
-            </Card>
+              </BentoCard>
+            </Link>
+          </BentoGridItem>
 
-            {/* Sector Analysis */}
-            <Card className="group relative overflow-hidden border-2 border-transparent hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <CardHeader className="relative">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 shadow-lg">
-                  <Users className="h-7 w-7 text-white" />
+          {/* Sector Analysis */}
+          <BentoGridItem animation="fadeInUp" delay={0.2}>
+            <Link href="#sector" className="block h-full">
+              <BentoCard padding="lg" accentColor="purple" hover className="h-full group">
+                <div className="h-14 w-14 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-5">
+                  <Users className="h-7 w-7 text-purple-600 dark:text-purple-400" />
                 </div>
-                <CardTitle className="text-xl">Sector Analysis</CardTitle>
-              </CardHeader>
-              <CardContent className="relative">
-                <p className="text-muted-foreground text-sm mb-4">
+                <h3 className="text-xl font-bold mb-3">Sector Analysis</h3>
+                <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                   What Kenya is prioritising and what outcomes to demand from each sector.
                 </p>
-                <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
+                <div className="flex items-center text-primary font-medium gap-1">
                   <span>Explore</span>
-                  <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+              </BentoCard>
+            </Link>
+          </BentoGridItem>
+        </BentoStaggerGrid>
+      </BentoSection>
 
-      {/* National Analysis Section */}
-      <section id="national" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-secondary/30 to-transparent">
-        <div className="max-w-6xl mx-auto">
+      {/* National Analysis Section - Bento */}
+      <BentoSection id="national" className="bg-secondary/10">
+        <BentoScrollAnimation animation="fadeInUp">
           <div className="flex items-center gap-3 mb-8">
-            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Globe className="h-5 w-5 text-primary" />
+            <div className="h-10 w-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+              <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <h2 className="text-2xl md:text-3xl font-bold">National Budget Analysis</h2>
               <p className="text-muted-foreground">The big picture explained simply</p>
             </div>
           </div>
+        </BentoScrollAnimation>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {nationalSections.map((section, index) => (
-              <div
-                key={section.title}
-                className="p-6 bg-background rounded-2xl border border-border hover:border-primary/30 transition-all hover:shadow-lg group"
-              >
-                <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${section.color} flex items-center justify-center mb-4`}>
-                  <section.icon className="h-5 w-5 text-white" />
+        <BentoStaggerGrid stagger={0.1} className="grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {nationalSections.map((section, index) => (
+            <BentoGridItem key={section.title} animation="fadeInUp" delay={index * 0.1}>
+              <BentoCard padding="md" accentColor="blue" hover>
+                <div className="h-10 w-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3">
+                  <section.icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">{section.title}</h3>
-                <p className="text-sm text-muted-foreground">{section.description}</p>
-              </div>
-            ))}
-          </div>
+                <h3 className="font-semibold mb-1 text-sm">{section.title}</h3>
+                <p className="text-xs text-muted-foreground">{section.description}</p>
+              </BentoCard>
+            </BentoGridItem>
+          ))}
+        </BentoStaggerGrid>
 
-          {/* Visual Element - Budget Distribution Bar */}
-          <div className="mt-10 p-6 bg-background rounded-2xl border border-border">
-            <h3 className="font-semibold mb-4">Budget Distribution Preview</h3>
-            <div className="space-y-4">
+        {/* Budget Distribution */}
+        <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
+          <BentoCard padding="lg" accentColor="default">
+            <h3 className="font-semibold mb-5">Budget Distribution Preview</h3>
+            <div className="space-y-5">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Recurrent Expenditure</span>
                   <span className="text-muted-foreground">KSh 2.1T</span>
                 </div>
-                <Progress value={52} className="h-3" />
+                <Progress value={52} className="h-3 rounded-full" />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Development Expenditure</span>
                   <span className="text-muted-foreground">KSh 1.4T</span>
                 </div>
-                <Progress value={35} className="h-3" />
+                <Progress value={35} className="h-3 rounded-full" />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>County Allocation</span>
                   <span className="text-muted-foreground">KSh 0.6T</span>
                 </div>
-                <Progress value={15} className="h-3" />
+                <Progress value={15} className="h-3 rounded-full" />
               </div>
             </div>
-          </div>
+          </BentoCard>
+        </BentoScrollAnimation>
 
+        <BentoScrollAnimation animation="fadeInUp" delay={0.4}>
           <div className="flex flex-wrap gap-4 mt-8">
-            <Button asChild>
+            <Button asChild className="rounded-full">
               <Link href="/reports">Read Reports</Link>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="rounded-full">
               <Link href="/news">See Updates</Link>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="rounded-full">
               <Link href="/take-action">Join Training</Link>
             </Button>
           </div>
-        </div>
-      </section>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* County Analysis Section */}
-      <section id="county" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+      {/* County Analysis Section - Bento */}
+      <BentoSection id="county">
+        <BentoScrollAnimation animation="fadeInUp">
           <div className="flex items-center gap-3 mb-8">
-            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <MapPin className="h-5 w-5 text-primary" />
+            <div className="h-10 w-10 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+              <MapPin className="h-5 w-5 text-green-600 dark:text-green-400" />
             </div>
             <div>
               <h2 className="text-2xl md:text-3xl font-bold">County Budget Analysis</h2>
               <p className="text-muted-foreground">What's happening in your county</p>
             </div>
           </div>
+        </BentoScrollAnimation>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            {countySections.map((section) => (
-              <div
-                key={section.title}
-                className="p-5 bg-background rounded-xl border border-border hover:border-primary/30 transition-all"
-              >
-                <h3 className="font-semibold mb-2">{section.title}</h3>
-                <p className="text-sm text-muted-foreground">{section.description}</p>
-              </div>
-            ))}
-          </div>
+        <BentoStaggerGrid stagger={0.1} className="grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {countySections.map((section, index) => (
+            <BentoGridItem key={section.title} animation="fadeInUp" delay={index * 0.1}>
+              <BentoCard padding="md" accentColor="green" hover>
+                <h3 className="font-semibold mb-2 text-sm">{section.title}</h3>
+                <p className="text-xs text-muted-foreground">{section.description}</p>
+              </BentoCard>
+            </BentoGridItem>
+          ))}
+        </BentoStaggerGrid>
 
-          {/* County Selector */}
-          <div className="mt-10 p-8 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl border border-green-500/20">
+        {/* County Selector */}
+        <BentoScrollAnimation animation="scaleIn" delay={0.3}>
+          <BentoCard padding="lg" accentColor="green">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-green-600" />
+                  <MapPin className="h-5 w-5 text-green-600 dark:text-green-400" />
                   Select Your County
                 </h3>
                 <p className="text-muted-foreground max-w-md">
@@ -449,106 +444,104 @@ export default function InsightsPage() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="rounded-full">
                   <Link href="/insights">
                     <Building2 className="mr-2 h-4 w-4" />
                     Choose County
                   </Link>
                 </Button>
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="rounded-full">
                   <Link href="/reports">Download Brief</Link>
                 </Button>
-                <Button asChild>
+                <Button asChild className="rounded-full">
                   <Link href="/take-action">Take Action</Link>
                 </Button>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </BentoCard>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Sector Analysis Section */}
-      <section id="sector" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-secondary/30 to-transparent">
-        <div className="max-w-6xl mx-auto">
+      {/* Sector Analysis Section - Bento */}
+      <BentoSection id="sector" className="bg-secondary/10">
+        <BentoScrollAnimation animation="fadeInUp">
           <div className="flex items-center gap-3 mb-8">
-            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <PieChart className="h-5 w-5 text-primary" />
+            <div className="h-10 w-10 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+              <PieChart className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
               <h2 className="text-2xl md:text-3xl font-bold">Sector Budget Analysis</h2>
               <p className="text-muted-foreground">What Kenya is prioritising</p>
             </div>
           </div>
+        </BentoScrollAnimation>
 
-          {/* Sectors Grid with Icons */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {sectors.map((sector) => (
-              <Link
-                key={sector.name}
-                href={`/insights?sector=${encodeURIComponent(sector.name)}`}
-                className="group flex items-center gap-4 p-4 bg-background rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-md"
-              >
-                <div className={`h-10 w-10 rounded-lg ${sector.color} flex items-center justify-center flex-shrink-0`}>
-                  <sector.icon className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-sm font-medium group-hover:text-primary transition-colors">
-                  {sector.name}
-                </span>
+        {/* Sectors Grid */}
+        <BentoStaggerGrid stagger={0.05} className="grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          {sectors.map((sector, index) => (
+            <BentoGridItem key={sector.name} animation="scaleIn" delay={index * 0.05}>
+              <Link href={`/insights?sector=${encodeURIComponent(sector.name)}`} className="block">
+                <BentoCard padding="md" accentColor="purple" hover>
+                  <div className="flex items-center gap-3">
+                    <div className={`h-9 w-9 rounded-2xl ${sector.color} flex items-center justify-center flex-shrink-0`}>
+                      <sector.icon className="h-4 w-4 text-white" />
+                    </div>
+                    <span className="text-sm font-medium">{sector.name}</span>
+                  </div>
+                </BentoCard>
               </Link>
-            ))}
-          </div>
+            </BentoGridItem>
+          ))}
+        </BentoStaggerGrid>
 
-          {/* Sector Deep Dive Info */}
-          <div className="mt-12">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
+        {/* Sector Deep Dive Info */}
+        <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
+          <BentoCard padding="lg" accentColor="default">
+            <h3 className="font-semibold mb-5 flex items-center gap-2">
               <Lightbulb className="h-5 w-5 text-amber-500" />
               Each Sector Deep Dive Includes:
             </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
               {sectorPageSections.map((section, index) => (
                 <div
                   key={section}
-                  className="p-4 bg-background rounded-xl border border-border hover:border-primary/30 transition-all"
+                  className="p-3 bg-background/60 rounded-2xl"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">
+                  <div className="flex items-center gap-2">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">
                       {index + 1}
                     </span>
-                    <span className="text-sm font-medium">{section}</span>
+                    <span className="text-xs font-medium">{section}</span>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </BentoCard>
+        </BentoScrollAnimation>
+      </BentoSection>
 
-      {/* Youth Budget Perception Survey CTA */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-600 to-indigo-600 p-8 md:p-12 text-white">
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-            
-            <div className="relative text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm mb-6">
-                <Target className="h-8 w-8" />
+      {/* Youth Budget Perception Survey CTA - Bento */}
+      <BentoSection>
+        <BentoScrollAnimation animation="scaleIn">
+          <BentoCTASection>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 mb-6">
+                <Target className="h-7 w-7 text-primary" />
               </div>
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Youth Budget Perception Survey</h2>
-              <p className="text-white/90 mb-8 max-w-xl mx-auto">
+              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
                 Have your say! Share your priorities and perceptions about the national budget.
                 Your input helps us understand what matters most to Kenyan youth.
               </p>
-              <Button asChild size="lg" variant="secondary">
+              <Button asChild size="lg" className="rounded-full">
                 <Link href="/take-action">
                   Take the Survey <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
+          </BentoCTASection>
+        </BentoScrollAnimation>
+      </BentoSection>
     </main>
   );
 }
