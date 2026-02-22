@@ -13,7 +13,7 @@ export interface BentoCardProps {
   className?: string;
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   hover?: boolean;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'default';
+  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'brand' | 'default';
   size?: 'default' | 'small' | 'large' | 'wide' | 'tall';
 }
 
@@ -34,11 +34,11 @@ const accentColorMap = {
     text: 'text-red-600 dark:text-red-400',
   },
   blue: {
-    bg: 'bg-blue-50 dark:bg-blue-950/30',
-    border: 'border-blue-200 dark:border-blue-800',
-    hover: 'hover:border-blue-300 dark:hover:border-blue-700',
-    glow: 'hover:shadow-blue-500/10',
-    text: 'text-blue-600 dark:text-blue-400',
+    bg: 'bg-brand-50 dark:bg-brand-900/30',
+    border: 'border-brand-200 dark:border-brand-800',
+    hover: 'hover:border-brand-300 dark:hover:border-brand-700',
+    glow: 'hover:shadow-brand-500/10',
+    text: 'text-brand-500 dark:text-brand-300',
   },
   orange: {
     bg: 'bg-orange-50 dark:bg-orange-950/30',
@@ -60,6 +60,13 @@ const accentColorMap = {
     hover: 'hover:border-purple-300 dark:hover:border-purple-700',
     glow: 'hover:shadow-purple-500/10',
     text: 'text-purple-600 dark:text-purple-400',
+  },
+  brand: {
+    bg: 'bg-brand-50 dark:bg-brand-900/30',
+    border: 'border-brand-200 dark:border-brand-700',
+    hover: 'hover:border-brand-300 dark:hover:border-brand-600',
+    glow: 'hover:shadow-brand-500/10',
+    text: 'text-brand-500 dark:text-brand-300',
   },
   default: {
     bg: 'bg-background',
@@ -228,7 +235,7 @@ export interface BentoBoxProps {
   icon?: ReactNode;
   title?: string;
   description?: string;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'default';
+  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'brand' | 'default';
 }
 
 export function BentoBox({

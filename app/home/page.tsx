@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 // Statistics data for the impact section
 const statistics = [
   { value: "500+", label: "Budget Reports Analyzed", icon: FileText, color: "green" as const },
-  { value: "15K+", label: "Citizens Engaged", icon: Users, color: "blue" as const },
+  { value: "15K+", label: "Citizens Engaged", icon: Users, color: "brand" as const },
   { value: "47+", label: "Countries Worldwide", icon: Globe, color: "orange" as const },
-  { value: "200+", label: "Partner Organizations", icon: Handshake, color: "purple" as const },
+  { value: "200+", label: "Partner Organizations", icon: Handshake, color: "brand" as const },
 ];
 
 // How it works steps
@@ -29,14 +29,14 @@ const howItWorks = [
     title: "Browse Reports",
     description: "Explore simplified budget documents from national and county levels in plain language.",
     icon: BookOpen,
-    color: "green" as const,
+    color: "brand" as const,
   },
   {
     step: "02",
     title: "Analyze Insights",
     description: "Dive deep into sector analysis, track changes over time, and understand what it means for you.",
     icon: BarChart3,
-    color: "blue" as const,
+    color: "brand" as const,
   },
   {
     step: "03",
@@ -90,7 +90,7 @@ const features = [
     icon: BarChart3,
     href: "/insights",
     cta: "Explore Analysis",
-    color: "blue" as const,
+    color: "brand" as const,
   },
   {
     title: "Budget Tracker",
@@ -107,7 +107,7 @@ const partners = [
   { 
     name: "The Continental Pot", 
     logo: "TCP", 
-    color: "bg-blue-500", 
+    color: "bg-brand-500", 
     image: "https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png",
     website: "https://continentalpot.africa",
     benefit: "Leading African media platform providing continental reach and storytelling expertise for budget narratives across Africa."
@@ -115,7 +115,7 @@ const partners = [
   { 
     name: "Colour Twist Media", 
     logo: "CTM", 
-    color: "bg-purple-500", 
+    color: "bg-brand-400", 
     image: "https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png",
     website: "https://colortwistmedia.co.ke",
     benefit: "Creative media solutions bringing visual storytelling and production capabilities to make budget information engaging."
@@ -128,9 +128,9 @@ const partners = [
     website: "https://senmedia-events.co.ke",
     benefit: "Professional event management and media services enabling workshops, trainings, and community engagement activities."
   },
-  { name: "Open Government", logo: "OGP", color: "bg-orange-500", image: null, website: "https://www.opengovpartnership.org", benefit: "Global initiative supporting open government reforms and citizen engagement." },
-  { name: "Intl Budget Partnership", logo: "IBP", color: "bg-teal-500", image: null, website: "https://www.internationalbudget.org", benefit: "International organization advancing budget transparency and accountability." },
-  { name: "Transparency Intl", logo: "TI", color: "bg-red-500", image: null, website: "https://www.transparency.org", benefit: "Global anti-corruption coalition promoting integrity and accountability." },
+  { name: "Open Government", logo: "OGP", color: "bg-brand-600", image: null, website: "https://www.opengovpartnership.org", benefit: "Global initiative supporting open government reforms and citizen engagement." },
+  { name: "Intl Budget Partnership", logo: "IBP", color: "bg-brand-500", image: null, website: "https://www.internationalbudget.org", benefit: "International organization advancing budget transparency and accountability." },
+  { name: "Transparency Intl", logo: "TI", color: "bg-gray-700", image: null, website: "https://www.transparency.org", benefit: "Global anti-corruption coalition promoting integrity and accountability." },
 ];
 
 // Sponsors for advertisement marquee
@@ -177,9 +177,8 @@ export default function HomePage() {
                   </div>
                   {/* Icon */}
                   <div className={`mb-5 p-3 rounded-2xl w-fit ${
-                    item.color === 'green' ? 'bg-green-100 dark:bg-green-900/30' :
-                    item.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30' :
-                    'bg-orange-100 dark:bg-orange-900/30'
+                    item.color === 'orange' ? 'bg-orange-100 dark:bg-orange-900/30' :
+                    'bg-brand-100 dark:bg-brand-900/30'
                   }`}>
                   
                   </div>
@@ -208,13 +207,13 @@ export default function HomePage() {
                 <BentoCard padding="lg" accentColor={feature.color} hover className="h-full group">
                   <div className={`mb-5 p-3 rounded-2xl w-fit ${
                     feature.color === 'green' ? 'bg-green-100 dark:bg-green-900/30' :
-                    feature.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30' :
-                    'bg-teal-100 dark:bg-teal-900/30'
+                    feature.color === 'brand' ? 'bg-brand-100 dark:bg-brand-900/30' :
+                    'bg-gray-100 dark:bg-gray-800/30'
                   }`}>
                     <feature.icon className={`h-6 w-6 ${
                       feature.color === 'green' ? 'text-green-600 dark:text-green-400' :
-                      feature.color === 'blue' ? 'text-blue-600 dark:text-blue-400' :
-                      'text-teal-600 dark:text-teal-400'
+                      feature.color === 'brand' ? 'text-brand-500 dark:text-brand-300' :
+                      'text-gray-600 dark:text-gray-400'
                     }`} />
                   </div>
                   <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
@@ -240,7 +239,7 @@ export default function HomePage() {
       </section>
 
       {/* Partners Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 via-white to-teal-50 dark:from-blue-950/20 dark:via-background dark:to-teal-950/20">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-brand-50 via-white to-gray-50 dark:from-brand-900/20 dark:via-background dark:to-gray-900/20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Premier Partners</h2>
@@ -283,9 +282,9 @@ export default function HomePage() {
                     </div>
                     {/* Back of card */}
                     <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)]">
-                      <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-600 to-teal-600 rounded-2xl shadow-sm border text-white">
+                      <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl shadow-sm border text-white">
                         <h3 className="text-lg font-bold text-center mb-4">{partner.name}</h3>
-                        <p className="text-sm text-center text-blue-100">{partner.benefit}</p>
+                        <p className="text-sm text-center text-brand-100">{partner.benefit}</p>
                         <div className="mt-4 flex items-center gap-2 text-sm font-medium">
                           <span>Visit Website</span>
                           <ArrowRight className="h-4 w-4" />
@@ -309,10 +308,10 @@ export default function HomePage() {
       </section>
 
       {/* Support Our Work - Donation CTA */}
-      <BentoSection className="bg-gradient-to-br from-blue-50 via-white to-amber-50 dark:from-blue-950/30 dark:via-background dark:to-amber-950/30">
+      <BentoSection className="bg-gradient-to-br from-brand-50 via-white to-gray-50 dark:from-brand-900/30 dark:via-background dark:to-gray-900/30">
         <BentoScrollAnimation animation="fadeInUp">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-300 text-sm font-medium mb-6">
               <Heart className="h-4 w-4" />
               Support Our Work
             </div>
@@ -323,7 +322,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/contact">
-              <Button size="lg" className="rounded-full px-8 bg-blue-600 hover:bg-blue-700">
+              <Button size="lg" className="rounded-full px-8 bg-brand-500 hover:bg-brand-600">
                 <Heart className="mr-2 h-5 w-5" />
                 Donate Now
               </Button>
@@ -369,7 +368,7 @@ export default function HomePage() {
                 <BentoCard padding="lg" accentColor={report.color} hover className="h-full group">
                   <div className="flex items-center gap-2 mb-4">
                     <span className={`text-xs font-medium px-3 py-1 rounded-full ${
-                      report.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
+                      report.color === 'blue' ? 'bg-brand-100 dark:bg-brand-900/30 text-brand-500 dark:text-brand-300' :
                       report.color === 'red' ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400' :
                       'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400'
                     }`}>

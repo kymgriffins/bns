@@ -177,16 +177,17 @@ export interface BentoIconBoxProps {
   icon: ReactNode;
   children: ReactNode;
   className?: string;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple';
+  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'brand';
 }
 
 const iconAccentColors = {
   green: 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400',
   red: 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400',
-  blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+  blue: 'bg-brand-100 dark:bg-brand-900/30 text-brand-500 dark:text-brand-300',
   orange: 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400',
   teal: 'bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400',
   purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
+  brand: 'bg-brand-100 dark:bg-brand-900/30 text-brand-500 dark:text-brand-300',
 };
 
 export function BentoIconBox({
@@ -216,7 +217,7 @@ export interface BentoFeatureCardProps {
   description: string;
   icon?: ReactNode;
   className?: string;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple';
+  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'brand';
 }
 
 export function BentoFeatureCard({

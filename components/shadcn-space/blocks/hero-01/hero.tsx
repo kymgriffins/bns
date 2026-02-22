@@ -24,7 +24,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
   return (
     <section>
       <div className="w-full h-full relative">
-        <div className="relative w-full pt-16 md:pt-16 pb-4 md:pb-6 before:absolute before:w-full before:h-full before:bg-linear-to-r before:from-sky-100 before:via-white before:to-amber-100 before:rounded-full before:top-20 before:blur-3xl before:-z-10 dark:before:from-slate-800 dark:before:via-black dark:before:to-stone-700 dark:before:rounded-full dark:before:blur-3xl dark:before:-z-10">
+        <div className="relative w-full pt-16 md:pt-16 pb-4 md:pb-6 before:absolute before:w-full before:h-full before:bg-linear-to-r before:from-brand-50 before:via-white before:to-gray-100 before:rounded-full before:top-20 before:blur-3xl before:-z-10 dark:before:from-brand-900 dark:before:via-black dark:before:to-gray-900 dark:before:rounded-full dark:before:blur-3xl dark:before:-z-10">
           <div className="container mx-auto relative z-10">
             <div className="flex flex-col max-w-5xl mx-auto gap-8">
               <div className="relative flex flex-col text-center items-center sm:gap-6 gap-4">

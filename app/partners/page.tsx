@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { useRef } from "react";
 import { 
   Globe, 
   Award, 
@@ -17,6 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
+import { motion, useInView } from "framer-motion";
 
 export const metadata: Metadata = {
   title: "Global Partners Network - Budget Ndio Story",
@@ -144,6 +146,14 @@ const benefits = [
 ];
 
 export default function PartnersPage() {
+  const regionalHubsRef = useRef<HTMLElement>(null);
+  const strategicPartnersRef = useRef<HTMLElement>(null);
+  const benefitsRef = useRef<HTMLElement>(null);
+  
+  const regionalInView = useInView(regionalHubsRef, { once: true, amount: 0.2 });
+  const strategicInView = useInView(strategicPartnersRef, { once: true, amount: 0.2 });
+  const benefitsInView = useInView(benefitsRef, { once: true, amount: 0.2 });
+
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -221,29 +231,43 @@ export default function PartnersPage() {
       </section>
 
       {/* Regional Hubs */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section ref={regionalHubsRef} className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Global Presence</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              With regional hubs across four continents, we're bringing budget transparency 
-              to communities worldwide.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={regionalInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-3xl font-bold mb-4">Our Global Presence</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                With regional hubs across four continents, we're bringing budget transparency 
+                to communities worldwide.
+              </p>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {regionalHubs.map((hub, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="text-4xl mb-2">{hub.flag}</div>
-                  <CardTitle className="text-lg">{hub.city}</CardTitle>
-                  <CardDescription>{hub.country}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="outline" className="mb-2">{hub.region}</Badge>
-                  <p className="text-sm text-muted-foreground">{hub.role}</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                animate={regionalInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <CardHeader className="relative">
+                    <div className="text-4xl mb-2 transform group-hover:scale-110 transition-transform duration-300">{hub.flag}</div>
+                    <CardTitle className="text-lg group-hover:text-blue-600 transition-colors duration-300">{hub.city}</CardTitle>
+                    <CardDescription className="font-medium">{hub.country}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="relative">
+                    <Badge variant="outline" className="mb-2 group-hover:border-blue-300 group-hover:text-blue-600 transition-colors duration-300">{hub.region}</Badge>
+                    <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">{hub.role}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -252,64 +276,100 @@ export default function PartnersPage() {
       <Separator className="max-w-4xl mx-auto" />
 
       {/* Current Partners */}
-      <section id="current-partners" className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/20">
+      <section ref={strategicPartnersRef} id="current-partners" className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Strategic Partners</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              We work with leading organizations across technology, civil society, 
-              and academia to advance our mission.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={strategicInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-3xl font-bold mb-4">Strategic Partners</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                We work with leading organizations across technology, civil society, 
+                and academia to advance our mission.
+              </p>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {strategicPartners.map((partner, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow group">
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-blue-100 to-teal-100 dark:from-blue-900/30 dark:to-teal-900/30 flex items-center justify-center">
-                    <Building2 className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">{partner.name}</CardTitle>
-                    <CardDescription className="flex items-center gap-2">
-                      {partner.type} • {partner.region}
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">{partner.description}</p>
-                  <Button variant="outline" size="sm" className="w-full group-hover:bg-blue-50 dark:group-hover:bg-blue-950/30">
-                    Learn More
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </Button>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={strategicInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group overflow-hidden relative h-full">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <CardHeader className="flex flex-row items-center gap-4 relative">
+                    <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-blue-100 to-teal-100 dark:from-blue-900/30 dark:to-teal-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <Building2 className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg group-hover:text-blue-600 transition-colors duration-300">{partner.name}</CardTitle>
+                      <CardDescription className="flex items-center gap-2">
+                        {partner.type} • {partner.region}
+                      </CardDescription>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="relative">
+                    <p className="text-muted-foreground mb-4 group-hover:text-foreground transition-colors duration-300">{partner.description}</p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full group-hover:bg-blue-50 dark:group-hover:bg-blue-950/30 group-hover:border-blue-300 transition-all duration-300"
+                    >
+                      Learn More
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Partnership Benefits */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section ref={benefitsRef} className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Partner With Us?</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Join a global movement and unlock exclusive benefits for your organization.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={benefitsInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-3xl font-bold mb-4">Why Partner With Us?</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Join a global movement and unlock exclusive benefits for your organization.
+              </p>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => (
-              <Card key={index} className="text-center">
-                <CardContent className="pt-8">
-                  <div className="h-14 w-14 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4">
-                    <benefit.icon className="h-7 w-7 text-blue-600" />
-                  </div>
-                  <h3 className="font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                animate={benefitsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group overflow-hidden relative h-full">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <CardContent className="pt-8 relative">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="h-14 w-14 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors duration-300"
+                    >
+                      <benefit.icon className="h-7 w-7 text-blue-600 group-hover:text-blue-700 transition-colors duration-300" />
+                    </motion.div>
+                    <h3 className="font-semibold mb-2 group-hover:text-blue-600 transition-colors duration-300">{benefit.title}</h3>
+                    <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">{benefit.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
