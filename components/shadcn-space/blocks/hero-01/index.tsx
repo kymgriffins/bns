@@ -65,8 +65,8 @@ export default function AgencyHeroSection({ showHeader = true }: AgencyHeroSecti
     },
    
     {
-      image: "https://senmedia-events.co.ke/wp-content/uploads/2023/09/logo_result.webp",
-      lightimg: "https://senmedia-events.co.ke/wp-content/uploads/2023/09/logo_result.webp",
+      image: "/senmedia.png",
+      lightimg: "/senmedia.png",
       name: "Sen Media & Events",
     },
     

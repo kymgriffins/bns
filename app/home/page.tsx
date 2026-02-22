@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, BookOpen, BarChart3, MapPin, Users, FileText, TrendingUp, HandHeart, ChevronRight, Heart, Globe, Mail, Award, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AgencyHeroSection from "@/components/shadcn-space/blocks/hero-01";
@@ -103,12 +104,33 @@ const features = [
 
 // Partner data for marquee
 const partners = [
-  { name: "The Continental Pot", logo: "TCP", color: "bg-blue-500" },
-  { name: "Colour Twist Media", logo: "CTM", color: "bg-purple-500" },
-  { name: "Sen Media & Events", logo: "SME", color: "bg-green-500" },
-  { name: "Open Government", logo: "OGP", color: "bg-orange-500" },
-  { name: "Intl Budget Partnership", logo: "IBP", color: "bg-teal-500" },
-  { name: "Transparency Intl", logo: "TI", color: "bg-red-500" },
+  { 
+    name: "The Continental Pot", 
+    logo: "TCP", 
+    color: "bg-blue-500", 
+    image: "https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png",
+    website: "https://continentalpot.africa",
+    benefit: "Leading African media platform providing continental reach and storytelling expertise for budget narratives across Africa."
+  },
+  { 
+    name: "Colour Twist Media", 
+    logo: "CTM", 
+    color: "bg-purple-500", 
+    image: "https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png",
+    website: "https://colortwistmedia.co.ke",
+    benefit: "Creative media solutions bringing visual storytelling and production capabilities to make budget information engaging."
+  },
+  { 
+    name: "Sen Media & Events", 
+    logo: "SME", 
+    color: "bg-green-500", 
+    image: "/senmedia.png",
+    website: "https://senmedia-events.co.ke",
+    benefit: "Professional event management and media services enabling workshops, trainings, and community engagement activities."
+  },
+  { name: "Open Government", logo: "OGP", color: "bg-orange-500", image: null, website: "https://www.opengovpartnership.org", benefit: "Global initiative supporting open government reforms and citizen engagement." },
+  { name: "Intl Budget Partnership", logo: "IBP", color: "bg-teal-500", image: null, website: "https://www.internationalbudget.org", benefit: "International organization advancing budget transparency and accountability." },
+  { name: "Transparency Intl", logo: "TI", color: "bg-red-500", image: null, website: "https://www.transparency.org", benefit: "Global anti-corruption coalition promoting integrity and accountability." },
 ];
 
 // Sponsors for advertisement marquee
@@ -214,6 +236,75 @@ export default function HomePage() {
       <section className="py-0 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <Testimonial01 />
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 via-white to-teal-50 dark:from-blue-950/20 dark:via-background dark:to-teal-950/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Premier Partners</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Budget Ndio Story is a consortium led by these leading organizations, bringing together 
+              media expertise, creative storytelling, and event management to advance budget transparency.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {partners.slice(0, 3).map((partner, index) => (
+              <a 
+                key={index}
+                href={partner.website || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block"
+              >
+                <div className="relative h-64 [perspective:1000px]">
+                  <div className="relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                    {/* Front of card */}
+                    <div className="absolute inset-0 backface-hidden">
+                      <div className="h-full flex flex-col items-center justify-center p-8 bg-white dark:bg-background rounded-2xl shadow-sm hover:shadow-md transition-shadow border">
+                        {partner.image ? (
+                          <div className="relative h-20 w-40 mb-4 flex items-center justify-center">
+                            <img 
+                              src={partner.image} 
+                              alt={partner.name}
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          </div>
+                        ) : (
+                          <div className={`h-20 w-40 mb-4 rounded-lg ${partner.color} flex items-center justify-center`}>
+                            <span className="text-2xl font-bold text-white">{partner.logo}</span>
+                          </div>
+                        )}
+                        <h3 className="text-lg font-semibold text-center">{partner.name}</h3>
+                        <p className="text-sm text-muted-foreground text-center mt-2">Click to learn more</p>
+                      </div>
+                    </div>
+                    {/* Back of card */}
+                    <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)]">
+                      <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-600 to-teal-600 rounded-2xl shadow-sm border text-white">
+                        <h3 className="text-lg font-bold text-center mb-4">{partner.name}</h3>
+                        <p className="text-sm text-center text-blue-100">{partner.benefit}</p>
+                        <div className="mt-4 flex items-center gap-2 text-sm font-medium">
+                          <span>Visit Website</span>
+                          <ArrowRight className="h-4 w-4" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <Button variant="outline" className="rounded-full" asChild>
+              <Link href="/partners">
+                View All Partners <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
