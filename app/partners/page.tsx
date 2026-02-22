@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 "use client";
 
 import { useRef } from "react";
@@ -21,11 +20,6 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
 import { motion, useInView } from "framer-motion";
-
-export const metadata: Metadata = {
-  title: "Global Partners Network - Budget Ndio Story",
-  description: "Join our global network of partners working together for budget transparency and civic empowerment worldwide.",
-};
 
 // Partner data
 const premierPartners = [
