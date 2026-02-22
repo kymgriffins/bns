@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+"use client";
+
 import { useRef } from "react";
 import { 
   Globe, 
