@@ -35,9 +35,13 @@ const partnerOptions = [
 ];
 
 const consortiumPartners = [
-  { name: "The Continental Pot", role: "Lead Partner" },
-  { name: "Colour Twist Media", role: "Media Partner" },
-  { name: "Sen Media & Events", role: "Events Partner" },
+  { name: "The Continental Pot", role: "Lead Implementing Partner" },
+  { name: "Colour Twist Media", role: "Media & Communications Partner" },
+  { name: "Sen Media & Events", role: "Events & Engagement Partner" },
+];
+
+const keySupporters = [
+  { name: "Become a Supporter", role: "Partner with us" },
 ];
 
 export default function AboutPage() {

@@ -1,11 +1,12 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, BarChart3, MapPin, Users, FileText, TrendingUp, HandHeart, ChevronRight } from "lucide-react";
+import { ArrowRight, BookOpen, BarChart3, MapPin, Users, FileText, TrendingUp, HandHeart, ChevronRight, Heart, Globe, Mail, Award, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AgencyHeroSection from "@/components/shadcn-space/blocks/hero-01";
 import Testimonial01 from "@/components/shadcn-space/blocks/testimonial-02";
 import { BentoCard, BentoGrid, BentoSection, BentoStat } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader, BentoCTASection } from "@/components/ui/bento-animations";
+import { Marquee } from "@/components/shadcn-space/animations/marquee";
 
 export const metadata: Metadata = {
   title: "Budget Ndio Story - Follow the Budget. Find the Story.",
@@ -16,8 +17,8 @@ export const metadata: Metadata = {
 const statistics = [
   { value: "500+", label: "Budget Reports Analyzed", icon: FileText, color: "green" as const },
   { value: "15K+", label: "Citizens Engaged", icon: Users, color: "blue" as const },
-  { value: "47", label: "Counties Covered", icon: MapPin, color: "orange" as const },
-  { value: "120+", label: "Youth Trainings", icon: TrendingUp, color: "purple" as const },
+  { value: "47+", label: "Countries Worldwide", icon: Globe, color: "orange" as const },
+  { value: "200+", label: "Partner Organizations", icon: Handshake, color: "purple" as const },
 ];
 
 // How it works steps
@@ -100,14 +101,40 @@ const features = [
   },
 ];
 
+// Partner data for marquee
+const partners = [
+  { name: "The Continental Pot", logo: "TCP", color: "bg-blue-500" },
+  { name: "Colour Twist Media", logo: "CTM", color: "bg-purple-500" },
+  { name: "Sen Media & Events", logo: "SME", color: "bg-green-500" },
+  { name: "Open Government", logo: "OGP", color: "bg-orange-500" },
+  { name: "Intl Budget Partnership", logo: "IBP", color: "bg-teal-500" },
+  { name: "Transparency Intl", logo: "TI", color: "bg-red-500" },
+];
+
+// Sponsors for advertisement marquee
+const sponsors = [
+  { name: "World Bank Kenya", tagline: "Building a Better Kenya" },
+  { name: "USAID Kenya", tagline: "Partnership for Prosperity" },
+  { name: "Kenya Government", tagline: "Public Finance for Development" },
+  { name: "EU Delegation", tagline: "Team Europe for Kenya" },
+  { name: "UNDP Kenya", tagline: "Future-Ready Kenya" },
+];
+
+// Global presence data
+const globalPresence = [
+  { city: "Nairobi", country: "Kenya", flag: "🇰🇪", role: "HQ" },
+  { city: "Singapore", country: "Singapore", flag: "🇸🇬", role: "Asia Pacific" },
+  { city: "Brussels", country: "Belgium", flag: "🇧🇪", role: "Europe" },
+  { city: "Washington D.C.", country: "USA", flag: "🇺🇸", role: "Americas" },
+];
+
 export default function HomePage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
       <AgencyHeroSection showHeader={false} />
 
-   
-
+    
       {/* How It Works - Bento Layout */}
       <BentoSection className="bg-secondary/20">
         <BentoScrollAnimation animation="fadeInUp">
@@ -189,6 +216,42 @@ export default function HomePage() {
           <Testimonial01 />
         </div>
       </section>
+
+      {/* Support Our Work - Donation CTA */}
+      <BentoSection className="bg-gradient-to-br from-blue-50 via-white to-amber-50 dark:from-blue-950/30 dark:via-background dark:to-amber-950/30">
+        <BentoScrollAnimation animation="fadeInUp">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium mb-6">
+              <Heart className="h-4 w-4" />
+              Support Our Work
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Help Us Keep Kenya's Budget Transparent</h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Budget Ndio Story is a youth-led initiative making budget information accessible to all Kenyans. 
+              Your support helps us continue this work—producing reports, training champions, and keeping government accountable.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/contact">
+              <Button size="lg" className="rounded-full px-8 bg-blue-600 hover:bg-blue-700">
+                <Heart className="mr-2 h-5 w-5" />
+                Donate Now
+              </Button>
+              </Link>
+              
+            </div>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Globe className="h-4 w-4" />
+                <span>We accept international donations</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                <span>Contact us for partnership: info@budgetndiostory.org</span>
+              </div>
+            </div>
+          </div>
+        </BentoScrollAnimation>
+      </BentoSection>
 
       {/* Latest Reports - Bento Grid */}
       <BentoSection className="bg-secondary/20">

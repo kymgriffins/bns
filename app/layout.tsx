@@ -16,9 +16,60 @@ const defaultUrl = process.env.VERCEL_URL
   : "http://localhost:3000";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Budget Ndio Story",
-  description: "Kenyan budget transparency platform for young citizens",
+  title: {
+    default: "Budget Ndio Story - Kenya Budget Transparency Platform",
+    template: "%s | Budget Ndio Story",
+  },
+  description: "Kenyan budget transparency platform for young citizens. We turn national and county budgets into clear insights, practical analysis, and trackable evidence to enhance youth participation and accountability.",
+  keywords: ["Kenya budget", "budget transparency", "county budgets", "youth participation", "budget tracking", "government accountability", "public finance", "Kenya"],
+  authors: [{ name: "Budget Ndio Story" }],
+  creator: "Budget Ndio Story",
+  publisher: "Budget Ndio Story",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en": "/",
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_KE",
+    url: "/",
+    siteName: "Budget Ndio Story",
+    title: "Budget Ndio Story - Kenya Budget Transparency Platform",
+    description: "Kenyan budget transparency platform for young citizens. We turn national and county budgets into clear insights, practical analysis, and trackable evidence.",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Budget Ndio Story - Follow the Budget, Find the Story",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Budget Ndio Story - Kenya Budget Transparency Platform",
+    description: "Kenyan budget transparency platform for young citizens. We turn national and county budgets into clear insights.",
+    images: ["/twitter-image.png"],
+    creator: "@BudgetNdioStory",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 const neueMontreal = localFont({

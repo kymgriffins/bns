@@ -5,7 +5,7 @@ import {
   MessageCircle, X, Send, Loader2, HelpCircle, Mail, Phone, 
   FileText, ChevronDown, ChevronUp, SendHorizontal, Clock,
   AlertCircle, CheckCircle2, Ticket, Zap, Bug, DollarSign,
-  MessageSquare, ExternalLink
+  MessageSquare, ExternalLink, Shield
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -89,7 +89,7 @@ const initialMessages: Message[] = [
   {
     id: "1",
     role: "assistant",
-    content: "Welcome to **BudgetNdioStory Support Desk**! 👋\n\nI'm here to help you with any questions or issues you may have. How can I assist you today?",
+    content: "Welcome to **BudgetNdioStory Support Desk**! 👋\n\nI'm here to help you with any questions or issues you may have. How can I assist you today?\n\n💡 I use AI trained on public budget documents. Your conversations help us improve but aren't shared with third parties.",
     timestamp: new Date(),
   },
 ]
@@ -276,6 +276,22 @@ export function ChatWidget() {
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                 Online • Typically replies in minutes
               </p>
+            </div>
+            {/* Data Transparency Info */}
+            <div className="relative group">
+              <button 
+                className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                aria-label="Data privacy information"
+              >
+                <Shield className="h-4 w-4 text-white" />
+              </button>
+              <div className="absolute right-0 top-full mt-2 w-64 p-3 bg-background rounded-lg shadow-xl border border-border/60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <p className="text-xs font-medium text-foreground mb-1">Data Privacy</p>
+                <p className="text-xs text-muted-foreground">
+                  This chat uses AI trained on public budget documents. We don't store or share your personal information. 
+                  <a href="/privacy" className="text-primary hover:underline">Learn more</a>
+                </p>
+              </div>
             </div>
             {/* View Switcher */}
             <div className="flex gap-1">

@@ -79,6 +79,10 @@ export default function Navbar() {
 
   const navigationData: NavigationSection[] = [
     // {
+    //   title: "Partners",
+    //   href: "/partners",
+    // },
+    // {
     //   title: "Budget Reports",
     //   href: "/reports",
     // },
@@ -98,10 +102,10 @@ export default function Navbar() {
     //   title: "Take Action",
     //   href: "/take-action",
     // },
-    {
-      title: "Learn",
-      href: "/learn",
-    },
+    // {
+    //   title: "Learn",
+    //   href: "/learn",
+    // },
     {
       title: "News",
       href: "/news",
@@ -209,7 +213,9 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2"
             >
-              <Icon icon="lucide:twitter" width={18} height={18} />
+              <svg viewBox="0 0 24 24" fill="currentColor" width={18} height={18}>
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
             </a>
           </div>
           <Link href="/subscribe">
@@ -270,6 +276,14 @@ export default function Navbar() {
                             </NavigationMenuLink>
                           </NavigationMenuItem>
                         ))}
+                        {/* <NavigationMenuItem>
+                          <NavigationMenuLink
+                            href="/advertisements"
+                            className="text-2xl font-semibold tracking-tight transition-all hover:translate-x-2 p-0 hover:bg-transparent text-amber-600"
+                          >
+                            Advertise
+                          </NavigationMenuLink>
+                        </NavigationMenuItem> */}
                       </NavigationMenuList>
                     </NavigationMenu>
 
@@ -281,25 +295,8 @@ export default function Navbar() {
                   </div>
 
                   <div className="mt-auto flex flex-col gap-4">
-                    <Link href="/about" className="text-lg font-medium">
-                      About
-                    </Link>
                     
-                    <div className="flex gap-3">
-                      {[
-                        "lucide:twitter",
-                        "lucide:instagram",
-                        "lucide:linkedin",
-                      ].map((icon) => (
-                        <a
-                          key={icon}
-                          href="#"
-                          className="flex items-center justify-center rounded-full outline outline-border hover:bg-muted transition p-3 shadow-xs"
-                        >
-                          <Icon icon={icon} width={16} height={16} />
-                        </a>
-                      ))}
-                    </div>
+                   
 
                     <p className="text-sm text-muted-foreground">
                       © 2026 Budget Ndio Story

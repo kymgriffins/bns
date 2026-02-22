@@ -24,7 +24,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
   return (
     <section>
       <div className="w-full h-full relative">
-        <div className="relative w-full pt-20 md:pt-20 pb-6 md:pb-10 before:absolute before:w-full before:h-full before:bg-linear-to-r before:from-sky-100 before:via-white before:to-amber-100 before:rounded-full before:top-24 before:blur-3xl before:-z-10 dark:before:from-slate-800 dark:before:via-black dark:before:to-stone-700 dark:before:rounded-full dark:before:blur-3xl dark:before:-z-10">
+        <div className="relative w-full pt-16 md:pt-16 pb-4 md:pb-6 before:absolute before:w-full before:h-full before:bg-linear-to-r before:from-sky-100 before:via-white before:to-amber-100 before:rounded-full before:top-20 before:blur-3xl before:-z-10 dark:before:from-slate-800 dark:before:via-black dark:before:to-stone-700 dark:before:rounded-full dark:before:blur-3xl dark:before:-z-10">
           <div className="container mx-auto relative z-10">
             <div className="flex flex-col max-w-5xl mx-auto gap-8">
               <div className="relative flex flex-col text-center items-center sm:gap-6 gap-4">
@@ -32,7 +32,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeInOut" }}
-                  className="lg:text-8xl md:text-7xl text-5xl font-medium leading-14 md:leading-20 lg:leading-24"
+                  className="lg:text-6xl md:text-5xl text-4xl font-medium leading-tight md:leading-tight lg:leading-tight"
                 >
                   Follow the Budget.{" "}
                   <span
