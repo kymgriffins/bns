@@ -82,18 +82,18 @@ export default function Navbar() {
     //   title: "Partners",
     //   href: "/partners",
     // },
-    // {
-    //   title: "Budget Reports",
-    //   href: "/reports",
-    // },
+    {
+      title: "Budget Reports",
+      href: "/reports",
+    },
     {
       title: "Media Hub",
       href: "/media-hub",
     },
-    {
-      title: "Budget Insights",
-      href: "/insights",
-    },
+    // {
+    //   title: "Budget Insights",
+    //   href: "/insights",
+    // },
     // {
     //   title: "Budget Tracker",
     //   href: "/tracker",
