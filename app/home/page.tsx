@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, BookOpen, BarChart3, MapPin, Users, FileText, TrendingUp, HandHeart, ChevronRight, Heart, Globe, Mail, Award, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import AgencyHeroSection from "@/components/shadcn-space/blocks/hero-01";
 import Testimonial01 from "@/components/shadcn-space/blocks/testimonial-02";
 import { BentoCard, BentoGrid, BentoSection, BentoStat } from "@/components/ui/bento-frame";
@@ -107,7 +108,7 @@ const partners = [
   { 
     name: "The Continental Pot", 
     logo: "TCP", 
-    color: "bg-brand-500", 
+    color: "bg-slate-800", 
     image: "https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png",
     website: "https://continentalpot.africa",
     benefit: "Leading African media platform providing continental reach and storytelling expertise for budget narratives across Africa."
@@ -115,7 +116,7 @@ const partners = [
   { 
     name: "Colour Twist Media", 
     logo: "CTM", 
-    color: "bg-brand-400", 
+    color: "bg-amber-600", 
     image: "https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png",
     website: "https://colortwistmedia.co.ke",
     benefit: "Creative media solutions bringing visual storytelling and production capabilities to make budget information engaging."
@@ -123,14 +124,12 @@ const partners = [
   { 
     name: "Sen Media & Events", 
     logo: "SME", 
-    color: "bg-green-500", 
+    color: "bg-emerald-600", 
     image: "/senmedia.png",
     website: "https://senmedia-events.co.ke",
     benefit: "Professional event management and media services enabling workshops, trainings, and community engagement activities."
   },
-  { name: "Open Government", logo: "OGP", color: "bg-brand-600", image: null, website: "https://www.opengovpartnership.org", benefit: "Global initiative supporting open government reforms and citizen engagement." },
-  { name: "Intl Budget Partnership", logo: "IBP", color: "bg-brand-500", image: null, website: "https://www.internationalbudget.org", benefit: "International organization advancing budget transparency and accountability." },
-  { name: "Transparency Intl", logo: "TI", color: "bg-gray-700", image: null, website: "https://www.transparency.org", benefit: "Global anti-corruption coalition promoting integrity and accountability." },
+ 
 ];
 
 // Sponsors for advertisement marquee
@@ -238,72 +237,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Partners Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-brand-50 via-white to-gray-50 dark:from-brand-900/20 dark:via-background dark:to-gray-900/20">
+      {/* Partners Section - Minimalistic */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Premier Partners</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Budget Ndio Story is a consortium led by these leading organizations, bringing together 
-              media expertise, creative storytelling, and event management to advance budget transparency.
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3">Our Partners</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              We work with leading organizations to advance budget transparency and civic empowerment across Kenya and beyond.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {partners.slice(0, 3).map((partner, index) => (
               <a 
                 key={index}
                 href={partner.website || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block"
+                className="group"
               >
-                <div className="relative h-64 [perspective:1000px]">
-                  <div className="relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-                    {/* Front of card */}
-                    <div className="absolute inset-0 backface-hidden">
-                      <div className="h-full flex flex-col items-center justify-center p-8 bg-white dark:bg-background rounded-2xl shadow-sm hover:shadow-md transition-shadow border">
-                        {partner.image ? (
-                          <div className="relative h-20 w-40 mb-4 flex items-center justify-center">
-                            <img 
-                              src={partner.image} 
-                              alt={partner.name}
-                              className="max-h-full max-w-full object-contain"
-                            />
-                          </div>
-                        ) : (
-                          <div className={`h-20 w-40 mb-4 rounded-lg ${partner.color} flex items-center justify-center`}>
-                            <span className="text-2xl font-bold text-white">{partner.logo}</span>
-                          </div>
-                        )}
-                        <h3 className="text-lg font-semibold text-center">{partner.name}</h3>
-                        <p className="text-sm text-muted-foreground text-center mt-2">Click to learn more</p>
+                <Card className="h-full border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-lg transition-all duration-300">
+                  <CardContent className="p-6 flex flex-col items-center justify-center h-48">
+                    {partner.image ? (
+                      <div className="relative h-16 w-40 mb-4 flex items-center justify-center">
+                        <img
+                          src={partner.image}
+                          alt={partner.name}
+                          className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                        />
                       </div>
-                    </div>
-                    {/* Back of card */}
-                    <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)]">
-                      <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl shadow-sm border text-white">
-                        <h3 className="text-lg font-bold text-center mb-4">{partner.name}</h3>
-                        <p className="text-sm text-center text-brand-100">{partner.benefit}</p>
-                        <div className="mt-4 flex items-center gap-2 text-sm font-medium">
-                          <span>Visit Website</span>
-                          <ArrowRight className="h-4 w-4" />
-                        </div>
+                    ) : (
+                      <div className={`h-14 w-14 rounded-lg ${partner.color} flex items-center justify-center mb-4 shadow-md`}>
+                        <span className="text-sm font-bold text-white">{partner.logo}</span>
                       </div>
-                    </div>
-                  </div>
-                </div>
+                    )}
+                    <span className="text-base font-semibold text-center group-hover:text-green-600 transition-colors">
+                      {partner.name}
+                    </span>
+                  </CardContent>
+                </Card>
               </a>
             ))}
           </div>
 
-          <div className="text-center mt-8">
-            <Button variant="outline" className="rounded-full" asChild>
-              <Link href="/partners">
-                View All Partners <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
+          
         </div>
       </section>
 
