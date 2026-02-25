@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getBlogPosts, getCategories, fetchAPI } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -103,7 +103,6 @@ const initialFormData: BlogFormData = {
 };
 
 export default function BlogManagementClient() {
-  const supabase = createClient();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -126,16 +125,8 @@ export default function BlogManagementClient() {
   const fetchBlogs = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("blogs")
-        .select(`
-          *,
-          category:categories(id, name, slug, color)
-        `)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setBlogs(data || []);
+      const res = await getBlogPosts();
+      setBlogs(res.results || []);
     } catch (error) {
       console.error("Error fetching blogs:", error);
     } finally {
@@ -145,14 +136,8 @@ export default function BlogManagementClient() {
 
   const fetchCategories = async () => {
     try {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("id, name, slug, color")
-        .eq("is_active", true)
-        .order("sort_order");
-
-      if (error) throw error;
-      setCategories(data || []);
+      const cats = await getCategories();
+      setCategories(cats || []);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -195,35 +180,23 @@ export default function BlogManagementClient() {
       };
 
       if (editingBlog) {
-        const { error } = await supabase
-          .from("blogs")
-          .update(blogData)
-          .eq("id", editingBlog.id);
-
-        if (error) throw error;
+        await fetchAPI('/api/blogs', {
+          method: 'PUT',
+          body: JSON.stringify({ id: editingBlog.id, ...blogData }),
+        });
+        successToast("Blog updated successfully");
       } else {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
-          throw new Error("User not authenticated");
-        }
-        
-        // author_id references auth.users(id), not user_profiles
-        const { error } = await supabase
-          .from("blogs")
-          .insert({
-            ...blogData,
-            author_id: user.id,
-          });
-
-        if (error) throw error;
+        await fetchAPI('/api/blogs', {
+          method: 'POST',
+          body: JSON.stringify(blogData),
+        });
+        successToast("Blog created successfully");
       }
 
       setIsDialogOpen(false);
       setEditingBlog(null);
       setFormData(initialFormData);
       fetchBlogs();
-      successToast(editingBlog ? "Blog updated successfully" : "Blog created successfully");
     } catch (error) {
       console.error("Error saving blog:", error);
       errorToast("Failed to save blog");
@@ -263,8 +236,7 @@ export default function BlogManagementClient() {
     
     setDeleting(id);
     try {
-      const { error } = await supabase.from("blogs").delete().eq("id", id);
-      if (error) throw error;
+      await fetchAPI(`/api/blogs?id=${id}`, { method: 'DELETE' });
       fetchBlogs();
       successToast("Blog post deleted successfully");
     } catch (error) {

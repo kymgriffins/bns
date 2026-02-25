@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -11,6 +13,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Save, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getProfile, updateProfile } from "@/lib/api";
+import { useAuth } from "@/hooks/useAuth";
 
 interface UserProfile {
   id: string;
@@ -26,13 +30,17 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-  const supabase = createClient();
   const router = useRouter();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
+  
+  // Only create supabase client if environment variables are set
+  const supabase = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_URL) 
+    ? createClient() 
+    : null;
   
   const [formData, setFormData] = useState({
     first_name: "",
@@ -46,38 +54,29 @@ export default function ProfilePage() {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: { user } } = await supabase.auth.getUser();
-      
       if (!user) {
         router.push("/auth/login?redirect=/profile");
         return;
       }
-      
-      setUser(user);
-      
-      // Fetch user profile
-      const { data: profileData, error } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
-      
-      if (profileData) {
-        setProfile(profileData);
-        setFormData({
-          first_name: profileData.first_name || "",
-          last_name: profileData.last_name || "",
-          bio: profileData.bio || "",
-          phone_number: profileData.phone_number || "",
-          location: profileData.location || "",
-          interests: profileData.interests?.join(", ") || "",
-          skills: profileData.skills?.join(", ") || "",
-        });
-      } else if (error && error.code !== 'PGRST116') {
-        // PGRST116 = no rows returned
-        console.error("Error fetching profile:", error);
+
+      try {
+        const profileData = await getProfile();
+        if (profileData) {
+          setProfile(profileData as UserProfile);
+          setFormData({
+            first_name: profileData.first_name || "",
+            last_name: profileData.last_name || "",
+            bio: profileData.bio || "",
+            phone_number: profileData.phone_number || "",
+            location: profileData.location || "",
+            interests: profileData.interests?.join(", ") || "",
+            skills: profileData.skills?.join(", ") || "",
+          });
+        }
+      } catch (e) {
+        console.error("Error fetching profile:", e);
       }
-      
+
       setLoading(false);
     }
     
@@ -92,7 +91,7 @@ export default function ProfilePage() {
     try {
       if (!user) throw new Error("Not authenticated");
 
-      const profileUpdate = {
+      const profileUpdate: any = {
         first_name: formData.first_name || null,
         last_name: formData.last_name || null,
         bio: formData.bio || null,
@@ -103,24 +102,10 @@ export default function ProfilePage() {
         updated_at: new Date().toISOString(),
       };
 
-      if (profile) {
-        // Update existing profile
-        const { error } = await supabase
-          .from("user_profiles")
-          .update(profileUpdate)
-          .eq("id", profile.id);
-
-        if (error) throw error;
-      } else {
-        // Create new profile
-        const { error } = await supabase
-          .from("user_profiles")
-          .insert({
-            user_id: user.id,
-            ...profileUpdate,
-          });
-
-        if (error) throw error;
+      try {
+        await updateProfile(profileUpdate);
+      } catch (err) {
+        throw err;
       }
 
       setSuccessMessage("Profile updated successfully!");

@@ -1,6 +1,9 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+
+// Only initialize Resend if API key is available
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 export interface SendEmailOptions {
   to: string;
@@ -10,6 +13,12 @@ export interface SendEmailOptions {
 }
 
 export async function sendEmail({ to, subject, html, from }: SendEmailOptions) {
+  // If Resend is not configured, return a mock success response
+  if (!resend) {
+    console.warn("Resend API key not configured. Email not sent.");
+    return { success: true, data: { id: "mock-email-id" } };
+  }
+
   try {
     const data = await resend.emails.send({
       from: from || process.env.DEFAULT_EMAIL_FROM || "Budget Ndio Story <onboarding@resend.dev>",

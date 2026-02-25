@@ -35,9 +35,9 @@ type HeaderProps = {
 };
 
 const SubscribeButton = ({ className }: { className?: string }) => (
-  <Button className={cn("relative text-sm font-medium rounded-full h-10 p-1 ps-4 pe-12 group transition-all duration-500 hover:ps-12 hover:pe-4 w-fit overflow-hidden", className)}>
-    <span className="relative z-10 transition-all duration-500">
-      Subscribe
+  <Button className={cn("relative text-sm font-medium rounded-full h-10 p-1 ps-4 pe-12 group transition-all duration-500 hover:ps-12 hover:pe-4 w-fit overflow-hidden bg-gradient-to-r from-amber-500 to-yellow-400 text-amber-950 hover:from-amber-400 hover:to-yellow-300", className)}>
+    <span className="relative z-10 transition-all duration-500 font-bold">
+      DONATE!
     </span>
     <div className="absolute right-1 w-8 h-8 bg-background text-foreground rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-36px)] group-hover:rotate-45">
       <ArrowUpRight size={16} />
@@ -110,6 +110,10 @@ export default function Navbar() {
     {
       title: "News",
       href: "/news",
+    },
+    {
+      title: "Blogs",
+      href: "/blogs",
     },
     {
       title: "About",

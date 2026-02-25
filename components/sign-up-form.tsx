@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
+import { createUser } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -29,7 +29,6 @@ export function SignUpForm({
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
     setIsLoading(true);
     setError(null);
 
@@ -40,16 +39,9 @@ export function SignUpForm({
     }
 
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-        },
-      });
-      if (error) throw error;
+      await createUser({ email, password });
 
-      // Send welcome email via Resend API
+      // attempt to send the existing welcome email endpoint
       try {
         await fetch("/api/auth/welcome", {
           method: "POST",
@@ -57,7 +49,6 @@ export function SignUpForm({
           body: JSON.stringify({ email }),
         });
       } catch (emailError) {
-        // Log but don't fail the signup if email fails
         console.error("Failed to send welcome email:", emailError);
       }
 

@@ -7,60 +7,82 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-// Server-side data fetching - checks news table first, then blogs as fallback
+// Server-side data fetching - hits our proxy which handles news and blogs fallback
 async function getNewsArticle(id: string) {
-  const supabase = await createClient();
-  
-  // First try: Fetch from news table
-  const { data: news, error: newsError } = await supabase
-    .from("news")
-    .select(`
-      *,
-      category:categories(id, name, slug, color)
-    `)
-    .eq("id", id)
-    .single();
-
-  if (!newsError && news && news.status === 'published') {
-    return {
-      article: {
-        ...news,
-        type: 'news',
-        author_name: 'GR8 Team',
-        published_date: news.published_at || news.created_at,
-        content_parsed: typeof news.content === 'string' 
-          ? JSON.parse(news.content) 
-          : news.content,
-      }
-    };
+  try {
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    
+    // First try to fetch as news article
+    let res = await fetch(`${API_BASE}/api/v1/content/news/${id}`);
+    if (res.ok) {
+      const payload = await res.json();
+      // Transform news article to match NewsArticleView expectations
+      const article = {
+        id: payload.id,
+        title: payload.title,
+        slug: payload.slug || payload.id,
+        excerpt: payload.excerpt || payload.summary || "",
+        content_parsed: {
+          html: payload.content || payload.body || "",
+          plain: payload.content || payload.body || ""
+        },
+        cover_image: payload.featured_image || payload.image_url,
+        category: payload.categories?.[0] ? {
+          id: payload.categories[0].id,
+          name: payload.categories[0].name,
+          slug: payload.categories[0].slug,
+          color: payload.categories[0].color || "#3b82f6"
+        } : undefined,
+        author_name: payload.author?.username || payload.author_name || "GR8 Team",
+        author_avatar: payload.author?.avatar || undefined,
+        published_date: payload.published_at || payload.created_at,
+        reading_time_minutes: payload.reading_time || undefined,
+        source: payload.source || undefined,
+        source_url: payload.source_url || undefined,
+        views_count: payload.views_count || undefined,
+        type: 'news' as const
+      };
+      return { article };
+    }
+    
+    // If news fetch failed, try as blog post
+    res = await fetch(`${API_BASE}/api/v1/content/posts/${id}`);
+    if (res.ok) {
+      const payload = await res.json();
+      // Transform blog post to match NewsArticleView expectations
+      const article = {
+        id: payload.id,
+        title: payload.title,
+        slug: payload.slug || payload.id,
+        excerpt: payload.excerpt || payload.summary || "",
+        content_parsed: {
+          html: payload.content || payload.body || "",
+          plain: payload.content || payload.body || ""
+        },
+        cover_image: payload.featured_image || payload.image_url,
+        category: payload.categories?.[0] ? {
+          id: payload.categories[0].id,
+          name: payload.categories[0].name,
+          slug: payload.categories[0].slug,
+          color: payload.categories[0].color || "#3b82f6"
+        } : undefined,
+        author_name: payload.author?.username || payload.author_name || "GR8 Team",
+        author_avatar: payload.author?.avatar || undefined,
+        published_date: payload.published_at || payload.created_at,
+        reading_time_minutes: payload.reading_time || undefined,
+        source: payload.source || undefined,
+        source_url: payload.source_url || undefined,
+        views_count: payload.views_count || undefined,
+        type: 'blog' as const
+      };
+      return { article };
+    }
+    
+    return { article: null };
+  } catch (err) {
+    console.error("failed to fetch article", err);
+    return { article: null };
   }
-
-  // Fallback: Try blogs table
-  const { data: blog, error: blogError } = await supabase
-    .from("blogs")
-    .select(`
-      *,
-      category:categories(id, name, slug, color)
-    `)
-    .eq("id", id)
-    .single();
-
-  if (!blogError && blog && blog.status === 'published') {
-    return {
-      article: {
-        ...blog,
-        type: 'blog',
-        author_name: 'GR8 Team',
-        source: 'Blog',
-        published_date: blog.published_at || blog.created_at,
-        content_parsed: typeof blog.content === 'string' 
-          ? JSON.parse(blog.content) 
-          : blog.content,
-      }
-    };
-  }
-
-  return { article: null };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -73,9 +95,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  return {
-    title: `${article.title} - Budget Ndio Story`,
-    description: article.excerpt || article.seo_description || "",
+    return {
+      title: `${article.title} - Budget Ndio Story`,
+      description: article.excerpt || "",
     openGraph: {
       title: article.title,
       description: article.excerpt || "",

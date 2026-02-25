@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -43,12 +42,11 @@ export function LiveDiscussion({ newsId, newsTitle }: LiveDiscussionProps) {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(true); // assume connected without realtime
   const [error, setError] = useState<string | null>(null);
   const [isMinimized, setIsMinimized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const supabase = createClient();
 
   // Fetch initial messages and active users
   const fetchData = useCallback(async () => {
@@ -83,9 +81,8 @@ export function LiveDiscussion({ newsId, newsTitle }: LiveDiscussionProps) {
     fetchData();
   }, [fetchData]);
 
-  // Subscribe to real-time updates
+  // Manage active state and polling for active users
   useEffect(() => {
-    // Mark user as active
     const markActive = async () => {
       try {
         await fetch("/api/chat/active", {
@@ -93,90 +90,33 @@ export function LiveDiscussion({ newsId, newsTitle }: LiveDiscussionProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ news_id: newsId }),
         });
-      } catch (err) {
-        // Silently fail
-      }
+      } catch {} // ignore
     };
 
     markActive();
 
-    // Subscribe to new messages
-    const messagesChannel = supabase
-      .channel(`live-messages:${newsId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "chat_messages",
-          filter: `news_id=eq.${newsId}`,
-        },
-        (payload) => {
-          const newMsg = payload.new as ChatMessage;
-          setMessages((prev) => [...prev, newMsg]);
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "chat_messages",
-          filter: `news_id=eq.${newsId}`,
-        },
-        (payload) => {
-          const deletedMsg = payload.old as { id: string };
-          setMessages((prev) => prev.filter((m) => m.id !== deletedMsg.id));
-        }
-      )
-      .subscribe();
+    const heartbeat = setInterval(markActive, 30000);
 
-    // Subscribe to active users changes
-    const usersChannel = supabase
-      .channel(`live-users:${newsId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "chat_active_users",
-          filter: `news_id=eq.${newsId}`,
-        },
-        () => {
-          // Refresh active users
-          fetch("/api/chat/active-users?news_id=" + newsId)
-            .then((res) => res.json())
-            .then((result) => {
-              if (result.success) {
-                setActiveUsers(result.data || []);
-              }
-            })
-            .catch(() => {});
-        }
-      )
-      .subscribe();
-
-    setIsConnected(true);
-
-    // Heartbeat to stay active
-    const heartbeat = setInterval(() => {
-      markActive();
+    // periodic refresh of active users
+    const usersInterval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/chat/active-users?news_id=${newsId}`);
+        const result = await res.json();
+        if (result.success) setActiveUsers(result.data || []);
+      } catch {}
     }, 30000);
 
-    // Cleanup on unmount
     return () => {
       clearInterval(heartbeat);
-      supabase.removeChannel(messagesChannel);
-      supabase.removeChannel(usersChannel);
-      
-      // Mark user as inactive
+      clearInterval(usersInterval);
+      // mark inactive
       fetch("/api/chat/inactive", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ news_id: newsId }),
       }).catch(() => {});
     };
-  }, [newsId, supabase]);
+  }, [newsId]);
 
   // Auto-scroll to new messages
   useEffect(() => {

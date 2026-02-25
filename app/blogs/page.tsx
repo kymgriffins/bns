@@ -1,6 +1,12 @@
-import { redirect } from "next/navigation";
+import { Metadata } from "next";
+import { createClient } from "@/lib/supabase/server";
+import { BlogHub } from "@/components/blog-hub";
 
-export default function BlogsPage() {
-  // Redirect to /news as blogs are no longer used
-  redirect("/news");
+export const metadata: Metadata = {
+  title: "Blogs - Budget Ndio Story",
+  description: "Explore our blog posts covering budget insights, analysis, and stories from the community.",
+};
+
+export default async function BlogsPage() {
+  return <BlogHub />;
 }

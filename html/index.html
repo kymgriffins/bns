@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Budget Ndio Story - Kenyan budget transparency platform for young citizens. We turn national and county budgets into clear insights, practical analysis, and trackable evidence.">
+  <title>Budget Ndio Story - Follow the Budget. Find the Story.</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="min-h-screen bg-background">
+  
+  <!-- ==================== HEADER ==================== -->
+  <header class="site-header header header-transparent">
+    <div class="container">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+          <img src="/logo.svg" alt="Budget Ndio Story" class="h-10 w-auto">
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="main-nav hidden lg:flex items-center gap-1">
+          <a href="reports.html" class="nav-link">Budget Reports</a>
+          <a href="media-hub.html" class="nav-link">Media Hub</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="blogs.html" class="nav-link">Blogs</a>
+          <a href="about.html" class="nav-link">About</a>
+        </nav>
+
+        <!-- Desktop Actions -->
+        <div class="flex items-center gap-4">
+          <!-- Social Links -->
+          <div class="hidden lg:flex items-center gap-2">
+            <a href="https://www.facebook.com/profile.php?id=61586898487932" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/budgetndiostory" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/@BudgetNdioStory" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.tiktok.com/@budget.ndio.story" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://x.com/BudgetNdioStory" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-x-twitter"></i>
+            </a>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-sun icon-sun"></i>
+            <i class="fas fa-moon icon-moon" style="display: none;"></i>
+          </button>
+
+          <!-- Donate Button -->
+          <a href="subscribe.html" class="btn btn-donate btn-rounded-full hidden lg:flex items-center gap-2">
+            <span>DONATE!</span>
+            <i class="fas fa-arrow-up"></i>
+          </a>
+
+          <!-- Mobile Menu Toggle -->
+          <button class="nav-toggle lg:hidden" data-menu-toggle aria-label="Open menu">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="flex items-center justify-between p-6 border-b">
+      <a href="index.html">
+        <img src="/logo.svg" alt="Budget Ndio Story" class="h-10 w-32">
+      </a>
+      <button class="btn btn-ghost btn-icon" data-menu-close aria-label="Close menu">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-8 p-6">
+      <a href="reports.html" class="text-2xl font-semibold">Budget Reports</a>
+      <a href="media-hub.html" class="text-2xl font-semibold">Media Hub</a>
+      <a href="news.html" class="text-2xl font-semibold">News</a>
+      <a href="blogs.html" class="text-2xl font-semibold">Blogs</a>
+      <a href="about.html" class="text-2xl font-semibold">About</a>
+      <a href="subscribe.html" class="btn btn-donate btn-rounded-full mt-4">DONATE!</a>
+    </nav>
+  </div>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero relative overflow-hidden">
+    <div class="hero-background"></div>
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+    <div class="hero-content container relative z-10">
+      <h1 class="hero-title text-white animate-fade-in-up">
+        Follow the Budget.<br>
+        <span class="text-amber-300">Find the Story.</span>
+      </h1>
+      <p class="hero-subtitle text-white/90 animate-fade-in-up delay-100">
+        Kenya's budget transparency platform for young citizens. We turn national and county budgets into clear insights, practical analysis, and trackable evidence.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-200">
+        <a href="reports.html" class="btn btn-lg btn-rounded-full bg-white text-blue-600 hover:bg-gray-100">
+          <i class="fas fa-file-alt mr-2"></i>
+          Browse Reports
+        </a>
+        <a href="about.html" class="btn btn-lg btn-rounded-full border-2 border-white/30 text-white hover:bg-white/10">
+          Learn More
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <i class="fas fa-chevron-down text-white/60 text-xl"></i>
+    </div>
+  </section>
+
+  <!-- ==================== STATISTICS ==================== -->
+  <section class="section bg-secondary/20">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="stat-card">
+          <div class="stat-value" data-counter="500">500+</div>
+          <div class="stat-label">Budget Reports Analyzed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" data-counter="15000">15K+</div>
+          <div class="stat-label">Citizens Engaged</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" data-counter="47">47+</div>
+          <div class="stat-label">Countries Worldwide</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" data-counter="200">200+</div>
+          <div class="stat-label">Partner Organizations</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== HOW IT WORKS ==================== -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle mx-auto">Three simple steps to understand and engage with Kenya's budget</p>
+      </div>
+      
+      <div class="bento-grid">
+        <!-- Step 1 -->
+        <div class="step-card bento-card bento-card-accent-brand animate-fade-in-up">
+          <div class="step-number">01</div>
+          <div class="step-icon bg-brand-100">
+            <i class="fas fa-book-open text-brand-600 text-xl"></i>
+          </div>
+          <h3 class="step-title">Browse Reports</h3>
+          <p class="step-description">Explore simplified budget documents from national and county levels in plain language.</p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="step-card bento-card bento-card-accent-brand animate-fade-in-up delay-100">
+          <div class="step-number">02</div>
+          <div class="step-icon bg-brand-100">
+            <i class="fas fa-chart-bar text-brand-600 text-xl"></i>
+          </div>
+          <h3 class="step-title">Analyze Insights</h3>
+          <p class="step-description">Dive deep into sector analysis, track changes over time, and understand what it means for you.</p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="step-card bento-card bento-card-accent-orange animate-fade-in-up delay-200">
+          <div class="step-number">03</div>
+          <div class="step-icon bg-orange-100">
+            <i class="fas fa-hands-helping text-orange-600 text-xl"></i>
+          </div>
+          <h3 class="step-title">Take Action</h3>
+          <p class="step-description">Use templates, join trainings, and participate in budget processes to make your voice heard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURES ==================== -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="section-title">What You Can Do Today</h2>
+        <p class="section-subtitle mx-auto">Explore our tools designed to make budget information accessible and actionable</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <a href="reports.html" class="bento-card bento-card-accent-green card-hover block group">
+          <div class="mb-5 p-3 rounded-xl w-fit bg-green-100">
+            <i class="fas fa-file-alt text-green-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors">Simplified Reports</h3>
+          <p class="text-muted-foreground mb-5">Key takeaways from major budget documents—fast, clear, shareable.</p>
+          <div class="flex items-center gap-2 text-sm font-medium text-primary">
+            Browse Reports
+            <i class="fas fa-chevron-right transition-transform group-hover:translate-x-1"></i>
+          </div>
+        </a>
+        
+        <!-- Feature 2 -->
+        <a href="insights.html" class="bento-card bento-card-accent-brand card-hover block group">
+          <div class="mb-5 p-3 rounded-xl w-fit bg-brand-100">
+            <i class="fas fa-chart-pie text-brand-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors">Budget Analysis</h3>
+          <p class="text-muted-foreground mb-5">What changed, what it means, and what to watch—national, county, sector.</p>
+          <div class="flex items-center gap-2 text-sm font-medium text-primary">
+            Explore Analysis
+            <i class="fas fa-chevron-right transition-transform group-hover:translate-x-1"></i>
+          </div>
+        </a>
+        
+        <!-- Feature 3 -->
+        <a href="tracker.html" class="bento-card bento-card-accent-brand card-hover block group">
+          <div class="mb-5 p-3 rounded-xl w-fit bg-brand-100">
+            <i class="fas fa-map-marker-alt text-brand-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors">Budget Tracker</h3>
+          <p class="text-muted-foreground mb-5">Follow selected lines from allocation → release → delivery (where visible).</p>
+          <div class="flex items-center gap-2 text-sm font-medium text-primary">
+            Open Tracker
+            <i class="fas fa-chevron-right transition-transform group-hover:translate-x-1"></i>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TESTIMONIALS ==================== -->
+  <section class="section bg-gray-50">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="section-title">What People Say</h2>
+        <p class="section-subtitle mx-auto">Hear from citizens, partners, and stakeholders</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card card-body">
+          <div class="flex items-center gap-1 mb-4 text-amber-400">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="text-muted-foreground mb-4">"Budget Ndio Story helped me understand where my county's money goes. Now I can participate in budget hearings with confidence."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center">
+              <i class="fas fa-user text-brand-600"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-sm">Jane W.</p>
+              <p class="text-xs text-muted-foreground">Community Leader, Nakuru</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card card-body">
+          <div class="flex items-center gap-1 mb-4 text-amber-400">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="text-muted-foreground mb-4">"Their simplified briefs save us hours of analysis. Essential reading for anyone working in public finance in Kenya."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center">
+              <i class="fas fa-user text-brand-600"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-sm">David M.</p>
+              <p class="text-xs text-muted-foreground">Researcher, Nairobi</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card card-body">
+          <div class="flex items-center gap-1 mb-4 text-amber-400">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="text-muted-foreground mb-4">"Working with Budget Ndio Story has amplified our civic education efforts. Their content is accessible and engaging."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center">
+              <i class="fas fa-user text-brand-600"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-sm">Sarah K.</p>
+              <p class="text-xs text-muted-foreground">NGO Partner</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PARTNERS ==================== -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="section-title">Our Partners</h2>
+        <p class="text-muted-foreground max-w-xl mx-auto">We work with leading organizations to advance budget transparency and civic empowerment across Kenya and beyond.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <a href="https://continentalpot.africa" target="_blank" rel="noopener noreferrer" class="partner-card group">
+          <div class="relative h-16 w-40 mb-4 flex items-center justify-center">
+            <span class="text-lg font-bold text-gray-700 group-hover:text-green-600 transition-colors">The Continental Pot</span>
+          </div>
+        </a>
+        
+        <a href="https://colortwistmedia.co.ke" target="_blank" rel="noopener noreferrer" class="partner-card group">
+          <div class="relative h-16 w-40 mb-4 flex items-center justify-center">
+            <span class="text-lg font-bold text-gray-700 group-hover:text-green-600 transition-colors">Colour Twist Media</span>
+          </div>
+        </a>
+        
+        <a href="https://senmedia-events.co.ke" target="_blank" rel="noopener noreferrer" class="partner-card group">
+          <div class="relative h-16 w-40 mb-4 flex items-center justify-center">
+            <span class="text-lg font-bold text-gray-700 group-hover:text-green-600 transition-colors">Sen Media & Events</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SUPPORT OUR WORK ==================== -->
+  <section class="section bg-gradient-to-br from-brand-50 via-white to-gray-50">
+    <div class="container">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-100 text-brand-600 text-sm font-medium mb-6">
+          <i class="fas fa-heart"></i>
+          Support Our Work
+        </div>
+        <h2 class="section-title">Help Us Keep Kenya's Budget Transparent</h2>
+        <p class="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+          Budget Ndio Story is a youth-led initiative making budget information accessible to all Kenyans. 
+          Your support helps us continue this work—producing reports, training champions, and keeping government accountable.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="subscribe.html" class="btn btn-lg btn-primary btn-rounded-full">
+            <i class="fas fa-heart mr-2"></i>
+            Donate Now
+          </a>
+        </div>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+          <div class="flex items-center gap-2">
+            <i class="fas fa-globe"></i>
+            <span>We accept international donations</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-envelope"></i>
+            <span>Contact us for partnership: info@budgetndiostory.org</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LATEST REPORTS ==================== -->
+  <section class="section bg-secondary/20">
+    <div class="container">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+        <div>
+          <h2 class="section-title mb-2">Latest Reports</h2>
+          <p class="text-muted-foreground">Fresh budget insights and analysis</p>
+        </div>
+        <a href="reports.html" class="btn btn-outline btn-rounded-full">
+          View All Reports
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+      
+      <div class="bento-grid">
+        <a href="reports.html" class="bento-card bento-card-accent-brand card-hover block group">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="badge badge-brand">National</span>
+            <span class="text-xs text-muted-foreground">Feb 2025</span>
+          </div>
+          <h3 class="text-lg font-semibold mb-3 group-hover:text-primary transition-colors">FY 2025/26 Budget at a Glance</h3>
+          <p class="text-sm text-muted-foreground">Key highlights from the national budget reading</p>
+          <div class="mt-4 flex items-center gap-1 text-xs font-medium text-primary">
+            Read Brief <i class="fas fa-chevron-right text-xs"></i>
+          </div>
+        </a>
+        
+        <a href="reports.html" class="bento-card bento-card-accent-red card-hover block group">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="badge badge-red">Sector Analysis</span>
+            <span class="text-xs text-muted-foreground">Jan 2025</span>
+          </div>
+          <h3 class="text-lg font-semibold mb-3 group-hover:text-primary transition-colors">Health Sector Budget Analysis</h3>
+          <p class="text-sm text-muted-foreground">Where healthcare funding is going and what it means</p>
+          <div class="mt-4 flex items-center gap-1 text-xs font-medium text-primary">
+            Read Brief <i class="fas fa-chevron-right text-xs"></i>
+          </div>
+        </a>
+        
+        <a href="reports.html" class="bento-card bento-card-accent-orange card-hover block group">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="badge badge-orange">County</span>
+            <span class="text-xs text-muted-foreground">Dec 2024</span>
+          </div>
+          <h3 class="text-lg font-semibold mb-3 group-hover:text-primary transition-colors">Nairobi County Budget Brief</h3>
+          <p class="text-sm text-muted-foreground">Understanding the city budget for residents</p>
+          <div class="mt-4 flex items-center gap-1 text-xs font-medium text-primary">
+            Read Brief <i class="fas fa-chevron-right text-xs"></i>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== NEWSLETTER CTA ==================== -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-section">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Stay Informed</h2>
+        <p class="text-lg text-muted-foreground mb-8">
+          Get budget updates, participation windows, and training alerts delivered to your inbox.
+        </p>
+        <form class="subscribe-form max-w-md mx-auto">
+          <input type="email" placeholder="Enter your email" class="subscribe-form-input" required>
+          <button type="submit" class="btn btn-primary btn-lg btn-rounded-full">
+            Subscribe
+          </button>
+        </form>
+        <p class="text-xs text-muted-foreground mt-4">
+          No spam. Unsubscribe anytime.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <!-- Main Footer Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12">
+        <!-- Subscribe Block -->
+        <div class="lg:col-span-2">
+          <h3 class="text-2xl font-medium mb-2">Get budget updates</h3>
+          <p class="text-muted-foreground mb-4 max-w-md">
+            Reports, participation windows, and training alerts—straight to you.
+          </p>
+        </div>
+        
+        <!-- Navigation Links -->
+        <div class="flex flex-col">
+          <h3 class="text-lg font-medium uppercase tracking-wider mb-6">Explore</h3>
+          <div class="flex flex-col gap-3">
+            <a href="reports.html" class="footer-link">Reports</a>
+            <a href="insights.html" class="footer-link">Analysis</a>
+            <a href="tracker.html" class="footer-link">Tracker</a>
+            <a href="take-action.html" class="footer-link">Take Action</a>
+            <a href="learn.html" class="footer-link">Learn</a>
+          </div>
+        </div>
+        
+        <!-- More Links -->
+        <div class="flex flex-col">
+          <h3 class="text-lg font-medium uppercase tracking-wider mb-6">More</h3>
+          <div class="flex flex-col gap-3 mb-6">
+            <a href="news.html" class="footer-link">News</a>
+            <a href="blogs.html" class="footer-link">Blogs</a>
+            <a href="about.html" class="footer-link">About</a>
+            <a href="about.html" class="footer-link">Contact</a>
+          </div>
+          <div class="pt-4 border-t border-border">
+            <p class="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Transparency</p>
+            <div class="flex flex-col gap-2">
+              <a href="accuracy.html" class="footer-link text-xs">Accuracy Commitment</a>
+              <a href="corrections.html" class="footer-link text-xs">Corrections</a>
+              <a href="sources.html" class="footer-link text-xs">Sources</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="flex flex-col">
+          <h3 class="text-lg font-medium uppercase tracking-wider mb-6">Contact</h3>
+          <div class="flex flex-col gap-4 mb-6">
+            <div class="flex items-start gap-3">
+              <i class="fas fa-envelope text-muted-foreground mt-1"></i>
+              <div>
+                <p class="text-xs text-muted-foreground">Email</p>
+                <a href="mailto:info@budgetndiostory.org" class="text-sm hover:text-primary">info@budgetndiostory.org</a>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <i class="fas fa-phone text-muted-foreground mt-1"></i>
+              <div>
+                <p class="text-xs text-muted-foreground">Phone</p>
+                <a href="tel:+254711106814" class="text-sm hover:text-primary">+254711106814</a>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <i class="fas fa-map-marker-alt text-muted-foreground mt-1"></i>
+              <div>
+                <p class="text-xs text-muted-foreground">Location</p>
+                <p class="text-sm">Nairobi, Kenya</p>
+              </div>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-border">
+            <p class="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Follow Us</p>
+            <div class="flex flex-wrap gap-4">
+              <a href="https://www.facebook.com/profile.php?id=61586898487932" target="_blank" rel="noopener noreferrer" class="footer-link">Facebook</a>
+              <a href="https://www.tiktok.com/@budget.ndio.story" target="_blank" rel="noopener noreferrer" class="footer-link">TikTok</a>
+              <a href="https://www.instagram.com/budgetndiostory" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a>
+              <a href="https://x.com/BudgetNdioStory" target="_blank" rel="noopener noreferrer" class="footer-link">X</a>
+              <a href="https://www.youtube.com/@BudgetNdioStory" target="_blank" rel="noopener noreferrer" class="footer-link">YouTube</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        <div class="flex flex-col md:flex-row items-center gap-4">
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-muted-foreground">Powered by</span>
+            <span class="text-sm font-medium">Budget Ndio Story</span>
+          </div>
+          <div class="hidden md:block w-px h-4 bg-gray-300"></div>
+          <p class="text-muted-foreground">Follow the Budget. Find the Story.</p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <p class="text-sm text-muted-foreground">© 2026 budgetndiostory.org</p>
+          <div class="flex items-center gap-4">
+            <a href="privacy.html" class="footer-link">Privacy</a>
+            <a href="terms.html" class="footer-link">Terms</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all hover:bg-primary-dark no-print">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+</body>
+</html>

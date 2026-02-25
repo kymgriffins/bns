@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { createClient } from "@/lib/supabase/client";
+import { logout } from "@/lib/api";
 import {
   CircleUserRound,
   CreditCard,
@@ -98,8 +98,8 @@ const UserDropdown = ({
   const handleLogout = async () => {
     setIsLoading(true);
     try {
-      const supabase = createClient();
-      await supabase.auth.signOut();
+      await logout();
+      // clear local auth state if using context/provider
       router.push("/auth/login");
       router.refresh();
     } catch (error) {

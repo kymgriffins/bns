@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getNews, getCategories, fetchAPI } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -105,7 +105,6 @@ const initialFormData: NewsFormData = {
 };
 
 export default function NewsManagementClient() {
-  const supabase = createClient();
   const [newsItems, setNewsItems] = useState<News[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -128,16 +127,8 @@ export default function NewsManagementClient() {
   const fetchNews = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("news")
-        .select(`
-          *,
-          category:categories(id, name, slug, color)
-        `)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setNewsItems(data || []);
+      const res = await getNews();
+      setNewsItems(res.results || []);
     } catch (error) {
       console.error("Error fetching news:", error);
     } finally {
@@ -147,14 +138,8 @@ export default function NewsManagementClient() {
 
   const fetchCategories = async () => {
     try {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("id, name, slug, color")
-        .eq("is_active", true)
-        .order("sort_order");
-
-      if (error) throw error;
-      setCategories(data || []);
+      const cats = await getCategories();
+      setCategories(cats || []);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -198,28 +183,17 @@ export default function NewsManagementClient() {
       };
 
       if (editingNews) {
-        const { error } = await supabase
-          .from("news")
-          .update(newsData)
-          .eq("id", editingNews.id);
-
-        if (error) throw error;
+        await fetchAPI('/api/v1/content/news/', {
+          method: 'PUT',
+          body: JSON.stringify({ id: editingNews.id, ...newsData }),
+        });
+        successToast("News updated successfully");
       } else {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
-          throw new Error("User not authenticated");
-        }
-        
-        // author_id references auth.users(id), not user_profiles
-        const { error } = await supabase
-          .from("news")
-          .insert({
-            ...newsData,
-            author_id: user.id,
-          });
-
-        if (error) throw error;
+        await fetchAPI('/api/v1/content/news/', {
+          method: 'POST',
+          body: JSON.stringify(newsData),
+        });
+        successToast("News created successfully");
       }
 
       setIsDialogOpen(false);
@@ -267,8 +241,7 @@ export default function NewsManagementClient() {
     
     setDeleting(id);
     try {
-      const { error } = await supabase.from("news").delete().eq("id", id);
-      if (error) throw error;
+      await fetchAPI(`/api/v1/content/news/?id=${id}`, { method: 'DELETE' });
       fetchNews();
       successToast("News article deleted successfully");
     } catch (error) {

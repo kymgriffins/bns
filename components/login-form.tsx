@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
+import { login } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,17 +31,12 @@ export function LoginForm({
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
     setIsLoading(true);
     setError(null);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      // Redirect to the intended URL or default
+      await login(email, password);
+      // if login succeeds the backend should have set a session cookie
       router.push(defaultRedirectUrl);
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");

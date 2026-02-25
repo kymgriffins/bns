@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { NewsHub } from "@/components/news-hub";
-import { createClient } from "@/lib/supabase/server";
 import { Loader2 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -9,90 +8,66 @@ export const metadata: Metadata = {
   description: "Stories, videos, and updates. Built for clarity and action.",
 };
 
-// Server-side data fetching
+// Server-side data fetching via our own proxy endpoint
 async function getNewsData() {
-  const supabase = await createClient();
-
-  // Fetch published news
-  const { data: news, error: newsError } = await supabase
-    .from('news')
-    .select(`
-      *,
-      category:categories(id, name, slug, color)
-    `)
-    .eq('status', 'published')
-    .order('published_at', { ascending: false })
-    .limit(50);
-
-  // Fetch published blogs as well
-  const { data: blogs, error: blogsError } = await supabase
-    .from('blogs')
-    .select(`
-      *,
-      category:categories(id, name, slug, color)
-    `)
-    .eq('status', 'published')
-    .order('published_at', { ascending: false })
-    .limit(50);
-
-  if (newsError) {
-    console.error('Error fetching news:', newsError);
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  
+  // Fetch all pages to get all news items
+  let allStories: any[] = [];
+  let page = 1;
+  const pageSize = 100; // Fetch 100 items per page to reduce API calls
+  
+  try {
+    while (true) {
+      const res = await fetch(`${API_BASE}/api/v1/content/news/?page=${page}&page_size=${pageSize}`, { cache: 'no-store' });
+      if (!res.ok) {
+        console.error('Failed to fetch news data');
+        break;
+      }
+      
+      const data = await res.json();
+      const results = data.results || [];
+      
+      if (results.length === 0) {
+        break; // No more results
+      }
+      
+      allStories = allStories.concat(results);
+      
+      // If we got fewer results than requested, we've reached the end
+      if (results.length < pageSize) {
+        break;
+      }
+      
+      page++;
+      
+      // Safety limit to prevent infinite loops
+      if (page > 10) {
+        console.warn('Reached page limit, stopping fetch');
+        break;
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching news data:', error);
   }
-  if (blogsError) {
-    console.error('Error fetching blogs:', blogsError);
-  }
-
-  // Map news to stories format
-  const newsStories = (news || []).map((item: any) => ({
+  
+  // Transform the API response to match NewsHub expectations
+  const stories = allStories.map((item: any) => ({
     id: item.id,
     title: item.title,
-    category: item.category?.name || 'News',
-    date: item.published_at ? new Date(item.published_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }) : new Date(item.created_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }),
+    category: item.categories?.[0]?.name || 'News',
+    date: item.published_at || item.created_at,
     excerpt: item.excerpt || '',
-    author: 'GR8 Team',
-    image_url: item.cover_image,
+    author: item.author?.username || 'GR8 Team',
+    image_url: item.featured_image,
     is_featured: item.is_featured || false,
     source_type: 'news',
   }));
 
-  // Map blogs to stories format
-  const blogStories = (blogs || []).map((item: any) => ({
-    id: item.id,
-    title: item.title,
-    category: item.category?.name || 'Blog',
-    date: item.published_at ? new Date(item.published_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }) : new Date(item.created_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }),
-    excerpt: item.excerpt || '',
-    author: 'GR8 Team',
-    image_url: item.cover_image,
-    is_featured: item.is_featured || false,
-    source_type: 'blog',
-  }));
-
-  // Combine news and blogs, then sort by date (most recent first)
-  const allStories = [...newsStories, ...blogStories].sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
-
   return {
-    stories: allStories,
-    videos: [],
-    updates: []
+    stories,
+    videos: [], // No videos from this endpoint
+    updates: [] // No updates from this endpoint
   };
 }
 

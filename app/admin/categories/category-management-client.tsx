@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getCategories, fetchAPI } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -82,7 +82,6 @@ const colorOptions = [
 ];
 
 export default function CategoryManagementClient() {
-  const supabase = createClient();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -103,13 +102,8 @@ export default function CategoryManagementClient() {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*")
-        .order("sort_order");
-
-      if (error) throw error;
-      setCategories(data || []);
+      const cats = await getCategories();
+      setCategories(cats || []);
     } catch (error) {
       console.error("Error fetching categories:", error);
     } finally {
@@ -148,18 +142,17 @@ export default function CategoryManagementClient() {
       };
 
       if (editingCategory) {
-        const { error } = await supabase
-          .from("categories")
-          .update(categoryData)
-          .eq("id", editingCategory.id);
-
-        if (error) throw error;
+        await fetchAPI('/api/categories', {
+          method: 'PUT',
+          body: JSON.stringify({ id: editingCategory.id, ...categoryData }),
+        });
+        successToast("Category updated successfully");
       } else {
-        const { error } = await supabase
-          .from("categories")
-          .insert(categoryData);
-
-        if (error) throw error;
+        await fetchAPI('/api/categories', {
+          method: 'POST',
+          body: JSON.stringify(categoryData),
+        });
+        successToast("Category created successfully");
       }
 
       setIsDialogOpen(false);
@@ -201,8 +194,7 @@ export default function CategoryManagementClient() {
     
     setDeleting(id);
     try {
-      const { error } = await supabase.from("categories").delete().eq("id", id);
-      if (error) throw error;
+      await fetchAPI(`/api/categories?id=${id}`, { method: 'DELETE' });
       fetchCategories();
       successToast("Category deleted successfully");
     } catch (error) {

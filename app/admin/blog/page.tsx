@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-import { createClient } from "@/lib/supabase/server";
-import { createLoginRedirectUrl } from "@/lib/auth-redirect";
 import AppSidebar from "@/components/shadcn-space/blocks/dashboard-shell-01/app-sidebar";
 import BlogManagementClient from "./blog-management-client";
 import { Loader2 } from "lucide-react";
@@ -10,14 +8,19 @@ import { Loader2 } from "lucide-react";
 // Force dynamic rendering to avoid prerender issues with auth
 export const dynamic = 'force-dynamic';
 
+import { getCurrentUser } from "@/lib/serverAuth";
+
+// Helper to fetch current user from proxy route
+async function fetchCurrentUser() {
+  return getCurrentUser();
+}
+
 // Wrapper that handles auth and Suspense
 async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data?.user) {
-    const loginUrl = createLoginRedirectUrl("/admin");
-    redirect(loginUrl);
+  const user = await fetchCurrentUser();
+  if (!user || user.error) {
+    // redirect to login; preserve requested URL
+    redirect(`/auth/login?next=/admin`);
   }
 
   return (

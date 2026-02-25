@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" fill="none">
+  <!-- Background shape -->
+  <rect width="200" height="50" fill="white" rx="4"/>
+  
+  <!-- "Budget" text -->
+  <text x="10" y="32" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#1a1a2e">
+    Budget
+  </text>
+  
+  <!-- "Ndio" in brand blue -->
+  <text x="75" y="32" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#3b82f6">
+    Ndio
+  </text>
+  
+  <!-- "Story" text -->
+  <text x="125" y="32" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#1a1a2e">
+    Story
+  </text>
+  
+  <!-- Small decorative dot -->
+  <circle cx="188" cy="25" r="4" fill="#f59e0b"/>
+</svg>

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { createClient } from "@/lib/supabase/server";
 import { createLoginRedirectUrl } from "@/lib/auth-redirect";
+import { getCurrentUser } from "@/lib/serverAuth";
 import AppSidebar from "@/components/shadcn-space/blocks/dashboard-shell-01/app-sidebar";
 import StatisticsBlock from "@/components/shadcn-space/blocks/dashboard-shell-01/statistics";
 import TopProductTable from "@/components/shadcn-space/blocks/dashboard-shell-01/top-product-table";
@@ -9,15 +9,11 @@ import SalesByCountryWidget from "@/components/shadcn-space/blocks/dashboard-she
 import { Suspense } from "react";
 
 async function AuthCheck({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data?.user) {
-    // Capture the current path for redirect after login
+  const user = await getCurrentUser();
+  if (!user) {
     const loginUrl = createLoginRedirectUrl("/admin");
     redirect(loginUrl);
   }
-
   return <>{children}</>;
 }
 

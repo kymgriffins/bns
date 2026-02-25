@@ -9,7 +9,7 @@ import { NavMain } from "@/components/shadcn-space/blocks/dashboard-shell-01/nav
 import { AlignStartVertical, BarChart3, CircleUserRound, ClipboardList, Languages, LucideIcon, Notebook, NotepadText, Table, Ticket, ChevronLeft, ChevronRight, FileText, Folder, Newspaper } from "lucide-react";
 import { SiteHeader } from "@/components/shadcn-space/blocks/dashboard-shell-01/site-header";
 import { type User } from "@/components/shadcn-space/blocks/dashboard-shell-01/user-dropdown";
-import { createClient } from "@/lib/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
 export type NavItem = {
@@ -52,47 +52,8 @@ function SidebarLayout({ children }: { children: React.ReactNode }) {
   const { state, isMobile, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
   
-  // Get user data
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-      const fetchUser = async () => {
-          const supabase = createClient();
-          const { data: { user: supabaseUser } } = await supabase.auth.getUser();
-          
-          if (supabaseUser) {
-              setUser({
-                  id: supabaseUser.id,
-                  email: supabaseUser.email || "",
-                  user_metadata: supabaseUser.user_metadata as User["user_metadata"],
-              });
-          } else {
-              setUser(null);
-          }
-          setLoading(false);
-      };
-
-      fetchUser();
-
-      // Listen for auth changes
-      const supabase = createClient();
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-          if (session?.user) {
-              setUser({
-                  id: session.user.id,
-                  email: session.user.email || "",
-                  user_metadata: session.user.user_metadata as User["user_metadata"],
-              });
-          } else {
-              setUser(null);
-          }
-      });
-
-      return () => {
-          subscription.unsubscribe();
-      };
-  }, []);
+  // Use auth context for user
+  const { user, loading } = useAuth();
 
   if (isMobile) {
     // On mobile, show sidebar as drawer with SiteHeader

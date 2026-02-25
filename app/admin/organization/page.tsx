@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import type { OrganizationProfile, OrganizationProfileUpdate } from "@/types/organization";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -62,14 +62,20 @@ function FormSkeleton() {
   );
 }
 
-// Auth check component
-async function AuthCheck({ children }: { children: React.ReactNode }) {
-  const supabase = createClient();
-  const { data, error } = await supabase.auth.getUser();
+// Auth check component (client-side)
+function AuthCheck({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
+  const router = useRouter();
 
-  if (error || !data?.user) {
-    redirect('/auth/login?redirect=/admin/organization');
-  }
+  useEffect(() => {
+    if (user === null) {
+      // not authenticated, redirect to login
+      router.push('/auth/login?redirect=/admin/organization');
+    }
+  }, [user, router]);
+
+  // while user is undefined (still loading) or null (redirecting) we can render nothing
+  if (!user) return null;
 
   return <>{children}</>;
 }

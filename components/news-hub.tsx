@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Sparkles
 } from "lucide-react";
+import { getNews, getBlogPosts } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 
 // Types for news data
@@ -107,11 +108,46 @@ export function NewsHub({ initialData }: NewsHubProps) {
 
     async function fetchNews() {
       try {
-        const response = await fetch("/api/news", { cache: "no-store" });
-        if (response.ok) {
-          const data = await response.json();
-          setNewsData(data);
-        }
+        // the backend exposes separate endpoints for "news" and "posts";
+        // we fetch each and merge into the shape that the component expects.
+        const [newsResp, blogResp] = await Promise.all([
+          getNews(1, 50),
+          getBlogPosts(1, 50),
+        ]);
+
+        const newsStories = (newsResp.results || []).map((item) => ({
+          id: item.id,
+          title: item.title,
+          category: item.categories?.[0]?.name || 'News',
+          date: item.published_at || item.created_at,
+          excerpt: item.excerpt || '',
+          author: item.author?.username || 'GR8 Team',
+          image_url: item.featured_image,
+          is_featured: item.is_featured || false,
+          source: item.source,
+          source_url: item.source_url,
+          source_type: 'news',
+        }));
+
+        const blogStories = (blogResp.results || []).map((item) => ({
+          id: item.id,
+          title: item.title,
+          category: item.categories?.[0]?.name || 'Blog',
+          date: item.published_at || item.created_at,
+          excerpt: item.excerpt || '',
+          author: item.author?.username || 'GR8 Team',
+          image_url: item.featured_image,
+          is_featured: item.is_featured || false,
+          source: item.source,
+          source_url: item.source_url,
+          source_type: 'blog',
+        }));
+
+        const allStories = [...newsStories, ...blogStories].sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+
+        setNewsData({ stories: allStories, videos: [], updates: [] });
       } catch (error) {
         console.error("Failed to fetch news:", error);
       } finally {

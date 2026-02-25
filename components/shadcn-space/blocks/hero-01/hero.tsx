@@ -1,12 +1,12 @@
 "use client";
 
-import { Instrument_Serif } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-const instrumentSerif = Instrument_Serif({
+const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   weight: ["400"],
   style: ["italic"],
@@ -56,7 +56,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
                 >
                   Follow the Budget.{" "}
                   <span
-                    className={`${instrumentSerif.className} tracking-tight text-brand-300`}
+                    className={`${playfairDisplay.className} tracking-tight text-brand-300`}
                   >
                   <br/>Find the Story.
                   </span>

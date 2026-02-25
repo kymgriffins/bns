@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,7 +34,7 @@ export function NewsComments({ newsId }: { newsId: string }) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const { user } = useAuth();
   const [newComment, setNewComment] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
@@ -43,16 +43,6 @@ export function NewsComments({ newsId }: { newsId: string }) {
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
   const [showAllComments, setShowAllComments] = useState(false);
   const commentsEndRef = useRef<HTMLDivElement>(null);
-  const supabase = createClient();
-
-  // Fetch user
-  useEffect(() => {
-    async function fetchUser() {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-    }
-    fetchUser();
-  }, [supabase]);
 
   // Fetch comments
   const fetchComments = useCallback(async () => {
@@ -82,41 +72,8 @@ export function NewsComments({ newsId }: { newsId: string }) {
     fetchComments();
   }, [fetchComments]);
 
-  // Subscribe to real-time comments
-  useEffect(() => {
-    const channel = supabase
-      .channel(`comments:${newsId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "comments",
-          filter: `news_id=eq.${newsId}`,
-        },
-        (payload) => {
-          // Fetch the new comment with user info
-          fetchComments();
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "comments",
-          filter: `news_id=eq.${newsId}`,
-        },
-        (payload) => {
-          fetchComments();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [newsId, supabase, fetchComments]);
+  // realtime subscription removed; relies on manual refresh for now
+  // (could be implemented using websockets or SSE via backend)
 
   // Auto-scroll to new comments
   useEffect(() => {
