@@ -251,7 +251,7 @@ export function NewsComments({ newsId }: { newsId: string }) {
       <CardContent className="pt-4">
         {/* Error message */}
         {error && (
-          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-sm">
+          <div className="mb-4 p-3 bg-neutral-50 dark:bg-neutral-900/20 text-neutral-600 dark:text-neutral-400 rounded-lg text-sm">
             {error}
           </div>
         )}
@@ -483,7 +483,7 @@ function CommentItem({
                   </button>
                   <button
                     onClick={onDelete}
-                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-neutral-600 transition-colors opacity-0 group-hover:opacity-100"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                     Delete

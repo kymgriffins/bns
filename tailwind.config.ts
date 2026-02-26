@@ -1,5 +1,10 @@
 import type { Config } from "tailwindcss";
 
+/* ==========================================================================
+   Apple HIG Tailwind Configuration
+   Colors: Black, White, Blue only (plus neutral grays)
+   ========================================================================== */
+
 export default {
   darkMode: ["class"],
   content: [
@@ -11,19 +16,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          DEFAULT: "#364FAB",
-          50: "#EEF1FA",
-          100: "#D5DBF2",
-          200: "#ABB7E5",
-          300: "#8193D8",
-          400: "#576FCB",
-          500: "#364FAB",
-          600: "#2B3F89",
-          700: "#203067",
-          800: "#162044",
-          900: "#0B1022",
+        /* Core Brand Colors - Apple HIG: Black, White, Blue Only */
+        black: "#000000",
+        white: "#ffffff",
+        blue: "#007AFF",
+        
+        /* Neutral Grays - Only allowed grayscale */
+        neutral: {
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0a0a0a',
         },
+        
+        /* Semantic tokens using CSS variables */
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -65,15 +78,31 @@ export default {
           "5": "hsl(var(--chart-5))",
         },
       },
+      
+      /* Clean border radius - Apple HIG standard */
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      
+      /* Typography - Founders Grotesk + Neue Montreal */
       fontFamily: {
         "founders-grotesk": ["FoundersGrotesk", "sans-serif"],
         "neue-montreal": ["NeueMontreal", "sans-serif"],
-        sans: ["var(--font-neue-montreal)", "sans-serif"],
+        sans: ["var(--font-neue-montreal)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      },
+      
+      /* Spacing for white space - Apple HIG */
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+      },
+      
+      /* Animation durations - Subtle motion for Depth */
+      transitionDuration: {
+        '250': '250ms',
+        '350': '350ms',
       },
     },
   },

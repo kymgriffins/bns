@@ -65,7 +65,7 @@ export default function DonationPage() {
       /> */}
 
       {/* Premium Banner */}
-      <section className="py-2 px-4 bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-950/30 dark:via-yellow-950/30 dark:to-orange-950/30 border-b border-amber-200/50">
+      <section className="py-2 px-4 bg-neutral-100 dark:bg-neutral-900 border-b border-border">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-3 ">
             <Sparkles className="w-5 h-5 animate-pulse" />
@@ -222,7 +222,7 @@ export default function DonationPage() {
                 </div>
               </div>
 
-              <Button size="lg" className="w-full h-14 text-lg bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-amber-950 font-bold rounded-xl shadow-lg shadow-amber-500/25">
+              <Button size="lg" className="w-full h-14 text-lg bg-blue text-white font-bold rounded-xl">
                 <Heart className="w-5 h-5 mr-2" />
                 Complete Donation
               </Button>
@@ -264,7 +264,7 @@ export default function DonationPage() {
                     ))}
                   </div>
 
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border border-amber-200">
+                  <div className="p-4 rounded-xl bg-blue/5 border border-border">
                     <div className="flex items-start gap-3">
                       <Star className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                       <div>
@@ -361,7 +361,7 @@ export default function DonationPage() {
                 </div>
               </div>
 
-              <Button size="lg" className="w-full h-14 text-lg bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-amber-950 font-bold rounded-xl shadow-lg shadow-amber-500/25">
+              <Button size="lg" className="w-full h-14 text-lg bg-blue text-white font-bold rounded-xl">
                 <Crown className="w-5 h-5 mr-2" />
                 Become a Monthly Supporter
               </Button>
@@ -392,7 +392,7 @@ export default function DonationPage() {
               </Button>
             </Link>
             <Link href="/about">
-              <Button size="lg" className="rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-amber-950">
+              <Button size="lg" className="rounded-xl bg-blue text-white">
                 Learn More About Us
               </Button>
             </Link>

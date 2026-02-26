@@ -36,13 +36,13 @@ export function DebugBlogData() {
   }, []);
 
   return (
-    <div className="p-4 border rounded-lg bg-gray-50">
+    <div className="p-4 border rounded-lg bg-neutral-50">
       <h2 className="text-lg font-bold mb-2">Debug Blog Data</h2>
-      {error && <p className="text-red-500">Error: {error}</p>}
+      {error && <p className="text-neutral-600">Error: {error}</p>}
       {data ? (
         <div>
-          <p className="text-sm text-gray-600 mb-2">Total posts: {data.count}</p>
-          <p className="text-sm text-gray-600 mb-2">Results length: {data.results?.length || 0}</p>
+          <p className="text-sm text-neutral-600 mb-2">Total posts: {data.count}</p>
+          <p className="text-sm text-neutral-600 mb-2">Results length: {data.results?.length || 0}</p>
           {data.results && data.results.length > 0 && (
             <div className="space-y-2">
               <h3 className="font-semibold">First post:</h3>
@@ -53,7 +53,7 @@ export function DebugBlogData() {
           )}
         </div>
       ) : (
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-neutral-500">Loading...</p>
       )}
     </div>
   );

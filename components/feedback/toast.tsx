@@ -17,11 +17,11 @@ const ToastIcon = ({ type }: { type: ToastVariant }) => {
 
   switch (type) {
     case 'success':
-      return <CheckCircle {...iconProps} className={cn(iconProps.className, 'text-green-500')} />;
+      return <CheckCircle {...iconProps} className={cn(iconProps.className, 'text-blue-500')} />;
     case 'error':
-      return <XCircle {...iconProps} className={cn(iconProps.className, 'text-red-500')} />;
+      return <XCircle {...iconProps} className={cn(iconProps.className, 'text-neutral-600')} />;
     case 'warning':
-      return <AlertTriangle {...iconProps} className={cn(iconProps.className, 'text-yellow-500')} />;
+      return <AlertTriangle {...iconProps} className={cn(iconProps.className, 'text-neutral-500')} />;
     case 'info':
     default:
       return <Info {...iconProps} className={cn(iconProps.className, 'text-blue-500')} />;
@@ -33,16 +33,16 @@ const ToastIcon = ({ type }: { type: ToastVariant }) => {
 // =============================================================================
 
 const toastStyles = {
-  success: 'bg-green-50 border-green-200 dark:bg-green-950/30 dark:border-green-800',
-  error: 'bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-800',
-  warning: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950/30 dark:border-yellow-800',
+  success: 'bg-neutral-50 border-neutral-200 dark:bg-neutral-950/30 dark:border-neutral-800',
+  error: 'bg-neutral-50 border-neutral-200 dark:bg-neutral-950/30 dark:border-neutral-800',
+  warning: 'bg-neutral-50 border-neutral-200 dark:bg-neutral-950/30 dark:border-neutral-800',
   info: 'bg-blue-50 border-blue-200 dark:bg-blue-950/30 dark:border-blue-800',
 };
 
 const toastIconStyles = {
-  success: 'text-green-600 dark:text-green-400',
-  error: 'text-red-600 dark:text-red-400',
-  warning: 'text-yellow-600 dark:text-yellow-400',
+  success: 'text-blue-600 dark:text-blue-400',
+  error: 'text-neutral-600 dark:text-neutral-400',
+  warning: 'text-neutral-500 dark:text-neutral-400',
   info: 'text-blue-600 dark:text-blue-400',
 };
 

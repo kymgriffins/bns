@@ -12,37 +12,22 @@ export interface BorderFrameProps {
   children: ReactNode;
   className?: string;
   variant?: 'classic' | 'accent' | 'minimal' | 'bracket' | 'dot' | 'line' | 'corner' | 'dashed';
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'default';
+  accentColor?: 'blue' | 'neutral' | 'default';
   animated?: boolean;
   hoverEffect?: boolean;
 }
 
-// Color mapping for accent colors
+// Color mapping - White, Blue, Neutral Gray, Black only
 const accentColorMap = {
-  green: {
-    light: 'border-[#00aa55]',
-    dark: 'dark:border-[#00cc66]',
-    glow: 'shadow-[0_0_20px_rgba(0,170,85,0.15)]',
-  },
-  red: {
-    light: 'border-[#ff2f55]',
-    dark: 'dark:border-[#ff4d6d]',
-    glow: 'shadow-[0_0_20px_rgba(255,47,85,0.15)]',
-  },
   blue: {
     light: 'border-blue-600',
     dark: 'dark:border-blue-400',
-    glow: 'shadow-[0_0_20px_rgba(37,99,235,0.15)]',
+    glow: 'shadow-[0_0_20px_rgba(0,122,255,0.15)]',
   },
-  orange: {
-    light: 'border-orange-600',
-    dark: 'dark:border-orange-400',
-    glow: 'shadow-[0_0_20px_rgba(234,88,12,0.15)]',
-  },
-  teal: {
-    light: 'border-teal-700',
-    dark: 'dark:border-teal-500',
-    glow: 'shadow-[0_0_20px_rgba(20,91,82,0.15)]',
+  neutral: {
+    light: 'border-neutral-600',
+    dark: 'dark:border-neutral-400',
+    glow: 'shadow-[0_0_20px_rgba(115,115,115,0.15)]',
   },
   default: {
     light: 'border-border',

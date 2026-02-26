@@ -183,10 +183,10 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10"></div>
+        <div className="absolute inset-0 bg-blue/5"></div>
         <div className="container mx-auto px-4 relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <div className="max-w-4xl mx-auto text-center section-hig-blur p-8">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
               Insights & Stories
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">

@@ -190,7 +190,7 @@ export function BlogPostView({ post }: BlogPostViewProps) {
             <article>
               {/* Premium Badge */}
               {post.is_premium && (
-                <Badge className="mb-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold">
+                <Badge className="mb-4 bg-blue text-white font-semibold">
                   <Crown className="h-4 w-4 mr-2" />
                   Premium Content
                 </Badge>
@@ -396,7 +396,7 @@ export function BlogPostView({ post }: BlogPostViewProps) {
                   variant="outline" 
                   size="sm"
                   onClick={handleLike}
-                  className={cn(isLiked && "text-red-500")}
+                  className={cn(isLiked && "text-blue-500")}
                 >
                   <Heart className={cn("h-4 w-4 mr-2", isLiked && "fill-current")} />
                   {likeCount}
@@ -483,7 +483,7 @@ export function BlogPostView({ post }: BlogPostViewProps) {
 
               {/* Featured Badge */}
               {post.is_featured && (
-                <div className="mb-8 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-lg">
+                <div className="mb-8 p-4 bg-blue/10 border border-blue/20 rounded-lg">
                   <div className="flex items-center gap-3">
                     <Award className="h-6 w-6 text-primary" />
                     <div>

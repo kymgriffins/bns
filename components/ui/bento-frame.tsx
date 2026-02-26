@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 
 // =============================================================================
 // Bento-Style Card Components - Curved, Clean, Modern Design
+// Using White, Blue, Neutral Gray, Black Only
 // =============================================================================
 
 export interface BentoCardProps {
@@ -13,60 +14,25 @@ export interface BentoCardProps {
   className?: string;
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   hover?: boolean;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'brand' | 'default';
+  accentColor?: 'blue' | 'neutral' | 'default';
   size?: 'default' | 'small' | 'large' | 'wide' | 'tall';
 }
 
-// Color mapping for accent colors
+// Color mapping - White, Blue, Neutral Gray, Black only
 const accentColorMap = {
-  green: {
-    bg: 'bg-green-50 dark:bg-green-950/30',
-    border: 'border-green-200 dark:border-green-800',
-    hover: 'hover:border-green-300 dark:hover:border-green-700',
-    glow: 'hover:shadow-green-500/10',
-    text: 'text-green-600 dark:text-green-400',
-  },
-  red: {
-    bg: 'bg-red-50 dark:bg-red-950/30',
-    border: 'border-red-200 dark:border-red-800',
-    hover: 'hover:border-red-300 dark:hover:border-red-700',
-    glow: 'hover:shadow-red-500/10',
-    text: 'text-red-600 dark:text-red-400',
-  },
   blue: {
-    bg: 'bg-brand-50 dark:bg-brand-900/30',
-    border: 'border-brand-200 dark:border-brand-800',
-    hover: 'hover:border-brand-300 dark:hover:border-brand-700',
-    glow: 'hover:shadow-brand-500/10',
-    text: 'text-brand-500 dark:text-brand-300',
+    bg: 'bg-blue-50 dark:bg-blue-950/30',
+    border: 'border-neutral-200 dark:border-neutral-800',
+    hover: 'hover:border-blue-300 dark:hover:border-blue-700',
+    glow: 'hover:shadow-blue-500/10',
+    text: 'text-blue-600 dark:text-blue-400',
   },
-  orange: {
-    bg: 'bg-orange-50 dark:bg-orange-950/30',
-    border: 'border-orange-200 dark:border-orange-800',
-    hover: 'hover:border-orange-300 dark:hover:border-orange-700',
-    glow: 'hover:shadow-orange-500/10',
-    text: 'text-orange-600 dark:text-orange-400',
-  },
-  teal: {
-    bg: 'bg-teal-50 dark:bg-teal-950/30',
-    border: 'border-teal-200 dark:border-teal-800',
-    hover: 'hover:border-teal-300 dark:hover:border-teal-700',
-    glow: 'hover:shadow-teal-500/10',
-    text: 'text-teal-600 dark:text-teal-400',
-  },
-  purple: {
-    bg: 'bg-purple-50 dark:bg-purple-950/30',
-    border: 'border-purple-200 dark:border-purple-800',
-    hover: 'hover:border-purple-300 dark:hover:border-purple-700',
-    glow: 'hover:shadow-purple-500/10',
-    text: 'text-purple-600 dark:text-purple-400',
-  },
-  brand: {
-    bg: 'bg-brand-50 dark:bg-brand-900/30',
-    border: 'border-brand-200 dark:border-brand-700',
-    hover: 'hover:border-brand-300 dark:hover:border-brand-600',
-    glow: 'hover:shadow-brand-500/10',
-    text: 'text-brand-500 dark:text-brand-300',
+  neutral: {
+    bg: 'bg-neutral-50 dark:bg-neutral-900/30',
+    border: 'border-neutral-200 dark:border-neutral-800',
+    hover: 'hover:border-neutral-300 dark:hover:border-neutral-700',
+    glow: 'hover:shadow-neutral-500/10',
+    text: 'text-neutral-600 dark:text-neutral-400',
   },
   default: {
     bg: 'bg-background',
@@ -75,6 +41,14 @@ const accentColorMap = {
     glow: 'hover:shadow-primary/10',
     text: 'text-foreground',
   },
+};
+
+// Safe color accessor - handles old/unknown colors
+const getAccentColor = (color: string) => {
+  if (color === 'blue' || color === 'neutral' || color === 'default') {
+    return accentColorMap[color];
+  }
+  return accentColorMap.default;
 };
 
 // Padding mapping
@@ -107,14 +81,14 @@ export function BentoCard({
   accentColor = 'default',
   size = 'default',
 }: BentoCardProps) {
-  const colors = accentColorMap[accentColor];
+  const colors = getAccentColor(accentColor);
   const pad = paddingMap[padding];
   const sizeClass = sizeMap[size];
 
   return (
     <motion.div
       className={cn(
-        'relative rounded-3xl border-2 transition-all duration-300 overflow-hidden',
+        'relative rounded-3xl border transition-all duration-300 overflow-hidden',
         colors.bg,
         colors.border,
         hover && colors.hover,
@@ -191,13 +165,13 @@ export function BentoSection({
   subtitle,
 }: BentoSectionProps) {
   return (
-    <section className={cn('py-16 px-4 sm:px-6 lg:px-8', className)}>
+    <section className={cn('py-12 px-4 sm:px-6 lg:px-8', className)}>
       <div className="max-w-7xl mx-auto">
         {(title || subtitle) && (
-          <div className="mb-12 text-center">
+          <div className="mb-10 text-center">
             {title && (
               <motion.h2
-                className="text-3xl md:text-4xl font-bold mb-4"
+                className="text-3xl md:text-4xl font-bold mb-3"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -235,7 +209,7 @@ export interface BentoBoxProps {
   icon?: ReactNode;
   title?: string;
   description?: string;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple' | 'brand' | 'default';
+  accentColor?: 'blue' | 'neutral' | 'default';
 }
 
 export function BentoBox({
@@ -244,9 +218,9 @@ export function BentoBox({
   icon,
   title,
   description,
-  accentColor = 'green',
+  accentColor = 'blue',
 }: BentoBoxProps) {
-  const colors = accentColorMap[accentColor];
+  const colors = getAccentColor(accentColor);
 
   return (
     <BentoCard padding="lg" accentColor={accentColor}>
@@ -281,7 +255,7 @@ export interface BentoHeroProps {
   className?: string;
   title?: string;
   description?: string;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple';
+  accentColor?: 'blue' | 'neutral';
 }
 
 export function BentoHero({
@@ -289,11 +263,11 @@ export function BentoHero({
   className,
   title,
   description,
-  accentColor = 'green',
+  accentColor = 'blue',
 }: BentoHeroProps) {
   return (
-    <BentoCard padding="xl" accentColor={accentColor} size="wide" className={className}>
-      <div className="flex flex-col md:flex-row gap-8 items-center">
+    <BentoCard padding="xl" accentColor={accentColor === 'blue' || accentColor === 'neutral' ? accentColor : 'default'} size="wide" className={className}>
+      <div className="flex flex-col md:flex-row gap-6 items-center">
         <div className="flex-1">
           {title && (
             <motion.h1
@@ -315,7 +289,7 @@ export function BentoHero({
               {description}
             </motion.p>
           )}
-          <div className="mt-8">
+          <div className="mt-6">
             {children}
           </div>
         </div>
@@ -337,7 +311,7 @@ export interface BentoFeatureProps {
 export function BentoFeature({ children, className, index = 0 }: BentoFeatureProps) {
   return (
     <motion.div
-      className={cn('flex items-start gap-4', className)}
+      className={cn('flex items-start gap-3', className)}
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
@@ -360,16 +334,16 @@ export interface BentoStatProps {
   value: string | number;
   label: string;
   className?: string;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple';
+  accentColor?: 'blue' | 'neutral';
 }
 
 export function BentoStat({
   value,
   label,
   className,
-  accentColor = 'green',
+  accentColor = 'blue',
 }: BentoStatProps) {
-  const colors = accentColorMap[accentColor];
+  const colors = getAccentColor(accentColor);
 
   return (
     <BentoCard padding="lg" accentColor={accentColor} className={className}>
@@ -428,15 +402,15 @@ export function BentoImage({
 export interface BentoBadgeProps {
   children: ReactNode;
   className?: string;
-  accentColor?: 'green' | 'red' | 'blue' | 'orange' | 'teal' | 'purple';
+  accentColor?: 'blue' | 'neutral';
 }
 
 export function BentoBadge({
   children,
   className,
-  accentColor = 'green',
+  accentColor = 'blue',
 }: BentoBadgeProps) {
-  const colors = accentColorMap[accentColor];
+  const colors = getAccentColor(accentColor);
 
   return (
     <span
@@ -458,7 +432,7 @@ export function BentoBadge({
 
 export function BentoDivider({ className }: { className?: string }) {
   return (
-    <div className={cn('h-px bg-border/50 my-6', className)} />
+    <div className={cn('h-px bg-border/50 my-4', className)} />
   );
 }
 
@@ -480,7 +454,7 @@ export function BentoCTA({
   const variants = {
     primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
     secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-    outline: 'border-2 border-border hover:border-primary/50 bg-background',
+    outline: 'border border-border hover:border-primary/50 bg-background',
   };
 
   return (
@@ -501,23 +475,21 @@ export function BentoCTA({
 export interface BentoCTASectionProps {
   children: ReactNode;
   className?: string;
+  accentColor?: 'blue' | 'neutral' | 'default';
 }
 
-export function BentoCTASection({ children, className }: BentoCTASectionProps) {
+export function BentoCTASection({
+  children,
+  className,
+  accentColor = 'blue',
+}: BentoCTASectionProps) {
+  const colors = getAccentColor(accentColor);
+
   return (
-    <motion.div
-      className={cn(
-        'p-8 rounded-3xl bg-primary/5 dark:bg-primary/10 border-2 border-primary/20',
-        className
-      )}
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-    >
-      {children}
-    </motion.div>
+    <BentoCard padding="lg" accentColor={accentColor} className={className}>
+      <div className="flex flex-col items-center justify-center text-center">
+        {children}
+      </div>
+    </BentoCard>
   );
 }
-
-export default BentoCard;

@@ -35,7 +35,7 @@ type HeaderProps = {
 };
 
 const SubscribeButton = ({ className }: { className?: string }) => (
-  <Button className={cn("relative text-sm font-medium rounded-full h-10 p-1 ps-4 pe-12 group transition-all duration-500 hover:ps-12 hover:pe-4 w-fit overflow-hidden bg-gradient-to-r from-amber-500 to-yellow-400 text-amber-950 hover:from-amber-400 hover:to-yellow-300", className)}>
+  <Button className={cn("relative text-sm font-medium rounded-full h-10 p-1 ps-4 pe-12 group transition-all duration-500 hover:ps-12 hover:pe-4 w-fit overflow-hidden bg-blue text-white hover:bg-blue-600", className)}>
     <span className="relative z-10 transition-all duration-500 font-bold">
       DONATE!
     </span>
@@ -87,10 +87,10 @@ export default function Navbar() {
       title: "Budget Reports",
       href: "/reports",
     },
-    {
-      title: "Media Hub",
-      href: "/media-hub",
-    },
+    // {
+    //   title: "Media Hub",
+    //   href: "/media-hub",
+    // },
     // {
     //   title: "Budget Insights",
     //   href: "/insights",
@@ -103,16 +103,16 @@ export default function Navbar() {
     //   title: "Take Action",
     //   href: "/take-action",
     // },
+    {
+      title: "Learn",
+      href: "/learn",
+    },
     // {
-    //   title: "Learn",
-    //   href: "/learn",
+    //   title: "News",
+    //   href: "/news",
     // },
     {
-      title: "News",
-      href: "/news",
-    },
-    {
-      title: "Blogs",
+      title: "Articles",
       href: "/blogs",
     },
     {

@@ -186,7 +186,7 @@ export function LiveDiscussion({ newsId, newsTitle }: LiveDiscussionProps) {
         >
           <MessageCircle className="h-5 w-5" />
           {activeUsers.length > 0 && (
-            <span className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full text-[10px] flex items-center justify-center text-white">
+            <span className="absolute -top-1 -right-1 h-4 w-4 bg-blue-500 rounded-full text-[10px] flex items-center justify-center text-white">
               {activeUsers.length}
             </span>
           )}
@@ -202,11 +202,11 @@ export function LiveDiscussion({ newsId, newsTitle }: LiveDiscussionProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Zap className="h-4 w-4 text-yellow-500" />
+              <Zap className="h-4 w-4 text-neutral-500" />
               Live Discussion
             </CardTitle>
             {isConnected ? (
-              <Badge variant="outline" className="gap-1 text-xs bg-green-50 text-green-700 border-green-200">
+              <Badge variant="outline" className="gap-1 text-xs bg-neutral-50 text-neutral-700 border-neutral-200">
                 <Wifi className="h-3 w-3" />
                 Live
               </Badge>
@@ -307,7 +307,7 @@ export function LiveDiscussion({ newsId, newsTitle }: LiveDiscussionProps) {
       {/* Input */}
       <div className="p-3 border-t flex-shrink-0">
         {error && (
-          <p className="text-xs text-red-500 mb-2">{error}</p>
+          <p className="text-xs text-neutral-500 mb-2">{error}</p>
         )}
         <div className="flex gap-2">
           <Textarea

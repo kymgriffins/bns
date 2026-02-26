@@ -19,28 +19,28 @@ const iconMap: Record<InlineMessageType, React.ElementType> = {
 
 const styles = {
   success: {
-    container: 'bg-green-50 border-green-200 dark:bg-green-950/30 dark:border-green-800',
-    icon: 'text-green-600 dark:text-green-400',
-    title: 'text-green-800 dark:text-green-200',
-    description: 'text-green-700 dark:text-green-300',
+    container: 'bg-neutral-50 border-neutral-200 dark:bg-neutral-950/30 dark:border-neutral-800',
+    icon: 'text-blue-600 dark:text-blue-400',
+    title: 'text-neutral-800 dark:text-neutral-200',
+    description: 'text-neutral-700 dark:text-neutral-300',
   },
   error: {
-    container: 'bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-800',
-    icon: 'text-red-600 dark:text-red-400',
-    title: 'text-red-800 dark:text-red-200',
-    description: 'text-red-700 dark:text-red-300',
+    container: 'bg-neutral-50 border-neutral-200 dark:bg-neutral-950/30 dark:border-neutral-800',
+    icon: 'text-neutral-600 dark:text-neutral-400',
+    title: 'text-neutral-800 dark:text-neutral-200',
+    description: 'text-neutral-700 dark:text-neutral-300',
   },
   warning: {
-    container: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950/30 dark:border-yellow-800',
-    icon: 'text-yellow-600 dark:text-yellow-400',
-    title: 'text-yellow-800 dark:text-yellow-200',
-    description: 'text-yellow-700 dark:text-yellow-300',
+    container: 'bg-neutral-50 border-neutral-200 dark:bg-neutral-950/30 dark:border-neutral-800',
+    icon: 'text-neutral-500 dark:text-neutral-400',
+    title: 'text-neutral-800 dark:text-neutral-200',
+    description: 'text-neutral-700 dark:text-neutral-300',
   },
   info: {
     container: 'bg-blue-50 border-blue-200 dark:bg-blue-950/30 dark:border-blue-800',
     icon: 'text-blue-600 dark:text-blue-400',
-    title: 'text-blue-800 dark:text-blue-200',
-    description: 'text-blue-700 dark:text-blue-300',
+    title: 'text-neutral-800 dark:text-neutral-200',
+    description: 'text-neutral-700 dark:text-neutral-300',
   },
 };
 

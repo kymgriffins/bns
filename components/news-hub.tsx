@@ -236,8 +236,8 @@ export function NewsHub({ initialData }: NewsHubProps) {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/5 via-primary/10 to-secondary/20">
-        <div className="max-w-6xl mx-auto">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="section-hig-blur p-8 md:p-12 max-w-6xl mx-auto rounded-xl">
           <div className="flex items-center gap-2 text-sm text-primary font-medium mb-4">
             <Sparkles className="h-4 w-4" />
             <span>Latest Updates</span>
@@ -324,7 +324,7 @@ export function NewsHub({ initialData }: NewsHubProps) {
             <div className="space-y-8">
               {/* Featured Story */}
               {featuredStory && !searchQuery && selectedFilter === "All" && (
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 p-1">
+                <div className="relative overflow-hidden rounded-2xl bg-blue/10 p-1">
                   <div className="absolute top-4 left-4 z-10">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary text-primary-foreground">
                       <TrendingUp className="h-3 w-3" />
@@ -409,7 +409,7 @@ export function NewsHub({ initialData }: NewsHubProps) {
               )}
 
               {/* CTA Strip */}
-              <div className="mt-12 p-8 bg-gradient-to-r from-secondary/50 to-primary/5 rounded-2xl">
+              <div className="mt-12 p-8 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Have a story tip?</h3>
@@ -444,7 +444,7 @@ export function NewsHub({ initialData }: NewsHubProps) {
                       <Play className="h-10 w-10 text-white ml-1" />
                     </button>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-8 bg-black/80">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-primary text-primary-foreground mb-3">
                       <Play className="h-3 w-3" />
                       Featured Video
@@ -467,7 +467,7 @@ export function NewsHub({ initialData }: NewsHubProps) {
                       key={video.id}
                       className="group cursor-pointer"
                     >
-                      <div className="relative aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl mb-4 overflow-hidden">
+                      <div className="relative aspect-video bg-blue/20 rounded-xl mb-4 overflow-hidden">
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Play className="h-6 w-6 text-white ml-0.5" />
@@ -496,7 +496,7 @@ export function NewsHub({ initialData }: NewsHubProps) {
               )}
 
               {/* CTA Strip */}
-              <div className="mt-12 p-8 bg-gradient-to-r from-primary/5 to-secondary/50 rounded-2xl">
+              <div className="mt-12 p-8 bg-blue/5 rounded-2xl">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Want to see a specific topic?</h3>
@@ -574,7 +574,7 @@ export function NewsHub({ initialData }: NewsHubProps) {
               )}
 
               {/* CTA Strip */}
-              <div className="mt-12 p-8 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl">
+              <div className="mt-12 p-8 bg-blue/5 rounded-2xl">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Never miss an update</h3>

@@ -168,7 +168,7 @@ export default function AdvertisementsPage() {
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-orange-50 dark:from-amber-950/30 dark:via-background dark:to-orange-950/30" />
+        <div className="absolute inset-0 bg-blue/5" />
         
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto">
@@ -176,7 +176,7 @@ export default function AdvertisementsPage() {
               <Megaphone className="h-4 w-4" />
               Advertise With Us
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
               Reach Engaged Citizens Worldwide
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -212,7 +212,7 @@ export default function AdvertisementsPage() {
       </section>
 
       {/* Current Sponsors Marquee */}
-      <section className="py-12 bg-gradient-to-r from-amber-600 to-orange-600">
+      <section className="py-12 bg-neutral-100 dark:bg-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <h2 className="text-2xl font-bold text-white text-center flex items-center justify-center gap-2">
             <Award className="h-6 w-6" />
@@ -362,7 +362,7 @@ export default function AdvertisementsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-600 via-orange-700 to-red-700">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-neutral-100 dark:bg-neutral-900">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             Ready to Reach Our Global Audience?

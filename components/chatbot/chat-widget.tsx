@@ -266,7 +266,7 @@ export function ChatWidget() {
       >
         <div className="bg-background rounded-2xl shadow-2xl border border-border/60 overflow-hidden flex flex-col max-h-[600px]">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-600 dark:to-blue-700 px-4 py-3 flex items-center gap-3">
+          <div className="bg-blue px-4 py-3 flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-inner">
               <span className="text-lg font-bold text-white">?</span>
             </div>
@@ -334,7 +334,7 @@ export function ChatWidget() {
               <>
                 {/* Support Categories */}
                 {messages.length <= 2 && !selectedCategory && (
-                  <div className="p-4 border-b bg-gradient-to-b from-blue-50 to-white dark:from-blue-950/30 dark:to-background">
+                  <div className="p-4 border-b bg-blue-50 dark:bg-blue-950/30">
                     <p className="text-sm font-medium text-foreground mb-3">Select a category:</p>
                     <div className="grid grid-cols-2 gap-2">
                       {supportCategories.map((category) => (
@@ -390,7 +390,7 @@ export function ChatWidget() {
                             ? "bg-blue-100 dark:bg-blue-900/30"
                             : message.role === "system"
                             ? "bg-yellow-100 dark:bg-yellow-900/30"
-                            : "bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700"
+                            : "bg-blue"
                         )}
                       >
                         {message.role === "user" ? (
@@ -417,7 +417,7 @@ export function ChatWidget() {
                   ))}
                   {isLoading && (
                     <div className="flex gap-2">
-                      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                      <div className="h-8 w-8 rounded-full bg-blue flex items-center justify-center">
                         <span className="text-sm font-bold text-white">?</span>
                       </div>
                       <div className="bg-white dark:bg-zinc-800 rounded-2xl rounded-bl-sm px-4 py-2.5 border border-border/50">

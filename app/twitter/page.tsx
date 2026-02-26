@@ -27,7 +27,7 @@ export default function TwitterPage() {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/5 via-gray-500/5 to-black/5" />
+        <div className="absolute inset-0 bg-neutral-50 dark:bg-neutral-900" />
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -63,7 +63,7 @@ export default function TwitterPage() {
 
       {/* CTA Section */}
       <section className="container py-12">
-        <div className="bg-gradient-to-r from-black/5 via-gray-500/5 to-black/5 rounded-2xl p-8 md:p-12 text-center">
+        <div className="bg-neutral-50 dark:bg-neutral-900 rounded-lg p-8 md:p-12 text-center">
           <h2 className="text-2xl font-bold mb-4">Want to learn more?</h2>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
             Join our training programs and get hands-on experience with Kenya's budget process. 

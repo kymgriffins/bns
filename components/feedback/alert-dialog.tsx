@@ -56,13 +56,13 @@ export function AlertDialogProvider({ children }: { children: React.ReactNode })
   const typeStyles = {
     danger: {
       icon: XCircle,
-      iconClass: 'text-red-600 dark:text-red-400',
-      buttonClass: 'bg-red-600 hover:bg-red-700',
+      iconClass: 'text-neutral-600 dark:text-neutral-400',
+      buttonClass: 'bg-neutral-700 hover:bg-neutral-800',
     },
     warning: {
       icon: AlertTriangle,
-      iconClass: 'text-yellow-600 dark:text-yellow-400',
-      buttonClass: 'bg-yellow-600 hover:bg-yellow-700',
+      iconClass: 'text-neutral-500 dark:text-neutral-400',
+      buttonClass: 'bg-neutral-600 hover:bg-neutral-700',
     },
     info: {
       icon: Info,
