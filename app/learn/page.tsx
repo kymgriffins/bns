@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, GraduationCap, Calendar, Users, FileText, BarChart3, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/page-hero";
 import { BentoCard, BentoSection } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader, BentoCTASection } from "@/components/ui/bento-animations";
@@ -12,6 +13,14 @@ export const metadata: Metadata = {
 };
 
 const modules = [
+  {
+    id: "module-one",
+    icon: BookOpen,
+    title: "Module 001: BPS 2026",
+    description: "The Budget Policy Statement 2026 - Understand how public money is planned, spent, and monitored.",
+    lessons: ["What is the BPS?", "5 Core Chapters", "Strategic Priorities", "Key Budget Numbers", "Potential Risks", "Counties & Devolution"],
+    isNew: true,
+  },
   {
     icon: BookOpen,
     title: "Budget Basics",
@@ -62,13 +71,7 @@ export default function LearnPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <PageHero
-        title="Budget 101"
-        description="Practical lessons designed for Kenyan youth. Precise and usable skills for civic engagement."
-        eyebrow="Learning Center"
-        cta={{ text: "Start Learning", href: "#modules" }}
-        secondaryCta={{ text: "View Reports", href: "/reports" }}
-      />
+   
 
       {/* Learning Modules */}
       <section id="modules" className="py-16 px-4 sm:px-6 lg:px-8">
@@ -79,11 +82,14 @@ export default function LearnPage() {
             {modules.map((module) => (
               <div
                 key={module.title}
-                className="group p-6 bg-background rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg"
+                className={`group p-6 bg-background rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg ${module.isNew ? 'border-primary/30 bg-primary/5' : ''}`}
               >
                 {/* <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <module.icon className="h-6 w-6 text-primary" />
                 </div> */}
+                {module.isNew && (
+                  <Badge className="mb-3">NEW</Badge>
+                )}
                 <h3 className="text-lg font-bold mb-2">{module.title}</h3>
                 <p className="text-sm text-muted-foreground mb-4">{module.description}</p>
                 
@@ -96,9 +102,13 @@ export default function LearnPage() {
                   ))}
                 </div>
 
-                <Button asChild variant="outline" className="w-full">
-                  <Link href={`/learn?module=${encodeURIComponent(module.title)}`}>
-                    Start Module <ArrowRight className="ml-2 h-4 w-4" />
+                <Button
+                  asChild
+                  variant={module.isNew ? "default" : "outline"}
+                  className="w-full"
+                >
+                  <Link href={module.isNew ? "/learn/module-one" : `/learn?module=${encodeURIComponent(module.title)}`}>
+                    {module.isNew ? "Start Module" : "Start Module"} <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>

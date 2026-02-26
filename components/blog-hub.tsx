@@ -182,32 +182,7 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-blue/5"></div>
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-4xl mx-auto text-center section-hig-blur p-8">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
-              Insights & Stories
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Dive deep into budget analysis, community stories, and expert insights that matter to our nation's financial future.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
-                <BookOpen className="mr-2 h-5 w-5" />
-                Start Reading
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/subscribe">
-                  <Heart className="mr-2 h-5 w-5" />
-                  Support Our Work
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
@@ -367,11 +342,6 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
                 </div>
               </section>
             )}
-
-            {/* Debug Component */}
-            <div className="mb-8">
-              <DebugBlogData />
-            </div>
 
             {/* All Posts */}
             <section id="all-posts">
