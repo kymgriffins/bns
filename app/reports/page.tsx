@@ -27,20 +27,20 @@ export const metadata: Metadata = {
 };
 
 const nationalCategories = [
-  { name: "Budget Policy Statement (BPS)", icon: BookOpen, color: "bg-blue-500" },
-  { name: "Estimates of Revenue & Expenditure", icon: FileText, color: "bg-cyan-500" },
-  { name: "Finance Bill / Finance Act", icon: FileText, color: "bg-green-500" },
-  { name: "Appropriation Bill / Act", icon: FileText, color: "bg-purple-500" },
+  { name: "Budget Policy Statement (BPS)", icon: BookOpen },
+  { name: "Estimates of Revenue & Expenditure", icon: FileText },
+  { name: "Finance Bill / Finance Act", icon: FileText },
+  { name: "Appropriation Bill / Act", icon: FileText },
 ];
 
 const countyCategories = [
-  { name: "County Fiscal Strategy Paper (CFSP)", icon: Building2, color: "bg-orange-500" },
-  { name: "County Budget Estimates", icon: Building2, color: "bg-amber-500" },
-  { name: "County \"Budget at a Glance\" briefs", icon: Building2, color: "bg-yellow-500" },
+  { name: "County Fiscal Strategy Paper (CFSP)", icon: Building2 },
+  { name: "County Budget Estimates", icon: Building2 },
+  { name: "County \"Budget at a Glance\" briefs", icon: Building2 },
 ];
 
 const oversightCategories = [
-  { name: "Selected Audit & Accountability Highlights Simplified", icon: Shield, color: "bg-red-500" },
+  { name: "Selected Audit & Accountability Highlights Simplified", icon: Shield },
 ];
 
 const reportSections = [
@@ -67,8 +67,6 @@ const sampleReports = [
     id: 1,
     title: "FY 2025/26 Budget Policy Statement",
     category: "National - BPS",
-    categoryColor: "bg-blue-500",
-    accentColor: "blue" as const,
     date: "February 2026",
     readTime: "8 min",
     excerpt: "Key highlights from the FY 2025/26 BPS including revenue projections, allocation changes, and youth-focused priorities.",
@@ -79,8 +77,6 @@ const sampleReports = [
     id: 2,
     title: "Health Sector Budget Brief 2025",
     category: "National - Sector",
-    categoryColor: "bg-red-500",
-    accentColor: "red" as const,
     date: "January 2026",
     readTime: "6 min",
     excerpt: "Analysis of health sector allocations with focus on primary healthcare and community health programs.",
@@ -91,8 +87,6 @@ const sampleReports = [
     id: 3,
     title: "Nairobi County Budget Estimates 2025/26",
     category: "County",
-    categoryColor: "bg-orange-500",
-    accentColor: "orange" as const,
     date: "January 2026",
     readTime: "7 min",
     excerpt: "Key allocations for Nairobi County including urban services, health, and youth programs.",
@@ -103,8 +97,6 @@ const sampleReports = [
     id: 4,
     title: "Education Sector Overview 2025",
     category: "National - Sector",
-    categoryColor: "bg-cyan-500",
-    accentColor: "teal" as const,
     date: "December 2025",
     readTime: "5 min",
     excerpt: "TVET, university funding, and primary education allocations analyzed.",
@@ -115,8 +107,6 @@ const sampleReports = [
     id: 5,
     title: "Agriculture Sector Budget Analysis",
     category: "National - Sector",
-    categoryColor: "bg-green-500",
-    accentColor: "green" as const,
     date: "December 2025",
     readTime: "6 min",
     excerpt: "Smallholder farmers, agribusiness, and food security budget allocations.",
@@ -127,8 +117,6 @@ const sampleReports = [
     id: 6,
     title: "Mombasa County Budget Brief 2025/26",
     category: "County",
-    categoryColor: "bg-amber-500",
-    accentColor: "orange" as const,
     date: "November 2025",
     readTime: "5 min",
     excerpt: "Port city development, tourism, and coastal region priorities.",
@@ -150,67 +138,6 @@ export default function ReportsPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section - Bento Style */}
-      <BentoSection className="bg-secondary/10">
-        <div className="max-w-4xl mx-auto text-center">
-          <BentoScrollAnimation animation="fadeInUp">
-            <Badge variant="secondary" className="mb-4 px-4 py-1 text-sm rounded-full">
-              <FileText className="w-4 h-4 mr-2" />
-              Budget Reports
-            </Badge>
-          </BentoScrollAnimation>
-          <BentoScrollAnimation animation="fadeInUp" delay={0.1}>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Simplified Reports
-            </h1>
-          </BentoScrollAnimation>
-          <BentoScrollAnimation animation="fadeInUp" delay={0.2}>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Explore short briefs from major budget documents. Uncover what changed, 
-              what it means, and what to do next.
-            </p>
-          </BentoScrollAnimation>
-
-          {/* Search Bar */}
-          <BentoScrollAnimation animation="scaleIn" delay={0.3}>
-            <div className="max-w-xl mx-auto mb-6">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input 
-                  type="search" 
-                  placeholder="Search reports by topic, sector, or county..." 
-                  className="pl-12 h-12 text-base bg-background border-2 rounded-2xl"
-                />
-              </div>
-            </div>
-          </BentoScrollAnimation>
-
-          {/* Popular Topics */}
-          <BentoScrollAnimation animation="fadeInUp" delay={0.4}>
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
-              <span className="text-sm text-muted-foreground self-center">Popular:</span>
-              {popularTopics.map((topic) => (
-                <Button key={topic.name} variant="outline" size="sm" className="text-xs rounded-full">
-                  {topic.name}
-                  <span className="ml-1 text-muted-foreground">({topic.count})</span>
-                </Button>
-              ))}
-            </div>
-          </BentoScrollAnimation>
-
-          <BentoScrollAnimation animation="fadeInUp" delay={0.5}>
-            <div className="flex justify-center gap-4">
-              <Button asChild size="lg" className="rounded-full">
-                <Link href="#reports">
-                  Browse All Reports <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="/insights">Explore Insights</Link>
-              </Button>
-            </div>
-          </BentoScrollAnimation>
-        </div>
-      </BentoSection>
 
       {/* Report Structure Section - Bento Grid */}
       <BentoSection>
@@ -244,10 +171,10 @@ export default function ReportsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* National */}
           <BentoScrollAnimation animation="fadeInUp">
-            <BentoCard padding="lg" accentColor="blue" hover>
+            <BentoCard padding="lg" hover>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-10 w-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                  <Building2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div className="h-10 w-10 rounded-2xl border border-foreground/20 flex items-center justify-center">
+                  <Building2 className="h-5 w-5 text-foreground/70" />
                 </div>
                 <h3 className="text-xl font-semibold">National</h3>
               </div>
@@ -257,8 +184,8 @@ export default function ReportsPage() {
                     key={cat.name}
                     className="flex items-center gap-3 p-3 rounded-2xl bg-background/60 hover:bg-background transition-colors cursor-pointer group"
                   >
-                    <div className={`h-8 w-8 rounded-xl ${cat.color} flex items-center justify-center flex-shrink-0`}>
-                      <cat.icon className="h-4 w-4 text-white" />
+                    <div className="h-8 w-8 rounded-xl border border-foreground/20 flex items-center justify-center flex-shrink-0">
+                      <cat.icon className="h-4 w-4 text-foreground/70" />
                     </div>
                     <span className="text-sm font-medium">{cat.name}</span>
                     <ChevronRight className="h-3 w-3 ml-auto text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -270,10 +197,10 @@ export default function ReportsPage() {
 
           {/* County */}
           <BentoScrollAnimation animation="fadeInUp" delay={0.1}>
-            <BentoCard padding="lg" accentColor="orange" hover>
+            <BentoCard padding="lg" hover>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-10 w-10 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
-                  <Building2 className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                <div className="h-10 w-10 rounded-2xl border border-foreground/20 flex items-center justify-center">
+                  <Building2 className="h-5 w-5 text-foreground/70" />
                 </div>
                 <h3 className="text-xl font-semibold">County</h3>
               </div>
@@ -283,8 +210,8 @@ export default function ReportsPage() {
                     key={cat.name}
                     className="flex items-center gap-3 p-3 rounded-2xl bg-background/60 hover:bg-background transition-colors cursor-pointer group"
                   >
-                    <div className={`h-8 w-8 rounded-xl ${cat.color} flex items-center justify-center flex-shrink-0`}>
-                      <cat.icon className="h-4 w-4 text-white" />
+                    <div className="h-8 w-8 rounded-xl border border-foreground/20 flex items-center justify-center flex-shrink-0">
+                      <cat.icon className="h-4 w-4 text-foreground/70" />
                     </div>
                     <span className="text-sm font-medium">{cat.name}</span>
                     <ChevronRight className="h-3 w-3 ml-auto text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />

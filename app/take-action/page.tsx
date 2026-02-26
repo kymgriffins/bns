@@ -81,13 +81,7 @@ export default function TakeActionPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <PageHero
-        title="Take Action"
-        description="Know the budget. Use it. Follow up. Your participation shapes how public resources are used."
-        eyebrow="Civic Engagement"
-        cta={{ text: "Join the Movement", href: "#pathways" }}
-      />
-
+     
       {/* Pathways Section - Bento Grid */}
       <BentoSection id="pathways">
         <BentoSectionHeader

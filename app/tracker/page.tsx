@@ -81,13 +81,7 @@ export default function TrackerPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <PageHero
-        title="Budget Tracker"
-        description="Track delivery, not promises. Follow selected programmes and budget lines from allocation to delivery."
-        eyebrow="Delivery Tracking"
-        cta={{ text: "Browse Trackers", href: "#trackers" }}
-        secondaryCta={{ text: "Submit a Tip", href: "/take-action" }}
-      />
+      
 
       {/* How It Works - Bento */}
       <BentoSection>

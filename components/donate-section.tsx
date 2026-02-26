@@ -36,7 +36,7 @@ export function DonateSection() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button 
                 size="lg" 
-                className="rounded-full px-8 bg-brand-500 hover:bg-brand-600"
+                className="rounded-full px-8 bg-black hover:bg-black/90"
                 onClick={handleDonateClick}
               >
                 <Heart className="mr-2 h-5 w-5" />

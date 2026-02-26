@@ -48,13 +48,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <PageHero
-        title="About Us"
-        description="Budget Ndio Story is a Kenya-wide consortium translating public budgets into clear, usable, youth-friendly information."
-        eyebrow="Our Mission"
-        cta={{ text: "Partner With Us", href: "#partner" }}
-        secondaryCta={{ text: "Take Action", href: "/take-action" }}
-      />
+      
 
       {/* Mission Statement - Bento */}
       <BentoSection>

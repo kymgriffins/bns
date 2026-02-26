@@ -111,7 +111,7 @@
   }
 }
 
-/* Base Styles - Apple HIG Clarity */
+/* Base Styles - Minimalist Clarity */
 @layer base {
   * {
     @apply border-border;
@@ -125,9 +125,18 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'FoundersGrotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   }
+  
+  /* Override colored utilities - enforce neutral palette */
+  [class*="bg-red"], [class*="bg-green"], [class*="bg-orange"], 
+  [class*="bg-purple"], [class*="bg-pink"], [class*="bg-yellow"],
+  [class*="bg-cyan"], [class*="bg-teal"], [class*="bg-emerald"],
+  [class*="bg-indigo"], [class*="bg-amber"], [class*="bg-brand"],
+  [class*="bg-slate"] {
+    background-color: var(--secondary) !important;
+  }
 }
 
-/* Clean Border Radius - Apple HIG */
+/* Clean Border Radius - Minimalist Design */
 @layer components {
   .rounded-hig {
     @apply rounded-lg;
@@ -141,36 +150,84 @@
     @apply rounded-xl;
   }
   
-  /* Clean card - subtle border only, no solid borders */
+  /* Clean card - border-bottom divider only, no colored backgrounds */
   .card-hig {
-    @apply bg-card border border-border rounded-lg;
+    @apply bg-card border-0 border-b border-border rounded-lg;
   }
   
   /* Card with neutral gray background */
   .card-hig-neutral {
-    @apply bg-neutral-50 dark:bg-neutral-900 border border-border rounded-lg;
+    @apply bg-secondary text-foreground border-0 border-b border-border rounded-lg;
   }
   
   /* Card with subtle blur - Depth */
   .card-hig-blur {
-    @apply bg-white/80 dark:bg-black/80 backdrop-blur-md border border-border rounded-lg;
+    @apply bg-white/80 dark:bg-black/80 backdrop-blur-md border-0 border-b border-border rounded-lg;
   }
   
   /* Section with blur background - Depth */
   .section-hig-blur {
-    @apply bg-white/60 dark:bg-black/60 backdrop-blur-sm border border-border rounded-lg;
+    @apply bg-white/60 dark:bg-black/60 backdrop-blur-sm border-0 border-b border-border rounded-lg;
   }
   
-  /* Clean button - Apple HIG style */
+  /* Clean button - Minimalist style */
   .btn-hig {
-    @apply px-4 py-2 rounded-lg bg-blue text-white 
-           font-medium transition-opacity duration-200 hover:opacity-90;
+    @apply px-4 py-2 rounded-full text-foreground 
+           font-medium transition-opacity duration-200 hover:opacity-70;
+  }
+  
+  .btn-hig-primary {
+    @apply btn-hig bg-primary text-primary-foreground;
   }
   
   .btn-hig-secondary {
-    @apply px-4 py-2 rounded-lg bg-white dark:bg-neutral-900 text-foreground
-           font-medium border border-border transition-colors duration-200
-           hover:bg-neutral-50 dark:hover:bg-neutral-800;
+    @apply px-4 py-2 rounded-full text-foreground bg-secondary
+           font-medium border border-border transition-opacity duration-200
+           hover:opacity-70;
+  }
+  
+  /* Icon wrapper - neutral styling */
+  .icon-wrapper {
+    @apply rounded-full p-2 flex items-center justify-center border border-foreground/20;
+  }
+  
+  /* Badge - border-based styling */
+  .badge-minimal {
+    @apply inline-flex items-center px-3 py-1 rounded-full border border-foreground/20 text-sm font-medium text-foreground/70;
+  }
+}
+
+/* Utility Overrides - Enforce Minimal Color Palette */
+@layer utilities {
+  /* Override colored backgrounds to neutral secondary */
+  [class*="bg-red-"],
+  [class*="bg-green-"],
+  [class*="bg-orange-"],
+  [class*="bg-purple-"],
+  [class*="bg-pink-"],
+  [class*="bg-yellow-"],
+  [class*="bg-cyan-"],
+  [class*="bg-teal-"],
+  [class*="bg-emerald-"],
+  [class*="bg-indigo-"],
+  [class*="bg-amber-"],
+  [class*="bg-brand-"] {
+    background-color: hsl(var(--secondary)) !important;
+  }
+
+  /* Override colored text utilities to use foreground */
+  [class*="text-red-"],
+  [class*="text-green-"],
+  [class*="text-orange-"],
+  [class*="text-purple-"],
+  [class*="text-pink-"],
+  [class*="text-yellow-"],
+  [class*="text-cyan-"],
+  [class*="text-teal-"],
+  [class*="text-emerald-"],
+  [class*="text-indigo-"],
+  [class*="text-amber-"] {
+    color: hsl(var(--foreground)) !important;
   }
 }
 
