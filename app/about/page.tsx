@@ -59,7 +59,7 @@ export default function AboutPage() {
       {/* Mission Statement - Bento */}
       <BentoSection>
         <BentoScrollAnimation animation="scaleIn">
-          <BentoCard padding="xl" accentColor="green" className="max-w-3xl mx-auto text-center">
+          <BentoCard padding="xl" className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
               We make Kenya's budget information clear, usable, and youth-friendly—so young people can participate, shape priorities, and track results.
@@ -69,7 +69,7 @@ export default function AboutPage() {
       </BentoSection>
 
       {/* Consortium Partners - Bento */}
-      <BentoSection className="bg-secondary/10">
+      <BentoSection className="border-t border-foreground/10">
         <BentoSectionHeader
           title="Consortium Partners"
           subtitle="Budget Ndio Story is led by three organizations with complementary expertise"
@@ -77,9 +77,9 @@ export default function AboutPage() {
         <BentoStaggerGrid stagger={0.1} className="grid-cols-1 md:grid-cols-3 gap-6">
           {consortiumPartners.map((partner, index) => (
             <BentoGridItem key={partner.name} animation="fadeInUp" delay={index * 0.1}>
-              <BentoCard padding="lg" accentColor="teal" hover className="text-center">
-                <div className="h-14 w-14 rounded-2xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center mx-auto mb-4">
-                  <Building2 className="h-7 w-7 text-teal-600 dark:text-teal-400" />
+              <BentoCard padding="lg" hover className="text-center">
+                <div className="h-10 w-10 rounded-full border border-foreground/20 flex items-center justify-center mx-auto mb-4">
+                  <Building2 className="h-5 w-5 text-foreground/70" />
                 </div>
                 <h3 className="text-lg font-bold mb-1">{partner.name}</h3>
                 <p className="text-sm text-muted-foreground">{partner.role}</p>
@@ -95,14 +95,14 @@ export default function AboutPage() {
       </BentoSection>
 
       {/* Values - Bento */}
-      <BentoSection>
+      <BentoSection className="border-t border-foreground/10">
         <BentoSectionHeader title="Our Values" />
         <BentoStaggerGrid stagger={0.08} className="grid-cols-2 md:grid-cols-5 gap-4">
           {values.map((value, index) => (
             <BentoGridItem key={value.title} animation="scaleIn" delay={index * 0.08}>
-              <BentoCard padding="md" accentColor="green" hover className="text-center">
-                <div className="h-10 w-10 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-3">
-                  <value.icon className="h-5 w-5 text-green-600 dark:text-green-400" />
+              <BentoCard padding="md" hover className="text-center">
+                <div className="h-10 w-10 rounded-full border border-foreground/20 flex items-center justify-center mx-auto mb-3">
+                  <value.icon className="h-5 w-5 text-foreground/70" />
                 </div>
                 <h3 className="font-bold mb-2 text-sm">{value.title}</h3>
                 <p className="text-xs text-muted-foreground">{value.description}</p>
@@ -113,7 +113,7 @@ export default function AboutPage() {
       </BentoSection>
 
       {/* Approach - Bento */}
-      <BentoSection className="bg-secondary/10">
+      <BentoSection className="border-t border-foreground/10">
         <BentoSectionHeader
           title="Our Approach"
           subtitle="How we turn budget data into civic action"
@@ -121,8 +121,8 @@ export default function AboutPage() {
         <BentoStaggerGrid stagger={0.1} className="grid-cols-2 md:grid-cols-4 gap-6">
           {approachSteps.map((step, index) => (
             <BentoGridItem key={step.number} animation="fadeInUp" delay={index * 0.1}>
-              <BentoCard padding="lg" accentColor="blue" hover className="relative">
-                <div className="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center font-bold mb-4 text-blue-600 dark:text-blue-400">
+              <BentoCard padding="lg" hover className="relative">
+                <div className="w-10 h-10 rounded-full border border-foreground/20 flex items-center justify-center font-bold mb-4 text-foreground/70">
                   {step.number}
                 </div>
                 <h3 className="text-lg font-bold mb-2">{step.title}</h3>
@@ -137,7 +137,7 @@ export default function AboutPage() {
       </BentoSection>
 
       {/* Partner Section - Bento */}
-      <BentoSection id="partner">
+      <BentoSection id="partner" className="border-t border-foreground/10">
         <BentoSectionHeader
           title="Partner With Us"
           subtitle="We work with universities, youth networks, civil society, media, and institutions to expand budget literacy and civic action."
@@ -145,9 +145,9 @@ export default function AboutPage() {
         <BentoStaggerGrid stagger={0.1} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {partnerOptions.map((option, index) => (
             <BentoGridItem key={option.title} animation="fadeInUp" delay={index * 0.1}>
-              <BentoCard padding="lg" accentColor="orange" hover>
-                <div className="h-10 w-10 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-4">
-                  <option.icon className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              <BentoCard padding="lg" hover>
+                <div className="h-10 w-10 rounded-full border border-foreground/20 flex items-center justify-center mb-4">
+                  <option.icon className="h-5 w-5 text-foreground/70" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">{option.title}</h3>
                 <p className="text-sm text-muted-foreground">{option.description}</p>
@@ -174,7 +174,7 @@ export default function AboutPage() {
       </BentoSection>
 
       {/* Contact Section - Bento */}
-      <BentoSection className="bg-secondary/10">
+      <BentoSection className="border-t border-foreground/10">
         <BentoScrollAnimation animation="scaleIn">
           <BentoCTASection>
             <div className="text-center">

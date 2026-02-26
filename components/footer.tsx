@@ -103,7 +103,7 @@ export default function Footer() {
     <footer
       role="contentinfo"
       aria-label="Site footer"
-      className="bg-white dark:bg-[#0a0a0a] py-16 border-t border-gray-200 dark:border-white/10 transition-colors duration-300"
+      className="bg-white dark:bg-[#0a0a0a] py-16 border-t border-foreground/10 transition-colors duration-300"
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         {/* Main Footer Content */}
@@ -132,7 +132,7 @@ export default function Footer() {
                 <Link
                   key={index}
                   href={link.href}
-                  className="font-NeueMontreal text-sm text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="font-NeueMontreal text-sm text-foreground/60 hover:text-foreground transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -149,14 +149,14 @@ export default function Footer() {
                 <Link
                   key={index}
                   href={link.href}
-                  className="font-NeueMontreal text-sm text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="font-NeueMontreal text-sm text-foreground/60 hover:text-foreground transition-colors"
                 >
                   {link.name}
                 </Link>
               ))}
             </div>
-            <div className="pt-4 border-t border-gray-200 dark:border-white/10">
-              <p className="font-NeueMontreal text-xs text-gray-500 dark:text-white/50 mb-3 uppercase tracking-wider">
+            <div className="pt-4 border-t border-foreground/10">
+              <p className="font-NeueMontreal text-xs text-foreground/40 mb-3 uppercase tracking-wider">
                 Transparency
               </p>
               <div className="flex flex-col gap-2">
@@ -164,7 +164,7 @@ export default function Footer() {
                   <Link
                     key={index}
                     href={link.href}
-                    className="font-NeueMontreal text-sm text-gray-500 dark:text-white/50 hover:text-gray-700 dark:hover:text-white/80 transition-colors"
+                    className="font-NeueMontreal text-sm text-foreground/50 hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -180,16 +180,16 @@ export default function Footer() {
             <div className="flex flex-col gap-4 mb-6">
               {contactInfo.map((item, index) => (
                 <div key={index} className="flex items-start gap-3">
-                  <div className="text-gray-500 dark:text-white/60 mt-0.5" aria-hidden="true">
+                  <div className="text-foreground/50 mt-0.5" aria-hidden="true">
                     {item.icon}
                   </div>
                   <div>
-                    <p className="text-xs font-NeueMontreal text-gray-500 dark:text-white/50 mb-0.5">
+                    <p className="text-xs font-NeueMontreal text-foreground/40 mb-0.5">
                       {item.label}
                     </p>
                     <Link
                       href={item.href}
-                      className="text-sm font-NeueMontreal text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white transition-colors"
+                      className="text-sm font-NeueMontreal text-foreground/70 hover:text-foreground transition-colors"
                     >
                       {item.value}
                     </Link>
@@ -197,8 +197,8 @@ export default function Footer() {
                 </div>
               ))}
             </div>
-            <div className="pt-4 border-t border-gray-200 dark:border-white/10">
-              <p className="font-NeueMontreal text-xs text-gray-500 dark:text-white/50 mb-3 uppercase tracking-wider">
+            <div className="pt-4 border-t border-foreground/10">
+              <p className="font-NeueMontreal text-xs text-foreground/40 mb-3 uppercase tracking-wider">
                 Follow Us
               </p>
               <div className="flex flex-wrap gap-4">
@@ -208,7 +208,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-NeueMontreal text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    className="text-sm font-NeueMontreal text-foreground/60 hover:text-foreground transition-colors"
                   >
                     {social.name}
                   </Link>
@@ -218,39 +218,39 @@ export default function Footer() {
           </div>
         </div>
         {/* Bottom Bar */}
-        <div className="pt-10 border-t border-gray-200 dark:border-white/10">
+        <div className="pt-10 border-t border-foreground/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             {/* Powered By + Signature */}
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
               <div className="flex items-center gap-2">
-                <span className="font-NeueMontreal text-sm text-gray-500 dark:text-white/50">
+                <span className="font-NeueMontreal text-sm text-foreground/50">
                   Powered by
                 </span>
-                <span className="font-FoundersGrotesk text-sm font-medium text-gray-700 dark:text-white/70">
+                <span className="font-FoundersGrotesk text-sm font-medium text-foreground/70">
                   Budget Ndio Story
                 </span>
               </div>
-              <div className="hidden md:block w-px h-4 bg-gray-300 dark:bg-white/20" />
-              <p className="font-NeueMontreal text-gray-700 dark:text-white/70">
+              <div className="hidden md:block w-px h-4 bg-foreground/20" />
+              <p className="font-NeueMontreal text-foreground/70">
                 Follow the Budget. Find the Story.
               </p>
             </div>
             {/* Copyright + Legal Links + Theme */}
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-              <p className="text-sm font-NeueMontreal text-gray-500 dark:text-white/50">
+              <p className="text-sm font-NeueMontreal text-foreground/50">
                 © {year} budgetndiostory.org
               </p>
               <div className="flex items-center gap-4 sm:gap-6">
                 <ThemeToggle />
                 <Link
                   href="/privacy"
-                  className="text-sm font-NeueMontreal text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm font-NeueMontreal text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Privacy
                 </Link>
                 <Link
                   href="/terms"
-                  className="text-sm font-NeueMontreal text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm font-NeueMontreal text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Terms
                 </Link>

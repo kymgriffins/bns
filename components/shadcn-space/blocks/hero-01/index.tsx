@@ -77,7 +77,6 @@ export default function AgencyHeroSection({ showHeader = true }: AgencyHeroSecti
       {showHeader && <Header navigationData={navigationData} />}
       <main>
         <HeroSection avatarList={avatarList} />
-        <BrandSlider brandList={brandList} />
       </main>
     </div>
   );

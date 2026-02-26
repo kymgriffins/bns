@@ -135,8 +135,8 @@ export default function Navbar() {
         className={cn(
           "w-full max-w-6xl flex items-center h-fit justify-between gap-3.5 lg:gap-6 transition-all duration-500",
           sticky
-            ? "p-2.5 bg-background/60 backdrop-blur-lg border border-border/40 shadow-2xl shadow-primary/5 rounded-full"
-            : isHomePage ? "bg-transparent border-transparent" : "bg-background border-border",
+            ? "p-2.5 bg-background/60 backdrop-blur-lg rounded-full"
+            : isHomePage ? "bg-transparent" : "bg-background",
         )}
       >
         {/* Logo */}
@@ -156,17 +156,17 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div>
-          <NavigationMenu className={cn("max-lg:hidden p-0.5 rounded-full", isHomePage && !sticky ? "bg-white/10" : "bg-muted")}>
+          <NavigationMenu className={cn("max-lg:hidden p-0.5 rounded-full", isHomePage && !sticky ? "" : "")}>
             <NavigationMenuList className="flex gap-0">
               {navigationData.map((navItem) => (
                 <NavigationMenuItem key={navItem.title}>
                   <NavigationMenuLink
                     href={navItem.href}
                     className={cn(
-                      "px-2 lg:px-4 py-2 text-sm font-medium rounded-full outline outline-transparent hover:outline-border hover:shadow-xs transition tracking-normal",
+                      "px-2 lg:px-4 py-2 text-sm font-medium rounded-full transition tracking-normal hover:opacity-70",
                       isHomePage && !sticky
-                        ? "text-white hover:text-white hover:bg-white/20"
-                        : "text-muted-foreground hover:text-foreground hover:bg-background"
+                        ? "text-white"
+                        : "text-foreground"
                     )}
                   >
                     {navItem.title}
@@ -188,8 +188,8 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2",
-                isHomePage && !sticky ? "text-white hover:bg-white/20" : ""
+                "flex items-center justify-center rounded-full transition p-2 hover:opacity-70",
+                isHomePage && !sticky ? "text-white" : ""
               )}
             >
               <Icon icon="lucide:facebook" width={18} height={18} />
@@ -199,8 +199,8 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2",
-                isHomePage && !sticky ? "text-white hover:bg-white/20" : ""
+                "flex items-center justify-center rounded-full transition p-2 hover:opacity-70",
+                isHomePage && !sticky ? "text-white" : ""
               )}
             >
               <Icon icon="lucide:instagram" width={18} height={18} />
@@ -210,8 +210,8 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2",
-                isHomePage && !sticky ? "text-white hover:bg-white/20" : ""
+                "flex items-center justify-center rounded-full transition p-2 hover:opacity-70",
+                isHomePage && !sticky ? "text-white" : ""
               )}
             >
               <Icon icon="lucide:youtube" width={18} height={18} />
@@ -221,8 +221,8 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2",
-                isHomePage && !sticky ? "text-white hover:bg-white/20" : ""
+                "flex items-center justify-center rounded-full transition p-2 hover:opacity-70",
+                isHomePage && !sticky ? "text-white" : ""
               )}
             >
               <svg viewBox="0 0 24 24" fill="currentColor" width={18} height={18} className={isHomePage && !sticky ? "text-white" : ""}>
@@ -234,8 +234,8 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center justify-center rounded-full outline outline-transparent hover:outline-border transition p-2",
-                isHomePage && !sticky ? "text-white hover:bg-white/20" : ""
+                "flex items-center justify-center rounded-full transition p-2 hover:opacity-70",
+                isHomePage && !sticky ? "text-white" : ""
               )}
             >
               <svg viewBox="0 0 24 24" fill="currentColor" width={18} height={18} className={isHomePage && !sticky ? "text-white" : ""}>
@@ -251,8 +251,8 @@ export default function Navbar() {
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger>
                 <div className={cn(
-                  "rounded-full border p-2",
-                  isHomePage && !sticky ? "border-white/30 text-white bg-white/10" : "border-border"
+                  "rounded-full p-2 hover:opacity-70 transition",
+                  isHomePage && !sticky ? "text-white" : ""
                 )}>
                   <Icon
                     icon="solar:hamburger-menu-linear"
@@ -280,7 +280,7 @@ export default function Navbar() {
                     </div>
                   </Link>
                   <SheetClose>
-                    <div className="rounded-full border border-border p-2.5">
+                    <div className="rounded-full p-2.5 hover:opacity-70 transition">
                       <Icon icon="lucide:x" width={16} height={16} />
                     </div>
                   </SheetClose>
