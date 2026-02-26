@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, GraduationCap, Calendar, Users, FileText, BarChart3, MapPin, ChevronRight } from "lucide-react";
+import { ArrowRight, BookOpen, GraduationCap, Calendar, Users, FileText, BarChart3, MapPin, ChevronRight, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/page-hero";
@@ -20,43 +20,43 @@ const modules = [
     description: "The Budget Policy Statement 2026 - Understand how public money is planned, spent, and monitored.",
     lessons: ["What is the BPS?", "5 Core Chapters", "Strategic Priorities", "Key Budget Numbers", "Potential Risks", "Counties & Devolution"],
     isNew: true,
-  },
-  {
-    icon: BookOpen,
-    title: "Budget Basics",
-    description: "Understand what a budget is, why it matters, and how it affects your daily life.",
-    lessons: ["What is a budget?", "Where does money come from?", "Where does money go?", "Why should you care?"],
+    isAvailable: true,
   },
   {
     icon: BarChart3,
-    title: "Budget Cycle",
+    title: "Module 002: Budget Cycle",
     description: "Learn the stages of Kenya's budget process from planning to implementation.",
     lessons: ["Planning & Policy", "Formulation", "Approval", "Implementation", "Audit & Review"],
+    isAvailable: false,
   },
   {
     icon: Users,
-    title: "Roles & Responsibilities",
+    title: "Module 003: Roles & Responsibilities",
     description: "Who does what in Kenya's budget process at national and county levels.",
     lessons: ["National Government", "County Government", "Assembly/Council", "Citizens", "Auditor General"],
+    isAvailable: false,
   },
-  {
-    icon: FileText,
-    title: "Reading Tables",
-    description: "How to read and understand budget documents and financial tables.",
-    lessons: ["Reading estimates", "Understanding allocations", "Tracking changes", "Finding key numbers"],
-  },
-  {
-    icon: Calendar,
-    title: "Participation",
-    description: "When and how to participate in budget decisions.",
-    lessons: ["Budget calendar", "Public participation", "Submitting memos", "Attending forums"],
-  },
-  {
-    icon: MapPin,
-    title: "Tracking",
-    description: "How to track budget implementation in your community.",
-    lessons: ["Finding projects", "Monitoring delivery", "Reporting issues", "Following up"],
-  },
+  // {
+  //   icon: FileText,
+  //   title: "Module 004: Reading Tables",
+  //   description: "How to read and understand budget documents and financial tables.",
+  //   lessons: ["Reading estimates", "Understanding allocations", "Tracking changes", "Finding key numbers"],
+  //   isAvailable: false,
+  // },
+  // {
+  //   icon: Calendar,
+  //   title: "Module 005: Participation",
+  //   description: "When and how to participate in budget decisions.",
+  //   lessons: ["Budget calendar", "Public participation", "Submitting memos", "Attending forums"],
+  //   isAvailable: false,
+  // },
+  // {
+  //   icon: MapPin,
+  //   title: "Module 006: Tracking",
+  //   description: "How to track budget implementation in your community.",
+  //   lessons: ["Finding projects", "Monitoring delivery", "Reporting issues", "Following up"],
+  //   isAvailable: false,
+  // },
 ];
 
 const advancedTracks = [
@@ -82,13 +82,16 @@ export default function LearnPage() {
             {modules.map((module) => (
               <div
                 key={module.title}
-                className={`group p-6 bg-background rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg ${module.isNew ? 'border-primary/30 bg-primary/5' : ''}`}
+                className={`group p-6 bg-background rounded-xl border border-border hover:border-primary/50 transition-all hover:shadow-lg ${module.isNew ? 'border-primary/30 bg-primary/5' : ''} ${!module.isAvailable ? 'opacity-60' : ''}`}
               >
                 {/* <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <module.icon className="h-6 w-6 text-primary" />
                 </div> */}
                 {module.isNew && (
                   <Badge className="mb-3">NEW</Badge>
+                )}
+                {module.isAvailable === false && (
+                  <Badge variant="outline" className="mb-3">Coming Soon</Badge>
                 )}
                 <h3 className="text-lg font-bold mb-2">{module.title}</h3>
                 <p className="text-sm text-muted-foreground mb-4">{module.description}</p>
@@ -106,9 +109,10 @@ export default function LearnPage() {
                   asChild
                   variant={module.isNew ? "default" : "outline"}
                   className="w-full"
+                  disabled={!module.isAvailable}
                 >
-                  <Link href={module.isNew ? "/learn/module-one" : `/learn?module=${encodeURIComponent(module.title)}`}>
-                    {module.isNew ? "Start Module" : "Start Module"} <ArrowRight className="ml-2 h-4 w-4" />
+                  <Link href={module.isAvailable ? (module.isNew ? "/learn/module-one" : `/learn?module=${encodeURIComponent(module.title)}`) : "#"}>
+                    {module.isAvailable ? (module.isNew ? "Start Module" : "Start Module") : <><Lock className="mr-2 h-4 w-4" />Coming Soon</>} <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
@@ -117,115 +121,7 @@ export default function LearnPage() {
         </div>
       </section>
 
-      {/* Advanced Tracks */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8 text-center">Advanced Tracks</h2>
-          <p className="text-center text-muted-foreground mb-8">
-            For those ready to dive deeper into budget analysis and advocacy
-          </p>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            {advancedTracks.map((track) => (
-              <div
-                key={track}
-                className="flex items-center justify-between p-4 bg-background rounded-lg border border-border"
-              >
-                <span className="font-medium">{track}</span>
-                <Button variant="ghost" size="sm">
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-8">
-            <Button asChild>
-              <Link href="/take-action">
-                <GraduationCap className="mr-2 h-4 w-4" />
-                Enroll in Advanced Track
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Reference */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8 text-center">Quick Reference Guides</h2>
-          
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div className="p-6 bg-background rounded-xl border border-border">
-              <h3 className="font-bold mb-3">Budget Glossary</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Common budget terms explained in plain language.
-              </p>
-              <Button asChild variant="link" className="p-0 h-auto">
-                <Link href="/learn">
-                  Browse Glossary <ArrowRight className="ml-1 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-
-            <div className="p-6 bg-background rounded-xl border border-border">
-              <h3 className="font-bold mb-3">National vs County</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Understanding the differences between national and county budgets.
-              </p>
-              <Button asChild variant="link" className="p-0 h-auto">
-                <Link href="/learn">
-                  Learn More <ArrowRight className="ml-1 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-
-            <div className="p-6 bg-background rounded-xl border border-border">
-              <h3 className="font-bold mb-3">Budget Calendar</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Key dates and deadlines in Kenya's annual budget cycle.
-              </p>
-              <Button asChild variant="link" className="p-0 h-auto">
-                <Link href="/learn">
-                  View Calendar <ArrowRight className="ml-1 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-
-            <div className="p-6 bg-background rounded-xl border border-border">
-              <h3 className="font-bold mb-3">Document Types</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Understanding BPS, Finance Bill, Appropriation Act, and more.
-              </p>
-              <Button asChild variant="link" className="p-0 h-auto">
-                <Link href="/learn">
-                  Learn More <ArrowRight className="ml-1 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-primary/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">Ready to Start Learning?</h2>
-          <p className="text-muted-foreground mb-8">
-            Begin your budget literacy journey today. Each module takes about 15-20 minutes.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/learn">
-                Start Learning <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/reports">View Reports</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+     
     </main>
   );
 }

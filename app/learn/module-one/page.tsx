@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   ArrowRight, 
@@ -35,6 +35,44 @@ export default function ModuleOnePage() {
   const [showResults, setShowResults] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set());
+
+  // Load state from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedQuizAnswers = localStorage.getItem('module-one-quiz-answers');
+      const savedCompletedLessons = localStorage.getItem('module-one-completed-lessons');
+      
+      if (savedQuizAnswers) {
+        try {
+          setQuizAnswers(JSON.parse(savedQuizAnswers));
+        } catch (e) {
+          console.error('Failed to parse quiz answers from localStorage');
+        }
+      }
+      
+      if (savedCompletedLessons) {
+        try {
+          setCompletedLessons(new Set(JSON.parse(savedCompletedLessons)));
+        } catch (e) {
+          console.error('Failed to parse completed lessons from localStorage');
+        }
+      }
+    }
+  }, []);
+
+  // Save quiz answers to localStorage when they change
+  useEffect(() => {
+    if (typeof window !== 'undefined' && Object.keys(quizAnswers).length > 0) {
+      localStorage.setItem('module-one-quiz-answers', JSON.stringify(quizAnswers));
+    }
+  }, [quizAnswers]);
+
+  // Save completed lessons to localStorage when they change
+  useEffect(() => {
+    if (typeof window !== 'undefined' && completedLessons.size > 0) {
+      localStorage.setItem('module-one-completed-lessons', JSON.stringify([...completedLessons]));
+    }
+  }, [completedLessons]);
 
   const lessons = [
     {
@@ -205,6 +243,16 @@ Your county's budget must align with BPS priorities. This means if the BPS says 
 
   const handleQuizAnswer = (questionIndex: number, answer: string) => {
     setQuizAnswers(prev => ({ ...prev, [questionIndex]: answer }));
+  };
+
+  const clearQuizProgress = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('module-one-quiz-answers');
+      localStorage.removeItem('module-one-completed-lessons');
+    }
+    setQuizAnswers({});
+    setShowResults(false);
+    setCompletedLessons(new Set());
   };
 
   const calculateScore = () => {
@@ -421,10 +469,7 @@ Your county's budget must align with BPS priorities. This means if the BPS says 
                             : "Review the lessons and try again!"}
                       </p>
                       <div className="flex gap-4 justify-center">
-                        <Button variant="outline" onClick={() => {
-                          setQuizAnswers({});
-                          setShowResults(false);
-                        }}>
+                        <Button variant="outline" onClick={clearQuizProgress}>
                           Retry Quiz
                         </Button>
                         <Button asChild>
