@@ -28,6 +28,7 @@ import {
   SmoothFade,
 } from "@/components/ui/enhanced-animations";
 import { DonateSection } from "@/components/donate-section";
+import { Marquee } from "@/components/shadcn-space/animations/marquee";
 
 export const metadata: Metadata = {
   title: "Budget Ndio Story - Follow the Budget. Find the Story.",
@@ -143,6 +144,48 @@ export default function HomePage() {
     <main className="min-h-screen bg-background">
       {/* Hero: cinematic but now paired with very calm layout */}
       <AgencyHeroSection showHeader={false} />
+
+      {/* Sliding marquee, mirroring Learn page but tuned for the main story */}
+      <section className="border-b border-border bg-secondary/20 py-3">
+        <div className="container-hig">
+          <Marquee pauseOnHover className="py-1" duration="26s">
+            <div className="mx-6 inline-flex items-center gap-2 text-xs sm:text-sm">
+              <span className="rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
+                New
+              </span>
+              <span className="font-medium">
+                Budget 101 · Learn hub is live
+              </span>
+              <span className="text-muted-foreground">
+                Start with BPS 2026 and move from &quot;confused&quot; to
+                &quot;I can explain this.&quot;
+              </span>
+            </div>
+            <div className="mx-6 inline-flex items-center gap-2 text-xs sm:text-sm">
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                Creators
+              </span>
+              <span className="font-medium">
+                Visual budget stories for TikTok, IG &amp; YouTube
+              </span>
+              <span className="text-muted-foreground">
+                Briefs, hooks and formats that make public finance scroll‑stopping.
+              </span>
+            </div>
+            <div className="mx-6 inline-flex items-center gap-2 text-xs sm:text-sm">
+              <span className="rounded-full bg-blue-100 px-3 py-1 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                Civic windows
+              </span>
+              <span className="font-medium">
+                Track key dates in Kenya&apos;s budget calendar
+              </span>
+              <span className="text-muted-foreground">
+                From BPS to county barazas, we surface when your voice matters most.
+              </span>
+            </div>
+          </Marquee>
+        </div>
+      </section>
 
       {/* Editorial intro: lots of whitespace, clear hierarchy */}
       <section className="section-hig border-t border-border/60">

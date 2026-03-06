@@ -49,7 +49,7 @@ export default function Navbar() {
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
+  const isHomePage = pathname === "/" || pathname === "/home";
 
   // Routes where Navbar should be hidden (admin/dashboard routes)
   const hideNavbarRoutes = ["/admin", "/dashboard-shell-01", "/protected"];
@@ -61,6 +61,8 @@ export default function Navbar() {
   }
 
   const handleScroll = useCallback(() => {
+    // Start transparent at the very top, then give the pill
+    // a subtle background once the user starts scrolling.
     setSticky(window.scrollY >= 50);
   }, []);
 
@@ -128,7 +130,8 @@ export default function Navbar() {
       viewport={{ once: true }}
       transition={{ duration: 0.7, ease: "easeInOut" }}
       className={cn(
-        "inset-x-0 z-50 px-4 flex items-center justify-center sticky top-0 h-20",
+        "inset-x-0 z-50 px-4 flex items-center justify-center h-20",
+        isHomePage ? "fixed top-0" : "sticky top-0",
       )}
     >
       <div

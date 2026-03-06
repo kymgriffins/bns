@@ -9,8 +9,8 @@ import Navbar from "@/components/navbar";
 import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
 import { CombinedFeedbackProvider } from "@/components/feedback";
 import { ChatWidget } from "@/components/chatbot";
-import { cookies } from "next/headers";
 import { AuthProvider } from "@/hooks/useAuth";
+import { GlobalEmailPopup } from "@/components/global-email-popup";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -130,11 +130,10 @@ export default function RootLayout({
                 <AuthProvider>
                   <div className="min-h-screen flex flex-col">
                     <Navbar />
-                    <main>
-                      {children}
-                    </main>
+                    <main>{children}</main>
                     <Footer2 />
                   </div>
+                  <GlobalEmailPopup />
                   <ChatWidget />
                 </AuthProvider>
               </CombinedFeedbackProvider>
