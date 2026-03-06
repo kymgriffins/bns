@@ -192,7 +192,7 @@ export default function HomePage() {
         <div className="container-hig grid gap-12 md:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)] items-start">
           <ScrollAnimation animation="fadeInUp">
             <div className="space-y-6">
-              <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+              <p className="badge-minimal text-xs  uppercase">
                 Youth-first public finance
               </p>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight">
@@ -288,7 +288,7 @@ export default function HomePage() {
         <div className="container-hig space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3 max-w-xl">
-              <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+              <p className="badge-minimal text-xs  uppercase">
                 Impact in numbers
               </p>
               <h2 className="text-2xl md:text-3xl font-semibold leading-snug">
@@ -345,7 +345,7 @@ export default function HomePage() {
           <ScrollAnimation animation="fadeInUp">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3 max-w-xl">
-                <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+                <p className="badge-minimal text-xs  uppercase">
                   How Budget Ndio Story works
                 </p>
                 <h2 className="text-2xl md:text-3xl font-semibold leading-snug">
@@ -389,7 +389,7 @@ export default function HomePage() {
           <ScrollAnimation animation="fadeInUp">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3 max-w-xl">
-                <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+                <p className="badge-minimal text-xs  uppercase">
                   Fresh from the budget
                 </p>
                 <h2 className="text-2xl md:text-3xl font-semibold leading-snug">
@@ -454,7 +454,7 @@ export default function HomePage() {
       <section className="section-hig border-t border-border/60">
         <div className="container-hig space-y-8">
           <div className="text-left md:text-center space-y-3">
-            <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+            <p className="badge-minimal text-xs  uppercase">
               Led by storytellers
             </p>
             <h2 className="text-2xl md:text-3xl font-semibold">
