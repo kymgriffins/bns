@@ -38,20 +38,33 @@ export function GlobalEmailPopup({
     }
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || submitting) return;
 
     setSubmitting(true);
 
-    // Placeholder: here you can wire up your API / newsletter backend
-    window.setTimeout(() => {
-      setSubmitting(false);
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to subscribe');
+      }
+
       setSubmitted(true);
       window.setTimeout(() => {
         close();
       }, 1800);
-    }, 700);
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      alert('Failed to subscribe. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!open) return null;
