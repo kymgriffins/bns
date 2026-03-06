@@ -101,8 +101,8 @@ export function BentoCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
-      {/* Subtle gradient overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent dark:from-white/5 pointer-events-none" />
+      {/* Subtle flat overlay for depth (no gradients) */}
+      <div className="absolute inset-0 bg-white/40 dark:bg-black/40 pointer-events-none" />
       <div className="relative z-10">
         {children}
       </div>

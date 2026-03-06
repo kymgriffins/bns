@@ -110,7 +110,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12">
           {/* Subscribe Block - Spans 2 columns on lg, full width on smaller */}
           <div className="lg:col-span-2">
-            <h3 className="font-FoundersGrotesk text-2xl font-medium text-gray-900 dark:text-white mb-2">
+            <h3 className="font-neue-montreal text-2xl font-medium text-gray-900 dark:text-white mb-2">
               Get budget updates
             </h3>
             <p className="font-NeueMontreal text-gray-600 dark:text-white/60 mb-4 max-w-md">
@@ -124,7 +124,7 @@ export default function Footer() {
           </div>
           {/* Navigation Links */}
           <div className="flex flex-col">
-            <h3 className="font-FoundersGrotesk text-lg font-medium text-gray-900 dark:text-white uppercase tracking-wider mb-6">
+            <h3 className="font-neue-montreal text-lg font-medium text-gray-900 dark:text-white uppercase tracking-wider mb-6">
               Explore
             </h3>
             <div className="flex flex-col gap-3">
@@ -141,7 +141,7 @@ export default function Footer() {
           </div>
           {/* More Links + Transparency */}
           <div className="flex flex-col">
-            <h3 className="font-FoundersGrotesk text-lg font-medium text-gray-900 dark:text-white uppercase tracking-wider mb-6">
+            <h3 className="font-neue-montreal text-lg font-medium text-gray-900 dark:text-white uppercase tracking-wider mb-6">
               More
             </h3>
             <div className="flex flex-col gap-3 mb-6">
@@ -174,7 +174,7 @@ export default function Footer() {
           </div>
           {/* Contact Info */}
           <div className="flex flex-col">
-            <h3 className="font-FoundersGrotesk text-lg font-medium text-gray-900 dark:text-white uppercase tracking-wider mb-6">
+            <h3 className="font-neue-montreal text-lg font-medium text-gray-900 dark:text-white uppercase tracking-wider mb-6">
               Contact
             </h3>
             <div className="flex flex-col gap-4 mb-6">
@@ -226,7 +226,7 @@ export default function Footer() {
                 <span className="font-NeueMontreal text-sm text-foreground/50">
                   Powered by
                 </span>
-                <span className="font-FoundersGrotesk text-sm font-medium text-foreground/70">
+                <span className="font-neue-montreal text-sm font-medium text-foreground/70">
                   Budget Ndio Story
                 </span>
               </div>

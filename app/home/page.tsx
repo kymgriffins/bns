@@ -1,14 +1,32 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, BookOpen, BarChart3, MapPin, Users, FileText, TrendingUp, HandHeart, ChevronRight, Heart, Globe, Mail, Award, Handshake } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  BarChart3,
+  MapPin,
+  Users,
+  FileText,
+  HandHeart,
+  ChevronRight,
+  Handshake,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import AgencyHeroSection from "@/components/shadcn-space/blocks/hero-01";
 import Testimonial01 from "@/components/shadcn-space/blocks/testimonial-02";
-import { BentoCard, BentoGrid, BentoSection, BentoStat } from "@/components/ui/bento-frame";
-import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader, BentoCTASection } from "@/components/ui/bento-animations";
-import { Marquee } from "@/components/shadcn-space/animations/marquee";
+import { BentoSection } from "@/components/ui/bento-frame";
+import {
+  BentoScrollAnimation,
+  BentoCTASection,
+} from "@/components/ui/bento-animations";
+import {
+  ScrollAnimation,
+  StaggerContainer,
+  StaggerItem,
+  AnimatedCounter,
+  SmoothFade,
+} from "@/components/ui/enhanced-animations";
 import { DonateSection } from "@/components/donate-section";
 
 export const metadata: Metadata = {
@@ -18,10 +36,10 @@ export const metadata: Metadata = {
 
 // Statistics data for the impact section
 const statistics = [
-  { value: "500+", label: "Budget Reports Analyzed", icon: FileText },
-  { value: "15K+", label: "Citizens Engaged", icon: Users },
-  { value: "47+", label: "Countries Worldwide", icon: Globe },
-  { value: "200+", label: "Partner Organizations", icon: Handshake },
+  { value: 10 , suffix: " years", label: "Budget Reports Analyzed", icon: FileText },
+  { value: 15000, suffix: "+", label: "Kenyans Reached", icon: Users },
+  { value: 47, suffix: "", label: "Counties & Contexts Covered", icon: MapPin },
+  { value: 20, suffix: "+", label: "Partner Organizations", icon: Handshake },
 ];
 
 // How it works steps
@@ -95,12 +113,10 @@ const features = [
   },
 ];
 
-// Partner data for marquee
 const partners = [
   { 
     name: "The Continental Pot", 
     logo: "TCP", 
-    color: "bg-slate-800", 
     image: "https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png",
     website: "https://continentalpot.africa",
     benefit: "Leading African media platform providing continental reach and storytelling expertise for budget narratives across Africa."
@@ -108,7 +124,6 @@ const partners = [
   { 
     name: "Colour Twist Media", 
     logo: "CTM", 
-    color: "bg-amber-600", 
     image: "https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png",
     website: "https://colortwistmedia.co.ke",
     benefit: "Creative media solutions bringing visual storytelling and production capabilities to make budget information engaging."
@@ -116,7 +131,6 @@ const partners = [
   { 
     name: "Sen Media & Events", 
     logo: "SME", 
-    color: "bg-emerald-600", 
     image: "/senmedia.png",
     website: "https://senmedia-events.co.ke",
     benefit: "Professional event management and media services enabling workshops, trainings, and community engagement activities."
@@ -124,123 +138,306 @@ const partners = [
  
 ];
 
-// Sponsors for advertisement marquee
-const sponsors = [
-  { name: "World Bank Kenya", tagline: "Building a Better Kenya" },
-  { name: "USAID Kenya", tagline: "Partnership for Prosperity" },
-  { name: "Kenya Government", tagline: "Public Finance for Development" },
-  { name: "EU Delegation", tagline: "Team Europe for Kenya" },
-  { name: "UNDP Kenya", tagline: "Future-Ready Kenya" },
-];
-
-// Global presence data
-const globalPresence = [
-  { city: "Nairobi", country: "Kenya", flag: "🇰🇪", role: "HQ" },
-  { city: "Singapore", country: "Singapore", flag: "🇸🇬", role: "Asia Pacific" },
-  { city: "Brussels", country: "Belgium", flag: "🇧🇪", role: "Europe" },
-  { city: "Washington D.C.", country: "USA", flag: "🇺🇸", role: "Americas" },
-];
-
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
+    <main className="min-h-screen bg-background">
+      {/* Hero: cinematic but now paired with very calm layout */}
       <AgencyHeroSection showHeader={false} />
 
-    
-      {/* How It Works - Bento Layout */}
-      <BentoSection className="bg-secondary/20">
-        <BentoScrollAnimation animation="fadeInUp">
-          <BentoSectionHeader
-            title="How It Works"
-            subtitle="Three simple steps to understand and engage with Kenya's budget"
-          />
-        </BentoScrollAnimation>
+      {/* Editorial intro: lots of whitespace, clear hierarchy */}
+      <section className="section-hig border-t border-border/60">
+        <div className="container-hig grid gap-12 md:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)] items-start">
+          <ScrollAnimation animation="fadeInUp">
+            <div className="space-y-6">
+              <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+                Youth-first public finance
+              </p>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight">
+                A premium home for Kenya&apos;s budget story.
+              </h1>
+              <p className="text-base md:text-lg text-muted-foreground max-w-xl">
+                We pair serious fiscal analysis with cinematic storytelling so young Kenyans can
+                see where money starts, where it moves, and what actually lands on the ground.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button asChild size="lg" className="rounded-full px-7">
+                  <Link href="/reports">
+                    Browse latest reports
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-7"
+                >
+                  <Link href="/take-action">
+                    Join as a budget storyteller
+                  </Link>
+                </Button>
+              </div>
+              <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+                <span>Co-created with creators, universities &amp; civic groups.</span>
+                <span className="h-px w-8 bg-border" />
+                <span>Always free to access.</span>
+              </div>
+            </div>
+          </ScrollAnimation>
 
-        <BentoStaggerGrid stagger={0.15} className="grid-cols-1 md:grid-cols-3 gap-6">
-          {howItWorks.map((item, index) => (
-            <BentoGridItem key={index} animation="fadeInUp" delay={index * 0.1}>
-              <BentoCard padding="lg" hover>
-                <div className="relative">
-                  {/* Step number watermark */}
-                  <div className="absolute -top-2 -right-2 text-7xl font-bold text-foreground/5 select-none">
-                    {item.step}
+          <SmoothFade>
+            <Card className="card-hig-blur">
+              <CardContent className="p-6 md:p-7 space-y-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                      Next civic windows
+                    </p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      We surface the moments in Kenya&apos;s budget calendar that actually
+                      need your voice.
+                    </p>
                   </div>
-                  {/* Icon */}
-                  <div className="mb-5 p-3 rounded-2xl w-fit">
-                    <item.icon className="h-6 w-6 text-foreground" />
+                  <div className="rounded-full border border-border px-3 py-1 text-xs">
+                    Live tracker
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{item.description}</p>
                 </div>
-              </BentoCard>
-            </BentoGridItem>
-          ))}
-        </BentoStaggerGrid>
-      </BentoSection>
-
-      {/* Features Bento - Asymmetric Layout */}
-      <BentoSection>
-        <BentoScrollAnimation animation="fadeInUp">
-          <BentoSectionHeader
-            title="What You Can Do Today"
-            subtitle="Explore our tools designed to make budget information accessible and actionable"
-          />
-        </BentoScrollAnimation>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <BentoScrollAnimation key={index} animation="fadeInUp" delay={index * 0.1}>
-              <Link href={feature.href} className="block h-full">
-                <BentoCard padding="lg" hover className="h-full group">
-                  <div className="mb-5 p-3 rounded-2xl w-fit">
-                    <feature.icon className="h-6 w-6 text-foreground" />
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center justify-between py-2 border-b border-border/60">
+                    <div className="space-y-0.5">
+                      <p className="font-medium">Budget reading &amp; debate</p>
+                      <p className="text-xs text-muted-foreground">
+                        Follow allocations as they&apos;re tabled and amended.
+                      </p>
+                    </div>
+                    <Link
+                      href="/tracker"
+                      className="text-xs font-medium text-primary flex items-center gap-1"
+                    >
+                      Open tracker
+                      <ChevronRight className="h-3 w-3" />
+                    </Link>
                   </div>
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-5 leading-relaxed">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-sm font-medium text-primary">
-                    {feature.cta}
-                    <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <div className="flex items-center justify-between py-2">
+                    <div className="space-y-0.5">
+                      <p className="font-medium">County public participation</p>
+                      <p className="text-xs text-muted-foreground">
+                        Templates, briefs, and examples that actually work in a baraza.
+                      </p>
+                    </div>
+                    <Link
+                      href="/take-action"
+                      className="text-xs font-medium text-primary flex items-center gap-1"
+                    >
+                      Take action
+                      <ChevronRight className="h-3 w-3" />
+                    </Link>
                   </div>
-                </BentoCard>
-              </Link>
-            </BentoScrollAnimation>
-          ))}
+                </div>
+              </CardContent>
+            </Card>
+          </SmoothFade>
         </div>
-      </BentoSection>
+      </section>
 
-      {/* Testimonials Section */}
-      <section className="py-0 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      {/* Impact numbers: animated, very clean */}
+      <section className="section-hig border-t border-border/60">
+        <div className="container-hig space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-3 max-w-xl">
+              <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+                Impact in numbers
+              </p>
+              <h2 className="text-2xl md:text-3xl font-semibold leading-snug">
+                A budget platform that starts with people, not PDFs.
+              </h2>
+              <p className="text-sm md:text-base text-muted-foreground">
+                We work with analysts, creators and organizers to keep Kenya&apos;s budget
+                story measurable, searchable and shareable.
+              </p>
+            </div>
+            <p className="text-xs md:text-sm text-muted-foreground max-w-sm">
+              All numbers are rounded, regularly updated and linked back to
+              source documents where possible.
+            </p>
+          </div>
+
+          <StaggerContainer
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            animation="fadeInUp"
+          >
+            {statistics.map((item, index) => (
+              <StaggerItem key={item.label}>
+                <Card className="card-hig-neutral h-full">
+                  <CardContent className="p-5 md:p-6 space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="icon-wrapper">
+                        <item.icon className="h-4 w-4" />
+                      </div>
+                      <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                        {index === 0 ? "Reports" : index === 1 ? "People" : "Network"}
+                      </span>
+                    </div>
+                    <div className="space-y-1">
+                      <AnimatedCounter
+                        value={item.value}
+                        suffix={item.suffix}
+                        className="text-2xl md:text-3xl font-semibold"
+                      />
+                      <p className="text-xs md:text-sm text-muted-foreground">
+                        {item.label}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* How it works: three clear, animated steps */}
+      <section className="section-hig border-t border-border/60">
+        <div className="container-hig space-y-10">
+          <ScrollAnimation animation="fadeInUp">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-3 max-w-xl">
+                <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+                  How Budget Ndio Story works
+                </p>
+                <h2 className="text-2xl md:text-3xl font-semibold leading-snug">
+                  Three simple moves from document to story to pressure.
+                </h2>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-md">
+                Every feature on the platform mirrors this flow so you never lose
+                track of where you are in the process.
+              </p>
+            </div>
+          </ScrollAnimation>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {howItWorks.map((item) => (
+              <ScrollAnimation key={item.step} animation="fadeInUp">
+                <div className="card-hig-neutral h-full p-6 rounded-2xl flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground">
+                      Step {item.step}
+                    </span>
+                    <div className="icon-wrapper">
+                      <item.icon className="h-4 w-4" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground flex-1">
+                    {item.description}
+                  </p>
+                </div>
+              </ScrollAnimation>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* Latest reports: editorial-style list, not tiles */}
+      <section className="section-hig border-t border-border/60">
+        <div className="container-hig space-y-8">
+          <ScrollAnimation animation="fadeInUp">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-3 max-w-xl">
+                <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+                  Fresh from the budget
+                </p>
+                <h2 className="text-2xl md:text-3xl font-semibold leading-snug">
+                  Latest reports and visual explainers.
+                </h2>
+              </div>
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-full px-5"
+              >
+                <Link href="/reports">
+                  View all reports
+                  <ArrowRight className="ml-2 h-3 w-3" />
+                </Link>
+              </Button>
+            </div>
+          </ScrollAnimation>
+
+          <div className="divide-y divide-border/70">
+            {latestReports.map((report) => (
+              <Link
+                key={report.title}
+                href={report.href}
+                className="block py-4 md:py-5 hover:bg-secondary/40 transition-colors"
+              >
+                <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="px-3 py-1 rounded-full border border-border">
+                      {report.category}
+                    </span>
+                    <span>{report.date}</span>
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm md:text-base font-medium">
+                      {report.title}
+                    </p>
+                    <p className="text-xs md:text-sm text-muted-foreground">
+                      {report.summary}
+                    </p>
+                  </div>
+                  <span className="text-xs font-medium text-primary flex items-center gap-1">
+                    Read brief
+                    <ChevronRight className="h-3 w-3" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stories from the ground */}
+      <section className="section-hig border-t border-border/60">
+        <div className="container-hig">
           <Testimonial01 />
         </div>
       </section>
 
-      {/* Partners Section - Minimalistic */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-foreground/10">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3">Our Partners</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              We work with leading organizations to advance budget transparency and civic empowerment across Kenya and beyond.
+      {/* Partners */}
+      <section className="section-hig border-t border-border/60">
+        <div className="container-hig space-y-8">
+          <div className="text-left md:text-center space-y-3">
+            <p className="badge-minimal text-xs tracking-[0.24em] uppercase">
+              Led by storytellers
+            </p>
+            <h2 className="text-2xl md:text-3xl font-semibold">
+              A Kenya-wide consortium at the intersection of media, data and organizing.
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground max-w-3xl md:mx-auto">
+              Budget Ndio Story is led by{" "}
+              <span className="font-medium">The Continental Pot, Colour Twist Media,</span>{" "}
+              and <span className="font-medium">Sen Media &amp; Events</span>, working with
+              creators, universities, civil society and partners across the country.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {partners.slice(0, 3).map((partner, index) => (
-              <a 
-                key={index}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl md:mx-auto">
+            {partners.slice(0, 3).map((partner) => (
+              <a
+                key={partner.name}
                 href={partner.website || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group"
               >
-                <Card className="h-full border-b border-foreground/10 hover:border-foreground/20 hover:shadow-md transition-all duration-300">
-                  <CardContent className="p-6 flex flex-col items-center justify-center h-48">
+                <Card className="card-hig h-full hover:shadow-lg transition-shadow duration-200">
+                  <CardContent className="p-6 flex flex-col items-center justify-center gap-4">
                     {partner.image ? (
-                      <div className="relative h-16 w-40 mb-4 flex items-center justify-center">
+                      <div className="relative h-16 w-40 flex items-center justify-center">
                         <img
                           src={partner.image}
                           alt={partner.name}
@@ -248,11 +445,13 @@ export default function HomePage() {
                         />
                       </div>
                     ) : (
-                      <div className="h-10 w-10 rounded-full border border-foreground/20 flex items-center justify-center mb-4">
-                        <span className="text-xs font-bold">{partner.logo}</span>
+                      <div className="h-10 w-10 rounded-full border border-border flex items-center justify-center">
+                        <span className="text-xs font-semibold">
+                          {partner.logo}
+                        </span>
                       </div>
                     )}
-                    <span className="text-base font-semibold text-center group-hover:text-foreground transition-colors">
+                    <span className="text-sm font-semibold text-center">
                       {partner.name}
                     </span>
                   </CardContent>
@@ -260,83 +459,11 @@ export default function HomePage() {
               </a>
             ))}
           </div>
-
-          
         </div>
       </section>
 
-      {/* Support Our Work - Donation CTA */}
+      {/* Support Our Work - Donation CTA (kept very minimal) */}
       <DonateSection />
-
-      {/* Latest Reports - Bento Grid */}
-      <BentoSection className="bg-secondary/20">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
-          <BentoScrollAnimation animation="fadeInUp">
-            <div>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-2">Latest Reports</h2>
-              <p className="text-muted-foreground">Fresh budget insights and analysis</p>
-            </div>
-          </BentoScrollAnimation>
-          <BentoScrollAnimation animation="fadeInUp" delay={0.1}>
-            <Button asChild variant="outline" className="rounded-full">
-              <Link href="/reports">
-                View All Reports <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </BentoScrollAnimation>
-        </div>
-
-        <BentoStaggerGrid stagger={0.1} className="grid-cols-1 md:grid-cols-3 gap-6">
-          {latestReports.map((report, index) => (
-            <BentoGridItem key={index} animation="fadeInUp" delay={index * 0.1}>
-              <Link href={report.href} className="block h-full">
-                <BentoCard padding="lg" hover className="h-full group">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-foreground/20 text-foreground/70">
-                      {report.category}
-                    </span>
-                    <span className="text-xs text-muted-foreground">{report.date}</span>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-3 group-hover:text-primary transition-colors leading-snug">
-                    {report.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{report.summary}</p>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-medium text-primary">
-                    Read Brief <ChevronRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </BentoCard>
-              </Link>
-            </BentoGridItem>
-          ))}
-        </BentoStaggerGrid>
-      </BentoSection>
-
-      {/* Newsletter CTA - Bento Style */}
-      <BentoSection>
-        <BentoScrollAnimation animation="scaleIn">
-          <BentoCTASection>
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Stay Informed</h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Get budget updates, participation windows, and training alerts delivered to your inbox.
-              </p>
-              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-5 py-3 rounded-full border-2 border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                />
-                <Button size="lg" className="rounded-full px-8">
-                  Subscribe
-                </Button>
-              </form>
-              <p className="text-xs text-muted-foreground mt-4">
-                No spam. Unsubscribe anytime.
-              </p>
-            </div>
-          </BentoCTASection>
-        </BentoScrollAnimation>
-      </BentoSection>
     </main>
   );
 }

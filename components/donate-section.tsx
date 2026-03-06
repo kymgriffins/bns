@@ -19,7 +19,7 @@ export function DonateSection() {
   };
 
   return (
-    <BentoSection className="bg-gradient-to-br from-brand-50 via-white to-gray-50 dark:from-brand-900/30 dark:via-background dark:to-gray-900/30">
+    <BentoSection className="bg-secondary/40">
       <BentoScrollAnimation animation="fadeInUp">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-300 text-sm font-medium mb-6">

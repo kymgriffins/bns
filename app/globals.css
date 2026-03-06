@@ -6,11 +6,6 @@
 
 /* Custom Fonts */
 @font-face {
-  src: url("../components/ui/FoundersGrotesk.woff");
-  font-family: FoundersGrotesk;
-}
-
-@font-face {
   src: url("../components/ui/NeueMontreal.woff");
   font-family: NeueMontreal;
 }
@@ -123,7 +118,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'FoundersGrotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'NeueMontreal', -apple-system, BlinkMacSystemFont, sans-serif;
   }
   
   /* Override colored utilities - enforce neutral palette */

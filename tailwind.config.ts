@@ -88,7 +88,6 @@ export default {
       
       /* Typography - Founders Grotesk + Neue Montreal */
       fontFamily: {
-        "founders-grotesk": ["FoundersGrotesk", "sans-serif"],
         "neue-montreal": ["NeueMontreal", "sans-serif"],
         sans: ["var(--font-neue-montreal)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
       },

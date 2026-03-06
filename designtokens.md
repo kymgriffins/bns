@@ -87,7 +87,7 @@ The application uses two custom brand fonts:
 
 #### Founders Grotesk
 - **Usage**: Headings, titles, display text
-- **CSS Declaration**: `font-family: 'FoundersGrotesk', sans-serif;`
+- **CSS Declaration**: `font-family: 'NeueMontreal', sans-serif;`
 - **Weight**: Semi-bold (600) for primary headings
 
 #### Neue Montreal

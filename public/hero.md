@@ -140,7 +140,7 @@ export default function VideoLanding() {
                 transition={{ duration: 0.5 }}
                 className="text-center mb-8"
               >
-                <h2 className="font-FoundersGrotesk text-2xl lg:text-3xl font-semibold">
+                <h2 className="font-neue-montreal text-2xl lg:text-3xl font-semibold">
                   Browse by Category
                 </h2>
               </motion.div>
@@ -216,7 +216,7 @@ export default function VideoLanding() {
                                   {video.date}
                                 </span>
                               </div>
-                              <h3 className="font-FoundersGrotesk text-lg font-medium group-hover:text-[#00aa55] transition-colors">
+                              <h3 className="font-neue-montreal text-lg font-medium group-hover:text-[#00aa55] transition-colors">
                                 {video.title}
                               </h3>
                               <p className="font-NeueMontreal text-white/60 text-sm mt-2 line-clamp-2">
@@ -237,7 +237,7 @@ export default function VideoLanding() {
                     <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-white/10 flex items-center justify-center">
                       <Play size={32} className="text-white/50" />
                     </div>
-                    <h3 className="font-FoundersGrotesk text-xl mb-3">
+                    <h3 className="font-neue-montreal text-xl mb-3">
                       No videos in this category yet
                     </h3>
                     <p className="font-NeueMontreal text-white/60 mb-6">
@@ -268,7 +268,7 @@ export default function VideoLanding() {
                 <span className="text-xs uppercase tracking-[0.2em] text-white/50">
                   Get Involved
                 </span>
-                <h2 className="font-FoundersGrotesk text-2xl lg:text-3xl font-semibold mt-3">
+                <h2 className="font-neue-montreal text-2xl lg:text-3xl font-semibold mt-3">
                   Want to see a specific topic covered?
                 </h2>
               </motion.div>
@@ -285,7 +285,7 @@ export default function VideoLanding() {
                   <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#00aa55]/20 flex items-center justify-center">
                     <Plus size={24} className="text-[#00aa55]" />
                   </div>
-                  <h3 className="font-FoundersGrotesk text-xl font-medium mb-3">
+                  <h3 className="font-neue-montreal text-xl font-medium mb-3">
                     Request a Topic
                   </h3>
                   <p className="font-NeueMontreal text-white/70 mb-6">
@@ -310,7 +310,7 @@ export default function VideoLanding() {
                   <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
                     <Users size={24} className="text-white" />
                   </div>
-                  <h3 className="font-FoundersGrotesk text-xl font-medium mb-3">
+                  <h3 className="font-neue-montreal text-xl font-medium mb-3">
                     Join Training
                   </h3>
                   <p className="font-NeueMontreal text-white/70 mb-6">

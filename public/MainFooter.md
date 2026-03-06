@@ -50,7 +50,7 @@ export default function MainFooter() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Info */}
           <div>
-            <h3 className="font-FoundersGrotesk text-lg font-medium text-white uppercase mb-6">
+            <h3 className="font-neue-montreal text-lg font-medium text-white uppercase mb-6">
               Contact Info
             </h3>
             <div className="flex flex-col gap-4">
@@ -75,7 +75,7 @@ export default function MainFooter() {
 
           {/* Social Links */}
           <div>
-            <h3 className="font-FoundersGrotesk text-lg font-medium text-white uppercase mb-6">
+            <h3 className="font-neue-montreal text-lg font-medium text-white uppercase mb-6">
               Follow Us
             </h3>
             <div className="flex flex-wrap gap-4">
@@ -95,7 +95,7 @@ export default function MainFooter() {
 
           {/* Newsletter */}
           <div>
-            <h3 className="font-FoundersGrotesk text-lg font-medium text-white uppercase mb-6">
+            <h3 className="font-neue-montreal text-lg font-medium text-white uppercase mb-6">
               Stay Updated
             </h3>
             <p className="text-sm font-NeueMontreal text-white/60 mb-4">
