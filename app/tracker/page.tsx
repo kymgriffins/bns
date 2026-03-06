@@ -80,8 +80,20 @@ function formatCurrency(amount: number): string {
 export default function TrackerPage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-      
+      <PageHero
+        eyebrow="Delivery · Budget tracker"
+        title="Track delivery, not just promises."
+        description="Follow selected budget lines from paper to the ground, see where money stalls, and add evidence from your community."
+        cta={{
+          text: "View live trackers",
+          href: "#trackers",
+        }}
+        secondaryCta={{
+          text: "Submit a tip",
+          href: "/take-action",
+        }}
+        className="pb-10 lg:pb-12"
+      />
 
       {/* How It Works - Bento */}
       <BentoSection>

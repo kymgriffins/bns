@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { 
-  ArrowRight, 
-  FileText, 
-  Building2, 
-  Shield, 
-  Filter, 
+import {
+  ArrowRight,
+  FileText,
+  Building2,
+  Shield,
+  Filter,
   Calendar,
   Download,
   Clock,
@@ -13,13 +13,25 @@ import {
   BookOpen,
   Search,
   CheckCircle2,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { BentoCard, BentoGrid, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
-import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader, BentoIconBox } from "@/components/ui/bento-animations";
+import {
+  BentoCard,
+  BentoGrid,
+  BentoSection,
+  BentoCTASection,
+} from "@/components/ui/bento-frame";
+import {
+  BentoScrollAnimation,
+  BentoStaggerGrid,
+  BentoGridItem,
+  BentoSectionHeader,
+  BentoIconBox,
+} from "@/components/ui/bento-animations";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = {
   title: "Simplified Budget Reports - Budget Ndio Story",
@@ -137,7 +149,20 @@ const popularTopics = [
 export default function ReportsPage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section - Bento Style */}
+      <PageHero
+        eyebrow="Budget briefs · Reports"
+        title="Short, sharp budget reports you can actually use."
+        description="Skip the 200‑page PDFs. Read clear, youth‑friendly briefs that tell you what changed, why it matters, and what to ask next."
+        cta={{
+          text: "Browse latest briefs",
+          href: "#reports",
+        }}
+        secondaryCta={{
+          text: "Go to Budget Insights",
+          href: "/insights",
+        }}
+        className="pb-10 lg:pb-12"
+      />
 
       {/* Report Structure Section - Bento Grid */}
       <BentoSection>

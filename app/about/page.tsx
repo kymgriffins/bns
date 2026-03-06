@@ -47,8 +47,20 @@ const keySupporters = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-      
+      <PageHero
+        eyebrow="Who we are"
+        title="The home for Kenya’s youth budget story."
+        description="A consortium of storytellers, analysts, and organizers working together so young Kenyans can see, question, and shape how public money moves."
+        cta={{
+          text: "Partner with us",
+          href: "#partner",
+        }}
+        secondaryCta={{
+          text: "Explore how we work",
+          href: "#",
+        }}
+        className="pb-10 lg:pb-12"
+      />
 
       {/* Mission Statement - Bento */}
       <BentoSection>

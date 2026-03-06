@@ -13,13 +13,24 @@ import {
   PieChart,
   Target,
   Lightbulb,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { BentoCard, BentoSection, BentoStat, BentoCTASection } from "@/components/ui/bento-frame";
-import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
+import {
+  BentoCard,
+  BentoSection,
+  BentoStat,
+  BentoCTASection,
+} from "@/components/ui/bento-frame";
+import {
+  BentoScrollAnimation,
+  BentoStaggerGrid,
+  BentoGridItem,
+  BentoSectionHeader,
+} from "@/components/ui/bento-animations";
+import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = {
   title: "Budget Insights - Budget Ndio Story",
@@ -221,7 +232,21 @@ const budgetStats = [
 export default function InsightsPage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section - Bento Style */}
+      <PageHero
+        eyebrow="Analysis · Budget insights"
+        title="Understand the story behind Kenya’s numbers."
+        description="See how money shifts between years, sectors, and counties – and what that means for jobs, services, and youth futures."
+        cta={{
+          text: "Start with national view",
+          href: "#national",
+        }}
+        secondaryCta={{
+          text: "Jump to sectors",
+          href: "#sector",
+        }}
+        className="pb-10 lg:pb-12"
+      />
+
       <BentoSection className="bg-secondary/10">
         <div className="max-w-4xl mx-auto text-center">
           <BentoScrollAnimation animation="fadeInUp">

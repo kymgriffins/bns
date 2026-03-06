@@ -80,8 +80,20 @@ const actionItems = [
 export default function TakeActionPage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-     
+      <PageHero
+        eyebrow="Participation · Take action"
+        title="Turn budget knowledge into real pressure."
+        description="Plug into ready-made pathways — from questions to ask, to templates to send, to county chapters you can join."
+        cta={{
+          text: "See participation pathways",
+          href: "#pathways",
+        }}
+        secondaryCta={{
+          text: "Open action toolkit",
+          href: "#",
+        }}
+        className="pb-10 lg:pb-12"
+      />
       {/* Pathways Section - Bento Grid */}
       <BentoSection id="pathways">
         <BentoSectionHeader
