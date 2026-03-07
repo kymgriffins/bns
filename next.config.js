@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   // Output: standalone for cPanel deployment
   output: 'standalone',
   distDir: '.next',
@@ -41,4 +40,4 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 };
 
-export default nextConfig;
+module.exports = nextConfig;
