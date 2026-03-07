@@ -1,11 +1,21 @@
 {
+  "name": "bns",
+  "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=24.13.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "build:local": "npm run build && npm run copy-assets",
+    "start": "NODE_ENV=production node server.js",
+    "start:standalone": "NODE_ENV=production node .next/standalone/server.js",
     "lint": "eslint .",
-    "seed": "npx tsx scripts/seed-blogs.ts"
+    "seed": "npx tsx scripts/seed-blogs.ts",
+    "copy-assets": "node scripts/copy-assets.js",
+    "deploy:prep": "node scripts/deploy-prep.js",
+    "deploy:full": "npm run build:local && npm run deploy:prep"
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",

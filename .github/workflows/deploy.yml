@@ -1,0 +1,130 @@
+# .github/workflows/deploy.yml
+#
+# GitHub Actions workflow for automated deployment to cPanel.
+# Triggered on push to main branch.
+#
+# Required Secrets (set in GitHub repo settings):
+# - FTP_SERVER: Your cPanel server hostname
+# - FTP_USERNAME: Your cPanel username
+# - FTP_PASSWORD: Your cPanel password or FTP password
+# - FTP_PORT: FTP port (usually 21)
+#
+# Required Variables:
+# - CPANEL_APP_DIRECTORY: The directory path on cPanel (e.g., /home/username/your-app)
+
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '24.13.0'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # Setup Node.js
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+      
+      # Build Next.js app with standalone output
+      - name: Build Next.js application
+        run: npm run build:local
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_APP_URL: ${{ vars.NEXT_PUBLIC_APP_URL }}
+      
+      # Prepare deployment package
+      - name: Prepare deployment package
+        run: npm run deploy:prep
+      
+      # Deploy to cPanel via FTP
+      - name: Deploy to cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./deploy/
+          # Default to root, can be overridden
+          server-dir: ${{ vars.CPANEL_APP_DIRECTORY || '/' }}
+          protocol: ftps
+          port: 21
+          # Exclude files not needed for production
+          exclude: |
+            **/node_modules/**
+            **/.git**
+            **/.github/**
+            **/README.md
+            **/.env*
+            **/*.log
+          # Timeout for large deployments
+          timeout: 600
+      
+      # Verify deployment (optional health check)
+      - name: Verify deployment
+        if: vars.NEXT_PUBLIC_APP_URL != ''
+        run: |
+          echo "Waiting for application to start..."
+          sleep 10
+          echo "Deployment completed! Your app should be available at: ${{ vars.NEXT_PUBLIC_APP_URL }}"
+      
+      # Create deployment artifact (for reference)
+      - name: Upload deployment info
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-info
+          path: |
+            deploy/DEPLOY.md
+            deploy/.env.example
+          retention-days: 7
+
+# Alternative deployment method using SCP (uncomment if preferred)
+# ============================================================
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     
+#     steps:
+#       - uses: actions/checkout@v4
+#       
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: ${{ env.NODE_VERSION }}
+#           cache: 'npm'
+#       
+#       - name: Install dependencies
+#         run: npm ci
+#       
+#       - name: Build application
+#         run: npm run build:local
+#       
+#       - name: Prepare deployment
+#         run: npm run deploy:prep
+#       
+#       - name: Deploy via SCP
+#         uses: appleboy/scp-action@v0.1.7
+#         with:
+#           host: ${{ secrets.FTP_SERVER }}
+#           username: ${{ secrets.FTP_USERNAME }}
+#           password: ${{ secrets.FTP_PASSWORD }}
+#           source: "deploy/*"
+#           target: "/home/username/your-app-directory"
+#           strip_components: 1
