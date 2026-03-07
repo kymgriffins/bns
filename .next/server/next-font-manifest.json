@@ -1,0 +1,129 @@
+{
+  "app": {
+    "[project]/app/_not-found/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/about/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/admin/blog/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/admin/categories/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/admin/news/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/admin/organization/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/admin/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/advertisements/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/auth/error/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/auth/forgot-password/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/auth/login/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/auth/sign-up-success/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/auth/sign-up/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/auth/update-password/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/blogs/[id]/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/blogs/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/dashboard-shell-01/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/design/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/footer-01/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/hero-01/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff",
+      "static/media/c0ce6eeecb7babc9-s.p.c27deb93.woff2"
+    ],
+    "[project]/app/home/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff",
+      "static/media/c0ce6eeecb7babc9-s.p.c27deb93.woff2"
+    ],
+    "[project]/app/insights/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/learn/module-one/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/learn/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/loading-demo/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/media-hub/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/news/[id]/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/news/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/organization/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/partners/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/profile/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/protected/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/reports/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/subscribe/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/take-action/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/testimonial-02/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/tiktok/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/tracker/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ],
+    "[project]/app/twitter/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

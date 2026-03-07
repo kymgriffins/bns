@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/tiktok/layout,_N_T_/tiktok/page,_N_T_/tiktok"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/tiktok/__PAGE__",
+    "/tiktok",
+    "/_index",
+    "/_head"
+  ]
+}

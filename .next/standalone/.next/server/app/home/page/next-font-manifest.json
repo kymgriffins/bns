@@ -1,0 +1,11 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/app/home/page": [
+      "static/media/NeueMontreal-s.p.9bd5beb3.woff",
+      "static/media/c0ce6eeecb7babc9-s.p.c27deb93.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}

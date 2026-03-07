@@ -1,0 +1,9 @@
+:HL["/_next/static/chunks/9a4efef239c45c70.css","style"]
+:HL["/_next/static/media/NeueMontreal-s.p.9bd5beb3.woff","font",{"crossOrigin":"","type":"font/woff"}]
+:HL["/_next/static/media/c0ce6eeecb7babc9-s.p.c27deb93.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/chunks/f42edc86a67ca15a.css","style"]
+:HL["https://fonts.googleapis.com/icon?family=Material+Icons+Round","style"]
+:HL["https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png","image"]
+:HL["https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png","image"]
+:HL["/senmedia.png","image"]
+0:{"buildId":"sqyyNw-kKshOUtph2uxJE","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"home","paramType":null,"paramKey":"home","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

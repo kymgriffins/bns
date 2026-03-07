@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/twitter/layout,_N_T_/twitter/page,_N_T_/twitter"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/twitter/__PAGE__",
+    "/twitter",
+    "/_index",
+    "/_head"
+  ]
+}

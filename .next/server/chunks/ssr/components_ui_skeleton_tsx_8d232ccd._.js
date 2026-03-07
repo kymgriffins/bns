@@ -1,0 +1,1 @@
+module.exports=[50463,a=>{"use strict";var b=a.i(89477),c=a.i(97895);function d({className:a,...d}){return(0,b.jsx)("div",{"data-slot":"skeleton",className:(0,c.cn)("bg-accent animate-pulse rounded-md",a),...d})}a.s(["Skeleton",()=>d])}];
