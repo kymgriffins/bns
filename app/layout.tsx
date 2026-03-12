@@ -31,10 +31,11 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  metadataBase: new URL("https://budgetndiostory.org"),
   alternates: {
-    canonical: "/",
+    canonical: defaultUrl,
     languages: {
-      "en": "/",
+      "en": defaultUrl,
     },
   },
   openGraph: {
@@ -71,6 +72,10 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    google: "google-site-verification-code",
+    yandex: "yandex-verification-code",
+  },
 };
 
 const neueMontreal = localFont({
@@ -102,7 +107,7 @@ export default function RootLayout({
   // We'll handle this via client-side check or layout props
   
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-ai-optout>
       <head>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"

@@ -1,0 +1,9 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "Budget Ndio Story",
+  "name_for_human": "Budget Ndio Story Bot",
+  "description_for_model": "A helpful assistant that provides information about Kenya's budget transparency, public finance, and youth civic engagement. Can answer questions about national and county budgets, budget processes, and how citizens can participate in budget oversight.",
+  "description_for_human": "AI assistant for Kenya budget transparency information",
+  "contact_email": "info@budgetndiostory.org",
+  "legal_info_url": "https://budgetndiostory.org/about"
+}

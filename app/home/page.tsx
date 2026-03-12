@@ -31,8 +31,11 @@ import { DonateSection } from "@/components/donate-section";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
 
 export const metadata: Metadata = {
-  title: "Budget Ndio Story - Follow the Budget. Find the Story.",
+  title: "Budget Ndio Story - Kenya Budget Transparency Platform",
   description: "Kenyan budget transparency platform for young citizens. We turn national and county budgets into clear insights, practical analysis, and trackable evidence.",
+  alternates: {
+    canonical: "https://budgetndiostory.org/home",
+  },
 };
 
 // Statistics data for the impact section

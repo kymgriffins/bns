@@ -61,7 +61,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
 
               {/* Headline */}
               <div className="space-y-4 md:space-y-5">
-                <motion.h1
+                <motion.h2
                   initial={{ opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
@@ -73,7 +73,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
                   >
                     Find the Story.
                   </span>
-                </motion.h1>
+                </motion.h2>
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -123,7 +123,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
                         <li key={index} className="ring-2 ring-black/40 rounded-full">
                           <img
                             src={avatar.image}
-                            alt=""
+                            alt={`User avatar ${index + 1}`}
                             width={40}
                             height={40}
                             className="rounded-full border-2 border-white object-cover"
@@ -137,7 +137,7 @@ function HeroSection({ avatarList }: HeroSectionProps) {
                           <img
                             key={i}
                             src="https://images.shadcnspace.com/assets/svgs/icon-star.svg"
-                            alt=""
+                            alt="Rating star"
                             className="h-4 w-4"
                           />
                         ))}
