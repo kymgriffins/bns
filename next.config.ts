@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   // Output: standalone for cPanel deployment
   output: 'standalone',
   distDir: '.next',
@@ -9,9 +10,9 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // Image optimization (disable for cPanel to avoid sharp issues)
+  // Image optimization
   images: {
-    unoptimized: true, // Required for standalone on shared hosting
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -26,18 +27,10 @@ const nextConfig = {
     ],
   },
 
-  // Experimental: Reduce memory usage for resource-limited environments
-  experimental: {
-    workerThreads: false, // Disable workers (avoids EAGAIN)
-    cpus: 1, // Single CPU for cPanel LVE limits
-    webpackMemoryOptimizations: true, // Reduce memory footprint
-    serverSourceMaps: false, // Disable source maps
-  },
-
   // Production optimizations
   productionBrowserSourceMaps: false,
   compress: true,
   poweredByHeader: false,
 };
 
-module.exports = nextConfig;
+export default nextConfig;
