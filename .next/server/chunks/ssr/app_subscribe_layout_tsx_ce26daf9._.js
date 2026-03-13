@@ -1,1 +1,0 @@
-module.exports=[7566,a=>{"use strict";var b=a.i(81332);function c({children:a}){return(0,b.jsx)(b.Fragment,{children:a})}a.s(["default",()=>c,"metadata",0,{title:"Donate - Support Budget Ndio Story",description:"Support our mission to make budget information accessible to all Kenyans. Your donation helps us continue our work."}])}];
