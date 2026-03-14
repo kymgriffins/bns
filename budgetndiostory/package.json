@@ -1,0 +1,16 @@
+{
+  "name": "budgetndiostory-email",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.13",
+    "mysql2": "^3.9.4"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.14"
+  }
+}

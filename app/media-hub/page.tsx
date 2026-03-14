@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Metadata } from 'next';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Loader2, X, Mail, Bell, Share2, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -507,6 +507,15 @@ export default function MediaHubPage() {
                   @{platform.username}
                 </a>
               ))}
+            </div>
+            <div className="mt-8 pt-8 border-t border-border/50 flex flex-wrap justify-center gap-3 text-sm">
+              <span className="text-muted-foreground">Want to go deeper?</span>
+              <Button asChild variant="outline" size="sm" className="rounded-full">
+                <Link href="/learn">Learn Budget 101</Link>
+              </Button>
+              <Button asChild variant="outline" size="sm" className="rounded-full">
+                <Link href="/take-action">Take action</Link>
+              </Button>
             </div>
           </div>
         </div>

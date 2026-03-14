@@ -30,7 +30,7 @@ import {
   BentoGridItem,
   BentoSectionHeader,
 } from "@/components/ui/bento-animations";
-import { PageHero } from "@/components/page-hero";
+import { PageSection, Container2026, SectionHeader } from "@/components/layout";
 
 export const metadata: Metadata = {
   title: "Budget Insights - Budget Ndio Story",
@@ -232,20 +232,25 @@ const budgetStats = [
 export default function InsightsPage() {
   return (
     <main className="min-h-screen">
-      <PageHero
-        eyebrow="Analysis · Budget insights"
-        title="Understand the story behind Kenya’s numbers."
-        description="See how money shifts between years, sectors, and counties – and what that means for jobs, services, and youth futures."
-        cta={{
-          text: "Start with national view",
-          href: "#national",
-        }}
-        secondaryCta={{
-          text: "Jump to sectors",
-          href: "#sector",
-        }}
-        className="pb-10 lg:pb-12"
-      />
+      <PageSection size="lg" className="border-t-0">
+        <Container2026>
+          <SectionHeader
+            label="Analysis · Budget insights"
+            title="Understand the story behind Kenya’s numbers."
+            description="See how money shifts between years, sectors, and counties – and what that means for jobs, services, and youth futures."
+            action={
+              <div className="flex flex-wrap gap-2">
+                <Button asChild size="sm" className="rounded-full">
+                  <Link href="#national">Start with national view</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="rounded-full">
+                  <Link href="#sector">Jump to sectors</Link>
+                </Button>
+              </div>
+            }
+          />
+        </Container2026>
+      </PageSection>
 
       <BentoSection className="bg-secondary/10">
         <div className="max-w-4xl mx-auto text-center">

@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 // import Footer from "@/components/footer";
-import { SmoothScrollProvider } from "@/components/scroll";
+import { ScrollShell } from "@/components/scroll";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
 import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
@@ -11,6 +11,9 @@ import { CombinedFeedbackProvider } from "@/components/feedback";
 import { ChatWidget } from "@/components/chatbot";
 import { AuthProvider } from "@/hooks/useAuth";
 import { GlobalEmailPopup } from "@/components/global-email-popup";
+import { ConsentProvider } from "@/hooks/useConsent";
+import { CookieConsentBanner } from "@/components/cookie-consent";
+import { AnalyticsProvider } from "@/components/analytics-provider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -113,6 +116,8 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
           rel="stylesheet"
         />
+        {/* Cookie Consent Meta Tags */}
+        <meta name="cookie-consent" content="banner" />
       </head>
       <body className={`${neueMontreal.className} antialiased`}>
         <ThemeProvider
@@ -121,29 +126,33 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SmoothScrollProvider
+          <ScrollShell
             options={{
               enabled: true,
               duration: 1.2,
-              smoothness: 1,
               mouseWheelMultiplier: 1,
               touchMultiplier: 2,
             }}
           >
             <TooltipProvider>
               <CombinedFeedbackProvider>
-                <AuthProvider>
-                  <div className="min-h-screen flex flex-col">
-                    <Navbar />
-                    <main>{children}</main>
-                    <Footer2 />
-                  </div>
-                  <GlobalEmailPopup />
-                  <ChatWidget />
-                </AuthProvider>
+                <ConsentProvider>
+                  <AnalyticsProvider>
+                    <AuthProvider>
+                      <div className="min-h-screen flex flex-col">
+                        <Navbar />
+                        <main>{children}</main>
+                        <Footer2 />
+                      </div>
+                      <GlobalEmailPopup />
+                      <ChatWidget />
+                      <CookieConsentBanner />
+                    </AuthProvider>
+                  </AnalyticsProvider>
+                </ConsentProvider>
               </CombinedFeedbackProvider>
             </TooltipProvider>
-          </SmoothScrollProvider>
+          </ScrollShell>
         </ThemeProvider>
       </body>
     </html>

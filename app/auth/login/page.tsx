@@ -10,9 +10,11 @@ export default function Page({
   const redirectUrl = validateRedirectUrl(searchParams.redirect) ?? DEFAULT_REDIRECT_URL;
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-background">
       <div className="w-full max-w-sm">
-        <LoginForm defaultRedirectUrl={redirectUrl} />
+        <div className="card-2026 p-6 md:p-8 rounded-2xl shadow-sm">
+          <LoginForm defaultRedirectUrl={redirectUrl} />
+        </div>
       </div>
     </div>
   );

@@ -77,6 +77,7 @@ export function LearnClient({ modules }: LearnClientProps) {
     BookOpen,
     BarChart3,
     Users,
+    GraduationCap,
   };
 
   const [completedModules, setCompletedModules] = useState<string[]>([]);
@@ -279,9 +280,7 @@ export function LearnClient({ modules }: LearnClientProps) {
                     <Link
                       href={
                         module.isAvailable
-                          ? module.isNew
-                            ? "/learn/module-one"
-                            : `/learn?module=${encodeURIComponent(module.title)}`
+                          ? `/learn/${module.id}`
                           : "#"
                       }
                     >

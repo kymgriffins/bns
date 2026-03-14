@@ -103,6 +103,15 @@ export default {
         '250': '250ms',
         '350': '350ms',
       },
+      /* 2026 layout */
+      maxWidth: {
+        'content': '80rem',
+        'narrow': '65ch',
+      },
+      /* 2026 motion easing */
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

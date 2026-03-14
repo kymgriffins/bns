@@ -329,9 +329,163 @@
   @apply max-w-7xl mx-auto px-4 md:px-6;
 }
 
+/* ==========================================================================
+   2026 Design System – Typography & Rhythm
+   ========================================================================== */
+
+:root {
+  /* 2026 section rhythm (vertical spacing between sections) */
+  --section-py: 5rem;
+  --section-py-md: 6rem;
+  --section-py-lg: 8rem;
+  /* Content width */
+  --content-max: 80rem;
+  --content-narrow: 65ch;
+  /* Typography scale – editorial */
+  --text-display: clamp(2.25rem, 5vw, 3.75rem);
+  --text-hero: clamp(2rem, 4vw, 3.25rem);
+  --text-h1: clamp(1.75rem, 3vw, 2.5rem);
+  --text-h2: clamp(1.5rem, 2.5vw, 2rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.5rem);
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.75rem;
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 350ms;
+  --duration-slow: 500ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --section-py: 6rem;
+    --section-py-md: 7rem;
+    --section-py-lg: 9rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --section-py: 7rem;
+    --section-py-md: 8rem;
+    --section-py-lg: 10rem;
+  }
+}
+
+/* 2026 section / chapter surfaces */
+.section-2026 {
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+}
+
+.section-2026-md {
+  padding-top: var(--section-py-md);
+  padding-bottom: var(--section-py-md);
+}
+
+.section-2026-lg {
+  padding-top: var(--section-py-lg);
+  padding-bottom: var(--section-py-lg);
+}
+
+.container-2026 {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-2026 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-2026 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* 2026 type utilities */
+.text-display-2026 {
+  font-size: var(--text-display);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.text-hero-2026 {
+  font-size: var(--text-hero);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.text-h1-2026 {
+  font-size: var(--text-h1);
+  line-height: 1.2;
+}
+
+.text-h2-2026 {
+  font-size: var(--text-h2);
+  line-height: 1.25;
+}
+
+.text-h3-2026 {
+  font-size: var(--text-h3);
+  line-height: 1.3;
+}
+
+/* Glassy card 2026 */
+.card-2026 {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  transition: box-shadow var(--duration-normal) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.card-2026-glass {
+  background: hsl(var(--background) / 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border) / 0.6);
+  border-radius: var(--radius);
+}
+
+.card-2026:hover {
+  box-shadow: 0 8px 30px hsl(var(--foreground) / 0.06);
+}
+
+.dark .card-2026:hover {
+  box-shadow: 0 8px 30px hsl(var(--foreground) / 0.12);
+}
+
 /* Focus states - Accessibility (Clarity) */
 @layer utilities {
   .focus-hig:focus-visible {
     @apply outline-none ring-2 ring-primary ring-offset-2;
   }
+}
+
+/* ==========================================================================
+   Landing page – custom cursor (hidden on touch / reduced motion)
+   ========================================================================== */
+body.landing-cursor-active,
+body.landing-cursor-active * {
+  cursor: none !important;
+}
+
+/* Cursor variants */
+.landing-cursor--grab .landing-cursor-ring {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-width: 2px;
+}
+.landing-cursor--pointer .landing-cursor-dot {
+  transform: translate(-50%, -50%) scale(1.2);
 }

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MapPin, Wallet, CheckCircle, Clock, AlertCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PageHero } from "@/components/page-hero";
+import { PageSection, Container2026, SectionHeader } from "@/components/layout";
 import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
@@ -80,20 +80,25 @@ function formatCurrency(amount: number): string {
 export default function TrackerPage() {
   return (
     <main className="min-h-screen">
-      <PageHero
-        eyebrow="Delivery · Budget tracker"
-        title="Track delivery, not just promises."
-        description="Follow selected budget lines from paper to the ground, see where money stalls, and add evidence from your community."
-        cta={{
-          text: "View live trackers",
-          href: "#trackers",
-        }}
-        secondaryCta={{
-          text: "Submit a tip",
-          href: "/take-action",
-        }}
-        className="pb-10 lg:pb-12"
-      />
+      <PageSection size="lg" className="border-t-0">
+        <Container2026>
+          <SectionHeader
+            label="Delivery · Budget tracker"
+            title="Track delivery, not just promises."
+            description="Follow selected budget lines from paper to the ground, see where money stalls, and add evidence from your community."
+            action={
+              <div className="flex flex-wrap gap-2">
+                <Button asChild size="sm" className="rounded-full">
+                  <Link href="#trackers">View live trackers</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="rounded-full">
+                  <Link href="/take-action">Submit a tip</Link>
+                </Button>
+              </div>
+            }
+          />
+        </Container2026>
+      </PageSection>
 
       {/* How It Works - Bento */}
       <BentoSection>

@@ -1,41 +1,49 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
+# Dependencies
+node_modules
 /.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp.js
+.yarn/install-state.gz
 
-# testing
-/coverage
+# Next.js build outputs
 .next
-# next.js
-/out/
+/.next/
+out
+build
+dist
 
-# production
-/build
+# Environment files (contain sensitive data)
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*.local
-.env
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.code-workspace
 
-# vercel
-.vercel
+# Testing coverage
+coverage
+.nyc_output
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Optional: Cache directories
+.cache
+.temp
+
+# Optional: Generated files
+generated
+dist

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Calendar, FileQuestion, Users, GraduationCap, MapPin, BookOpen, MessageSquare, HandHeart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PageHero } from "@/components/page-hero";
+import { PageSection, Container2026, SectionHeader } from "@/components/layout";
 import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
@@ -80,22 +80,27 @@ const actionItems = [
 export default function TakeActionPage() {
   return (
     <main className="min-h-screen">
-      <PageHero
-        eyebrow="Participation · Take action"
-        title="Turn budget knowledge into real pressure."
-        description="Plug into ready-made pathways — from questions to ask, to templates to send, to county chapters you can join."
-        cta={{
-          text: "See participation pathways",
-          href: "#pathways",
-        }}
-        secondaryCta={{
-          text: "Open action toolkit",
-          href: "#",
-        }}
-        className="pb-10 lg:pb-12"
-      />
+      <PageSection size="lg" className="border-t-0">
+        <Container2026>
+          <SectionHeader
+            label="Participation · Take action"
+            title="Turn budget knowledge into real pressure."
+            description="Plug into ready-made pathways — from questions to ask, to templates to send, to county chapters you can join."
+            action={
+              <div className="flex flex-wrap gap-2">
+                <Button asChild size="sm" className="rounded-full">
+                  <Link href="#pathways">See participation pathways</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="rounded-full">
+                  <Link href="#toolkit">Open action toolkit</Link>
+                </Button>
+              </div>
+            }
+          />
+        </Container2026>
+      </PageSection>
       {/* Pathways Section - Bento Grid */}
-      <BentoSection id="pathways">
+      <BentoSection id="pathways" className="border-t border-border/50">
         <BentoSectionHeader
           title="Pathways to Participate"
           subtitle="Choose your path to civic engagement"
@@ -121,7 +126,7 @@ export default function TakeActionPage() {
       </BentoSection>
 
       {/* Toolkit Section - Bento */}
-      <BentoSection className="bg-secondary/10">
+      <BentoSection id="toolkit" className="bg-secondary/10">
         <BentoSectionHeader
           title="Action Toolkit"
           subtitle="Resources to help you participate effectively in budget processes"
