@@ -61,7 +61,9 @@ function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return <span className="inline-flex h-10 w-10 shrink-0" aria-hidden />;
+  }
 
   const toggleTheme = () => {
     if (theme === "light") {

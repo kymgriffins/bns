@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -14,15 +14,12 @@ import {
   GraduationCap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import AgencyHeroSection from '@/components/shadcn-space/blocks/hero-01';
-import Testimonial01 from '@/components/shadcn-space/blocks/testimonial-02';
 import { DonateSection } from '@/components/donate-section';
 import { Marquee } from '@/components/shadcn-space/animations/marquee';
-import { PageSection, Container2026, SectionHeader } from '@/components/layout';
-import { ScrollSection, PinnedChapter } from '@/components/scroll';
+import { SectionHeader } from '@/components/layout';
+import { ScrollSection } from '@/components/scroll';
 import { LandingCursor } from './LandingCursor';
-import { HorizontalReveal } from './HorizontalReveal';
+import { LandingSection } from './LandingSection';
 
 const statistics = [
   { value: 10, suffix: ' years', label: 'Budget Reports Analyzed', icon: FileText },
@@ -34,27 +31,30 @@ const statistics = [
 const howItWorks = [
   {
     step: '01',
-    title: 'Start with Budget 101',
+    title: "Learn how Kenya's budget works",
     description:
-      'Get the basics in plain language—what the budget is, who decides, and where you fit in.',
+      'Start at the civic hub: BPS 2026 basics and Millicent Makini’s summary—who decides, key documents, and where you show up.',
     icon: GraduationCap,
-    href: '/learn/budget-101',
+    href: '/learn',
+    badge: 'Civic hub',
   },
   {
     step: '02',
-    title: 'Browse Reports',
+    title: 'Skim human reports',
     description:
-      'Explore simplified budget documents from national and county levels in plain language.',
+      'Browse national, county and sector briefs written in plain language, not just legalese.',
     icon: BookOpen,
     href: '/reports',
+    badge: 'Reports',
   },
   {
     step: '03',
-    title: 'Analyze & Take Action',
+    title: 'Show up in civic windows',
     description:
-      'Dive into sector analysis, track delivery, and use templates to participate in budget processes.',
+      'Use timelines, prompts and templates to act at barazas, hearings and other public participation moments.',
     icon: BarChart3,
     href: '/insights',
+    badge: 'Act',
   },
 ];
 
@@ -108,87 +108,226 @@ const budgetStoryChapters = [
 
 const civicHubLinks = [
   {
+    title: 'Learn at the civic hub',
+    description: 'BPS 2026 basics + Millicent Makini’s summary—decode the budget, quiz & reflections.',
+    href: '/learn',
+    badge: 'Civic hub',
+  },
+  {
     title: 'Track county delivery',
-    description: 'See projects, timelines, and evidence from counties across Kenya.',
+    description: 'Check if projects your leaders promised are actually funded and moving.',
     href: '/tracker',
     badge: 'Tracker',
   },
   {
     title: 'Share a budget story',
-    description: 'Submit stories from your ward—wins, gaps, and everything in between.',
+    description: "Tell us what you're seeing in your ward—wins, gaps and broken promises.",
     href: '/take-action',
     badge: 'Stories',
   },
   {
     title: 'Get simplified briefs',
-    description: 'Request human, visual explainers instead of PDFs and legalese.',
+    description: 'Ask for plain-language explainers instead of 200-page PDFs.',
     href: '/reports',
     badge: 'Reports',
   },
   {
     title: 'Join civic updates',
-    description: 'Subscribe for SMS and email alerts when key budget dates are coming up.',
+    description: 'Get SMS and email nudges before key budget dates and hearings.',
     href: '/subscribe',
     badge: 'Alerts',
   },
 ];
 
-function CivicGridIllustration(props: React.SVGProps<SVGSVGElement>) {
+/** Learn page modules – matches /learn for civic hub fake UI */
+const civicHubLearnModules = [
+  {
+    id: 'budget-101',
+    title: 'Budget 101',
+    subtitle: 'Interactive',
+    href: '/learn/budget-101',
+    minutes: 12,
+    mediaType: 'video',
+    mediaSrc: '/bnsoo1.mp4',
+  },
+  {
+    id: 'budget-cycle',
+    title: 'Budget Policy: The Data',
+    subtitle: 'BPS 2026 · Data-first explainer',
+    href: '/learn/budget-cycle',
+    minutes: 12,
+    mediaType: 'link',
+  },
+  {
+    id: 'roles',
+    title: 'Public Advanced Learning 001',
+    subtitle: "Reflecting on Kenya's 2026 BPS",
+    href: '/learn/roles',
+    minutes: 10,
+    mediaType: 'link',
+  },
+];
+
+const MAX_MEDIA_ITEMS = 12;
+const MEDIA_SCROLL_AMOUNT = 280; // roughly one card width
+
+const mediaPlaylist = [
+  {
+    id: 'bnsvideo-local-1',
+    title: 'BNS Civic Reel 01',
+    description: 'Wards, barazas and civic spaces across Kenya.',
+    type: 'local' as const,
+    src: '/bnsoo1.mp4',
+  },
+  {
+    id: 'bnsvideo-local-2',
+    title: 'BNS Civic Reel 02',
+    description: 'Budget stories from youth spaces and campuses.',
+    type: 'local' as const,
+    src: '/bnsoo1.mp4',
+  },
+  {
+    id: 'bnsvideo-local-3',
+    title: 'BNS Civic Reel 03',
+    description: 'Clips you can remix for TikTok and IG.',
+    type: 'local' as const,
+    src: '/bnsoo1.mp4',
+  },
+  {
+    id: 'youtube-bps-playlist-1',
+    title: 'BPS 2026 Explainers',
+    description: 'Playlist breaking down the Budget Policy Statement.',
+    type: 'youtube' as const,
+    playlistId: 'YOUR_YOUTUBE_PLAYLIST_ID',
+  },
+  {
+    id: 'youtube-bps-playlist-2',
+    title: 'Budget Cycle Series',
+    description: 'From planning to audit in short episodes.',
+    type: 'youtube' as const,
+    playlistId: 'YOUR_YOUTUBE_PLAYLIST_ID',
+  },
+  {
+    id: 'youtube-bps-playlist-3',
+    title: 'County Stories',
+    description: 'County-specific reels and explainers.',
+    type: 'youtube' as const,
+    playlistId: 'YOUR_YOUTUBE_PLAYLIST_ID',
+  },
+  // Add more entries here as new videos go live
+];
+
+/** Civic hub illustration: 4.3T, inflation %, fun fact. Promise → funded → delivered. */
+function BudgetStoryIllustration(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 320 220"
+      viewBox="0 0 280 200"
+      preserveAspectRatio="xMidYMid meet"
       aria-hidden="true"
       focusable="false"
-      className="text-primary-foreground/20 dark:text-primary-foreground/30"
+      className="size-full text-primary-foreground/25"
       {...props}
     >
-      <rect x="8" y="12" width="304" height="196" rx="18" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <rect x="24" y="32" width="72" height="40" rx="10" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <rect x="120" y="32" width="88" height="40" rx="10" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <rect x="232" y="32" width="64" height="40" rx="10" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <rect x="24" y="92" width="120" height="44" rx="10" fill="currentColor" opacity="0.1" />
-      <rect x="24" y="148" width="96" height="36" rx="9" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <rect x="136" y="148" width="96" height="36" rx="9" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <rect x="248" y="148" width="40" height="36" rx="9" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <circle cx="260" cy="108" r="16" fill="none" stroke="currentColor" strokeWidth="1.2" />
-      <path
-        d="M24 204h72M112 204h56M184 204h72"
-        stroke="currentColor"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        opacity="0.8"
-      />
+      {/* Central hub + main stat */}
+      <circle cx="140" cy="100" r="32" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4" />
+      <circle cx="140" cy="100" r="24" fill="currentColor" opacity="0.08" />
+      <text x="140" y="102" textAnchor="middle" fontSize="11" fontWeight="600" fill="currentColor" opacity="0.75">4.3T</text>
+      {/* Three nodes with micro labels */}
+      <g opacity="0.9">
+        <circle cx="72" cy="56" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="72" cy="56" r="6" fill="currentColor" opacity="0.5" />
+        <path d="M86 68 L118 88" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+        <text x="72" y="48" textAnchor="middle" fontSize="7" fill="currentColor" opacity="0.65">6.2%</text>
+      </g>
+      <g opacity="0.9">
+        <circle cx="208" cy="56" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="208" cy="56" r="6" fill="currentColor" opacity="0.5" />
+        <path d="M194 68 L162 88" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+        <text x="208" y="48" textAnchor="middle" fontSize="7" fill="currentColor" opacity="0.65">BETA</text>
+      </g>
+      <g opacity="0.9">
+        <circle cx="140" cy="168" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="140" cy="168" r="6" fill="currentColor" opacity="0.5" />
+        <path d="M140 154 L140 124" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+        <text x="140" y="182" textAnchor="middle" fontSize="7" fill="currentColor" opacity="0.65">47</text>
+      </g>
+      {/* Fun fact badge below center */}
+      <rect x="94" y="118" width="92" height="22" rx="11" fill="currentColor" opacity="0.08" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.25" />
+      <text x="140" y="133" textAnchor="middle" fontSize="8" fill="currentColor" opacity="0.7">Fun fact: 47 counties</text>
+      {/* Doc/chart hint */}
+      <rect x="126" y="92" width="28" height="16" rx="4" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+      <path d="M130 101h8M130 105h14" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" opacity="0.35" />
     </svg>
   );
 }
 
-function BudgetStoryIllustration(props: React.SVGProps<SVGSVGElement>) {
+/** Civic hub promo card: short copy, clear alignment, sweet on mobile. */
+function CivicHubCard() {
   return (
-    <svg
-      viewBox="0 0 260 200"
-      aria-hidden="true"
-      focusable="false"
-      className="text-primary/30 dark:text-primary/40"
-      {...props}
-    >
-      <rect x="10" y="16" width="240" height="168" rx="18" fill="none" stroke="currentColor" strokeWidth="1.1" />
-      <path
-        d="M34 146c22-20 40-28 60-24 20 4 32 18 52 14 16-3 28-14 40-30"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-      />
-      <circle cx="58" cy="120" r="4" fill="currentColor" />
-      <circle cx="110" cy="122" r="4" fill="currentColor" />
-      <circle cx="156" cy="134" r="4" fill="currentColor" />
-      <circle cx="202" cy="112" r="4" fill="currentColor" />
-      <rect x="42" y="40" width="44" height="10" rx="5" fill="currentColor" opacity="0.12" />
-      <rect x="92" y="40" width="60" height="10" rx="5" fill="currentColor" opacity="0.12" />
-      <rect x="42" y="60" width="80" height="10" rx="5" fill="currentColor" opacity="0.12" />
-      <rect x="42" y="80" width="56" height="10" rx="5" fill="currentColor" opacity="0.12" />
-      <rect x="148" y="60" width="60" height="10" rx="5" fill="currentColor" opacity="0.12" />
-    </svg>
+    <div className="relative flex min-h-0 flex-col overflow-hidden rounded-3xl bg-primary text-primary-foreground shadow-xl md:h-full md:min-h-[340px] md:flex-row">
+      {/* Content column – reduced wording, aligned */}
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col justify-between gap-3 p-4 sm:gap-4 sm:p-5 md:max-w-[55%] md:gap-5 md:p-8">
+        <div className="space-y-2.5 sm:space-y-3 md:space-y-4">
+          <p className="text-[11px] uppercase tracking-[0.25em] opacity-80">
+            Civic hub · 2026
+          </p>
+          <p className="text-sm font-semibold leading-snug sm:text-base md:text-lg lg:text-xl">
+            Promised, funded & delivered—in one place.
+          </p>
+          <p className="text-xs leading-snug opacity-85 sm:text-sm">
+            Budget lines, timelines & community voices. Hold power to account with receipts.
+          </p>
+          <ul className="space-y-1 text-xs opacity-90 sm:text-sm">
+            <li className="flex items-center gap-2">
+              <span className="h-1 w-1 shrink-0 rounded-full bg-primary-foreground/60" />
+              BPS 2026: purpose, timeline, BETA
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1 w-1 shrink-0 rounded-full bg-primary-foreground/60" />
+              Revenue & debt (Ksh 3.6T → 4.7T)
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1 w-1 shrink-0 rounded-full bg-primary-foreground/60" />
+              Quiz & reflection lab
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1 w-1 shrink-0 rounded-full bg-primary-foreground/60" />
+              Tracker, insights & take-action
+            </li>
+          </ul>
+          <div className="flex flex-wrap items-center gap-1.5 text-xs opacity-90 sm:gap-2">
+            <span className="rounded-full bg-primary-foreground/10 px-2.5 py-0.5 sm:px-3 sm:py-1">47 counties</span>
+            <span className="rounded-full bg-primary-foreground/10 px-2.5 py-0.5 sm:px-3 sm:py-1">Sector explainers</span>
+            <span className="rounded-full bg-primary-foreground/10 px-2.5 py-0.5 sm:px-3 sm:py-1">Story prompts</span>
+          </div>
+        </div>
+        <div className="mt-2 flex flex-shrink-0 items-end sm:mt-3 md:mt-4">
+          <Button
+            asChild
+            size="sm"
+            variant="secondary"
+            className="w-full rounded-full bg-primary-foreground text-primary shadow-md sm:w-auto"
+          >
+            <Link href="/learn" className="inline-flex items-center justify-center">
+              Open civic hub
+              <ArrowRight className="ml-2 h-3 w-3" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+      {/* Illustration: 4.3T, inflation %, fun fact – scales on all devices */}
+      <div className="relative flex min-h-[120px] flex-1 items-center justify-center overflow-hidden sm:min-h-[160px] md:min-h-0 md:min-w-0">
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-transparent md:from-primary md:via-transparent md:to-transparent"
+          aria-hidden
+        />
+        <div className="relative flex h-full w-full items-center justify-center px-3 py-4 sm:px-4 sm:py-6 md:justify-end md:items-end md:py-0 md:pr-6 md:pb-4">
+          <div className="h-full max-h-[140px] w-full max-w-[200px] sm:max-h-[180px] sm:max-w-[240px] md:absolute md:bottom-4 md:right-4 md:h-[240px] md:max-h-[70%] md:w-[300px] md:max-w-[90%]">
+            <BudgetStoryIllustration className="size-full" />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -203,125 +342,141 @@ const partners = [
     image:
       'https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png',
     website: 'https://continentalpot.africa',
+    role: 'Media lab & civic storytelling',
   },
   {
     name: 'Colour Twist Media',
     logo: 'CTM',
     image: 'https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png',
     website: 'https://colortwistmedia.co.ke',
+    role: 'Creative studio & content',
   },
   {
     name: 'Sen Media & Events',
     logo: 'SME',
     image: '/senmedia.png',
     website: 'https://senmedia-events.co.ke',
+    role: 'Events, community & organizing',
   },
 ];
 
 export function HomeLanding() {
+  const [activeHowStep, setActiveHowStep] = useState<typeof howItWorks[number]>(howItWorks[0]);
+  const mediaScrollRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollMedia = (direction: 'left' | 'right') => {
+    const el = mediaScrollRef.current;
+    if (!el) return;
+    el.scrollBy({
+      left: direction === 'left' ? -MEDIA_SCROLL_AMOUNT : MEDIA_SCROLL_AMOUNT,
+      behavior: 'smooth',
+    });
+  };
+
+  useEffect(() => {
+    const el = mediaScrollRef.current;
+    if (!el) return;
+    // If there are enough items, nudge so the current one feels between two others
+    if (mediaPlaylist.slice(0, MAX_MEDIA_ITEMS).length > 2) {
+      el.scrollTo({ left: MEDIA_SCROLL_AMOUNT, behavior: 'auto' });
+    }
+  }, []);
+
   return (
-    <main className="min-h-screen bg-background">
+    <>
       <LandingCursor />
-
-      {/* Hero — cinematic civic hub with video (no gradients) */}
-      <section className="relative overflow-hidden border-b border-border bg-[#050816]">
-        <div className="pointer-events-none absolute inset-0 opacity-40">
-          <div className="absolute -left-32 top-10 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
-          <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-sky-500/25 blur-3xl" />
-        </div>
-        <Container2026>
-          <div className="relative grid gap-10 py-16 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:py-24 lg:py-28">
-            <div className="space-y-6">
-              <p className="badge-minimal text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                Kenya · Budget Ndio Story
-              </p>
-              <h1 className="text-hero-2026 font-semibold leading-tight text-white">
-                See where Kenya&apos;s budget really goes.
-              </h1>
-              <p className="max-w-xl text-sm text-muted-foreground md:text-base">
-                A civic hub for young Kenyans to follow the money—from Treasury ceilings to county projects
-                and the stories behind every shilling.
-              </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <Button asChild size="lg" className="rounded-full px-6">
-                  <Link href="/learn/budget-101">
-                    Start with Budget 101
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-full px-6">
-                  <Link href="/tracker">
-                    Track delivery
-                    
-                  </Link>
-                </Button>
-                <Button asChild variant="ghost" size="lg" className="rounded-full px-6">
-                  <Link href="/take-action">
-                    Join the civic hub
-                    <Users className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted-foreground md:text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  <span>Live for 47 counties</span>
+      {/* Sections render in layout main scroll container so navbar stays visible */}
+      {/* Landing hero view: hero (gradient + content) then marquee bar directly below */}
+      <LandingSection id="hero" variant="dark" contained size="hero">
+          <div className="pointer-events-none absolute inset-0 opacity-40">
+            <div className="absolute -left-32 top-10 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
+            <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-sky-500/25 blur-3xl" />
+          </div>
+          <div className="relative flex min-h-0 flex-1 flex-col justify-center">
+            <div className="grid gap-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:gap-8 lg:gap-10">
+              <div className="space-y-4 md:space-y-5">
+                <p className="badge-minimal text-[10px] uppercase tracking-[0.25em] text-white/80 sm:text-xs">
+                  Kenya · Budget Ndio Story
+                </p>
+                <h1 className="text-hero-2026 font-semibold leading-tight text-white">
+                  See where Kenya&apos;s budget really goes.
+                </h1>
+                <p className="max-w-xl text-xs text-white/90 sm:text-sm md:text-base">
+                  A civic hub for young Kenyans to follow the money—from Treasury ceilings to county
+                  projects and the stories behind every shilling.
+                </p>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="rounded-full bg-white px-4 text-sm font-semibold text-[var(--hero-bg)] hover:bg-white/95 focus-visible:ring-white/50 sm:px-6 sm:text-base"
+                  >
+                    <Link href="/learn">
+                      Enter the civic hub
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="rounded-full border-[rgba(255,255,255,0.5)] bg-transparent px-4 text-sm font-medium text-white hover:bg-white/15 hover:border-white/60 focus-visible:ring-white/40 sm:px-6 sm:text-base"
+                  >
+                    <Link href="/tracker">Track delivery</Link>
+                  </Button>
                 </div>
-                <span className="hidden h-4 w-px bg-border md:inline-block" aria-hidden="true" />
-                <span className="flex items-center gap-1">
-                  <MapPin className="h-3 w-3" />
-                  Nairobi · Kisumu · Mombasa · Eldoret
-                </span>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-black shadow-[0_18px_60px_rgba(15,23,42,0.7)]">
-                <video
-                  className="h-full w-full object-cover"
-                  src="/bnsoo1.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  aria-label="Budget Ndio Story civic footage"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-black/40" />
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 text-xs text-slate-100">
-                  <div>
-                    <p className="font-semibold">Budget Ndio Story · 2026</p>
-                    <p className="text-[11px] text-slate-300">
-                      Stories from wards, barazas and civic spaces across Kenya.
-                    </p>
+                <div className="flex flex-wrap items-center gap-3 text-[10px] text-white/85 sm:gap-4 sm:text-xs md:text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    <span>Live for 47 counties</span>
                   </div>
-                  <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-[11px] font-medium text-emerald-300">
-                    Youth civic hub
+                  <span className="hidden h-4 w-px bg-white/50 md:inline-block" aria-hidden="true" />
+                  <span className="flex items-center gap-1">
+                    <MapPin className="h-3 w-3" />
+                    Nairobi · Kisumu · Mombasa · Eldoret
                   </span>
                 </div>
               </div>
-              <div className="pointer-events-none absolute -bottom-10 -right-10 hidden h-40 w-40 rounded-full border border-primary/30 md:block" />
-              <div className="pointer-events-none absolute -bottom-24 -left-6 hidden h-40 w-64 md:block">
-                <CivicGridIllustration className="h-full w-full" />
+
+              <div className="relative flex items-center">
+                <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-black shadow-[0_18px_60px_rgba(15,23,42,0.7)] sm:rounded-2xl">
+                  <video
+                    className="aspect-video w-full object-cover"
+                    src="/bnsoo1.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    aria-label="Budget Ndio Story civic footage"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-black/40" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 text-[10px] text-slate-100 sm:bottom-4 sm:left-4 sm:right-4 sm:gap-3 sm:text-xs">
+                    <div className="min-w-0">
+                      <p className="font-semibold truncate">Budget Ndio Story · 2026</p>
+                      <p className="text-[10px] text-slate-300 sm:text-[11px]">
+                        Stories from wards, barazas and civic spaces.
+                      </p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-emerald-400/10 px-2 py-0.5 text-[10px] font-medium text-emerald-300 sm:px-3 sm:py-1 sm:text-[11px]">
+                      Youth civic hub
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </Container2026>
-      </section>
+        </LandingSection>
 
-      {/* Marquee — scrolls with page */}
-      <section
-        className="border-b border-border bg-secondary/20 py-3"
-        aria-label="Updates"
-      >
-        <Container2026>
-          <Marquee pauseOnHover className="py-1" duration="26s">
+        {/* Marquee — white bar just below hero gradient; part of landing hero view */}
+        <LandingSection size="bar" variant="muted" id="marquee" contained>
+          <Marquee pauseOnHover className="py-1" duration="20s">
             <div className="mx-6 inline-flex items-center gap-2 text-xs sm:text-sm">
               <span className="rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
                 New
               </span>
-              <span className="font-medium">Budget 101 · Learn hub is live</span>
+              <span className="font-medium">Civic hub is live</span>
               <span className="text-muted-foreground">
-                Start with BPS 2026 and move from &quot;confused&quot; to &quot;I can explain this.&quot;
+                BPS 2026 basics + Millicent Makini’s summary—decode the budget, quiz & reflections.
               </span>
             </div>
             <div className="mx-6 inline-flex items-center gap-2 text-xs sm:text-sm">
@@ -345,15 +500,13 @@ export function HomeLanding() {
               </span>
             </div>
           </Marquee>
-        </Container2026>
-      </section>
+        </LandingSection>
 
-      {/* Budget story – pinned civic narrative */}
-      <ScrollSection animation={scrollFadeUp}>
-        <PinnedChapter className="bg-background py-14 md:py-20">
-          <Container2026>
-            <div className="grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-center">
-              <div className="space-y-5">
+        {/* Budget story – fixed height, responsive */}
+        <ScrollSection animation={scrollFadeUp} className="h-full min-h-full snap-start">
+          <LandingSection id="budget-story" contained>
+            <div className="grid min-h-0 flex-1 gap-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-stretch md:gap-10">
+              <div className="space-y-4 md:space-y-5">
                 <SectionHeader
                   label="Budget Ndio Story"
                   title="Follow the money as a story, not a spreadsheet."
@@ -363,7 +516,7 @@ export function HomeLanding() {
                   {budgetStoryChapters.map((chapter) => (
                     <div
                       key={chapter.id}
-                      className="group flex gap-4 rounded-2xl border border-border/60 bg-secondary/20 p-4 transition-colors hover:bg-secondary/40"
+                      className="group flex gap-4 rounded-2xl border border-border bg-card p-4 transition-colors hover:bg-muted/50"
                     >
                       <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
                         {chapter.id.toString().padStart(2, '0')}
@@ -381,201 +534,275 @@ export function HomeLanding() {
                   ))}
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-3xl bg-primary text-primary-foreground p-6 shadow-lg md:p-8">
-                <div className="relative space-y-4">
-                  <p className="text-[11px] uppercase tracking-[0.25em] opacity-80">
-                    Civic hub · 2026
-                  </p>
-                  <p className="text-lg font-semibold md:text-xl">
-                    One place to see what was promised, what was funded, and what was delivered.
-                  </p>
-                  <p className="text-sm opacity-80">
-                    Each story blends budget lines, timelines, and community voices—so you can hold power to
-                    account with receipts, not vibes.
-                  </p>
-                  <div className="mt-3 flex flex-wrap items-center gap-2 text-xs opacity-90">
-                    <span className="rounded-full bg-primary-foreground/10 px-3 py-1">
-                      47 counties
-                    </span>
-                    <span className="rounded-full bg-primary-foreground/10 px-3 py-1">
-                      Sector explainers
-                    </span>
-                    <span className="rounded-full bg-primary-foreground/10 px-3 py-1">
-                      Storytelling prompts
-                    </span>
-                  </div>
-                  <Button
-                    asChild
-                    size="sm"
-                    variant="secondary"
-                    className="mt-4 rounded-full bg-primary-foreground text-primary"
-                  >
-                    <Link href="/insights">
-                      Explore insights
-                      <ArrowRight className="ml-2 h-3 w-3" />
-                    </Link>
-                  </Button>
-                </div>
-                <div className="pointer-events-none absolute -right-4 -bottom-4 h-32 w-40 opacity-70">
-                  <BudgetStoryIllustration className="h-full w-full" />
+              <CivicHubCard />
+            </div>
+          </LandingSection>
+        </ScrollSection>
+
+        {/* How it works – fixed height, responsive */}
+        <ScrollSection animation={scrollFadeUpSm} className="h-full min-h-full snap-start">
+          <LandingSection id="how-it-works" variant="muted" contained>
+            <div className="grid min-h-0 flex-1 gap-6 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-stretch md:gap-10">
+              <div className="space-y-6">
+                <SectionHeader
+                  label="How it works"
+                  title="From confused to confident in three steps."
+                  description="Hover each step to see what it looks like in the app, then click to jump in."
+                />
+                <div className="space-y-3">
+                  {howItWorks.map((item) => {
+                    const isActive = activeHowStep.step === item.step;
+                    return (
+                      <button
+                        key={item.step}
+                        type="button"
+                        onMouseEnter={() => setActiveHowStep(item)}
+                        onFocus={() => setActiveHowStep(item)}
+                        className={`group flex w-full items-start gap-4 rounded-2xl border px-4 py-4 text-left transition-colors md:px-5 md:py-5 ${
+                          isActive
+                            ? 'border-primary bg-card'
+                            : 'border-border bg-muted/30 hover:border-primary/60 hover:bg-muted/50'
+                        }`}
+                      >
+                        <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
+                          {item.step}
+                        </div>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                              {item.badge}
+                            </span>
+                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border/60 bg-background text-[11px] text-muted-foreground">
+                              <item.icon className="h-3 w-3" />
+                            </span>
+                          </div>
+                          <p className="text-sm font-semibold md:text-base">{item.title}</p>
+                          <p className="text-xs text-muted-foreground md:text-sm">
+                            {item.description}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary">
+                            {item.step === '01'
+                              ? 'Start Budget 101'
+                              : item.step === '02'
+                                ? 'Browse reports'
+                                : 'See where to act'}
+                            <ChevronRight className="h-3 w-3" />
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-            </div>
-          </Container2026>
-        </PinnedChapter>
-      </ScrollSection>
 
-      {/* Horizontal reveal: How it works */}
-      <section className="bg-secondary/30 py-6 md:py-8">
-        <div className="container-2026 mb-4 px-4 md:px-6">
-          <SectionHeader
-            label="How it works"
-            title="Learn → Reports → Action."
-            description="Three steps. Scroll to reveal."
-          />
-        </div>
-        <HorizontalReveal scrollHeight={2.2} className="bg-secondary/30">
-          {howItWorks.map((item) => (
-            <Card
-              key={item.step}
-              className="card-2026 w-[85vw] max-w-md flex-shrink-0 md:w-[400px]"
-            >
-              <CardContent className="flex h-full min-h-[320px] flex-col justify-between p-6">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                      Step {item.step}
+              <div className="hidden min-h-0 flex-col rounded-2xl border border-border bg-card p-4 shadow-sm sm:p-5 md:flex md:h-full md:min-h-0 md:p-6">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                  Live preview
+                </p>
+                <div className="relative mt-3 flex min-h-[180px] flex-col overflow-hidden rounded-2xl border border-dashed border-border/70 bg-secondary/40 p-4 sm:min-h-[200px] md:mt-4 md:min-h-0 md:flex-1">
+                  <div className="mb-3 flex shrink-0 items-center justify-between gap-3">
+                    <div className="min-w-0 space-y-1">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                        Step {activeHowStep.step} · {activeHowStep.badge}
+                      </p>
+                      <p className="truncate text-sm font-semibold md:text-base">{activeHowStep.title}</p>
+                    </div>
+                    <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-background px-3 py-1 text-[11px] font-medium text-muted-foreground">
+                      Hover to switch
                     </span>
-                    <div className="icon-wrapper">
-                      <item.icon className="h-4 w-4" />
+                  </div>
+                  <div className="relative min-h-0 flex-1 w-full">
+                    {/* Mobile: single dark panel full-width */}
+                    <div className="relative h-full w-full md:hidden">
+                      <div className="absolute inset-0 rounded-xl bg-[var(--hero-bg)] text-xs text-slate-100">
+                        <div className="flex h-full flex-col justify-between p-3">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="h-1.5 w-16 rounded-full bg-slate-200" />
+                              <span className="h-1.5 w-8 rounded-full bg-slate-600" />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="block h-1.5 w-24 rounded-full bg-slate-500" />
+                              <span className="block h-1 w-20 rounded-full bg-slate-700" />
+                            </div>
+                          </div>
+                          <div className="flex items-end justify-between gap-2">
+                            <div className="space-y-1">
+                              <span className="block h-10 w-1.5 rounded-full bg-sky-500" />
+                              <span className="block h-6 w-1.5 rounded-full bg-sky-700" />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="block h-8 w-1.5 rounded-full bg-emerald-400" />
+                              <span className="block h-4 w-1.5 rounded-full bg-emerald-700" />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="block h-6 w-1.5 rounded-full bg-blue-400" />
+                              <span className="block h-3 w-1.5 rounded-full bg-blue-700" />
+                            </div>
+                            <span className="h-1.5 w-10 rounded-full bg-slate-500" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Desktop: two panels */}
+                    <div className="relative hidden h-full w-full md:block">
+                      <div className="absolute inset-y-2 left-2 w-[46%] rounded-xl bg-background shadow-sm">
+                        <div className="flex h-full flex-col justify-between p-3">
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="h-1.5 w-10 rounded-full bg-primary/60" />
+                              <span className="h-1.5 w-6 rounded-full bg-muted-foreground/40" />
+                            </div>
+                            <div className="mt-2 space-y-1">
+                              <span className="block h-1.5 w-24 rounded-full bg-muted-foreground/30" />
+                              <span className="block h-1.5 w-20 rounded-full bg-muted-foreground/20" />
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <span className="block h-1 w-16 rounded-full bg-primary/40" />
+                            <span className="block h-1 w-10 rounded-full bg-primary/20" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-y-0 right-0 w-[52%] rounded-xl bg-[var(--hero-bg)] text-xs text-slate-100">
+                        <div className="flex h-full flex-col justify-between p-3">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="h-1.5 w-16 rounded-full bg-slate-200" />
+                              <span className="h-1.5 w-8 rounded-full bg-slate-600" />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="block h-1.5 w-24 rounded-full bg-slate-500" />
+                              <span className="block h-1 w-20 rounded-full bg-slate-700" />
+                            </div>
+                          </div>
+                          <div className="flex items-end justify-between gap-2">
+                            <div className="space-y-1">
+                              <span className="block h-10 w-1.5 rounded-full bg-sky-500" />
+                              <span className="block h-6 w-1.5 rounded-full bg-sky-700" />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="block h-8 w-1.5 rounded-full bg-emerald-400" />
+                              <span className="block h-4 w-1.5 rounded-full bg-emerald-700" />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="block h-6 w-1.5 rounded-full bg-blue-400" />
+                              <span className="block h-3 w-1.5 rounded-full bg-blue-700" />
+                            </div>
+                            <span className="h-1.5 w-10 rounded-full bg-slate-500" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <h3 className="text-h3-2026 mt-4 font-semibold">{item.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                  <Link
+                    href={activeHowStep.href}
+                    className="mt-4 shrink-0 inline-flex items-center gap-1 text-xs font-medium text-primary"
+                  >
+                    {activeHowStep.step === '01'
+                      ? 'Jump into Budget 101'
+                      : activeHowStep.step === '02'
+                        ? 'Open reports hub'
+                        : 'See where to act'}
+                    <ChevronRight className="h-3 w-3" />
+                  </Link>
                 </div>
-                <Link
-                  href={item.href}
-                  className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-primary"
-                >
-                  {item.step === '01' ? 'Start module' : 'Explore'}
-                  <ChevronRight className="h-3 w-3" />
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </HorizontalReveal>
-      </section>
-
-      {/* Scroll-triggered: Impact in numbers */}
-      <ScrollSection animation={scrollFadeUp}>
-        <PageSection size="md" variant="muted">
-          <Container2026>
-            <div className="space-y-8">
-              <SectionHeader
-                label="Impact"
-                title="People first, not PDFs."
-                description="Analysts, creators and organizers keeping Kenya's budget story measurable and shareable."
-              />
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {statistics.map((item, index) => (
-                  <Card key={item.label} className="card-2026 h-full">
-                    <CardContent className="space-y-3 p-5 md:p-6">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="icon-wrapper">
-                          <item.icon className="h-4 w-4" />
-                        </div>
-                        <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                          {index === 0 ? 'Reports' : index === 1 ? 'People' : 'Network'}
-                        </span>
-                      </div>
-                      <div className="space-y-1">
-                        <span className="text-2xl font-semibold md:text-3xl">
-                          {item.value}
-                          {item.suffix}
-                        </span>
-                        <p className="text-xs text-muted-foreground md:text-sm">
-                          {item.label}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
               </div>
             </div>
-          </Container2026>
-        </PageSection>
-      </ScrollSection>
+          </LandingSection>
+        </ScrollSection>
 
-      {/* Civic hub band – blue, premium */}
-      <ScrollSection animation={scrollFadeUpSm}>
-        <PageSection className="bg-primary text-primary-foreground">
-          <Container2026>
-            <div className="space-y-8">
-              <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                <div className="space-y-3">
-                  <p className="badge-minimal text-xs uppercase tracking-[0.25em] text-primary-foreground/80">
-                    Civic hub
-                  </p>
-                  <h2 className="text-2xl font-semibold md:text-3xl">
-                    One home for Kenya&apos;s budget and the stories behind it.
-                  </h2>
-                  <p className="max-w-xl text-sm md:text-base md:text-primary-foreground/90">
-                    Move from PDFs to people: track projects, share evidence, and get briefings designed for
-                    young Kenyans—not auditors.
-                  </p>
-                </div>
+        {/* Civic hub band – fixed height, responsive */}
+        <ScrollSection animation={scrollFadeUpSm} className="h-full min-h-full snap-start">
+          <LandingSection id="civic-hub-band" variant="primary" contained>
+            <div className="flex min-h-0 flex-1 flex-col justify-center gap-6 sm:gap-8 md:flex-row md:items-end md:justify-between md:gap-12">
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold leading-snug sm:text-2xl md:text-3xl text-primary-foreground">
+                  One home for Kenya&apos;s budget and the stories behind it.
+                </h2>
+                <p className="max-w-xl text-sm text-primary-foreground/90 md:text-base">
+                  Move from PDFs to people: track projects, share evidence, and get briefings designed for
+                  young Kenyans—not auditors.
+                </p>
                 <Button
                   asChild
-                  size="sm"
+                  size="lg"
                   variant="secondary"
-                  className="mt-2 w-full rounded-full bg-primary-foreground text-primary md:w-auto"
+                  className="group mt-2 w-full rounded-full bg-primary-foreground text-primary shadow-sm transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] md:w-auto md:px-6"
                 >
-                  <Link href="/take-action">
+                  <Link href="/learn">
                     Enter the civic hub
-                    <ArrowRight className="ml-2 h-3 w-3" />
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </Link>
                 </Button>
               </div>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {civicHubLinks.map((link) => (
-                  <Card
-                    key={link.title}
-                    className="card-2026 h-full border-primary-foreground/20 bg-primary/40 text-primary-foreground"
+
+              {/* One video + two links – video prominent, links stacked, generous whitespace */}
+              <div className="grid w-full grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
+                {civicHubLearnModules.filter((m) => m.mediaType === 'video').map((mod) => (
+                  <Link
+                    key={mod.id}
+                    href={mod.href}
+                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-primary"
                   >
-                    <CardContent className="flex h-full flex-col justify-between gap-3 p-5 md:p-6">
-                      <div className="space-y-2">
-                        <span className="inline-flex items-center rounded-full bg-primary-foreground/10 px-3 py-1 text-[11px] font-medium">
-                          {link.badge}
-                        </span>
-                        <p className="text-sm font-semibold md:text-base">{link.title}</p>
-                        <p className="text-xs md:text-sm md:text-primary-foreground/90">
-                          {link.description}
-                        </p>
-                      </div>
-                      <Link
-                        href={link.href}
-                        className="mt-2 inline-flex items-center gap-1 text-xs font-medium md:text-sm"
-                      >
-                        Open
-                        <ChevronRight className="h-3 w-3" />
-                      </Link>
-                    </CardContent>
-                  </Card>
+                    <div className="relative aspect-video w-full">
+                      {mod.mediaSrc && (
+                        <video
+                          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                          src={mod.mediaSrc}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                        />
+                      )}
+                      <span className="absolute bottom-4 right-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                        {mod.minutes} min
+                      </span>
+                    </div>
+                    <div className="p-6">
+                      <p className="font-semibold text-primary-foreground md:text-slate-900">
+                        {mod.title}
+                      </p>
+                      <p className="mt-1 text-sm text-primary-foreground/70 md:text-slate-600">
+                        {mod.subtitle}
+                      </p>
+                    </div>
+                  </Link>
                 ))}
+                <div className="flex flex-col gap-6 lg:gap-8">
+                  {civicHubLearnModules.filter((m) => m.mediaType !== 'video').map((mod) => (
+                    <Link
+                      key={mod.id}
+                      href={mod.href}
+                      className="group flex flex-col justify-center rounded-2xl border border-white/10 bg-white/5 p-6 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-primary"
+                    >
+                      <p className="font-semibold text-primary-foreground md:text-slate-900">
+                        {mod.title}
+                      </p>
+                      <p className="mt-1 text-sm text-primary-foreground/70 md:text-slate-600">
+                        {mod.subtitle}
+                      </p>
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-foreground/90 transition-transform duration-300 group-hover:translate-x-0.5 md:text-slate-700">
+                        Open
+                        <ArrowRight className="h-4 w-4" />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </Container2026>
-        </PageSection>
-      </ScrollSection>
+          </LandingSection>
+        </ScrollSection>
 
-      {/* Latest reports */}
-      <ScrollSection animation={scrollFadeUpSm}>
-        <PageSection>
-          <Container2026>
-            <div className="space-y-8">
+        {/* Latest reports – fixed height, responsive */}
+        <ScrollSection animation={scrollFadeUpSm} className="h-full min-h-full snap-start">
+          <LandingSection id="latest-reports" contained>
+            <div className="flex min-h-0 flex-1 flex-col gap-6 sm:gap-8">
               <SectionHeader
                 label="Latest"
-                title="Reports and explainers."
+                title="Where Kenya's money is going right now."
+                description="A quick mix of national, sector and county briefs you can read in minutes."
                 action={
                   <Button asChild variant="outline" size="sm" className="rounded-full px-5">
                     <Link href="/reports">
@@ -585,102 +812,179 @@ export function HomeLanding() {
                   </Button>
                 }
               />
-              <div className="divide-y divide-border/70">
-                {latestReports.map((report) => (
+              <div className="grid gap-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start">
+                {/* Featured latest report */}
+                {latestReports[0] && (
                   <Link
-                    key={report.title}
-                    href={report.href}
-                    className="-mx-2 block rounded-lg py-4 transition-colors hover:bg-background/50 md:py-5"
+                    href={latestReports[0].href}
+                    className="group h-full rounded-2xl border border-border bg-card p-4 transition-all duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-md md:p-6"
                   >
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="rounded-full border border-border px-3 py-1">
-                          {report.category}
-                        </span>
-                        <span>{report.date}</span>
-                      </div>
-                      <div className="flex-1 space-y-1">
-                        <p className="text-sm font-medium md:text-base">{report.title}</p>
-                        <p className="text-xs text-muted-foreground md:text-sm">
-                          {report.summary}
-                        </p>
-                      </div>
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+                    <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+                      <span className="rounded-full border border-border px-2.5 py-1">
+                        {latestReports[0].category}
+                      </span>
+                      <span>{latestReports[0].date}</span>
+                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.16em] text-primary">
+                        New
+                      </span>
+                    </div>
+                    <div className="mt-4 space-y-2">
+                      <h3 className="text-sm font-semibold md:text-lg group-hover:text-primary">
+                        {latestReports[0].title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground md:text-base">
+                        {latestReports[0].summary}
+                      </p>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                      <span className="inline-flex items-center gap-1 font-medium text-primary">
                         Read brief
-                        <ChevronRight className="h-3 w-3" />
+                        <ChevronRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+                      </span>
+                      <span className="hidden rounded-full bg-background/60 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground md:inline-flex">
+                        Featured
                       </span>
                     </div>
                   </Link>
-                ))}
+                )}
+
+                {/* Timeline for the rest */}
+                <div className="relative">
+                  <div className="absolute inset-y-2 left-0 hidden w-px bg-border/60 md:block" aria-hidden="true" />
+                  <div className="space-y-1 md:pl-3">
+                    {latestReports.slice(1).map((report) => (
+                      <Link
+                        key={report.title}
+                        href={report.href}
+                        className="group relative block rounded-lg py-3 transition-all duration-200 hover:bg-background/60 md:hover:pl-1 md:py-4"
+                      >
+                        <div className="absolute left-[-7px] top-1/2 hidden h-2 w-2 -translate-y-1/2 rounded-full bg-background md:block">
+                          <span className="block h-2 w-2 rounded-full bg-primary/70" />
+                        </div>
+                        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+                          <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                            <span className="rounded-full border border-border px-3 py-1">
+                              {report.category}
+                            </span>
+                            <span>{report.date}</span>
+                          </div>
+                          <div className="flex-1 space-y-1">
+                            <p className="text-sm font-medium md:text-base md:group-hover:translate-x-0.5 md:group-hover:text-primary transition-colors transition-transform duration-200">
+                              {report.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground md:text-sm">
+                              {report.summary}
+                            </p>
+                          </div>
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary">
+                            Read brief
+                            <ChevronRight className="h-3 w-3 transition-transform duration-200 md:group-hover:translate-x-0.5" />
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-          </Container2026>
-        </PageSection>
-      </ScrollSection>
+          </LandingSection>
+        </ScrollSection>
 
-      {/* Scroll-triggered: Testimonial */}
-      <ScrollSection animation={scrollFadeUpXs}>
-        <PageSection>
-          <Container2026>
-            <Testimonial01 />
-          </Container2026>
-        </PageSection>
-      </ScrollSection>
+        {/* Partners – Led by storytellers (premium dark cards, carousel) */}
+        <ScrollSection animation={scrollFadeUpXs} className="h-full min-h-full snap-start">
+          <LandingSection id="partners" size="full" variant="default" contained={false} className="overflow-hidden p-0">
+            <div className="relative flex min-h-0 flex-1 flex-col">
+              {/* Hero strip – dark block, white text */}
+              <div className="bg-[var(--hero-bg)] px-4 py-12 sm:px-6 sm:py-16 md:px-8 md:py-20">
+                <div className="container-2026 mx-auto max-w-5xl">
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">
+                    Led by storytellers
+                  </p>
+                  <h2 className="mb-6 max-w-3xl text-2xl font-semibold leading-tight text-white sm:text-3xl md:text-4xl">
+                    A Kenya-wide consortium at the intersection of media, data and organizing.
+                  </h2>
+                  <p className="max-w-2xl text-sm leading-relaxed text-white/80 md:text-base">
+                    Budget Ndio Story is led by <span className="font-medium text-white">The Continental Pot</span>,{' '}
+                    <span className="font-medium text-white">Colour Twist Media</span>, and{' '}
+                    <span className="font-medium text-white">Sen Media &amp; Events</span>. Together, they build
+                    formats that make Kenya&apos;s public finance feel human—so young people can see themselves in the
+                    story, not just the spreadsheets.
+                  </p>
+                </div>
+              </div>
 
-      {/* Scroll-triggered: Partners */}
-      <ScrollSection animation={scrollFadeUpXs}>
-        <PageSection size="md" variant="muted">
-          <Container2026>
-            <div className="space-y-8">
-              <SectionHeader
-                label="Led by storytellers"
-                title="A Kenya-wide consortium at the intersection of media, data and organizing."
-                description={
-                  <>
-                    Budget Ndio Story is led by{' '}
-                    <span className="font-medium">The Continental Pot, Colour Twist Media,</span>{' '}
-                    and <span className="font-medium">Sen Media &amp; Events</span>, working with
-                    creators, universities, civil society and partners across the country.
-                  </>
-                }
-                align="center"
-              />
-              <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-3">
-                {partners.map((partner) => (
-                  <a
-                    key={partner.name}
-                    href={partner.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group"
-                  >
-                    <Card className="card-2026 h-full transition-shadow duration-200 group-hover:shadow-lg">
-                      <CardContent className="flex flex-col items-center justify-center gap-4 p-6">
+              {/* Light band – Consortium snapshot */}
+              <div className="bg-background px-4 py-12 sm:px-6 sm:py-16 md:px-8 md:py-20">
+                <div className="container-2026 mx-auto max-w-5xl">
+                  {/* Consortium snapshot – single dark card, stats like testimonial block */}
+                  <div className="overflow-hidden rounded-2xl bg-[var(--hero-bg)] px-6 py-8 shadow-lg sm:px-10 sm:py-10 md:flex md:items-center md:justify-between md:gap-8">
+                    <p className="mb-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50 md:mb-0">
+                      Consortium snapshot
+                    </p>
+                    <div className="flex flex-wrap items-center gap-8 sm:gap-12 md:gap-16">
+                      <div>
+                        <p className="text-3xl font-semibold tabular-nums text-white sm:text-4xl">3</p>
+                        <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/60">Founding labs</p>
+                        <p className="text-xs text-white/50">storyteller studios</p>
+                      </div>
+                      <div className="h-12 w-px bg-white/20" aria-hidden />
+                      <div>
+                        <p className="text-3xl font-semibold tabular-nums text-white sm:text-4xl">100+</p>
+                        <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/60">Room to grow</p>
+                        <p className="text-xs text-white/50">future partners</p>
+                      </div>
+                      <div className="h-12 w-px bg-white/20" aria-hidden />
+                      <div>
+                        <p className="text-base font-semibold text-white sm:text-lg">Media · Data · Organizing</p>
+                        <p className="mt-1 text-xs font-medium uppercase tracking-wider text-white/60">Focus</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Constant carousel – infinite, aligned, no gaps (duplicate items for dense loop) */}
+              <div className="relative w-full overflow-hidden pb-12 md:pb-16">
+                <Marquee pauseOnHover duration="200s" repeat={10} gap="2rem" className="py-4">
+                  {[...partners, ...partners, ...partners].map((partner, index) => (
+                    <a
+                      key={`${partner.name}-${index}`}
+                      href={partner.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex w-[260px] shrink-0 flex-col items-center gap-3 transition-opacity duration-200 hover:opacity-80 text-center"
+                    >
+                      <div className="flex h-14 w-full items-center justify-center">
                         {partner.image ? (
-                          <div className="relative flex h-16 w-40 items-center justify-center">
-                            <img
-                              src={partner.image}
-                              alt={partner.name}
-                              className="max-h-full max-w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0"
-                            />
-                          </div>
+                          <img
+                            src={partner.image}
+                            alt={partner.name}
+                            className="max-h-9 w-full max-w-[180px] object-contain object-center opacity-90 transition-transform duration-200 group-hover:scale-[1.02]"
+                          />
                         ) : (
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border">
-                            <span className="text-xs font-semibold">{partner.logo}</span>
-                          </div>
+                          <span className="text-sm font-semibold text-primary">
+                            {partner.logo}
+                          </span>
                         )}
-                        <span className="text-center text-sm font-semibold">{partner.name}</span>
-                      </CardContent>
-                    </Card>
-                  </a>
-                ))}
+                      </div>
+                      <div className="w-full text-center">
+                        <p className="truncate font-semibold text-foreground">{partner.name}</p>
+                        <p className="mt-0.5 truncate text-sm text-muted-foreground">{partner.role}</p>
+                      </div>
+                    </a>
+                  ))}
+                </Marquee>
               </div>
             </div>
-          </Container2026>
-        </PageSection>
-      </ScrollSection>
+          </LandingSection>
+        </ScrollSection>
 
-      <DonateSection />
-    </main>
+        {/* Donate – full-bleed darkest black section */}
+        <LandingSection id="donate" align="center" contained={false} className="!bg-black">
+          <div className="flex min-h-0 w-full flex-1 flex-col justify-center">
+            <DonateSection variant="dark" />
+          </div>
+        </LandingSection>
+    </>
   );
 }

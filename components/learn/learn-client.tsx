@@ -23,8 +23,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BentoCard, BentoSection } from "@/components/ui/bento-frame";
-import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
+import { BentoSectionHeader, BentoStaggerGrid, BentoGridItem } from "@/components/ui/bento-animations";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
+import {
+  ScrollReveal,
+  StaggerChildren,
+  StaggerItem,
+  CardHover,
+} from "@/components/animations/hig-motion";
 import { cn } from "@/lib/utils";
 
 export interface Module {
@@ -114,31 +120,32 @@ export function LearnClient({ modules }: LearnClientProps) {
 
   return (
     <main className="min-h-screen">
-      {/* How to Use This Page - New Section */}
-      <section className="border-b border-border bg-secondary/10 py-8">
+      {/* How to Use - HIG clarity + staggered motion */}
+      <section className="border-b border-border bg-muted/30 py-10 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <h2 className="text-xl font-bold tracking-tight">How to use these modules</h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              Your journey from "what's a budget?" to "I can explain this to anyone"
+          <ScrollReveal className="mb-8">
+            <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+              How to use these modules
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground max-w-xl">
+              Your journey from &quot;what&apos;s a budget?&quot; to &quot;I can explain this to anyone&quot;
             </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          </ScrollReveal>
+          <StaggerChildren className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {howToUseSteps.map((step, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-3 p-4 rounded-xl bg-background/60 border border-border/50"
-              >
-                <div className={cn("p-2 rounded-lg shrink-0", step.color)}>
-                  <step.icon className="h-4 w-4" />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-sm font-semibold">{step.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
-                </div>
-              </div>
+              <StaggerItem key={index}>
+                <CardHover className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", step.color)}>
+                    <step.icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-foreground">{step.title}</h3>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{step.description}</p>
+                  </div>
+                </CardHover>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
@@ -180,42 +187,45 @@ export function LearnClient({ modules }: LearnClientProps) {
       {/* Learning Modules - Available Now */}
       <section id="modules" className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-10">
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <ScrollReveal className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <h2 className="text-3xl font-bold tracking-tight">Learning modules</h2>
+              <div className="flex flex-wrap items-center gap-3 mb-2">
+                <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+                  Learning modules
+                </h2>
                 <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
-                  {availableModules.length} Available now
+                  {availableModules.length} available now
                 </Badge>
               </div>
               <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-                Move from "I kind of get it" to "I can explain this to my friends" — one small
+                Move from &quot;I kind of get it&quot; to &quot;I can explain this to my friends&quot; — one small
                 module at a time.
               </p>
             </div>
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <div className="inline-flex items-center gap-1 rounded-full bg-primary/5 px-3 py-1">
                 <span className="h-2 w-2 rounded-full bg-primary" />
                 <span>Self‑paced</span>
               </div>
-              <div className="inline-flex items-center gap-1 rounded-full bg-secondary/40 px-3 py-1">
-                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              <div className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1">
+                <span className="h-2 w-2 rounded-full bg-primary" />
                 <span>Quiz + actions inside</span>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <StaggerChildren className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {availableModules.map((module) => (
-              <BentoCard
-                key={module.title}
-                padding="lg"
-                accentColor="neutral"
-                hover
-                className={`group h-full rounded-2xl border border-border/70 bg-background/80 backdrop-blur-sm transition-all ${
-                  module.isNew ? "border-primary/40 bg-primary/5" : ""
-                }`}
-              >
+              <StaggerItem key={module.id}>
+                <CardHover className="h-full rounded-2xl">
+                  <BentoCard
+                    padding="lg"
+                    accentColor="neutral"
+                    className={cn(
+                      "group h-full rounded-2xl border border-border bg-card shadow-sm transition-shadow duration-300",
+                      module.isNew && "border-primary/30 bg-primary/5"
+                    )}
+                  >
                 <div className="flex h-full flex-col">
                   <div className="mb-3 flex items-center justify-between">
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -298,35 +308,38 @@ export function LearnClient({ modules }: LearnClientProps) {
                     </Link>
                   </Button>
                 </div>
-              </BentoCard>
+                  </BentoCard>
+                </CardHover>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
-      {/* Coming Soon Modules - Visually Separated */}
+      {/* Coming Soon Modules */}
       {comingSoonModules.length > 0 && (
-        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-secondary/5 border-t border-border">
+        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/20 border-t border-border">
           <div className="max-w-6xl mx-auto space-y-8">
-            <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold tracking-tight">Coming Soon</h2>
-              <Badge variant="secondary" className="bg-secondary">
+            <ScrollReveal className="flex flex-wrap items-center gap-3">
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground">Coming soon</h2>
+              <Badge variant="secondary" className="bg-muted text-muted-foreground">
                 {comingSoonModules.length} modules in development
               </Badge>
-            </div>
-            <p className="text-sm text-muted-foreground max-w-2xl">
-              These modules are currently being developed. Sign up for updates to be notified when
-              they're released.
-            </p>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            </ScrollReveal>
+            <ScrollReveal>
+              <p className="text-sm text-muted-foreground max-w-2xl">
+                These modules are currently being developed. Sign up for updates to be notified when
+                they&apos;re released.
+              </p>
+            </ScrollReveal>
+            <StaggerChildren className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {comingSoonModules.map((module) => (
-                <BentoCard
-                  key={module.title}
-                  padding="lg"
-                  accentColor="neutral"
-                  hover
-                  className="group h-full rounded-2xl border border-dashed border-border/50 bg-background/40 backdrop-blur-sm opacity-75"
-                >
+                <StaggerItem key={module.title}>
+                  <BentoCard
+                    padding="lg"
+                    accentColor="neutral"
+                    className="group h-full rounded-2xl border border-dashed border-border bg-card/50 opacity-90"
+                  >
                   <div className="flex h-full flex-col">
                     <div className="mb-3 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -374,34 +387,44 @@ export function LearnClient({ modules }: LearnClientProps) {
                     </Button>
                   </div>
                 </BentoCard>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerChildren>
           </div>
         </section>
       )}
 
       {/* CTA to Take Action */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-primary/5 border-t border-primary/10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold tracking-tight mb-3">
+      <section className="py-14 px-4 sm:px-6 lg:px-8 bg-primary/5 border-t border-primary/10">
+        <ScrollReveal className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Ready to put your knowledge into action?
           </h2>
-          <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            After completing the modules, you'll have the skills to engage with budget decisions in
+          <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
+            After completing the modules, you&apos;ll have the skills to engage with budget decisions in
             your county, submit memos, and make your voice heard.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="rounded-full">
-              <Link href="/take-action">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-full transition-transform duration-200 active:scale-[0.98]"
+            >
+              <Link href="/take-action" className="inline-flex items-center gap-2">
                 Explore action pathways
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full transition-transform duration-200 active:scale-[0.98]"
+            >
               <Link href="/subscribe">Support our work</Link>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Promo strip for events / discounts / courses */}

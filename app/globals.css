@@ -21,7 +21,7 @@
     /* Core Colors - Black, White, Blue Only */
     --color-black: #000000;
     --color-white: #ffffff;
-    --color-blue: #007AFF;
+    --color-blue: #2F4494;
     
     /* Semantic Tokens - Light Mode */
     --background: 0 0% 100%;
@@ -33,7 +33,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
     
-    --primary: 211 100% 50%; /* #007AFF */
+    --primary: 229 52% 38%; /* #2F4494 */
     --primary-foreground: 0 0% 100%;
     
     --secondary: 0 0% 96%;
@@ -46,23 +46,26 @@
     --accent-foreground: 0 0% 0%;
     
     /* Destructive - Uses blue for consistency */
-    --destructive: 211 100% 50%;
+    --destructive: 229 52% 38%;
     --destructive-foreground: 0 0% 100%;
     
     /* Subtle border - no solid borders */
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 211 100% 50%;
+    --ring: 229 52% 38%;
     
     /* Clean Radius - Apple HIG standard */
     --radius: 0.5rem;
+
+    /* Landing hero / dark blocks – single source for hero background */
+    --hero-bg: #050816;
     
-    /* Chart colors - blue shades only */
-    --chart-1: 211 100% 50%;
-    --chart-2: 211 100% 40%;
-    --chart-3: 211 100% 30%;
-    --chart-4: 211 100% 20%;
-    --chart-5: 211 100% 60%;
+    /* Chart colors - blue shades (#2F4494 family) */
+    --chart-1: 229 52% 38%;
+    --chart-2: 229 52% 32%;
+    --chart-3: 229 52% 26%;
+    --chart-4: 229 52% 20%;
+    --chart-5: 229 52% 48%;
   }
 
   .dark {
@@ -76,7 +79,7 @@
     --popover: 0 0% 8%;
     --popover-foreground: 0 0% 100%;
     
-    --primary: 211 100% 60%;
+    --primary: 229 52% 48%;
     --primary-foreground: 0 0% 0%;
     
     --secondary: 0 0% 15%;
@@ -89,20 +92,23 @@
     --accent-foreground: 0 0% 100%;
     
     /* Destructive - Uses blue for consistency */
-    --destructive: 211 100% 60%;
+    --destructive: 229 52% 48%;
     --destructive-foreground: 0 0% 100%;
     
     /* Subtle border - no solid borders */
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 211 100% 60%;
+    --ring: 229 52% 48%;
     
+    /* Landing hero (same as light – hero is always dark) */
+    --hero-bg: #050816;
+
     /* Chart colors - dark mode blue shades */
-    --chart-1: 211 100% 60%;
-    --chart-2: 211 100% 50%;
-    --chart-3: 211 100% 40%;
-    --chart-4: 211 100% 30%;
-    --chart-5: 211 100% 70%;
+    --chart-1: 229 52% 48%;
+    --chart-2: 229 52% 42%;
+    --chart-3: 229 52% 36%;
+    --chart-4: 229 52% 30%;
+    --chart-5: 229 52% 56%;
   }
 }
 
@@ -189,6 +195,43 @@
   /* Badge - border-based styling */
   .badge-minimal {
     @apply inline-flex items-center px-3 py-1 rounded-full border border-foreground/20 text-sm font-medium text-foreground/70;
+  }
+
+  /* Civic hub – file folder / organised hub styling */
+  .civic-hub-folder {
+    @apply relative overflow-hidden rounded-2xl;
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      0 4px 24px -4px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  .civic-hub-folder-tab {
+    @apply flex items-center gap-2 border-b px-5 py-3;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .civic-hub-folder-spine {
+    @apply absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  }
+
+  .civic-hub-file-card {
+    @apply relative overflow-hidden rounded-2xl border transition-all duration-200;
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .civic-hub-file-card:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .civic-hub-file-tab {
+    @apply flex h-8 flex-shrink-0 items-center border-b px-3 text-[10px] font-semibold uppercase tracking-wider;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
   }
 }
 
@@ -313,6 +356,30 @@
 
 .loading-dot:nth-child(2) {
   animation-delay: -0.16s;
+}
+
+@keyframes nav-ad-shine {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.animate-nav-ad-shine {
+  animation: nav-ad-shine 3s ease-in-out infinite;
+}
+
+@keyframes appreciation-shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes appreciation-heart {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.08); }
+}
+
+.animate-appreciation-heart {
+  animation: appreciation-heart 1.2s ease-in-out infinite;
 }
 
 /* ==========================================================================
@@ -470,6 +537,28 @@
   .focus-hig:focus-visible {
     @apply outline-none ring-2 ring-primary ring-offset-2;
   }
+}
+
+/* ==========================================================================
+   Landing page – scroll container & hero height
+   Used by MainScrollWrapper (landing-root) and LandingSection (landing-section, landing-hero).
+   Hero section: min-height 100dvh so it fills the viewport; do not change without product/design alignment.
+   ========================================================================== */
+.landing-root {
+  display: flex;
+  flex-direction: column;
+  scroll-snap-type: y mandatory;
+}
+
+.landing-section {
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Hero fills viewport minus the marquee bar so hero + marquee = 100dvh */
+.landing-hero {
+  min-height: calc(100dvh - 4rem);
 }
 
 /* ==========================================================================

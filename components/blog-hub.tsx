@@ -17,6 +17,13 @@ import {
   ArrowUpRight, TrendingUp, BookOpen, Heart, Share2,
   ChevronLeft, ChevronRight, Eye, MessageCircle
 } from "lucide-react";
+import { ArticlesHero } from "@/components/heros/ArticlesHero";
+import {
+  ScrollReveal,
+  StaggerChildren,
+  StaggerItem,
+  CardHover,
+} from "@/components/animations/hig-motion";
 import { DebugBlogData } from "./debug-blog-data";
 import { cn } from "@/lib/utils";
 
@@ -181,14 +188,15 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      
-      <div className="container mx-auto px-4 py-12">
+      <ArticlesHero />
+
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-3">
+          <div id="posts" className="lg:col-span-3">
             {/* Search and Filters */}
-            <div className="bg-card rounded-lg p-6 mb-8 border">
+            <ScrollReveal>
+            <div className="rounded-xl border border-border bg-card p-6 mb-8 shadow-sm">
               <div className="flex flex-col lg:flex-row gap-4 items-center justify-between mb-6">
                 <div className="flex-1 max-w-lg">
                   <Label htmlFor="search" className="sr-only">Search blogs</Label>
@@ -257,24 +265,27 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
                 </div>
               </div>
             </div>
+            </ScrollReveal>
 
             {/* Featured Posts */}
             {featuredPosts.length > 0 && (
               <section className="mb-12">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold flex items-center gap-3">
-                    <TrendingUp className="h-6 w-6 text-primary" />
-                    Featured Stories
+                <ScrollReveal className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl flex items-center gap-3">
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                    Featured stories
                   </h2>
-                  <Button variant="ghost" asChild>
-                    <Link href="#all-posts" className="text-primary hover:text-primary/80">
-                      View All <ArrowUpRight className="ml-2 h-4 w-4" />
+                  <Button variant="ghost" asChild className="rounded-full">
+                    <Link href="#all-posts" className="text-primary hover:text-primary/80 inline-flex items-center gap-1">
+                      View all <ArrowUpRight className="h-4 w-4" />
                     </Link>
                   </Button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </ScrollReveal>
+                <StaggerChildren className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {featuredPosts.slice(0, 3).map((post) => (
-                    <Card key={post.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+                    <StaggerItem key={post.id}>
+                      <CardHover className="overflow-hidden rounded-xl">
+                    <Card className="group overflow-hidden border-border bg-card transition-shadow duration-300">
                       {post.featured_image && (
                         <div className="relative aspect-video overflow-hidden">
                           <Image
@@ -338,27 +349,29 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
                         </div>
                       </CardFooter>
                     </Card>
+                      </CardHover>
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerChildren>
               </section>
             )}
 
             {/* All Posts */}
             <section id="all-posts">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold flex items-center gap-3">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                  All Blog Posts
+              <ScrollReveal className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl flex items-center gap-3">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  All blog posts
                   {searchQuery && (
                     <span className="text-sm text-muted-foreground">
                       (filtered by: "{searchQuery}")
                     </span>
                   )}
                 </h2>
-                <div className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   {filteredAndSortedPosts.length} posts found
-                </div>
-              </div>
+                </p>
+              </ScrollReveal>
 
               {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -375,9 +388,11 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
                   ))}
                 </div>
               ) : filteredAndSortedPosts.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <StaggerChildren className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   {filteredAndSortedPosts.map((post) => (
-                    <Card key={post.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+                    <StaggerItem key={post.id}>
+                      <CardHover className="overflow-hidden rounded-xl">
+                    <Card className="group overflow-hidden border-border bg-card transition-shadow duration-300">
                       {post.featured_image && (
                         <div className="relative aspect-video overflow-hidden">
                           <Image
@@ -443,8 +458,10 @@ export function BlogHub({ initialPosts = [] }: BlogHubProps) {
                         </div>
                       </CardFooter>
                     </Card>
+                      </CardHover>
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerChildren>
               ) : (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">📝</div>

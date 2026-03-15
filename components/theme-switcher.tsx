@@ -21,11 +21,16 @@ const ThemeSwitcher = () => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
-
   const ICON_SIZE = 16;
+
+  if (!mounted) {
+    return (
+      <span
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md"
+        aria-hidden
+      />
+    );
+  }
 
   return (
     <DropdownMenu>

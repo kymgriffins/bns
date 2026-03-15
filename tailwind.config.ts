@@ -19,7 +19,7 @@ export default {
         /* Core Brand Colors - Apple HIG: Black, White, Blue Only */
         black: "#000000",
         white: "#ffffff",
-        blue: "#007AFF",
+        blue: "#2F4494",
         
         /* Neutral Grays - Only allowed grayscale */
         neutral: {

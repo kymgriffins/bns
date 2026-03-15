@@ -20,3 +20,18 @@ export {
 } from './framer-motion';
 
 export type { MotionValue, Variants, Transition, HTMLMotionProps, MotionProps } from 'framer-motion';
+
+export {
+  ScrollReveal,
+  StaggerChildren,
+  StaggerItem,
+  CardHover,
+  higVariants,
+  reducedVariants,
+  heroStagger,
+  higTransition,
+  higTransitionSlow,
+  higTransitionFast,
+  higStagger,
+  useHigReducedMotion,
+} from './hig-motion';

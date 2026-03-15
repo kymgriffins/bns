@@ -11,27 +11,20 @@ import {
   Clock,
   ChevronRight,
   BookOpen,
-  Search,
   CheckCircle2,
   TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { BentoCard, BentoSection } from "@/components/ui/bento-frame";
+import { ContentCard } from "@/components/layout";
+import { ReportsHero } from "@/components/heros/ReportsHero";
 import {
-  BentoCard,
-  BentoGrid,
-  BentoSection,
-  BentoCTASection,
-} from "@/components/ui/bento-frame";
-import {
-  BentoScrollAnimation,
-  BentoStaggerGrid,
-  BentoGridItem,
-  BentoSectionHeader,
-  BentoIconBox,
-} from "@/components/ui/bento-animations";
-import { PageSection, Container2026, SectionHeader } from "@/components/layout";
+  ScrollReveal,
+  StaggerChildren,
+  StaggerItem,
+  CardHover,
+} from "@/components/animations/hig-motion";
 
 export const metadata: Metadata = {
   title: "Simplified Budget Reports - Budget Ndio Story",
@@ -149,58 +142,47 @@ const popularTopics = [
 export default function ReportsPage() {
   return (
     <main className="min-h-screen">
-      <PageSection size="lg" className="border-t-0">
-        <Container2026>
-          <SectionHeader
-            label="Budget briefs · Reports"
-            title="Short, sharp budget reports you can actually use."
-            description="Skip the 200‑page PDFs. Read clear, youth‑friendly briefs that tell you what changed, why it matters, and what to ask next."
-            action={
-              <div className="flex flex-wrap gap-2">
-                <Button asChild size="sm" className="rounded-full">
-                  <Link href="#reports">Browse latest briefs</Link>
-                </Button>
-                <Button asChild variant="outline" size="sm" className="rounded-full">
-                  <Link href="/insights">Go to Budget Insights</Link>
-                </Button>
-              </div>
-            }
-          />
-        </Container2026>
-      </PageSection>
+      <ReportsHero />
 
-      {/* Report Structure Section - Bento Grid */}
-      <BentoSection>
-        <BentoSectionHeader
-          title="What Each Report Contains"
-          subtitle="Our simplified reports follow a consistent structure for easy understanding"
-        />
-        <BentoStaggerGrid stagger={0.08} className="grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Report Structure Section - HIG clarity + motion */}
+      <BentoSection className="border-t border-border/50">
+        <ScrollReveal className="mb-10">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+            What each report contains
+          </h2>
+          <p className="mt-2 text-muted-foreground max-w-2xl">
+            Our simplified reports follow a consistent structure for easy understanding.
+          </p>
+        </ScrollReveal>
+        <StaggerChildren className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {reportSections.map((section, index) => (
-            <BentoGridItem key={section.title} animation="fadeInUp" delay={index * 0.05}>
-              <BentoCard padding="md" accentColor="green" hover>
+            <StaggerItem key={section.title}>
+              <CardHover className="rounded-xl border border-border bg-card p-4 shadow-sm transition-shadow duration-300">
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-9 h-9 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                    <span className="text-green-600 dark:text-green-400 font-bold text-sm">{index + 1}</span>
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                    <span className="text-sm font-semibold text-primary">{index + 1}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1 text-sm">{section.title}</h3>
-                    <p className="text-xs text-muted-foreground">{section.description}</p>
+                    <h3 className="text-sm font-semibold text-foreground">{section.title}</h3>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{section.description}</p>
                   </div>
                 </div>
-              </BentoCard>
-            </BentoGridItem>
+              </CardHover>
+            </StaggerItem>
           ))}
-        </BentoStaggerGrid>
+        </StaggerChildren>
       </BentoSection>
 
-      {/* Categories Section - Bento Layout */}
-      <BentoSection className="bg-secondary/10">
-        <BentoSectionHeader title="Report Categories" />
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* National */}
-          <BentoScrollAnimation animation="fadeInUp">
+      {/* Categories Section - HIG depth + motion */}
+      <BentoSection className="border-t border-border/50 bg-muted/30">
+        <ScrollReveal className="mb-10">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+            Report categories
+          </h2>
+        </ScrollReveal>
+        <StaggerChildren className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <StaggerItem>
+            {/* National */}
             <BentoCard padding="lg" hover>
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-10 w-10 rounded-2xl border border-foreground/20 flex items-center justify-center">
@@ -223,11 +205,10 @@ export default function ReportsPage() {
                 ))}
               </div>
             </BentoCard>
-          </BentoScrollAnimation>
-
-          {/* County */}
-          <BentoScrollAnimation animation="fadeInUp" delay={0.1}>
-            <BentoCard padding="lg" hover>
+          </StaggerItem>
+          <StaggerItem>
+            {/* County */}
+            <BentoCard padding="lg" className="transition-shadow duration-300 hover:shadow-lg">
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-10 w-10 rounded-2xl border border-foreground/20 flex items-center justify-center">
                   <Building2 className="h-5 w-5 text-foreground/70" />
@@ -249,11 +230,10 @@ export default function ReportsPage() {
                 ))}
               </div>
             </BentoCard>
-          </BentoScrollAnimation>
-
-          {/* Oversight */}
-          <BentoScrollAnimation animation="fadeInUp" delay={0.2}>
-            <BentoCard padding="lg" accentColor="red" hover>
+          </StaggerItem>
+          <StaggerItem>
+            {/* Oversight */}
+            <BentoCard padding="lg" className="transition-shadow duration-300 hover:shadow-lg">
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-10 w-10 rounded-2xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                   <Shield className="h-5 w-5 text-red-600 dark:text-red-400" />
@@ -266,8 +246,8 @@ export default function ReportsPage() {
                     key={cat.name}
                     className="flex items-center gap-3 p-3 rounded-2xl bg-background/60 hover:bg-background transition-colors cursor-pointer group"
                   >
-                    <div className={`h-8 w-8 rounded-xl ${cat.color} flex items-center justify-center flex-shrink-0`}>
-                      <cat.icon className="h-4 w-4 text-white" />
+                    <div className="h-8 w-8 rounded-xl border border-foreground/20 flex items-center justify-center flex-shrink-0">
+                      <cat.icon className="h-4 w-4 text-foreground/70" />
                     </div>
                     <span className="text-sm font-medium">{cat.name}</span>
                     <ChevronRight className="h-3 w-3 ml-auto text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -275,122 +255,117 @@ export default function ReportsPage() {
                 ))}
               </div>
             </BentoCard>
-          </BentoScrollAnimation>
-        </div>
+          </StaggerItem>
+        </StaggerChildren>
       </BentoSection>
 
-      {/* Filters and Reports List */}
-      <BentoSection id="reports">
-        {/* Filter Bar */}
-        <BentoScrollAnimation animation="fadeInUp">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
-              <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              <span className="text-sm text-muted-foreground flex-shrink-0">Filters:</span>
-              {filters.map((filter) => (
-                <Button key={filter.name} variant="outline" size="sm" className="flex-shrink-0 rounded-full">
-                  {filter.name}
+      {/* Filters and Reports List - HIG clarity + staggered cards */}
+      <BentoSection id="reports" className="border-t border-border/50">
+        <ScrollReveal className="mb-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-wrap items-center gap-2">
+              <Filter className="h-4 w-4 text-muted-foreground" aria-hidden />
+              <span className="text-sm font-medium text-foreground">Filters</span>
+              {filters.map((f) => (
+                <Button
+                  key={f.name}
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full transition-transform duration-200 active:scale-[0.98]"
+                >
+                  {f.name}
                 </Button>
               ))}
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
-              <span>{sampleReports.length} reports available</span>
-            </div>
+            <p className="flex items-center gap-2 text-sm text-muted-foreground">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              {sampleReports.length} reports available
+            </p>
           </div>
-        </BentoScrollAnimation>
+        </ScrollReveal>
 
-        {/* Reports Grid - Bento Style */}
-        <BentoStaggerGrid stagger={0.08} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sampleReports.map((report, index) => (
-            <BentoGridItem key={report.id} animation="fadeInUp" delay={index * 0.05}>
-              <BentoCard padding="none" accentColor={report.accentColor} hover className="flex flex-col h-full overflow-hidden">
-                {/* Card Header */}
-                <div className="p-6 pb-4">
-                  <div className="flex items-center justify-between gap-3 mb-4">
-                    <Badge className={`${report.categoryColor} text-white text-xs rounded-full`}>
-                      {report.category}
-                    </Badge>
-                    {report.isNew && (
-                      <Badge variant="outline" className="text-green-600 border-green-600 text-xs rounded-full">
-                        New
-                      </Badge>
-                    )}
-                  </div>
-                  <h3 className="text-lg font-bold mb-3 leading-snug">
-                    {report.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
-                    {report.excerpt}
-                  </p>
-                </div>
-
-                {/* Card Footer */}
-                <div className="mt-auto p-6 pt-0">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {report.date}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {report.readTime} read
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3" />
-                      {report.takeaways} takeaways
-                    </div>
-                  </div>
-                  
-                  <Button variant="outline" className="w-full rounded-2xl group">
-                    Read Report <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
-              </BentoCard>
-            </BentoGridItem>
+        <StaggerChildren className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {sampleReports.map((report) => (
+            <StaggerItem key={report.id}>
+              <CardHover className="rounded-xl overflow-hidden">
+                <ContentCard
+                  href="/reports"
+                  title={report.title}
+                  excerpt={report.excerpt}
+                  category={report.category}
+                  meta={
+                    <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <span className="inline-flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {report.date}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {report.readTime}
+                      </span>
+                      {report.takeaways != null && (
+                        <span className="inline-flex items-center gap-1">
+                          <TrendingUp className="h-3 w-3" />
+                          {report.takeaways} takeaways
+                        </span>
+                      )}
+                    </span>
+                  }
+                  ctaText="Read report"
+                />
+              </CardHover>
+            </StaggerItem>
           ))}
-        </BentoStaggerGrid>
+        </StaggerChildren>
 
-        {/* View All CTA */}
-        <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
-          <div className="text-center mt-12">
-            <Button asChild size="lg" variant="outline" className="rounded-full">
-              <Link href="/reports">
-                View All Reports <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </BentoScrollAnimation>
+        <ScrollReveal className="mt-12 text-center" delay={0.2}>
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="rounded-full transition-transform duration-200 active:scale-[0.98]"
+          >
+            <Link href="/reports" className="inline-flex items-center gap-2">
+              View all reports
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        </ScrollReveal>
       </BentoSection>
 
-      {/* CTA Strip - Bento Style */}
-      <BentoSection>
-        <BentoScrollAnimation animation="scaleIn">
-          <BentoCTASection>
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 mb-6">
-                <Download className="h-7 w-7 text-primary" />
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Need a brief for your county or sector?</h2>
-              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                We can help you understand specific budget areas that matter to you. 
-                Request a custom report or join our training program.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button asChild size="lg" className="rounded-full">
-                  <Link href="/take-action">
-                    Request a Report
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="rounded-full">
-                  <Link href="/take-action">
-                    Take Action
-                  </Link>
-                </Button>
-              </div>
+      {/* CTA Strip - HIG deference: content first, clear CTAs */}
+      <BentoSection className="border-t border-border/50">
+        <ScrollReveal variant="scaleIn" className="text-center">
+          <div className="mx-auto max-w-2xl">
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-6">
+              <Download className="h-7 w-7" />
             </div>
-          </BentoCTASection>
-        </BentoScrollAnimation>
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+              Need a brief for your county or sector?
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              We can help you understand specific budget areas that matter to you.
+              Request a custom report or join our training program.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full transition-transform duration-200 active:scale-[0.98]"
+              >
+                <Link href="/take-action">Request a report</Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full transition-transform duration-200 active:scale-[0.98]"
+              >
+                <Link href="/take-action">Take action</Link>
+              </Button>
+            </div>
+          </div>
+        </ScrollReveal>
       </BentoSection>
     </main>
   );

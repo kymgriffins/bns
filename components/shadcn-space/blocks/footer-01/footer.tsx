@@ -6,12 +6,12 @@ import { usePathname } from "next/navigation";
 import { X, Instagram, Facebook, Youtube, Mail } from "lucide-react";
 
 const navLinks = [
-  { label: "Reports", href: "/reports" },
-  { label: "Insights", href: "/insights" },
-  { label: "Tracker", href: "/tracker" },
-  { label: "Take Action", href: "/take-action" },
+  { label: "Budget Reports", href: "/reports" },
   { label: "Learn", href: "/learn" },
+  { label: "Articles", href: "/blogs" },
   { label: "About", href: "/about" },
+  { label: "Subscribe", href: "/subscribe" },
+  { label: "Donate", href: "/donate" },
 ];
 
 const socialLinks = [
