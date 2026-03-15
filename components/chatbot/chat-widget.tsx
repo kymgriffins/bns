@@ -1,430 +1,379 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { 
-  MessageCircle, X, Send, Loader2, HelpCircle, Mail, Phone, 
-  FileText, ChevronDown, ChevronUp, SendHorizontal, Clock,
-  AlertCircle, CheckCircle2, Ticket, Zap, Bug, DollarSign,
-  MessageSquare, ExternalLink, Shield
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Loader2,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  SendHorizontal,
+  CheckCircle2,
+  Ticket,
+  Bug,
+  DollarSign,
+  MessageSquare,
+  Shield,
+  Sparkles,
+  BookOpen,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface Message {
-  id: string
-  role: "user" | "assistant" | "system"
-  content: string
-  timestamp: Date
+  id: string;
+  role: "user" | "assistant" | "system";
+  content: string;
+  timestamp: Date;
 }
 
-interface Ticket {
-  id: string
-  subject: string
-  category: string
-  status: "pending" | "resolved" | "closed"
-  createdAt: Date
+interface TicketType {
+  id: string;
+  subject: string;
+  category: string;
+  status: "pending" | "resolved" | "closed";
+  createdAt: Date;
 }
 
 interface FAQ {
-  question: string
-  answer: string
-  category: string
+  question: string;
+  answer: string;
+  category: string;
 }
 
-// Support categories
 const supportCategories = [
-  { id: "general", label: "General Inquiry", icon: HelpCircle, color: "text-blue-500" },
-  { id: "technical", label: "Technical Support", icon: Bug, color: "text-orange-500" },
-  { id: "billing", label: "Billing & Payments", icon: DollarSign, color: "text-green-500" },
-  { id: "feedback", label: "Feedback", icon: MessageSquare, color: "text-purple-500" },
-]
+  { id: "general", label: "General", icon: HelpCircle },
+  { id: "technical", label: "Technical", icon: Bug },
+  { id: "billing", label: "Billing", icon: DollarSign },
+  { id: "feedback", label: "Feedback", icon: MessageSquare },
+];
 
-// FAQ items
+const aiQuickPrompts = [
+  { label: "What is BPS 2026?", query: "What is BPS 2026 and why does it matter?" },
+  { label: "Find county reports", query: "Where can I find county budget reports?" },
+  { label: "Budget cycle explained", query: "Explain Kenya's budget cycle in simple terms." },
+  { label: "How to use reports", query: "How do I use the simplified budget reports on this site?" },
+];
+
 const faqItems: FAQ[] = [
-  { 
-    question: "How do I track budget spending?", 
-    answer: "You can track spending by visiting our Insights page or using the tracker feature. Navigate to the tracker section to see detailed expenditure reports.",
-    category: "general"
-  },
-  { 
-    question: "How can I access detailed reports?", 
-    answer: "Visit our Reports section to download annual budget statements, county analyses, and sector performance reports. Most reports are available in PDF format.",
-    category: "general"
-  },
-  { 
-    question: "The website is not loading properly", 
-    answer: "Try clearing your browser cache and cookies, then refresh the page. If the issue persists, try using a different browser or contact technical support.",
-    category: "technical"
-  },
-  { 
-    
-    question: "How do I submit a support ticket?",
-    answer: "You can submit a support ticket by clicking the 'Submit Ticket' button in this chat. Fill in your issue details and our team will respond within 24-48 hours.",
-    category: "general"
-  },
-  { 
-    question: "How do I report a bug?", 
-    answer: "Click on 'Technical Support' category and describe the issue you're experiencing. Include any error messages or steps to reproduce the problem.",
-    category: "technical"
-  },
-  { 
-    question: "What payment methods are accepted?",
-    answer: "We accept M-Pesa, credit/debit cards (Visa, Mastercard), and bank transfers. For bulk payments, please contact our billing team.",
-    category: "billing"
-  },
-  { 
-    question: "How can I request a refund?",
-    answer: "To request a refund, please submit a billing support ticket with your transaction details. Our billing team will review your request within 5-7 business days.",
-    category: "billing"
-  },
-  { 
-    question: "How do I submit feedback?",
-    answer: "We value your feedback! Click on the 'Feedback' category to share your suggestions, report issues, or tell us about your experience using our platform.",
-    category: "feedback"
-  },
-]
+  { question: "How do I track budget spending?", answer: "Visit our Insights page or the tracker to see detailed expenditure reports.", category: "general" },
+  { question: "How can I access detailed reports?", answer: "Go to Reports for annual statements, county analyses, and sector reports.", category: "general" },
+  { question: "The website is not loading properly", answer: "Try clearing cache and cookies, or use a different browser. You can also submit a ticket.", category: "technical" },
+  { question: "How do I submit a support ticket?", answer: "Use the 'Submit ticket' tab in this chat. We typically reply within 24–48 hours.", category: "general" },
+  { question: "What payment methods do you accept?", answer: "We accept M-Pesa, cards (Visa, Mastercard), and bank transfer. See Donate for details.", category: "billing" },
+  { question: "How do I submit feedback?", answer: "Choose the Feedback category or email us. We use it to improve the platform.", category: "feedback" },
+];
 
-// Initial greeting
 const initialMessages: Message[] = [
   {
     id: "1",
     role: "assistant",
-    content: "Welcome to **BudgetNdioStory Support Desk**! 👋\n\nI'm here to help you with any questions or issues you may have. How can I assist you today?\n\n💡 I use AI trained on public budget documents. Your conversations help us improve but aren't shared with third parties.",
+    content: "Hi! I'm your **AI assistant** for Budget Ndio Story. I can help you understand Kenya's budget, find reports, and answer questions about the platform.\n\nAsk anything—e.g. \"What is BPS?\", \"Where are county briefs?\", or pick a suggestion below.",
     timestamp: new Date(),
   },
-]
+];
+
+function renderMessageContent(text: string) {
+  return text.split(/\n/).map((line, i) => {
+    const parts: React.ReactNode[] = [];
+    let rest = line;
+    while (rest.length > 0) {
+      const boldMatch = rest.match(/\*\*([^*]+)\*\*/);
+      if (boldMatch && boldMatch.index !== undefined) {
+        if (boldMatch.index > 0) {
+          parts.push(rest.slice(0, boldMatch.index));
+        }
+        parts.push(<strong key={`b-${i}-${parts.length}`} className="font-semibold">{boldMatch[1]}</strong>);
+        rest = rest.slice(boldMatch.index + boldMatch[0].length);
+      } else {
+        parts.push(rest);
+        break;
+      }
+    }
+    return <p key={i}>{parts}</p>;
+  });
+}
 
 export function ChatWidget() {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [messages, setMessages] = React.useState<Message[]>(initialMessages)
-  const [input, setInput] = React.useState("")
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [view, setView] = React.useState<"chat" | "tickets" | "faq">("chat")
-  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null)
-  const [ticketForm, setTicketForm] = React.useState({ subject: "", description: "", email: "" })
-  const [submittedTicket, setSubmittedTicket] = React.useState<Ticket | null>(null)
-  const [expandedFAQ, setExpandedFAQ] = React.useState<number | null>(null)
-  const [tickets, setTickets] = React.useState<Ticket[]>([])
-  const messagesEndRef = React.useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [messages, setMessages] = React.useState<Message[]>(initialMessages);
+  const [input, setInput] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [view, setView] = React.useState<"chat" | "tickets" | "faq">("chat");
+  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
+  const [ticketForm, setTicketForm] = React.useState({ subject: "", description: "", email: "" });
+  const [submittedTicket, setSubmittedTicket] = React.useState<TicketType | null>(null);
+  const [expandedFAQ, setExpandedFAQ] = React.useState<number | null>(null);
+  const [tickets, setTickets] = React.useState<TicketType[]>([]);
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
   React.useEffect(() => {
-    if (isOpen) {
-      scrollToBottom()
-    }
-  }, [messages, isOpen])
+    if (isOpen) scrollToBottom();
+  }, [messages, isOpen]);
+
+  const handleQuickPrompt = (query: string) => {
+    setInput(query);
+  };
 
   const handleCategorySelect = (categoryId: string) => {
-    const category = supportCategories.find(c => c.id === categoryId)
-    if (category) {
-      setSelectedCategory(categoryId)
-      
-      const systemMessage: Message = {
-        id: Date.now().toString(),
-        role: "system",
-        content: `You've selected **${category.label}**. Please describe your issue or question below, or submit a ticket for more detailed assistance.`,
-        timestamp: new Date(),
-      }
-      setMessages(prev => [...prev, systemMessage])
-    }
-  }
+    const cat = supportCategories.find((c) => c.id === categoryId);
+    if (!cat) return;
+    setSelectedCategory(categoryId);
+    const systemMessage: Message = {
+      id: Date.now().toString(),
+      role: "system",
+      content: `You're in **${cat.label}**. Describe your question or issue below, or submit a ticket for follow-up.`,
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, systemMessage]);
+  };
 
   const handleSubmitTicket = async () => {
-    if (!ticketForm.subject || !ticketForm.description || !ticketForm.email) return
-    
-    setIsLoading(true)
-    
-    // Simulate ticket submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    const newTicket: Ticket = {
-      id: `TKT-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+    if (!ticketForm.subject || !ticketForm.description || !ticketForm.email) return;
+    setIsLoading(true);
+    await new Promise((r) => setTimeout(r, 800));
+    const newTicket: TicketType = {
+      id: `TKT-${Math.random().toString(36).slice(2, 11).toUpperCase()}`,
       subject: ticketForm.subject,
       category: selectedCategory || "general",
       status: "pending",
       createdAt: new Date(),
-    }
-    
-    setTickets(prev => [...prev, newTicket])
-    setSubmittedTicket(newTicket)
-    setTicketForm({ subject: "", description: "", email: "" })
-    setIsLoading(false)
-    
+    };
+    setTickets((prev) => [...prev, newTicket]);
+    setSubmittedTicket(newTicket);
+    setTicketForm({ subject: "", description: "", email: "" });
+    setIsLoading(false);
     const confirmMessage: Message = {
       id: Date.now().toString(),
       role: "system",
-      content: `✅ **Ticket Submitted Successfully!**\n\nYour ticket **${newTicket.id}** has been created.\n\n📧 Confirmation sent to: ${ticketForm.email}\n📋 Subject: ${ticketForm.subject}\n⏰ Response time: 24-48 hours\n\nYou can check your ticket status in the "My Tickets" section.`,
+      content: `Ticket **${newTicket.id}** created. We'll reply to ${ticketForm.email} within 24–48 hours.`,
       timestamp: new Date(),
-    }
-    setMessages(prev => [...prev, confirmMessage])
-  }
+    };
+    setMessages((prev) => [...prev, confirmMessage]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
-
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
       content: input.trim(),
       timestamp: new Date(),
-    }
-
-    setMessages(prev => [...prev, userMessage])
-    setInput("")
-    setIsLoading(true)
-
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
     try {
-      const response = await fetch("/api/chatbot", {
+      const res = await fetch("/api/chatbot", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: [...messages, userMessage].map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
+          messages: [...messages, userMessage].map((m) => ({ role: m.role, content: m.content })),
           category: selectedCategory,
         }),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to get response")
-      }
-
-      const data = await response.json()
-
+      });
+      if (!res.ok) throw new Error("Request failed");
+      const data = await res.json();
       const assistantMessage: Message = {
         id: Date.now().toString(),
         role: "assistant",
         content: data.message,
         timestamp: new Date(),
-      }
-
-      setMessages(prev => [...prev, assistantMessage])
-    } catch (error) {
-      const errorMessage: Message = {
-        id: Date.now().toString(),
-        role: "assistant",
-        content: "Oops! Something went wrong. Please try again or submit a support ticket.",
-        timestamp: new Date(),
-      }
-      setMessages(prev => [...prev, errorMessage])
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          role: "assistant",
+          content: "Something went wrong. Please try again or submit a ticket.",
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const getStatusColor = (status: Ticket["status"]) => {
-    switch (status) {
-      case "pending": return "text-yellow-500"
-      case "resolved": return "text-green-500"
-      case "closed": return "text-gray-500"
-    }
-  }
-
-  const getCategoryIcon = (categoryId: string) => {
-    const category = supportCategories.find(c => c.id === categoryId)
-    return category?.icon || HelpCircle
-  }
+  const getCategoryIcon = (categoryId: string) =>
+    supportCategories.find((c) => c.id === categoryId)?.icon ?? HelpCircle;
 
   return (
     <>
-      {/* Floating Toggle Button */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          onClick={() => setIsOpen(!isOpen)}
-          size="icon-lg"
-          className={cn(
-            "h-14 w-14 rounded-full shadow-xl transition-all duration-300 hover:scale-110",
-            isOpen 
-              ? "bg-zinc-600 dark:bg-zinc-700 hover:bg-zinc-700 dark:hover:bg-zinc-600" 
-              : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 animate-pulse"
-          )}
-          aria-label={isOpen ? "Close Support Desk" : "Open Support Desk"}
-        >
-          {isOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <span className="text-lg font-bold">?</span>
-          )}
-        </Button>
-      </div>
+      <Button
+        onClick={() => setIsOpen(!isOpen)}
+        size="icon"
+        className={cn(
+          "fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg transition-all duration-200 hover:scale-105 active:scale-[0.98]",
+          isOpen
+            ? "bg-muted-foreground text-muted"
+            : "bg-primary text-primary-foreground hover:bg-primary/90"
+        )}
+        aria-label={isOpen ? "Close AI assistant" : "Open AI assistant"}
+      >
+        {isOpen ? <X className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
+      </Button>
 
-      {/* Chat Window */}
       <div
         className={cn(
-          "fixed bottom-24 right-6 z-50 w-[420px] max-w-[calc(100vw-3rem)] transition-all duration-300 ease-out",
-          isOpen
-            ? "translate-y-0 opacity-100 scale-100"
-            : "translate-y-4 opacity-0 scale-95 pointer-events-none"
+          "fixed bottom-24 right-6 z-50 w-[min(420px,calc(100vw-2rem))] transition-all duration-200 ease-out",
+          isOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0 pointer-events-none"
         )}
       >
-        <div className="bg-background rounded-2xl shadow-2xl border border-border/60 overflow-hidden flex flex-col max-h-[600px]">
+        <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xl max-h-[min(75vh,600px)]">
           {/* Header */}
-          <div className="bg-blue px-4 py-3 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-inner">
-              <span className="text-lg font-bold text-white">?</span>
+          <div className="flex items-center gap-3 border-b border-border bg-muted/40 px-4 py-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+              <Sparkles className="h-5 w-5" />
             </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-white text-base">Support Desk</h3>
-              <p className="text-xs text-white/80 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                Online • Typically replies in minutes
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-foreground">Budget Ndio Story</h3>
+              <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                  AI
+                </span>
+                Assistant · Ask about budget & reports
               </p>
             </div>
-            {/* Data Transparency Info */}
             <div className="relative group">
-              <button 
-                className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                aria-label="Data privacy information"
+              <button
+                type="button"
+                className="rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                aria-label="Privacy"
               >
-                <Shield className="h-4 w-4 text-white" />
+                <Shield className="h-4 w-4" />
               </button>
-              <div className="absolute right-0 top-full mt-2 w-64 p-3 bg-background rounded-lg shadow-xl border border-border/60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
-                <p className="text-xs font-medium text-foreground mb-1">Data Privacy</p>
-                <p className="text-xs text-muted-foreground">
-                  This chat uses AI trained on public budget documents. We don't store or share your personal information. 
+              <div className="absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-border bg-card p-3 text-xs shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <p className="font-medium text-foreground">Privacy</p>
+                <p className="mt-1 text-muted-foreground">
+                  AI uses public budget data. We don’t store or share your chats.{" "}
                   <a href="/privacy" className="text-primary hover:underline">Learn more</a>
                 </p>
               </div>
             </div>
-            {/* View Switcher */}
-            <div className="flex gap-1">
-              <button
-                onClick={() => setView("chat")}
-                className={cn(
-                  "p-2 rounded-lg transition-colors",
-                  view === "chat" ? "bg-white/20 text-white" : "text-white/70 hover:text-white hover:bg-white/10"
-                )}
-                title="Chat"
-              >
-                <MessageCircle className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setView("tickets")}
-                className={cn(
-                  "p-2 rounded-lg transition-colors",
-                  view === "tickets" ? "bg-white/20 text-white" : "text-white/70 hover:text-white hover:bg-white/10"
-                )}
-                title="My Tickets"
-              >
-                <Ticket className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setView("faq")}
-                className={cn(
-                  "p-2 rounded-lg transition-colors",
-                  view === "faq" ? "bg-white/20 text-white" : "text-white/70 hover:text-white hover:bg-white/10"
-                )}
-                title="FAQ"
-              >
-                <HelpCircle className="w-4 h-4" />
-              </button>
-            </div>
           </div>
 
-          {/* Content Area */}
-          <div className="flex-1 overflow-hidden flex flex-col">
+          {/* Tabs */}
+          <div className="flex border-b border-border bg-muted/20">
+            {[
+              { id: "chat" as const, label: "Chat", icon: MessageCircle },
+              { id: "faq" as const, label: "FAQ", icon: HelpCircle },
+              { id: "tickets" as const, label: "Ticket", icon: Ticket },
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setView(id)}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-2 py-3 text-xs font-medium transition-colors",
+                  view === id
+                    ? "border-b-2 border-primary text-primary bg-card"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Content */}
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             {view === "chat" && (
               <>
-                {/* Support Categories */}
                 {messages.length <= 2 && !selectedCategory && (
-                  <div className="p-4 border-b bg-blue-50 dark:bg-blue-950/30">
-                    <p className="text-sm font-medium text-foreground mb-3">Select a category:</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {supportCategories.map((category) => (
+                  <div className="border-b border-border bg-muted/20 p-4">
+                    <p className="mb-2 text-xs font-medium text-muted-foreground">Choose a category (optional)</p>
+                    <div className="flex flex-wrap gap-2">
+                      {supportCategories.map((cat) => (
                         <button
-                          key={category.id}
-                          onClick={() => handleCategorySelect(category.id)}
-                          className="flex items-center gap-2 p-3 rounded-xl bg-white dark:bg-zinc-800 border border-border hover:border-blue-500 hover:shadow-md transition-all duration-200 text-left"
+                          key={cat.id}
+                          type="button"
+                          onClick={() => handleCategorySelect(cat.id)}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
                         >
-                          <div className={cn("p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50", category.color)}>
-                            <category.icon className="w-4 h-4" />
-                          </div>
-                          <span className="text-xs font-medium">{category.label}</span>
+                          <cat.icon className="h-3.5 w-3.5" />
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+                    <p className="mt-3 text-xs font-medium text-muted-foreground">Or try a quick question</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {aiQuickPrompts.map((p) => (
+                        <button
+                          key={p.label}
+                          type="button"
+                          onClick={() => handleQuickPrompt(p.query)}
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-left text-xs text-foreground transition-colors hover:border-primary/50 hover:bg-primary/5"
+                        >
+                          <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary" />
+                          {p.label}
                         </button>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {/* Selected Category Banner */}
-                {selectedCategory && messages.length > 2 && (
-                  <div className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 border-b flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {(() => {
-                        const CatIcon = getCategoryIcon(selectedCategory)
-                        const cat = supportCategories.find(c => c.id === selectedCategory)
-                        return <CatIcon className={cn("w-4 h-4", cat?.color)} />
-                      })()}
-                      <span className="text-sm font-medium">{supportCategories.find(c => c.id === selectedCategory)?.label}</span>
-                    </div>
-                    <button 
-                      onClick={() => setSelectedCategory(null)}
-                      className="text-xs text-blue-600 hover:underline"
-                    >
-                      Change
-                    </button>
-                  </div>
-                )}
-
-                {/* Messages Container */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[340px] min-h-[200px] bg-zinc-50/50 dark:bg-zinc-900/50">
-                  {messages.map((message) => (
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[200px]">
+                  {messages.map((msg) => (
                     <div
-                      key={message.id}
+                      key={msg.id}
                       className={cn(
                         "flex gap-2",
-                        message.role === "user" ? "flex-row-reverse" : "flex-row"
+                        msg.role === "user" ? "flex-row-reverse" : "flex-row"
                       )}
                     >
                       <div
                         className={cn(
-                          "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
-                          message.role === "user"
-                            ? "bg-blue-100 dark:bg-blue-900/30"
-                            : message.role === "system"
-                            ? "bg-yellow-100 dark:bg-yellow-900/30"
-                            : "bg-blue"
+                          "h-8 w-8 shrink-0 rounded-full flex items-center justify-center",
+                          msg.role === "user" && "bg-primary text-primary-foreground",
+                          msg.role === "assistant" && "bg-primary/15 text-primary",
+                          msg.role === "system" && "bg-muted text-muted-foreground"
                         )}
                       >
-                        {message.role === "user" ? (
-                          <span className="text-xs font-medium text-blue-700 dark:text-blue-400">You</span>
-                        ) : message.role === "system" ? (
-                          <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                        {msg.role === "user" ? (
+                          <span className="text-[10px] font-medium">You</span>
+                        ) : msg.role === "assistant" ? (
+                          <Sparkles className="h-4 w-4" />
                         ) : (
-                          <span className="text-sm font-bold text-white">?</span>
+                          <HelpCircle className="h-4 w-4" />
                         )}
                       </div>
                       <div
                         className={cn(
-                          "rounded-2xl px-4 py-2.5 max-w-[85%] text-sm leading-relaxed shadow-sm whitespace-pre-line",
-                          message.role === "user"
-                            ? "bg-blue-600 text-white rounded-br-sm"
-                            : message.role === "system"
-                            ? "bg-yellow-50 dark:bg-yellow-950/30 text-foreground dark:text-zinc-100 rounded-bl-sm border border-yellow-200 dark:border-yellow-800"
-                            : "bg-white dark:bg-zinc-800 text-foreground dark:text-zinc-100 rounded-bl-sm border border-border/50"
+                          "rounded-2xl px-4 py-2.5 max-w-[85%] text-sm leading-relaxed",
+                          msg.role === "user" &&
+                            "bg-primary text-primary-foreground rounded-br-md",
+                          msg.role === "assistant" &&
+                            "bg-muted/60 text-foreground border border-border rounded-bl-md",
+                          msg.role === "system" &&
+                            "bg-muted/40 text-muted-foreground border border-border rounded-bl-md"
                         )}
                       >
-                        {message.content}
+                        <div className="whitespace-pre-line">
+                          {msg.role === "assistant" || msg.role === "system"
+                            ? renderMessageContent(msg.content)
+                            : msg.content}
+                        </div>
                       </div>
                     </div>
                   ))}
                   {isLoading && (
                     <div className="flex gap-2">
-                      <div className="h-8 w-8 rounded-full bg-blue flex items-center justify-center">
-                        <span className="text-sm font-bold text-white">?</span>
+                      <div className="h-8 w-8 shrink-0 rounded-full bg-primary/15 flex items-center justify-center">
+                        <Sparkles className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="bg-white dark:bg-zinc-800 rounded-2xl rounded-bl-sm px-4 py-2.5 border border-border/50">
+                      <div className="rounded-2xl rounded-bl-md bg-muted/60 border border-border px-4 py-2.5">
                         <div className="flex gap-1">
-                          <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                          <span className="w-2 h-2 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "0ms" }} />
+                          <span className="w-2 h-2 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "120ms" }} />
+                          <span className="w-2 h-2 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: "240ms" }} />
                         </div>
                       </div>
                     </div>
@@ -432,180 +381,45 @@ export function ChatWidget() {
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* Quick Actions */}
-                {messages.length > 2 && !isLoading && (
-                  <div className="px-4 py-2 border-t bg-zinc-50/50 dark:bg-zinc-900/50 flex gap-2">
-                    <button
-                      onClick={() => setView("faq")}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white dark:bg-zinc-800 border border-border hover:border-blue-500 transition-all"
-                    >
-                      <HelpCircle className="w-3.5 h-3.5 text-blue-500" />
-                      View FAQ
-                    </button>
-                    <button
-                      onClick={() => setView("tickets")}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white dark:bg-zinc-800 border border-border hover:border-blue-500 transition-all"
-                    >
-                      <Ticket className="w-3.5 h-3.5 text-blue-500" />
-                      Submit Ticket
-                    </button>
-                  </div>
-                )}
-
-                {/* Input Form */}
-                <form onSubmit={handleSubmit} className="p-3 border-t bg-card">
-                  <div className="flex gap-2 items-center">
+                <form onSubmit={handleSubmit} className="border-t border-border bg-card p-3">
+                  <div className="flex gap-2">
                     <input
                       type="text"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
-                      placeholder={selectedCategory ? "Describe your issue..." : "Type your message..."}
-                      className="flex-1 h-10 px-4 rounded-full border bg-background text-sm outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                      placeholder={selectedCategory ? "Describe your issue..." : "Ask about budget, reports, or the site..."}
+                      className="flex-1 rounded-full border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                       disabled={isLoading}
                     />
                     <Button
                       type="submit"
                       size="icon"
                       disabled={!input.trim() || isLoading}
-                      className="h-10 w-10 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 transition-all"
+                      className="h-10 w-10 shrink-0 rounded-full"
                     >
-                      {isLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Send className="h-4 w-4" />
-                      )}
+                      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                     </Button>
                   </div>
                 </form>
               </>
             )}
 
-            {view === "tickets" && (
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[450px]">
-                {/* Submit Ticket Form */}
-                {!submittedTicket ? (
-                  <div className="space-y-4">
-                    <h4 className="font-semibold text-foreground flex items-center gap-2">
-                      <Ticket className="w-4 h-4" />
-                      Submit a Support Ticket
-                    </h4>
-                    <div className="space-y-3">
-                      <div>
-                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Category</label>
-                        <select 
-                          value={selectedCategory || ""}
-                          onChange={(e) => setSelectedCategory(e.target.value)}
-                          className="w-full h-10 px-3 rounded-lg border bg-background text-sm outline-none focus:ring-2 focus:ring-blue-500/50"
-                        >
-                          <option value="">Select category...</option>
-                          {supportCategories.map(cat => (
-                            <option key={cat.id} value={cat.id}>{cat.label}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Subject</label>
-                        <input
-                          type="text"
-                          value={ticketForm.subject}
-                          onChange={(e) => setTicketForm(prev => ({ ...prev, subject: e.target.value }))}
-                          placeholder="Brief description of your issue"
-                          className="w-full h-10 px-3 rounded-lg border bg-background text-sm outline-none focus:ring-2 focus:ring-blue-500/50"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Description</label>
-                        <textarea
-                          value={ticketForm.description}
-                          onChange={(e) => setTicketForm(prev => ({ ...prev, description: e.target.value }))}
-                          placeholder="Please provide details about your issue..."
-                          rows={4}
-                          className="w-full px-3 py-2 rounded-lg border bg-background text-sm outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Email Address</label>
-                        <input
-                          type="email"
-                          value={ticketForm.email}
-                          onChange={(e) => setTicketForm(prev => ({ ...prev, email: e.target.value }))}
-                          placeholder="your@email.com"
-                          className="w-full h-10 px-3 rounded-lg border bg-background text-sm outline-none focus:ring-2 focus:ring-blue-500/50"
-                        />
-                      </div>
-                      <Button
-                        onClick={handleSubmitTicket}
-                        disabled={!ticketForm.subject || !ticketForm.description || !ticketForm.email || isLoading}
-                        className="w-full bg-blue-600 hover:bg-blue-700"
-                      >
-                        {isLoading ? (
-                          <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                        ) : (
-                          <SendHorizontal className="w-4 h-4 mr-2" />
-                        )}
-                        Submit Ticket
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="text-center py-4">
-                      <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle2 className="w-8 h-8 text-green-600" />
-                      </div>
-                      <h4 className="font-semibold text-foreground">Ticket Submitted!</h4>
-                      <p className="text-sm text-muted-foreground mt-1">Reference: {submittedTicket.id}</p>
-                    </div>
-                    <Button
-                      onClick={() => setSubmittedTicket(null)}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Submit Another Ticket
-                    </Button>
-                  </div>
-                )}
-
-                {/* Contact Info */}
-                <div className="pt-4 border-t space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">Other ways to reach us:</p>
-                  <div className="flex gap-2">
-                    <button className="flex-1 flex items-center justify-center gap-2 p-2 rounded-lg bg-blue-50 dark:bg-blue-950/30 text-blue-600 text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-colors">
-                      <Mail className="w-3.5 h-3.5" />
-                      Email
-                    </button>
-                    <button className="flex-1 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-50 dark:bg-green-950/30 text-green-600 text-xs font-medium hover:bg-green-100 dark:hover:bg-green-950/50 transition-colors">
-                      <Phone className="w-3.5 h-3.5" />
-                      Call
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {view === "faq" && (
-              <div className="flex-1 overflow-y-auto p-4 space-y-2 max-h-[450px]">
-                <h4 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4" />
-                  Frequently Asked Questions
-                </h4>
-                {faqItems.map((faq, index) => (
+              <div className="flex-1 overflow-y-auto p-4 space-y-2">
+                {faqItems.map((faq, i) => (
                   <div
-                    key={index}
-                    className="border rounded-xl overflow-hidden bg-white dark:bg-zinc-800"
+                    key={i}
+                    className="rounded-xl border border-border bg-card overflow-hidden"
                   >
                     <button
-                      onClick={() => setExpandedFAQ(expandedFAQ === index ? null : index)}
-                      className="w-full flex items-center justify-between p-3 text-left hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-colors"
+                      type="button"
+                      onClick={() => setExpandedFAQ(expandedFAQ === i ? null : i)}
+                      className="w-full flex items-center justify-between p-3 text-left text-sm font-medium text-foreground hover:bg-muted/50 transition-colors"
                     >
-                      <span className="text-sm font-medium pr-4">{faq.question}</span>
-                      {expandedFAQ === index ? (
-                        <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
-                      )}
+                      {faq.question}
+                      {expandedFAQ === i ? <ChevronUp className="h-4 w-4 shrink-0" /> : <ChevronDown className="h-4 w-4 shrink-0" />}
                     </button>
-                    {expandedFAQ === index && (
+                    {expandedFAQ === i && (
                       <div className="px-3 pb-3">
                         <p className="text-sm text-muted-foreground">{faq.answer}</p>
                       </div>
@@ -614,21 +428,92 @@ export function ChatWidget() {
                 ))}
               </div>
             )}
-          </div>
 
-          {/* Footer */}
-          <div className="px-4 py-2 border-t bg-zinc-50 dark:bg-zinc-900 flex items-center justify-between text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              Avg. response: 5 min
-            </span>
-            <button className="flex items-center gap-1 hover:text-blue-600 transition-colors">
-              View all resources
-              <ExternalLink className="w-3 h-3" />
-            </button>
+            {view === "tickets" && (
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {!submittedTicket ? (
+                  <>
+                    <h4 className="font-semibold text-foreground flex items-center gap-2">
+                      <Ticket className="h-4 w-4" />
+                      Submit a ticket
+                    </h4>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Category</label>
+                        <select
+                          value={selectedCategory || ""}
+                          onChange={(e) => setSelectedCategory(e.target.value || null)}
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          {supportCategories.map((c) => (
+                            <option key={c.id} value={c.id}>{c.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Subject</label>
+                        <input
+                          type="text"
+                          value={ticketForm.subject}
+                          onChange={(e) => setTicketForm((p) => ({ ...p, subject: e.target.value }))}
+                          placeholder="Brief description"
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Description</label>
+                        <textarea
+                          value={ticketForm.description}
+                          onChange={(e) => setTicketForm((p) => ({ ...p, description: e.target.value }))}
+                          placeholder="Details..."
+                          rows={3}
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm resize-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-muted-foreground mb-1 block">Email</label>
+                        <input
+                          type="email"
+                          value={ticketForm.email}
+                          onChange={(e) => setTicketForm((p) => ({ ...p, email: e.target.value }))}
+                          placeholder="your@email.com"
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                        />
+                      </div>
+                      <Button
+                        onClick={handleSubmitTicket}
+                        disabled={!ticketForm.subject || !ticketForm.description || !ticketForm.email || isLoading}
+                        className="w-full rounded-full"
+                      >
+                        {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <SendHorizontal className="h-4 w-4 mr-2" />}
+                        Submit
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Or email{" "}
+                      <a href="mailto:info@budgetndiostory.org" className="text-primary hover:underline">
+                        info@budgetndiostory.org
+                      </a>
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-center py-6">
+                    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/15">
+                      <CheckCircle2 className="h-6 w-6 text-primary" />
+                    </div>
+                    <p className="font-semibold text-foreground">Ticket submitted</p>
+                    <p className="text-sm text-muted-foreground mt-1">{submittedTicket.id}</p>
+                    <Button variant="outline" className="mt-4 rounded-full" onClick={() => setSubmittedTicket(null)}>
+                      Submit another
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -1,15 +1,6 @@
-import { Metadata } from "next";
-import { HomeLanding } from "@/components/landing";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Budget Ndio Story - Kenya Budget Transparency Platform",
-  description:
-    "Kenyan budget transparency platform for young citizens. We turn national and county budgets into clear insights, practical analysis, and trackable evidence.",
-  alternates: {
-    canonical: "https://budgetndiostory.org/home",
-  },
-};
-
-export default function HomePage() {
-  return <HomeLanding />;
+/** Legacy /home: redirect to root so / is the single home route. */
+export default function HomeRedirect() {
+  redirect("/");
 }

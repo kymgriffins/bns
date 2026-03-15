@@ -5,13 +5,21 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { X, Instagram, Facebook, Youtube, Mail } from "lucide-react";
 
-const navLinks = [
+const exploreLinks = [
   { label: "Budget Reports", href: "/reports" },
   { label: "Learn", href: "/learn" },
   { label: "Articles", href: "/blogs" },
+];
+
+const getInvolvedLinks = [
   { label: "About", href: "/about" },
   { label: "Subscribe", href: "/subscribe" },
   { label: "Donate", href: "/donate" },
+];
+
+const legalLinks = [
+  { label: "Cookies", href: "/cookies" },
+  { label: "Privacy", href: "/privacy" },
 ];
 
 const socialLinks = [
@@ -30,10 +38,10 @@ const Footer2 = () => {
 
   return (
     <footer className="border-t border-border bg-background" aria-label="Site footer">
-      <div className="mx-auto max-w-[80rem] px-4 py-6 md:px-6 md:py-8">
-        {/* Main row: logo + links + social */}
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <Link href="/" className="flex items-center gap-3">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-12 lg:px-8">
+        {/* Top: logo + tagline */}
+        <div className="mb-8 sm:mb-10">
+          <Link href="/" className="inline-flex items-center gap-3">
             <div className="relative h-8 w-28">
               <Image
                 src="/logo.svg"
@@ -42,50 +50,99 @@ const Footer2 = () => {
                 className="object-contain object-left"
               />
             </div>
-            <span className="hidden text-xs text-muted-foreground sm:inline">
+            <span className="hidden text-sm text-muted-foreground sm:inline">
               Follow the budget. Find the story.
             </span>
           </Link>
+        </div>
 
-          <nav className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm" aria-label="Footer navigation">
-            {navLinks.map(({ label, href }) => (
-              <Link
-                key={href}
-                href={href}
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-4">
-            {socialLinks.map(({ name, href, icon: Icon }) => (
-              <Link
-                key={name}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                aria-label={name}
-              >
-                <Icon className="h-4 w-4" />
-              </Link>
-            ))}
+        {/* Link groups + contact */}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Explore
+            </p>
+            <ul className="space-y-2">
+              {exploreLinks.map(({ label, href }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Get involved
+            </p>
+            <ul className="space-y-2">
+              {getInvolvedLinks.map(({ label, href }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Contact
+            </p>
+            <a
+              href="mailto:info@budgetndiostory.org"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Mail className="h-4 w-4 shrink-0" />
+              info@budgetndiostory.org
+            </a>
+            <div className="mt-4 flex items-center gap-3">
+              {socialLinks.map(({ name, href, icon: Icon }) => (
+                <Link
+                  key={name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  aria-label={name}
+                >
+                  <Icon className="h-4 w-4" />
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Legal
+            </p>
+            <ul className="space-y-2">
+              {legalLinks.map(({ label, href }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Bottom: legal + contact */}
-        <div className="mt-6 flex flex-col gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-col gap-3 border-t border-border pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Budget Ndio Story. All rights reserved.</p>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <Link href="/cookies" className="hover:text-foreground">Cookies</Link>
-            <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
-            <a href="mailto:info@budgetndiostory.org" className="inline-flex items-center gap-1.5 hover:text-foreground">
-              <Mail className="h-3.5 w-3" />
-              info@budgetndiostory.org
-            </a>
-          </div>
+          <p className="max-w-md">
+            Making Kenya&apos;s budget clear and actionable for young citizens.
+          </p>
         </div>
       </div>
     </footer>

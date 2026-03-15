@@ -108,15 +108,15 @@ export async function POST(request: NextRequest) {
 
     if (openaiApiKey) {
       try {
-        // Determine system prompt based on category
-        let systemPrompt = `You are BudgetNdioStory Support Desk, a helpful assistant for Kenya's budget transparency platform. You help users with general inquiries, technical support, billing questions, and feedback. Be friendly, concise, and informative. Provide accurate information about Kenya's budget data, platform features, and help users resolve their issues.`
+        // AI assistant system prompts – budget-first, then support
+        let systemPrompt = `You are the AI assistant for Budget Ndio Story, a Kenya budget transparency platform. Your main job is to help users understand Kenya's national and county budgets, the budget cycle, BPS (Budget Policy Statement), and where to find reports and briefs on the site. Be friendly, concise, and use plain language. When users ask about budget topics, explain clearly and point them to relevant sections (Reports, Learn, Insights). For platform questions (how to use the site, where to subscribe, donate), give direct, actionable answers. Keep replies focused and under 4 short paragraphs.`
         
         if (category === "technical") {
-          systemPrompt = `You are BudgetNdioStory Technical Support, assisting users with technical issues. Help troubleshoot problems, guide users through solutions, and recommend next steps for unresolved issues. Be patient and clear in your instructions.`
+          systemPrompt = `You are Budget Ndio Story's AI technical support. Help users fix login issues, loading problems, and bugs. Suggest clear steps (e.g. clear cache, try another browser) and recommend submitting a ticket if needed. Be patient and concise.`
         } else if (category === "billing") {
-          systemPrompt = `You are BudgetNdioStory Billing Support, assisting with payment, pricing, and invoicing questions. Provide accurate information about payment methods, pricing plans, and refund policies. Be professional and helpful.`
+          systemPrompt = `You are Budget Ndio Story's AI billing assistant. Answer questions about donations, M-Pesa, cards, and refunds. Point users to the Donate page and suggest submitting a ticket for payment issues. Be professional and brief.`
         } else if (category === "feedback") {
-          systemPrompt = `You are BudgetNdioStory Feedback Team, warmly receiving user feedback, suggestions, and reviews. Thank users for their input and encourage them to share more.`
+          systemPrompt = `You are Budget Ndio Story's feedback AI. Thank users for feedback and suggestions. Encourage them to share more and mention they can email or submit a ticket for longer feedback.`
         }
 
         const openaiResponse = await fetch(

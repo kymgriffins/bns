@@ -1,93 +1,75 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useConsent } from '@/hooks/useConsent';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogHeader, 
+import { useState } from "react";
+import { useConsent } from "@/hooks/useConsent";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
   DialogTitle,
-  DialogFooter 
-} from '@/components/ui/dialog';
-import { 
-  Cookie, 
-  Shield, 
-  BarChart3, 
-  Target, 
-  Settings,
-  X
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Cookie, Shield, BarChart3, Target, Settings2, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export function CookieConsentBanner() {
-  const { 
-    showBanner, 
-    hideBanner, 
-    acceptAll, 
+  const {
+    showBanner,
+    hideBanner,
+    acceptAll,
     denyAll,
     preferences,
-    setPreferences 
+    setPreferences,
   } = useConsent();
 
   const [showPreferences, setShowPreferences] = useState(false);
+
+  const handleSavePreferences = () => {
+    setPreferences({ ...preferences });
+    setShowPreferences(false);
+  };
 
   if (!showBanner) return null;
 
   return (
     <AnimatePresence>
-      {/* Main Banner */}
       <motion.div
-        initial={{ y: 100, opacity: 0 }}
+        initial={{ y: 24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 100, opacity: 0 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="fixed bottom-4 right-4 z-50 p-0 pointer-events-none"
+        exit={{ y: 24, opacity: 0 }}
+        transition={{ type: "spring", damping: 28, stiffness: 260 }}
+        className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 md:bottom-6 md:left-auto md:right-6 md:max-w-md md:p-0"
       >
-        <div className="pointer-events-auto">
-          <div className="max-w-sm md:max-w-md rounded-xl border border-slate-200 bg-white/95 p-3 shadow-lg backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/40">
-                <Cookie className="h-4 w-4 text-amber-700 dark:text-amber-300" />
+        <div
+          className={cn(
+            "rounded-2xl border shadow-xl overflow-hidden",
+            "bg-card border-border",
+            "backdrop-blur-sm"
+          )}
+        >
+          <div className="p-4 sm:p-5">
+            <div className="flex gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Cookie className="h-5 w-5" strokeWidth={1.5} />
               </div>
-              <div className="flex-1 space-y-1">
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                  Cookies for a smoother visit
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-semibold text-foreground">
+                  We value your privacy
                 </h3>
-                <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-                  We use a few cookies to keep the site running and understand what&apos;s working. You
-                  can accept all or choose only what you need.
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  We use cookies to run the site and improve your experience. You can accept all or
+                  choose what you allow.
                 </p>
-                <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] dark:bg-slate-800">
-                    <Shield className="h-3 w-3 text-emerald-500" />
-                    Necessary
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] dark:bg-slate-800">
-                    <BarChart3
-                      className={`h-3 w-3 ${
-                        preferences.analytics ? 'text-emerald-500' : 'text-slate-400'
-                      }`}
-                    />
-                    Analytics
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] dark:bg-slate-800">
-                    <Target
-                      className={`h-3 w-3 ${
-                        preferences.marketing ? 'text-emerald-500' : 'text-slate-400'
-                      }`}
-                    />
-                    Marketing
-                  </span>
-                </div>
-                <div className="mt-3 flex flex-wrap items-center gap-2">
+                <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Button
                     onClick={acceptAll}
                     size="sm"
-                    className="h-8 rounded-full px-3 text-xs font-medium"
+                    className="rounded-full text-xs font-medium"
                   >
                     Accept all
                   </Button>
@@ -95,64 +77,66 @@ export function CookieConsentBanner() {
                     onClick={denyAll}
                     variant="outline"
                     size="sm"
-                    className="h-8 rounded-full px-3 text-xs"
+                    className="rounded-full text-xs"
                   >
-                    Reject
+                    Essential only
                   </Button>
                   <button
                     type="button"
                     onClick={() => setShowPreferences(true)}
-                    className="ml-auto text-[11px] font-medium text-slate-600 underline-offset-2 hover:underline dark:text-slate-300"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    More options
+                    Customise
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
               </div>
               <button
+                type="button"
                 onClick={hideBanner}
-                className="ml-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+                className="h-8 w-8 shrink-0 rounded-full flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 aria-label="Close cookie banner"
               >
-                <X className="h-3 w-3" />
+                <span className="sr-only">Close</span>
+                <span aria-hidden className="text-lg leading-none">&times;</span>
               </button>
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Preferences Dialog */}
       <Dialog open={showPreferences} onOpenChange={setShowPreferences}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md rounded-2xl border-border bg-card">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Settings className="w-5 h-5" />
-              Cookie Preferences
+            <DialogTitle className="flex items-center gap-2 text-foreground">
+              <Settings2 className="h-5 w-5 text-primary" />
+              Cookie preferences
             </DialogTitle>
-            <DialogDescription>
-              Manage your cookie preferences. Necessary cookies are always enabled.
+            <DialogDescription className="text-muted-foreground">
+              Necessary cookies are always on. Turn others on or off below.
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-4 py-4">
-            {/* Necessary */}
-            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+          <div className="space-y-3 py-4">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-muted/40 px-4 py-3">
               <div className="flex items-center gap-3">
-                <Shield className="w-5 h-5 text-green-500" />
+                <Shield className="h-5 w-5 text-primary" />
                 <div>
-                  <Label className="font-medium">Necessary</Label>
-                  <p className="text-xs text-slate-500">Required for the website to function</p>
+                  <Label className="font-medium text-foreground">Necessary</Label>
+                  <p className="text-xs text-muted-foreground">Required for the site to work</p>
                 </div>
               </div>
-              <Checkbox checked disabled />
+              <Checkbox checked disabled className="opacity-70" />
             </div>
 
-            {/* Analytics */}
-            <div className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3">
               <div className="flex items-center gap-3">
-                <BarChart3 className="w-5 h-5 text-blue-500" />
+                <BarChart3 className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <Label htmlFor="analytics" className="font-medium cursor-pointer">Analytics</Label>
-                  <p className="text-xs text-slate-500">Help us understand how visitors interact</p>
+                  <Label htmlFor="analytics" className="font-medium text-foreground cursor-pointer">
+                    Analytics
+                  </Label>
+                  <p className="text-xs text-muted-foreground">Help us see how the site is used</p>
                 </div>
               </div>
               <Checkbox
@@ -162,13 +146,14 @@ export function CookieConsentBanner() {
               />
             </div>
 
-            {/* Marketing */}
-            <div className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3">
               <div className="flex items-center gap-3">
-                <Target className="w-5 h-5 text-purple-500" />
+                <Target className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <Label htmlFor="marketing" className="font-medium cursor-pointer">Marketing</Label>
-                  <p className="text-xs text-slate-500">Used to deliver personalized advertisements</p>
+                  <Label htmlFor="marketing" className="font-medium text-foreground cursor-pointer">
+                    Marketing
+                  </Label>
+                  <p className="text-xs text-muted-foreground">For relevant ads and campaigns</p>
                 </div>
               </div>
               <Checkbox
@@ -178,13 +163,14 @@ export function CookieConsentBanner() {
               />
             </div>
 
-            {/* Functional */}
-            <div className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3">
               <div className="flex items-center gap-3">
-                <Cookie className="w-5 h-5 text-orange-500" />
+                <Cookie className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <Label htmlFor="functional" className="font-medium cursor-pointer">Functional</Label>
-                  <p className="text-xs text-slate-500">Enable enhanced functionality</p>
+                  <Label htmlFor="functional" className="font-medium text-foreground cursor-pointer">
+                    Functional
+                  </Label>
+                  <p className="text-xs text-muted-foreground">Chat and personalisation</p>
                 </div>
               </div>
               <Checkbox
@@ -195,21 +181,12 @@ export function CookieConsentBanner() {
             </div>
           </div>
 
-          <DialogFooter>
-            <Button
-              variant="ghost"
-              onClick={() => setShowPreferences(false)}
-            >
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="ghost" onClick={() => setShowPreferences(false)}>
               Cancel
             </Button>
-            <Button
-              onClick={() => {
-                setShowPreferences(false);
-                // Save current preferences
-              }}
-              className="bg-emerald-600 hover:bg-emerald-700"
-            >
-              Save Preferences
+            <Button onClick={handleSavePreferences}>
+              Save preferences
             </Button>
           </DialogFooter>
         </DialogContent>
