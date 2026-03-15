@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { LearnChapterNav } from "@/components/learn/LearnChapterNav";
 
 export const metadata: Metadata = {
   title: {
-    default: "Civic hub – Learn · Budget Ndio Story",
-    template: "%s · Civic hub",
+    default: "Learn – Budget Ndio Story",
+    template: "%s · Learn",
   },
   description:
-    "BPS 2026 basics and Millicent Makini's summary. Decode the budget, master the pillars, track the numbers, quiz and reflections.",
+    "Casual, Gen Z‑friendly lessons on Kenya's budget. Start with interactive Budget 101, then dive into modules on the BPS, budget cycle, and more.",
 };
 
 export default function LearnLayout({
@@ -16,11 +15,8 @@ export default function LearnLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 md:flex-row md:gap-10 md:py-10">
-        <LearnChapterNav />
-        <main className="min-w-0 flex-1">{children}</main>
-      </div>
+    <div className="min-h-screen">
+      {children}
     </div>
   );
 }
