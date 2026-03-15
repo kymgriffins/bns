@@ -1,5 +1,5 @@
 "use client";
-import { Mail, MapPin, Phone, Sun, Moon, Laptop } from "lucide-react";
+import { Mail, MapPin, Phone, Sun, Moon, Laptop, Twitter } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
@@ -212,7 +212,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="text-sm font-NeueMontreal text-foreground/60 hover:text-foreground transition-colors"
                   >
-                    {social.name}
+                    {social.name === "X" ? <Twitter size={20} /> : social.name}
                   </Link>
                 ))}
               </div>

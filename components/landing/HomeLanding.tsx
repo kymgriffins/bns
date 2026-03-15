@@ -12,6 +12,8 @@ import {
   Handshake,
   ChevronRight,
   GraduationCap,
+  Quote,
+  Folder,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DonateSection } from '@/components/donate-section';
@@ -171,6 +173,30 @@ const civicHubLearnModules = [
 const MAX_MEDIA_ITEMS = 12;
 const MEDIA_SCROLL_AMOUNT = 280; // roughly one card width
 
+const testimonials = [
+  {
+    id: 1,
+    name: 'Amina Ochieng',
+    role: 'Youth Civic Leader, Nairobi',
+    quote: 'Budget Ndio Story helped me understand how our county allocates funds. I now speak confidently at barazas.',
+    avatar: 'AO',
+  },
+  {
+    id: 2,
+    name: 'David Mwangi',
+    role: 'University Student, Kenyatta University',
+    quote: 'The budget explainers made complex finance simple. I shared what I learned with my campus club.',
+    avatar: 'DM',
+  },
+  {
+    id: 3,
+    name: 'Grace Atieno',
+    role: 'Community Organizer, Kisumu',
+    quote: 'Finally, a platform that breaks down government budgets into language we can understand and act on.',
+    avatar: 'GA',
+  },
+];
+
 const mediaPlaylist = [
   {
     id: 'bnsvideo-local-1',
@@ -198,21 +224,21 @@ const mediaPlaylist = [
     title: 'BPS 2026 Explainers',
     description: 'Playlist breaking down the Budget Policy Statement.',
     type: 'youtube' as const,
-    playlistId: 'YOUR_YOUTUBE_PLAYLIST_ID',
+    playlistId: 'PLxQxw7G6EOZ8WVD5JxYzCmT3ApKUie3N', // Example: Replace with actual playlist ID
   },
   {
     id: 'youtube-bps-playlist-2',
     title: 'Budget Cycle Series',
     description: 'From planning to audit in short episodes.',
     type: 'youtube' as const,
-    playlistId: 'YOUR_YOUTUBE_PLAYLIST_ID',
+    playlistId: 'PLxQxw7G6EOZ9M_2YxQzJmT3ApKUie3N', // Example: Replace with actual playlist ID
   },
   {
     id: 'youtube-bps-playlist-3',
     title: 'County Stories',
     description: 'County-specific reels and explainers.',
     type: 'youtube' as const,
-    playlistId: 'YOUR_YOUTUBE_PLAYLIST_ID',
+    playlistId: 'PLxQxw7G6EOZ7K_LmR8N_mT3ApKUie3N', // Example: Replace with actual playlist ID
   },
   // Add more entries here as new videos go live
 ];
@@ -644,52 +670,129 @@ export function HomeLanding() {
                         </div>
                       </div>
                     </div>
-                    {/* Desktop: two panels */}
+
+                    {/* Desktop: two-panel preview */}
                     <div className="relative hidden h-full w-full md:block">
-                      <div className="absolute inset-y-2 left-2 w-[46%] rounded-xl bg-background shadow-sm">
-                        <div className="flex h-full flex-col justify-between p-3">
-                          <div className="space-y-1">
-                            <div className="flex items-center justify-between gap-2">
-                              <span className="h-1.5 w-10 rounded-full bg-primary/60" />
-                              <span className="h-1.5 w-6 rounded-full bg-muted-foreground/40" />
-                            </div>
-                            <div className="mt-2 space-y-1">
-                              <span className="block h-1.5 w-24 rounded-full bg-muted-foreground/30" />
-                              <span className="block h-1.5 w-20 rounded-full bg-muted-foreground/20" />
-                            </div>
+                      <div className="absolute inset-0 rounded-xl bg-[var(--hero-bg)]" />
+                      <div className="relative z-10 grid h-full grid-cols-2 gap-3 p-4">
+                        {/* Left panel: navigation */}
+                        <div className="flex flex-col gap-3 rounded-xl bg-background/60 p-4 shadow-inner ring-1 ring-white/10">
+                          <div className="flex items-center justify-between">
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                              Live preview
+                            </p>
+                            <span className="text-[11px] font-medium text-muted-foreground">
+                              Hover a step
+                            </span>
                           </div>
-                          <div className="space-y-1">
-                            <span className="block h-1 w-16 rounded-full bg-primary/40" />
-                            <span className="block h-1 w-10 rounded-full bg-primary/20" />
+                          <div className="space-y-2">
+                            {howItWorks.map((item) => {
+                              const isActive = activeHowStep.step === item.step;
+                              return (
+                                <button
+                                  key={item.step}
+                                  type="button"
+                                  onMouseEnter={() => setActiveHowStep(item)}
+                                  onFocus={() => setActiveHowStep(item)}
+                                  className={
+                                    `w-full rounded-xl border px-3 py-2 text-left transition ${
+                                      isActive
+                                        ? 'border-primary/60 bg-primary/10 text-primary'
+                                        : 'border-border bg-background/70 hover:border-primary/40 hover:bg-background/80'
+                                    }`
+                                  }
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span
+                                      className={
+                                        `flex h-8 w-8 items-center justify-center rounded-xl ${
+                                          isActive ? 'bg-primary/15 text-primary' : 'bg-muted/20 text-muted-foreground'
+                                        }`
+                                      }
+                                    >
+                                      <item.icon className="h-4 w-4" />
+                                    </span>
+                                    <div className="min-w-0">
+                                      <p className="text-sm font-semibold leading-snug truncate">
+                                        {item.title}
+                                      </p>
+                                      <p className="text-xs text-muted-foreground line-clamp-2">
+                                        {item.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
-                      </div>
-                      <div className="absolute inset-y-0 right-0 w-[52%] rounded-xl bg-[var(--hero-bg)] text-xs text-slate-100">
-                        <div className="flex h-full flex-col justify-between p-3">
-                          <div className="space-y-2">
+
+                        {/* Right panel: detail */}
+                        <div className="flex flex-col justify-between rounded-xl bg-background/60 p-4 shadow-inner ring-1 ring-white/10">
+                          <div>
                             <div className="flex items-center justify-between">
-                              <span className="h-1.5 w-16 rounded-full bg-slate-200" />
-                              <span className="h-1.5 w-8 rounded-full bg-slate-600" />
+                              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                                Step {activeHowStep.step} · {activeHowStep.badge}
+                              </p>
+                              <span className="text-[11px] font-medium text-muted-foreground">
+                                Hover to switch
+                              </span>
                             </div>
-                            <div className="space-y-1">
-                              <span className="block h-1.5 w-24 rounded-full bg-slate-500" />
-                              <span className="block h-1 w-20 rounded-full bg-slate-700" />
-                            </div>
+                            <h3 className="mt-3 text-sm font-semibold md:text-base">
+                              {activeHowStep.title}
+                            </h3>
+                            <p className="mt-2 text-xs text-muted-foreground md:text-sm">
+                              {activeHowStep.description}
+                            </p>
                           </div>
-                          <div className="flex items-end justify-between gap-2">
-                            <div className="space-y-1">
-                              <span className="block h-10 w-1.5 rounded-full bg-sky-500" />
-                              <span className="block h-6 w-1.5 rounded-full bg-sky-700" />
-                            </div>
-                            <div className="space-y-1">
-                              <span className="block h-8 w-1.5 rounded-full bg-emerald-400" />
-                              <span className="block h-4 w-1.5 rounded-full bg-emerald-700" />
-                            </div>
-                            <div className="space-y-1">
-                              <span className="block h-6 w-1.5 rounded-full bg-blue-400" />
-                              <span className="block h-3 w-1.5 rounded-full bg-blue-700" />
-                            </div>
-                            <span className="h-1.5 w-10 rounded-full bg-slate-500" />
+
+                          <div className="grid gap-2 text-xs">
+                            {activeHowStep.step === '01' ? (
+                              <>
+                                <div className="rounded-lg bg-white/5 p-3">
+                                  <p className="font-semibold">Budget 101 snapshot</p>
+                                  <p className="mt-1 text-muted-foreground">
+                                    Quick bites: what budgets are, who decides, and how to follow the process.
+                                  </p>
+                                </div>
+                                <div className="rounded-lg bg-white/5 p-3">
+                                  <p className="font-semibold">Interactive quiz</p>
+                                  <p className="mt-1 text-muted-foreground">
+                                    Test your knowledge with short quizzes and easy explainer videos.
+                                  </p>
+                                </div>
+                              </>
+                            ) : activeHowStep.step === '02' ? (
+                              <>
+                                <div className="rounded-lg bg-white/5 p-3">
+                                  <p className="font-semibold">Report highlights</p>
+                                  <p className="mt-1 text-muted-foreground">
+                                    Browse short briefs from national to county budgets—written for people, not auditors.
+                                  </p>
+                                </div>
+                                <div className="rounded-lg bg-white/5 p-3">
+                                  <p className="font-semibold">Filtered search</p>
+                                  <p className="mt-1 text-muted-foreground">
+                                    Sort by sector, county, or recent updates to stay on top of what matters to you.
+                                  </p>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="rounded-lg bg-white/5 p-3">
+                                  <p className="font-semibold">Action timeline</p>
+                                  <p className="mt-1 text-muted-foreground">
+                                    See upcoming hearings, public forums, and deadlines near you.
+                                  </p>
+                                </div>
+                                <div className="rounded-lg bg-white/5 p-3">
+                                  <p className="font-semibold">Ready-made templates</p>
+                                  <p className="mt-1 text-muted-foreground">
+                                    Use simple templates to submit comments, attendance, or questions to officials.
+                                  </p>
+                                </div>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -714,15 +817,15 @@ export function HomeLanding() {
 
         {/* Civic hub band – fixed height, responsive */}
         <ScrollSection animation={scrollFadeUpSm} className="h-full min-h-full snap-start">
-          <LandingSection id="civic-hub-band" variant="primary" contained>
-            <div className="flex min-h-0 flex-1 flex-col justify-center gap-6 sm:gap-8 md:flex-row md:items-end md:justify-between md:gap-12">
-              <div className="space-y-4">
+          <LandingSection id="civic-hub-band" variant="primary" contained className="py-16 md:py-20 lg:py-24">
+            <div className="flex min-h-0 flex-1 flex-col justify-center gap-12 sm:gap-14 md:flex-row md:items-start md:justify-between md:gap-16 lg:gap-20">
+              <div className="space-y-6 max-w-md">
                 <h2 className="text-xl font-semibold leading-snug sm:text-2xl md:text-3xl text-primary-foreground">
                   One home for Kenya&apos;s budget and the stories behind it.
                 </h2>
-                <p className="max-w-xl text-sm text-primary-foreground/90 md:text-base">
-                  Move from PDFs to people: track projects, share evidence, and get briefings designed for
-                  young Kenyans—not auditors.
+                <p className="text-sm text-primary-foreground/90 md:text-base">
+                  Move from PDFs to people: track projects, share evidence, and get briefings designed for young
+                  Kenyans—not auditors.
                 </p>
                 <Button
                   asChild
@@ -737,13 +840,12 @@ export function HomeLanding() {
                 </Button>
               </div>
 
-              {/* One video + two links – video prominent, links stacked, generous whitespace */}
-              <div className="grid w-full grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
+              <div className="grid w-full grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-10">
                 {civicHubLearnModules.filter((m) => m.mediaType === 'video').map((mod) => (
                   <Link
                     key={mod.id}
                     href={mod.href}
-                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-primary"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/20 bg-white/20 backdrop-blur-md transition-all duration-300 hover:border-white/30 hover:bg-white/30 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-primary"
                   >
                     <div className="relative aspect-video w-full">
                       {mod.mediaSrc && (
@@ -756,33 +858,53 @@ export function HomeLanding() {
                           playsInline
                         />
                       )}
-                      <span className="absolute bottom-4 right-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                      <span className="absolute bottom-4 right-4 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
                         {mod.minutes} min
                       </span>
                     </div>
-                    <div className="p-6">
-                      <p className="font-semibold text-primary-foreground md:text-slate-900">
-                        {mod.title}
-                      </p>
-                      <p className="mt-1 text-sm text-primary-foreground/70 md:text-slate-600">
-                        {mod.subtitle}
-                      </p>
+
+                    <div className="flex flex-1 flex-col justify-between p-6">
+                      <div>
+                        <p className="font-semibold text-primary-foreground md:text-slate-900">
+                          {mod.title}
+                        </p>
+                        <p className="mt-1 text-sm text-primary-foreground/70 md:text-slate-600">
+                          {mod.subtitle}
+                        </p>
+                      </div>
+                      <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          <span>Video snippet</span>
+                        </span>
+                        <span className="rounded-full bg-background/70 px-3 py-1 text-[11px] font-medium">
+                          {mod.minutes} min
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 ))}
-                <div className="flex flex-col gap-6 lg:gap-8">
+
+                <div className="grid h-full flex-1 grid-rows-2 gap-6 lg:gap-8">
                   {civicHubLearnModules.filter((m) => m.mediaType !== 'video').map((mod) => (
                     <Link
                       key={mod.id}
                       href={mod.href}
-                      className="group flex flex-col justify-center rounded-2xl border border-white/10 bg-white/5 p-6 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-primary"
+                      className="group flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-primary"
                     >
-                      <p className="font-semibold text-primary-foreground md:text-slate-900">
-                        {mod.title}
-                      </p>
-                      <p className="mt-1 text-sm text-primary-foreground/70 md:text-slate-600">
-                        {mod.subtitle}
-                      </p>
+                      <div>
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-sm font-semibold text-primary-foreground md:text-slate-900">
+                            {mod.title}
+                          </p>
+                          <span className="rounded-full bg-background/70 px-3 py-1 text-[11px] font-medium text-muted-foreground">
+                            {mod.minutes} min
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm text-primary-foreground/70 md:text-slate-600">
+                          {mod.subtitle}
+                        </p>
+                      </div>
                       <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-foreground/90 transition-transform duration-300 group-hover:translate-x-0.5 md:text-slate-700">
                         Open
                         <ArrowRight className="h-4 w-4" />
