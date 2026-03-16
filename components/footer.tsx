@@ -11,7 +11,7 @@ const navLinks = [
   { name: "Analysis", href: "/insights" },
   { name: "Tracker", href: "/tracker" },
   { name: "Take Action", href: "/take-action" },
-  { name: "Learn", href: "/learn" },
+  { name: "Civic Hub", href: "/civic-hub" },
   { name: "News", href: "/news" },
   { name: "Partner", href: "/about" },
   { name: "About", href: "/about" },

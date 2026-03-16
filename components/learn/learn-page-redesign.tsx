@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   Play,
@@ -23,12 +23,27 @@ import {
   Award,
   CheckCircle2,
   Sparkles,
+  ChevronLeft,
+  BarChart3,
+  Landmark,
+  HandHeart,
+  Lightbulb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// Course data structure based on documentation
+// Teacher config based on civic hub spec
+interface TeacherConfig {
+  name: string;
+  role: string;
+  avatar: string;
+  accentColor: string;
+  signature: string;
+  tone: string;
+}
+
+// Course data structure with teacher config
 export interface Course {
   id: string;
   title: string;
@@ -40,6 +55,13 @@ export interface Course {
   icon: React.ElementType;
   enrolled?: number;
   isFeatured?: boolean;
+  teacher: TeacherConfig;
+  progress?: number;
+  steps: {
+    id: string;
+    title: string;
+    type: "intro" | "lesson" | "quiz" | "cta";
+  }[];
 }
 
 // Calendar event structure
@@ -91,7 +113,35 @@ interface Testimonial {
   rating: number;
 }
 
-// Sample data
+// Teacher personas based on civic hub spec
+const teachers: Record<string, TeacherConfig> = {
+  "dr-amara": {
+    name: "Millicent Makini",
+    role: "Head of Data & Analytics",
+    avatar: "👩🏾‍🏫",
+    accentColor: "#F5C842",
+    signature: "Here's what I've seen in the data...",
+    tone: "warm-mentor",
+  },
+  "marcus-cole": {
+    name: "Marcus Cole",
+    role: "Senior Communications Lead",
+    avatar: "👨🏽‍💼",
+    accentColor: "#a78bfa",
+    signature: "Here's the thing...",
+    tone: "storyteller",
+  },
+  "yuki-tanaka": {
+    name: "Yuki Tanaka",
+    role: "Remote Leadership Coach",
+    avatar: "👩🏻‍💻",
+    accentColor: "#3ecfb2",
+    signature: "The research is clear...",
+    tone: "calm-authority",
+  },
+};
+
+// Sample data with teacher configs and steps
 const courses: Course[] = [
   {
     id: "budget-101",
@@ -104,6 +154,18 @@ const courses: Course[] = [
     icon: GraduationCap,
     enrolled: 2500,
     isFeatured: true,
+    teacher: teachers["dr-amara"],
+    progress: 35,
+    steps: [
+      { id: "intro-1", title: "Welcome to Budget 101", type: "intro" },
+      { id: "lesson-1", title: "Money In & Out", type: "lesson" },
+      { id: "quiz-1", title: "Test Your Knowledge", type: "quiz" },
+      { id: "lesson-2", title: "National vs County", type: "lesson" },
+      { id: "quiz-2", title: "Quiz: Levels of Government", type: "quiz" },
+      { id: "lesson-3", title: "Budget Cycle", type: "lesson" },
+      { id: "quiz-3", title: "Quiz: Cycle Stages", type: "quiz" },
+      { id: "cta-1", title: "Where You Show Up", type: "cta" },
+    ],
   },
   {
     id: "bps-2026",
@@ -115,6 +177,14 @@ const courses: Course[] = [
     color: "bg-primary",
     icon: BookOpen,
     enrolled: 1800,
+    teacher: teachers["dr-amara"],
+    steps: [
+      { id: "intro-bps", title: "Introduction to BPS", type: "intro" },
+      { id: "lesson-bps-1", title: "What is BPS?", type: "lesson" },
+      { id: "quiz-bps-1", title: "BPS Quiz", type: "quiz" },
+      { id: "lesson-bps-2", title: "2026 Highlights", type: "lesson" },
+      { id: "cta-bps", title: "Your Action Step", type: "cta" },
+    ],
   },
   {
     id: "budget-cycle",
@@ -126,6 +196,14 @@ const courses: Course[] = [
     color: "bg-emerald-500",
     icon: TrendingUp,
     enrolled: 1200,
+    teacher: teachers["marcus-cole"],
+    steps: [
+      { id: "intro-cycle", title: "Cycle Overview", type: "intro" },
+      { id: "lesson-cycle-1", title: "Planning Phase", type: "lesson" },
+      { id: "lesson-cycle-2", title: "Approval Phase", type: "lesson" },
+      { id: "quiz-cycle", title: "Cycle Quiz", type: "quiz" },
+      { id: "cta-cycle", title: "Track the Cycle", type: "cta" },
+    ],
   },
   {
     id: "roles-responsibilities",
@@ -137,6 +215,14 @@ const courses: Course[] = [
     color: "bg-amber-500",
     icon: Users,
     enrolled: 950,
+    teacher: teachers["yuki-tanaka"],
+    steps: [
+      { id: "intro-roles", title: "Meet the Players", type: "intro" },
+      { id: "lesson-roles-1", title: "National Level", type: "lesson" },
+      { id: "lesson-roles-2", title: "County Level", type: "lesson" },
+      { id: "quiz-roles", title: "Roles Quiz", type: "quiz" },
+      { id: "cta-roles", title: "Your Representatives", type: "cta" },
+    ],
   },
   {
     id: "county-budgets",
@@ -148,6 +234,14 @@ const courses: Course[] = [
     color: "bg-red-500",
     icon: Target,
     enrolled: 720,
+    teacher: teachers["dr-amara"],
+    steps: [
+      { id: "intro-county", title: "County Budgets 101", type: "intro" },
+      { id: "lesson-county-1", title: "Revenue Sources", type: "lesson" },
+      { id: "lesson-county-2", title: "Spending Priorities", type: "lesson" },
+      { id: "quiz-county", title: "County Quiz", type: "quiz" },
+      { id: "cta-county", title: "Track Your County", type: "cta" },
+    ],
   },
   {
     id: "memo-writing",
@@ -159,6 +253,14 @@ const courses: Course[] = [
     color: "bg-purple-500",
     icon: FileText,
     enrolled: 650,
+    teacher: teachers["marcus-cole"],
+    steps: [
+      { id: "intro-memo", title: "Why Memos Matter", type: "intro" },
+      { id: "lesson-memo-1", title: "Structuring Your Memo", type: "lesson" },
+      { id: "lesson-memo-2", title: "Making It Persuasive", type: "lesson" },
+      { id: "quiz-memo", title: "Memo Quiz", type: "quiz" },
+      { id: "cta-memo", title: "Write Your Memo", type: "cta" },
+    ],
   },
 ];
 
@@ -286,23 +388,53 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-// Animation variants
+// Animation variants with spring physics based on civic hub spec
+const fadeSlideIn = {
+  hidden: { opacity: 0, x: 24 },
+  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300, damping: 28 } },
+};
+
+const staggerContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const teacherBubble = {
+  hidden: { opacity: 0, x: -20 },
+  show: { opacity: 1, x: 0, transition: { delay: 0.15, type: "spring", stiffness: 260, damping: 22 } },
+};
+
+const cardHover = {
+  rest: { y: 0, borderColor: "var(--color-border)" },
+  hover: { y: -4, borderColor: "var(--primary)", transition: { type: "spring", stiffness: 300, damping: 20 } },
+};
+
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.6 },
-};
-
-const staggerContainer = {
-  initial: {},
-  whileInView: { transition: { staggerChildren: 0.1 } },
-  viewport: { once: true },
+  transition: { type: "spring", stiffness: 300, damping: 28 },
 };
 
 export function LearnPageRedesign() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [completedModules, setCompletedModules] = useState<string[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Load progress from localStorage (civic hub spec: progress persistence)
+    const saved = localStorage.getItem("learn-progress");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setCompletedModules(parsed.completed || []);
+      } catch (e) {
+        console.error("Failed to load progress", e);
+      }
+    }
+  }, []);
 
   const filteredCourses = activeCategory === "All"
     ? courses
@@ -312,24 +444,44 @@ export function LearnPageRedesign() {
 
   const isCourseCompleted = (courseId: string) => completedModules.includes(courseId);
 
+  const getStepIcon = (type: string) => {
+    switch (type) {
+      case "intro": return Play;
+      case "lesson": return BookOpen;
+      case "quiz": return Lightbulb;
+      case "cta": return HandHeart;
+      default: return BookOpen;
+    }
+  };
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-background animate-pulse">
+        <div className="container mx-auto px-4 py-20">
+          <div className="h-96 bg-muted rounded-2xl" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Featured Course Spotlight */}
-      <section id="featured-course" className="relative overflow-hidden bg-primary/5 py-16 md:py-20">
+      <section id="featured-course" className="relative overflow-hidden bg-primary/5 dark:bg-primary/10 py-16 md:py-20">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
         <div className="absolute -right-32 top-1/2 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
         
         <div className="container mx-auto px-4">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-            {/* Left: Course Details */}
+            {/* Left: Course Details with Teacher */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 300, damping: 28 }}
               className="space-y-6"
             >
               <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+                <span className="rounded-full bg-primary/10 dark:bg-primary/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
                   Most Popular
                 </span>
                 <span className="flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">
@@ -345,6 +497,33 @@ export function LearnPageRedesign() {
               <p className="max-w-xl text-base text-muted-foreground md:text-lg">
                 {featuredCourse.description}
               </p>
+
+              {/* Teacher Card - based on civic hub spec */}
+              <motion.div
+                variants={teacherBubble}
+                initial="hidden"
+                animate="show"
+                className="flex items-start gap-4 rounded-xl border border-border bg-card p-4"
+              >
+                <div 
+                  className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-2xl"
+                  style={{ 
+                    boxShadow: `0 0 0 2px ${featuredCourse.teacher.accentColor}40, 0 0 20px ${featuredCourse.teacher.accentColor}20` 
+                  }}
+                >
+                  {featuredCourse.teacher.avatar}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-foreground">{featuredCourse.teacher.name}</span>
+                    <Badge variant="secondary" className="text-xs">{featuredCourse.teacher.tone}</Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{featuredCourse.teacher.role}</p>
+                  <p className="mt-2 text-sm italic text-muted-foreground">
+                    "{featuredCourse.teacher.signature}"
+                  </p>
+                </div>
+              </motion.div>
               
               <div className="flex items-center gap-4">
                 <div className="flex -space-x-2">
@@ -378,51 +557,71 @@ export function LearnPageRedesign() {
               </div>
             </motion.div>
             
-            {/* Right: Preview Card */}
+            {/* Right: Preview Card with Steps */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 300, damping: 28 }}
             >
               <div className="rounded-2xl border border-border bg-card/50 p-6 shadow-2xl backdrop-blur-sm">
                 {/* Video Preview Area */}
                 <div className="relative mb-6 aspect-video overflow-hidden rounded-xl bg-primary/10">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/90 shadow-lg">
+                    <button 
+                      onClick={() => setSelectedCourse(featuredCourse)}
+                      className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/90 shadow-lg transition-transform hover:scale-105 hover:bg-primary"
+                    >
                       <Play className="ml-1 h-6 w-6 text-white" />
-                    </div>
+                    </button>
                   </div>
                   <div className="absolute bottom-3 left-3 rounded-md bg-black/60 px-2 py-1 text-xs text-white">
                     Preview
                   </div>
+                  {/* Progress bar */}
+                  {featuredCourse.progress !== undefined && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/20">
+                      <div 
+                        className="h-full bg-primary transition-all duration-500"
+                        style={{ width: `${featuredCourse.progress}%` }}
+                      />
+                    </div>
+                  )}
                 </div>
                 
-                {/* Lesson List Preview */}
+                {/* Lesson Steps Preview */}
                 <div className="space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     What's Inside
                   </p>
-                  {featuredCourse.lessons && (
-                    <>
-                      <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                          <PieChart className="h-4 w-4" />
-                        </div>
-                        <span className="text-sm font-medium">Money In & Out</span>
-                      </div>
-                      <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                          <MapPin className="h-4 w-4" />
-                        </div>
-                        <span className="text-sm font-medium">National vs County</span>
-                      </div>
-                      <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                          <Calendar className="h-4 w-4" />
-                        </div>
-                        <span className="text-sm font-medium">Budget Cycle</span>
-                      </div>
-                    </>
+                  <div className="max-h-48 space-y-2 overflow-y-auto">
+                    {featuredCourse.steps.slice(0, 6).map((step, idx) => {
+                      const StepIcon = getStepIcon(step.type);
+                      return (
+                        <motion.div
+                          key={step.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.05 }}
+                          className="flex items-center gap-3 rounded-lg bg-muted/50 p-3"
+                        >
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                            <StepIcon className="h-4 w-4" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-sm font-medium truncate block">{step.title}</span>
+                            <span className="text-xs text-muted-foreground capitalize">{step.type}</span>
+                          </div>
+                          {step.type === "quiz" && (
+                            <Badge variant="outline" className="text-xs">Quiz</Badge>
+                          )}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                  {featuredCourse.steps.length > 6 && (
+                    <p className="text-xs text-muted-foreground">
+                      +{featuredCourse.steps.length - 6} more steps
+                    </p>
                   )}
                 </div>
               </div>
@@ -469,19 +668,20 @@ export function LearnPageRedesign() {
             ))}
           </motion.div>
           
-          {/* Course Cards Grid */}
+          {/* Course Cards Grid with hover animations */}
           <motion.div
             variants={staggerContainer}
-            initial="initial"
-            whileInView="whileInView"
+            initial="hidden"
+            whileInView="show"
             viewport={{ once: true }}
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {filteredCourses.map((course) => (
               <motion.div
                 key={course.id}
-                variants={fadeInUp}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/50"
+                variants={fadeSlideIn}
+                whileHover={{ y: -4, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/50"
               >
                 {/* Category Color Stripe */}
                 <div
@@ -501,6 +701,9 @@ export function LearnPageRedesign() {
                         </Badge>
                       </div>
                     </div>
+                    {isCourseCompleted(course.id) && (
+                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    )}
                   </div>
                   
                   {/* Title & Description */}
@@ -831,7 +1034,7 @@ export function LearnPageRedesign() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-primary/5 py-16 md:py-20">
+      <section className="bg-primary/5 dark:bg-primary/10 py-16 md:py-20">
         <div className="container mx-auto px-4">
           <motion.div
             {...fadeInUp}
@@ -860,6 +1063,125 @@ export function LearnPageRedesign() {
           </motion.div>
         </div>
       </section>
+
+      {/* Course Preview Modal - based on civic hub spec */}
+      <AnimatePresence>
+        {selectedCourse && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            onClick={() => setSelectedCourse(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 28 }}
+              className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card p-4">
+                <div className="flex items-center gap-3">
+                  <div 
+                    className="flex h-10 w-10 items-center justify-center rounded-xl text-xl"
+                    style={{ 
+                      boxShadow: `0 0 0 2px ${selectedCourse.teacher.accentColor}40` 
+                    }}
+                  >
+                    {selectedCourse.teacher.avatar}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">{selectedCourse.title}</h3>
+                    <p className="text-xs text-muted-foreground">{selectedCourse.teacher.name}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedCourse(null)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-muted hover:bg-muted/80 transition-colors"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 space-y-6">
+                {/* Course Info */}
+                <div className="space-y-2">
+                  <p className="text-muted-foreground">{selectedCourse.description}</p>
+                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <BookOpen className="h-4 w-4" />
+                      {selectedCourse.lessons} lessons
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-4 w-4" />
+                      {selectedCourse.duration}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      {selectedCourse.enrolled?.toLocaleString()}+ enrolled
+                    </span>
+                  </div>
+                </div>
+
+                {/* Teacher Intro */}
+                <div className="rounded-xl border border-border bg-muted/50 p-4">
+                  <p className="text-sm italic text-muted-foreground">
+                    "{selectedCourse.teacher.signature}"
+                  </p>
+                </div>
+
+                {/* Steps Overview */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold">Course Steps</h4>
+                  <div className="max-h-64 space-y-2 overflow-y-auto">
+                    {selectedCourse.steps.map((step, idx) => {
+                      const StepIcon = getStepIcon(step.type);
+                      return (
+                        <motion.div
+                          key={step.id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.03 }}
+                          className="flex items-center gap-3 rounded-lg border border-border bg-background p-3"
+                        >
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                            <StepIcon className="h-4 w-4" />
+                          </div>
+                          <span className="flex-1 text-sm font-medium">{step.title}</span>
+                          <Badge variant="outline" className="text-xs capitalize">
+                            {step.type}
+                          </Badge>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  <Button asChild className="flex-1 rounded-full" size="lg">
+                    <Link href={`/learn/${selectedCourse.id}`}>
+                      Start Course
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="rounded-full"
+                    onClick={() => setSelectedCourse(null)}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,15 +1,73 @@
+"use client";
+
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Calendar, FileQuestion, Users, GraduationCap, MapPin, BookOpen, MessageSquare, HandHeart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, Calendar, FileQuestion, Users, GraduationCap, MapPin, BookOpen, MessageSquare, HandHeart, Sparkles, Target, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageSection, Container2026, SectionHeader } from "@/components/layout";
 import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
-export const metadata: Metadata = {
-  title: "Take Action - Budget Ndio Story",
-  description: "Know the budget. Use it. Follow up. Join pathways for youth participation in Kenya's budget process.",
-};
+// Pathway Progress Tracker
+function PathwayTracker() {
+  const [completed, setCompleted] = useState(0);
+  const pathways = ['Budget Calendar', 'Submission Support', 'Question Bank', 'Community Tracking', 'County Chapters', 'Budget Champion', 'Campus Voices'];
+  
+  useEffect(() => {
+    // Simulate progress tracking
+    const timer = setInterval(() => {
+      setCompleted(prev => {
+        if (prev < pathways.length) return prev + 1;
+        return prev;
+      });
+    }, 500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="bg-gradient-to-br from-green-900 to-emerald-900 rounded-2xl p-6 text-white">
+      <div className="flex items-center gap-2 mb-4">
+        <Target className="w-5 h-5 text-green-400" />
+        <h3 className="font-semibold">Your Action Progress</h3>
+      </div>
+      <p className="text-green-200 text-sm mb-4">Track your civic engagement journey</p>
+      
+      <div className="space-y-2">
+        {pathways.map((pathway, index) => (
+          <div 
+            key={pathway}
+            className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-500 ${
+              index < completed ? 'bg-white/20' : 'bg-white/5'
+            }`}
+          >
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+              index < completed ? 'bg-green-400' : 'bg-white/20'
+            }`}>
+              {index < completed && <CheckCircle className="w-3 h-3 text-green-900" />}
+            </div>
+            <span className={`text-sm ${index < completed ? 'text-white' : 'text-green-200'}`}>
+              {pathway}
+            </span>
+          </div>
+        ))}
+      </div>
+      
+      <div className="mt-4 pt-4 border-t border-white/20">
+        <div className="flex justify-between text-sm mb-2">
+          <span className="text-green-200">Progress</span>
+          <span className="font-semibold">{completed}/{pathways.length}</span>
+        </div>
+        <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-green-400 rounded-full transition-all duration-1000"
+            style={{ width: `${(completed / pathways.length) * 100}%` }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const pathways = [
   {
@@ -17,21 +75,21 @@ const pathways = [
     title: "Budget Calendar",
     description: "Track participation windows and key dates in the budget cycle",
     cta: "View Calendar",
-    href: "/learn",
+    href: "/civic-hub",
   },
   {
     icon: FileQuestion,
     title: "Submission Support",
     description: "Templates and guidance for submitting memoranda and public comments",
     cta: "Get Template",
-    href: "/learn",
+    href: "/civic-hub",
   },
   {
     icon: MessageSquare,
     title: "Question Bank",
     description: "Questions to ask at public forums and participation sessions",
     cta: "Browse Questions",
-    href: "/learn",
+    href: "/civic-hub",
   },
   {
     icon: MapPin,
@@ -79,7 +137,32 @@ const actionItems = [
 
 export default function TakeActionPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen relative overflow-hidden">
+      <style jsx global>{`
+        @keyframes floatUp {
+          0% { transform: translateY(100vh) scale(0); opacity: 0; }
+          10% { opacity: 0.5; }
+          90% { opacity: 0.2; }
+          100% { transform: translateY(-20px) scale(1); opacity: 0; }
+        }
+      `}</style>
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 15 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-gradient-to-r from-green-400 to-teal-400"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: 4 + Math.random() * 6,
+              height: 4 + Math.random() * 6,
+              animation: `floatUp ${15 + Math.random() * 10}s linear infinite`,
+              animationDelay: `${Math.random() * 10}s`,
+              opacity: 0.2 + Math.random() * 0.3,
+            }}
+          />
+        ))}
+      </div>
       <PageSection size="lg" className="border-t-0">
         <Container2026>
           <SectionHeader
@@ -134,7 +217,7 @@ export default function TakeActionPage() {
         <BentoStaggerGrid stagger={0.1} className="grid-cols-2 md:grid-cols-5 gap-4">
           {toolkit.map((item, index) => (
             <BentoGridItem key={item.name} animation="scaleIn" delay={index * 0.1}>
-              <Link href="/learn" className="block h-full">
+              <Link href="/civic-hub" className="block h-full">
                 <BentoCard padding="md" accentColor="teal" hover className="h-full group">
                   <BookOpen className="h-5 w-5 text-teal-600 dark:text-teal-400 mb-3" />
                   <h3 className="font-medium text-sm mb-1">{item.name}</h3>
@@ -148,7 +231,7 @@ export default function TakeActionPage() {
         <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
           <div className="text-center mt-8">
             <Button asChild className="rounded-full">
-              <Link href="/learn">
+              <Link href="/civic-hub">
                 Access Full Toolkit <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -195,7 +278,7 @@ export default function TakeActionPage() {
         <BentoScrollAnimation animation="fadeInUp" delay={0.2}>
           <div className="text-center mt-8">
             <Button asChild variant="outline" className="rounded-full">
-              <Link href="/learn">
+              <Link href="/civic-hub">
                 View Full Calendar <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -242,7 +325,7 @@ export default function TakeActionPage() {
                 <Link href="mailto:info@budgetndiostory.org">Contact Us</Link>
               </Button>
               <Button asChild variant="outline" className="rounded-full">
-                <Link href="/learn">Learn More</Link>
+                <Link href="/civic-hub">Learn More</Link>
               </Button>
             </div>
           </BentoCard>

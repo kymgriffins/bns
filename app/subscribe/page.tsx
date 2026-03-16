@@ -1,13 +1,90 @@
 "use client";
 
-import { useState } from "react";
-import { Heart, Shield, CheckCircle, Mail, Phone, MapPin, ArrowRight, CreditCard, Bell, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Heart, Shield, CheckCircle, Mail, Phone, MapPin, ArrowRight, CreditCard, Bell, Send, Sparkles, Users, TrendingUp } from "lucide-react";
 import { SubscribeHero } from "@/components/heros/SubscribeHero";
 import { ScrollReveal } from "@/components/animations/hig-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+
+// Floating Particles for Subscribe Page
+function SubscribeParticles() {
+  const particles = Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    size: Math.random() * 8 + 2,
+    duration: 18 + Math.random() * 12,
+    delay: Math.random() * 8,
+    color: i % 3 === 0 ? 'from-amber-400' : i % 3 === 1 ? 'from-teal-400' : 'from-purple-400',
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className={`absolute rounded-full bg-gradient-to-r ${p.color} to-transparent blur-sm`}
+          style={{
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size,
+            animation: `floatUp ${p.duration}s linear infinite`,
+            animationDelay: `${p.delay}s`,
+            opacity: 0.3,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// Community Impact Stats
+function ImpactStats() {
+  const [stats, setStats] = useState({ subscribers: 0, engaged: 0, donations: 0 });
+  
+  useEffect(() => {
+    const target = { subscribers: 15000, engaged: 8500, donations: 1200 };
+    const duration = 2000;
+    const steps = 50;
+    const interval = duration / steps;
+    let step = 0;
+    
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      setStats({
+        subscribers: Math.floor(target.subscribers * progress),
+        engaged: Math.floor(target.engaged * progress),
+        donations: Math.floor(target.donations * progress),
+      });
+      if (step >= steps) clearInterval(timer);
+    }, interval);
+    
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="text-center p-3 bg-white/10 rounded-xl">
+        <Users className="w-5 h-5 mx-auto mb-1 text-amber-400" />
+        <div className="text-lg font-bold">{stats.subscribers.toLocaleString()}+</div>
+        <div className="text-xs text-white/70">Subscribers</div>
+      </div>
+      <div className="text-center p-3 bg-white/10 rounded-xl">
+        <TrendingUp className="w-5 h-5 mx-auto mb-1 text-teal-400" />
+        <div className="text-lg font-bold">{stats.engaged.toLocaleString()}+</div>
+        <div className="text-xs text-white/70">Active</div>
+      </div>
+      <div className="text-center p-3 bg-white/10 rounded-xl">
+        <Heart className="w-5 h-5 mx-auto mb-1 text-purple-400" />
+        <div className="text-lg font-bold">{stats.donations.toLocaleString()}+</div>
+        <div className="text-xs text-white/70">Donors</div>
+      </div>
+    </div>
+  );
+}
 
 // Newsletter subscription types
 type SubscriptionType = "newsletter" | "sms" | "donation";
@@ -250,7 +327,16 @@ export default function SubscribePage() {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      <style jsx global>{`
+        @keyframes floatUp {
+          0% { transform: translateY(100vh) scale(0); opacity: 0; }
+          10% { opacity: 0.5; }
+          90% { opacity: 0.2; }
+          100% { transform: translateY(-20px) scale(1); opacity: 0; }
+        }
+      `}</style>
+      <SubscribeParticles />
       <SubscribeHero />
 
       <div id="subscribe-form" className="flex flex-col lg:flex-row min-h-0">

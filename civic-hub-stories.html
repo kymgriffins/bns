@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Civic Hub — Budget Ndio Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#F5C842;--gold2:#FFD54F;--red:#E53E3E;--red2:#FC4444;
+  --teal:#38B2AC;--green:#48BB78;--purple:#9F7AEA;
+  --font-d:'Fraunces',serif;--font-b:'DM Sans',sans-serif;
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-out:cubic-bezier(.22,1,.36,1);
+}
+[data-theme="dark"]{
+  --bg:#0D0D14;--surf:#13131F;--surf2:#1E1E30;--surf3:#252540;
+  --text:#F0EDE6;--text-m:rgba(240,237,230,.6);--text-d:rgba(240,237,230,.3);
+  --border:rgba(255,255,255,.08);--shadow:rgba(0,0,0,.6);
+}
+[data-theme="light"]{
+  --bg:#FAFAF5;--surf:#FFFFFF;--surf2:#F4F2EB;--surf3:#ECE9E0;
+  --text:#1A1A10;--text-m:rgba(26,26,16,.58);--text-d:rgba(26,26,16,.3);
+  --border:rgba(0,0,0,.08);--shadow:rgba(0,0,0,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-b);transition:background .3s,color .3s}
+::selection{background:var(--gold);color:#1A1200}
+
+/* ── SHELL ── */
+.shell{
+  display:flex;flex-direction:column;
+  height:100%;max-width:430px;margin:0 auto;
+  position:relative;overflow:hidden;
+}
+
+/* ── TOP BAR ── */
+.top-bar{
+  position:absolute;top:0;left:0;right:0;z-index:50;
+  padding:.75rem 1rem .4rem;
+  background:linear-gradient(to bottom,rgba(13,13,20,.95) 0%,transparent 100%);
+}
+[data-theme="light"] .top-bar{background:linear-gradient(to bottom,rgba(250,250,245,.95) 0%,transparent 100%)}
+
+/* story progress bars */
+.story-bars{display:flex;gap:3px;margin-bottom:.5rem}
+.story-bar-track{flex:1;height:2.5px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden}
+[data-theme="light"] .story-bar-track{background:rgba(0,0,0,.15)}
+.story-bar-fill{height:100%;background:#fff;border-radius:100px;width:0%;transition:width linear}
+[data-theme="light"] .story-bar-fill{background:var(--text)}
+.story-bar-fill.done{width:100%;transition:none}
+
+/* top row */
+.top-row{display:flex;align-items:center;gap:.6rem}
+.teacher-bubble-sm{
+  display:flex;align-items:center;gap:.5rem;
+  background:rgba(0,0,0,.35);backdrop-filter:blur(6px);
+  border-radius:100px;padding:.3rem .7rem .3rem .35rem;
+  border:1px solid rgba(255,255,255,.1);flex:1;min-width:0;
+}
+[data-theme="light"] .teacher-bubble-sm{background:rgba(255,255,255,.65);border-color:rgba(0,0,0,.08)}
+.t-ring{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;
+  background:var(--surf2);animation:ringPulse 3s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,200,66,.4)}50%{box-shadow:0 0 0 5px rgba(245,200,66,0)}}
+.t-info{min-width:0}
+.t-name{font-size:.7rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t-role{font-size:.62rem;color:var(--text-m)}
+.top-btn{
+  width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.3);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer;flex-shrink:0;
+  color:var(--text);transition:all .2s;
+}
+[data-theme="light"] .top-btn{background:rgba(255,255,255,.6);border-color:rgba(0,0,0,.1)}
+.top-btn:hover{border-color:var(--gold);background:rgba(245,200,66,.15)}
+.slide-counter{
+  font-size:.68rem;font-weight:600;color:var(--text-m);
+  background:rgba(0,0,0,.3);backdrop-filter:blur(6px);
+  padding:3px 9px;border-radius:100px;flex-shrink:0;
+  border:1px solid rgba(255,255,255,.1);white-space:nowrap;
+}
+[data-theme="light"] .slide-counter{background:rgba(255,255,255,.6);border-color:rgba(0,0,0,.08)}
+
+/* ── STORY VIEWPORT ── */
+.story-viewport{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+
+/* ── STORY SLIDE ── */
+.story-slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:1rem 1rem 5.5rem;
+  overflow:hidden;
+}
+.story-slide.entering{animation:slideEnter .35s var(--ease-out) both}
+.story-slide.exiting-next{animation:slideExitNext .3s var(--ease-out) both}
+.story-slide.exiting-prev{animation:slideExitPrev .3s var(--ease-out) both}
+.story-slide.enter-prev{animation:slideEnterPrev .35s var(--ease-out) both}
+@keyframes slideEnter{from{opacity:0;transform:translateX(40px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes slideExitNext{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-40px) scale(.96)}}
+@keyframes slideExitPrev{from{opacity:1;transform:none}to{opacity:0;transform:translateX(40px) scale(.96)}}
+@keyframes slideEnterPrev{from{opacity:0;transform:translateX(-40px) scale(.96)}to{opacity:1;transform:none}}
+
+/* ── SLIDE BG ── */
+.slide-bg{position:absolute;inset:0;transition:opacity .4s}
+.bg-dark{background:linear-gradient(160deg,#0D0D14 0%,#13131F 100%)}
+.bg-red{background:linear-gradient(160deg,#1A0505 0%,#2D0A0A 100%)}
+.bg-teal{background:linear-gradient(160deg,#041A18 0%,#082B28 100%)}
+.bg-gold{background:linear-gradient(160deg,#1A1200 0%,#2A1E00 100%)}
+.bg-purple{background:linear-gradient(160deg,#100D1A 0%,#1A1430 100%)}
+.bg-green{background:linear-gradient(160deg,#041209 0%,#082014 100%)}
+[data-theme="light"] .bg-dark{background:linear-gradient(160deg,#F4F2EB 0%,#ECEAE0 100%)}
+[data-theme="light"] .bg-red{background:linear-gradient(160deg,#FFF0F0 0%,#FFDEDE 100%)}
+[data-theme="light"] .bg-teal{background:linear-gradient(160deg,#EEF9F8 0%,#D5F5F3 100%)}
+[data-theme="light"] .bg-gold{background:linear-gradient(160deg,#FFFBEF 0%,#FEF3C7 100%)}
+[data-theme="light"] .bg-purple{background:linear-gradient(160deg,#F5F3FF 0%,#EDE9FE 100%)}
+[data-theme="light"] .bg-green{background:linear-gradient(160deg,#F0FDF4 0%,#DCFCE7 100%)}
+
+/* Noise texture overlay */
+.slide-bg::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.6;pointer-events:none}
+
+/* Accent orb */
+.orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;opacity:.35}
+.orb-1{width:300px;height:300px;top:-80px;right:-60px}
+.orb-2{width:200px;height:200px;bottom:-40px;left:-40px}
+
+/* ── SLIDE CONTENT ── */
+.slide-inner{position:relative;z-index:2}
+
+/* ─ TYPE: COVER ─ */
+.slide-cover .cover-module-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(229,62,62,.18);border:1px solid rgba(229,62,62,.3);
+  color:var(--red2);font-size:.68rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  padding:4px 11px;border-radius:100px;margin-bottom:1rem;
+}
+.slide-cover .cover-title{
+  font-family:var(--font-d);font-size:2.4rem;font-weight:300;line-height:1.1;
+  letter-spacing:-.5px;margin-bottom:.6rem;
+}
+.slide-cover .cover-title em{color:var(--gold);font-style:italic}
+.slide-cover .cover-sub{font-size:.95rem;color:var(--text-m);line-height:1.65;margin-bottom:1.25rem}
+.slide-cover .cover-promise{
+  display:flex;align-items:center;gap:.6rem;
+  background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.2);
+  border-radius:12px;padding:.85rem 1rem;font-size:.83rem;line-height:1.55;
+}
+.slide-cover .cover-promise .cp-icon{font-size:1.3rem;flex-shrink:0}
+
+/* ─ TYPE: CONCEPT ─ */
+.slide-concept .concept-tag{
+  font-size:.65rem;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;display:inline-flex;margin-bottom:.85rem;
+}
+.slide-concept .concept-question{
+  font-family:var(--font-d);font-size:1.7rem;font-weight:300;line-height:1.2;
+  margin-bottom:1rem;letter-spacing:-.3px;
+}
+.slide-concept .concept-question em{font-style:italic}
+.concept-bullets{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.cb-item{
+  display:flex;align-items:flex-start;gap:.65rem;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:.7rem .85rem;font-size:.85rem;line-height:1.55;
+  animation:cbIn .4s var(--ease-out) both;
+}
+[data-theme="light"] .cb-item{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.06)}
+@keyframes cbIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.cb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.cb-item strong{font-weight:600;color:var(--text)}
+.kenya-badge{
+  display:flex;gap:.65rem;align-items:flex-start;
+  background:rgba(72,187,120,.1);border:1px solid rgba(72,187,120,.2);
+  border-radius:10px;padding:.75rem .9rem;font-size:.8rem;line-height:1.6;color:var(--text-m);
+}
+.kenya-badge .kb-flag{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+
+/* ─ TYPE: CHAPTERS ─ */
+.slide-chapters .ch-title{
+  font-family:var(--font-d);font-size:1.5rem;font-weight:300;
+  line-height:1.2;margin-bottom:1rem;
+}
+.chapter-list{display:flex;flex-direction:column;gap:.45rem}
+.ch-item{
+  display:flex;align-items:center;gap:.75rem;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:.7rem .9rem;
+  animation:cbIn .4s var(--ease-out) both;
+}
+[data-theme="light"] .ch-item{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06)}
+.ch-num{
+  font-family:var(--font-d);font-size:1.3rem;font-weight:300;
+  color:var(--gold);width:28px;flex-shrink:0;line-height:1;
+}
+.ch-body{}
+.ch-label{font-size:.72rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text-d)}
+.ch-name{font-size:.88rem;font-weight:500;color:var(--text)}
+
+/* ─ TYPE: SNAPSHOT ─ */
+.snapshot-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.75rem}
+.snap-tile{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:.85rem .8rem;
+  animation:cbIn .4s var(--ease-out) both;
+}
+[data-theme="light"] .snap-tile{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.07)}
+.snap-tile.accent-gold{background:rgba(245,200,66,.1);border-color:rgba(245,200,66,.25)}
+.snap-tile.accent-red{background:rgba(229,62,62,.1);border-color:rgba(229,62,62,.25)}
+.snap-tile.accent-teal{background:rgba(56,178,172,.1);border-color:rgba(56,178,172,.25)}
+.snap-tile.accent-purple{background:rgba(159,122,234,.1);border-color:rgba(159,122,234,.25)}
+.snap-icon{font-size:1rem;margin-bottom:.3rem;display:block}
+.snap-val{font-family:var(--font-d);font-size:1.35rem;font-weight:300;line-height:1;margin-bottom:.2rem}
+.snap-label{font-size:.68rem;color:var(--text-m);line-height:1.3}
+.snap-divider{font-size:.65rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--text-d);margin:.5rem 0 .4rem;display:flex;align-items:center;gap:.5rem}
+.snap-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+[data-theme="light"] .snap-divider::after{background:rgba(0,0,0,.08)}
+
+/* ─ TYPE: PILLARS ─ */
+.pillar-scroll{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.75rem}
+.pillar-card{
+  display:flex;align-items:flex-start;gap:.75rem;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:.8rem .9rem;
+  animation:cbIn .4s var(--ease-out) both;
+  transition:border-color .2s;
+}
+[data-theme="light"] .pillar-card{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06)}
+.pillar-emoji{font-size:1.3rem;flex-shrink:0;margin-top:1px}
+.pillar-body{}
+.pillar-title{font-size:.88rem;font-weight:600;margin-bottom:.2rem}
+.pillar-desc{font-size:.76rem;color:var(--text-m);line-height:1.5}
+.pillar-money{
+  font-size:.65rem;font-weight:700;letter-spacing:.3px;
+  display:inline-flex;align-items:center;gap:3px;
+  background:rgba(245,200,66,.15);color:var(--gold);
+  padding:2px 7px;border-radius:100px;margin-top:.3rem;
+}
+
+/* ─ TYPE: RISKS ─ */
+.risk-list{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.75rem}
+.risk-item{
+  display:flex;align-items:flex-start;gap:.65rem;
+  background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.15);
+  border-radius:10px;padding:.7rem .85rem;
+  animation:cbIn .4s var(--ease-out) both;
+}
+.risk-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.risk-text{font-size:.82rem;color:var(--text-m);line-height:1.55}
+.risk-text strong{color:var(--text);font-weight:600}
+.quote-block{
+  background:rgba(245,200,66,.08);border-left:3px solid var(--gold);
+  border-radius:0 10px 10px 0;padding:.85rem 1rem;margin-top:.65rem;
+  font-family:var(--font-d);font-size:.88rem;font-weight:300;
+  line-height:1.65;color:var(--text-m);font-style:italic;
+}
+.quote-block strong{color:var(--gold);font-style:normal;font-weight:500}
+
+/* ─ TYPE: QUIZ ─ */
+.quiz-slide .qz-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(245,200,66,.15);color:var(--gold);
+  font-size:.68rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  padding:4px 11px;border-radius:100px;margin-bottom:.75rem;
+  border:1px solid rgba(245,200,66,.25);
+}
+.quiz-slide .qz-question{
+  font-family:var(--font-d);font-size:1.25rem;font-weight:300;
+  line-height:1.45;margin-bottom:1rem;letter-spacing:-.2px;
+}
+.qz-options{display:flex;flex-direction:column;gap:.4rem}
+.qz-opt{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.8rem .9rem;
+  border:1.5px solid var(--border);border-radius:12px;
+  cursor:pointer;background:rgba(255,255,255,.04);
+  font-size:.85rem;color:var(--text);transition:all .2s;
+  font-family:var(--font-b);text-align:left;width:100%;
+}
+[data-theme="light"] .qz-opt{background:rgba(0,0,0,.03)}
+.qz-opt:hover{border-color:rgba(245,200,66,.5);background:rgba(245,200,66,.07)}
+.qz-opt.selected-correct{border-color:var(--teal);background:rgba(56,178,172,.12);color:var(--teal)}
+.qz-opt.selected-wrong{border-color:var(--red);background:rgba(229,62,62,.1);color:var(--red)}
+.qz-opt.reveal-correct{border-color:var(--teal);background:rgba(56,178,172,.08);color:var(--teal)}
+.qz-opt:disabled{cursor:not-allowed}
+.opt-ltr{
+  width:24px;height:24px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;flex-shrink:0;transition:all .2s;
+  background:rgba(255,255,255,.05);
+}
+[data-theme="light"] .opt-ltr{border-color:rgba(0,0,0,.12);background:rgba(0,0,0,.04)}
+.qz-opt.selected-correct .opt-ltr{background:var(--teal);border-color:var(--teal);color:#002a24}
+.qz-opt.selected-wrong .opt-ltr{background:var(--red);border-color:var(--red);color:#fff}
+.qz-opt.reveal-correct .opt-ltr{background:var(--teal);border-color:var(--teal);color:#002a24}
+.qz-feedback{
+  margin-top:.75rem;padding:.8rem .9rem;border-radius:12px;
+  font-size:.82rem;line-height:1.6;display:none;
+  animation:cbIn .35s var(--ease-out) both;
+}
+.qz-feedback.show{display:block}
+.qz-feedback.correct-fb{background:rgba(56,178,172,.12);border:1px solid rgba(56,178,172,.25);color:var(--teal)}
+.qz-feedback.wrong-fb{background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.2);color:var(--gold)}
+.qz-next{
+  margin-top:.65rem;width:100%;padding:.8rem;
+  background:var(--gold);border:none;border-radius:100px;
+  font-size:.9rem;font-weight:700;color:#1A1200;cursor:pointer;
+  font-family:var(--font-b);display:none;transition:all .2s;
+  animation:cbIn .35s var(--ease-out) both;
+}
+.qz-next.show{display:block}
+.qz-next:hover{background:var(--gold2);transform:scale(1.01)}
+
+/* ─ TYPE: CTA ─ */
+.cta-slide .cta-celebration{
+  font-size:3rem;text-align:center;margin-bottom:1rem;
+  animation:bounceIn .6s var(--ease-spring) both;
+}
+@keyframes bounceIn{from{transform:scale(0) rotate(-10deg)}to{transform:scale(1) rotate(0)}}
+.cta-slide .cta-title{
+  font-family:var(--font-d);font-size:2rem;font-weight:300;
+  line-height:1.15;margin-bottom:.6rem;letter-spacing:-.4px;text-align:center;
+}
+.cta-slide .cta-title em{color:var(--gold);font-style:italic}
+.cta-slide .cta-sub{font-size:.88rem;color:var(--text-m);line-height:1.65;text-align:center;margin-bottom:1.25rem}
+.cta-buttons{display:flex;flex-direction:column;gap:.55rem}
+.cta-btn{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.9rem 1rem;border-radius:14px;
+  font-size:.85rem;font-weight:600;cursor:pointer;
+  font-family:var(--font-b);border:none;transition:all .2s;text-align:left;
+  animation:cbIn .4s var(--ease-out) both;
+}
+.cta-btn:hover{transform:scale(1.01)}
+.cta-btn-primary{background:var(--red);color:#fff}
+.cta-btn-primary:hover{background:var(--red2)}
+.cta-btn-teal{background:rgba(56,178,172,.15);border:1px solid rgba(56,178,172,.3);color:var(--teal)}
+.cta-btn-gold{background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.3);color:var(--gold)}
+.cta-btn-icon{font-size:1.2rem;flex-shrink:0;width:34px;height:34px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12)}
+.cta-btn-body{}
+.cta-btn-title{font-size:.85rem;font-weight:600;margin-bottom:1px}
+.cta-btn-sub{font-size:.7rem;font-weight:400;opacity:.75}
+
+/* ── SLIDE HEADER (shared across types) ── */
+.slide-headline{
+  font-family:var(--font-d);font-size:1.5rem;font-weight:300;
+  line-height:1.2;margin-bottom:.65rem;letter-spacing:-.2px;
+}
+.slide-headline em{font-style:italic}
+.slide-tag{
+  display:inline-flex;align-items:center;
+  font-size:.65rem;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;margin-bottom:.65rem;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;z-index:50;
+  padding:.6rem 1rem 1rem;
+  background:linear-gradient(to top,rgba(13,13,20,.95) 0%,transparent 100%);
+  display:flex;align-items:center;gap:.5rem;
+}
+[data-theme="light"] .bottom-nav{background:linear-gradient(to top,rgba(250,250,245,.95) 0%,transparent 100%)}
+.nav-prev,.nav-next{
+  width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.35);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;cursor:pointer;flex-shrink:0;
+  color:var(--text);transition:all .2s;
+}
+[data-theme="light"] .nav-prev,[data-theme="light"] .nav-next{background:rgba(255,255,255,.6);border-color:rgba(0,0,0,.1)}
+.nav-prev:hover,.nav-next:hover{border-color:var(--gold);background:rgba(245,200,66,.15)}
+.nav-prev:disabled{opacity:.3;cursor:not-allowed}
+.nav-center{flex:1;display:flex;gap:.4rem}
+.nc-dot{flex:1;height:4px;border-radius:100px;background:rgba(255,255,255,.1);cursor:pointer;transition:all .2s}
+[data-theme="light"] .nc-dot{background:rgba(0,0,0,.1)}
+.nc-dot.done{background:rgba(255,255,255,.35)}
+[data-theme="light"] .nc-dot.done{background:rgba(0,0,0,.25)}
+.nc-dot.current{background:var(--gold)}
+.nav-next.final{background:var(--gold);border-color:var(--gold);color:#1A1200}
+.nav-next.quiz-trigger{background:rgba(245,200,66,.2);border-color:var(--gold);color:var(--gold)}
+
+/* ── TAP ZONES ── */
+.tap-zone{position:absolute;top:55px;bottom:55px;width:35%;z-index:30;cursor:pointer}
+.tap-left{left:0}
+.tap-right{right:0}
+
+/* ── MODULE SELECT SCREEN ── */
+.module-screen{
+  position:absolute;inset:0;z-index:100;
+  background:var(--bg);overflow-y:auto;
+  transition:transform .4s var(--ease-out),opacity .3s;
+}
+.module-screen.hidden{transform:translateY(20px);opacity:0;pointer-events:none}
+.ms-top{
+  padding:1rem 1.25rem .75rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.75rem;
+  background:var(--surf);
+  position:sticky;top:0;z-index:10;
+}
+.ms-logo{display:flex;align-items:center;gap:.6rem}
+.ms-logo-icon{width:30px;height:30px;background:var(--red);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.ms-logo-text{font-family:var(--font-d);font-size:.9rem;font-weight:300}
+.ms-logo-text strong{color:var(--red)}
+.ms-body{padding:1.25rem}
+.ms-greeting{font-family:var(--font-d);font-size:1.5rem;font-weight:300;margin-bottom:.3rem}
+.ms-greeting em{color:var(--gold);font-style:italic}
+.ms-sub{font-size:.83rem;color:var(--text-m);margin-bottom:1.25rem;line-height:1.55}
+.ms-module-card{
+  background:var(--surf);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;margin-bottom:.75rem;cursor:pointer;
+  transition:transform .2s var(--ease-spring),border-color .2s;
+}
+.ms-module-card:hover{transform:scale(1.01);border-color:var(--border)}
+.ms-module-card:active{transform:scale(.99)}
+.ms-module-bar{height:3px}
+.ms-module-inner{padding:1rem 1.1rem}
+.ms-mod-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.6rem}
+.ms-badge{display:inline-flex;align-items:center;gap:5px;font-size:.65rem;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.ms-mod-num{font-family:var(--font-d);font-size:.8rem;color:var(--text-d)}
+.ms-mod-title{font-family:var(--font-d);font-size:1.05rem;font-weight:400;margin-bottom:.3rem;line-height:1.3}
+.ms-mod-desc{font-size:.78rem;color:var(--text-m);line-height:1.55;margin-bottom:.75rem}
+.ms-mod-footer{display:flex;align-items:center;gap:.5rem;font-size:.72rem;color:var(--text-d)}
+.ms-teacher{display:flex;align-items:center;gap:.35rem;margin-left:auto}
+.ms-prog-bar{margin-top:.6rem;height:2.5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+[data-theme="light"] .ms-prog-bar{background:rgba(0,0,0,.06)}
+.ms-prog-fill{height:100%;border-radius:100px;transition:width .6s}
+.ms-mod-status{
+  font-size:.65rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  padding:2px 8px;border-radius:100px;
+}
+.status-done{background:rgba(72,187,120,.15);color:var(--green)}
+.status-progress{background:rgba(245,200,66,.15);color:var(--gold)}
+.status-locked{background:rgba(255,255,255,.06);color:var(--text-d)}
+[data-theme="light"] .status-locked{background:rgba(0,0,0,.05)}
+
+/* Confetti */
+.confetti-p{position:fixed;pointer-events:none;z-index:999;border-radius:2px;animation:confFall linear forwards}
+@keyframes confFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}
+
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--surf);border:1px solid rgba(245,200,66,.25);border-radius:100px;
+  padding:.65rem 1.25rem;font-size:.82rem;color:var(--text);
+  display:flex;align-items:center;gap:.5rem;
+  transition:transform .3s var(--ease-spring);z-index:999;white-space:nowrap;
+  box-shadow:0 10px 40px var(--shadow)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-icon{color:var(--gold)}
+
+/* scroll-fix for long slides */
+.story-slide .slide-inner{overflow-y:auto;max-height:calc(100vh - 160px)}
+.story-slide .slide-inner::-webkit-scrollbar{display:none}
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+
+  <!-- ── MODULE SELECT SCREEN ── -->
+  <div class="module-screen" id="module-screen">
+    <div class="ms-top">
+      <div class="ms-logo">
+        <div class="ms-logo-icon">📊</div>
+        <div class="ms-logo-text">Budget <strong>Ndio</strong> Story</div>
+      </div>
+      <button class="top-btn" onclick="toggleTheme()" id="theme-btn-ms" style="margin-left:auto">🌙</button>
+    </div>
+    <div class="ms-body">
+      <div class="ms-greeting">Civic <em>Hub</em></div>
+      <div class="ms-sub">Quick civic lessons — like stories. Swipe through, learn something real, then act on it.</div>
+      <div id="ms-modules"></div>
+    </div>
+  </div>
+
+  <!-- ── STORY TOP ── -->
+  <div class="top-bar" id="top-bar" style="display:none">
+    <div class="story-bars" id="story-bars"></div>
+    <div class="top-row">
+      <div class="teacher-bubble-sm">
+        <div class="t-ring" id="t-ring">👩🏾‍💼</div>
+        <div class="t-info">
+          <div class="t-name" id="t-name">Millicent Makini</div>
+          <div class="t-role" id="t-role">Budget Literacy Educator</div>
+        </div>
+      </div>
+      <div class="slide-counter" id="slide-counter">1/12</div>
+      <button class="top-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+      <button class="top-btn" onclick="exitToMenu()">✕</button>
+    </div>
+  </div>
+
+  <!-- ── STORY VIEWPORT ── -->
+  <div class="story-viewport" id="story-viewport" style="display:none">
+    <div class="tap-zone tap-left" onclick="prevSlide()"></div>
+    <div class="tap-zone tap-right" onclick="tapRight()"></div>
+    <div class="story-slide" id="active-slide"></div>
+  </div>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav" id="bottom-nav" style="display:none">
+    <button class="nav-prev" id="nav-prev" onclick="prevSlide()">←</button>
+    <div class="nav-center" id="nav-dots"></div>
+    <button class="nav-next" id="nav-next" onclick="tapRight()">→</button>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon">✦</span><span id="toast-msg"></span></div>
+
+<script>
+// ════════════════════════════════════════════════
+// DATA — BPS 2026 Module 001
+// ════════════════════════════════════════════════
+const MODULES_LIST = [
+  {
+    id:'bps-2026', num:'001',
+    title:'Budget Policy Statement 2026',
+    desc:'Understand how Kenya\'s budget roadmap works and exactly where you fit in. No jargon. 10 minutes.',
+    duration:'10 min', slides:12, category:'Budget Basics',
+    catColor:'#E53E3E', catBg:'rgba(229,62,62,.15)',
+    accentA:'#E53E3E', accentB:'#F5C842',
+    teacher:{name:'Millicent Makini', role:'Budget Literacy Educator', avatar:'👩🏾‍💼'},
+  },
+  {
+    id:'national-county', num:'002',
+    title:'National vs County Budget',
+    desc:'47 counties, one national government. Who funds what? Coming soon.',
+    duration:'12 min', slides:0, category:'National',
+    catColor:'#38B2AC', catBg:'rgba(56,178,172,.15)',
+    accentA:'#38B2AC', accentB:'#9F7AEA',
+    teacher:{name:'Dr. Amara Osei', role:'Head of Fiscal Analysis', avatar:'👩🏿‍🏫'},
+    locked:true
+  },
+  {
+    id:'finance-bill', num:'003',
+    title:'Finance Bill 101',
+    desc:'The bill that changes what you pay. How to read it, track it, and respond to it. Coming soon.',
+    duration:'15 min', slides:0, category:'National',
+    catColor:'#9F7AEA', catBg:'rgba(159,122,234,.15)',
+    accentA:'#9F7AEA', accentB:'#F06060',
+    teacher:{name:'Marcus Odhiambo', role:'Civic Rights Advocate', avatar:'👨🏾‍💼'},
+    locked:true
+  }
+];
+
+const BPS_SLIDES = [
+  {
+    id:'cover', type:'cover', bg:'bg-red',
+    orbA:'rgba(229,62,62,.5)', orbB:'rgba(245,200,66,.3)',
+    content:{
+      tag:'Module 001 · Budget Basics',
+      title:'Budget\nPolicy\n*Statement* 2026',
+      sub:'How Kenya\'s budget roadmap works — and exactly where you fit in.',
+      promise:'In the next 10 minutes, you\'ll understand how the government plans public money. No jargon. No confusion. Just the facts, in your language.'
+    }
+  },
+  {
+    id:'what-is-bps', type:'concept', bg:'bg-dark',
+    orbA:'rgba(245,200,66,.3)', orbB:'rgba(56,178,172,.2)',
+    content:{
+      tag:'What is the BPS?', tagBg:'rgba(245,200,66,.15)', tagColor:'#F5C842',
+      question:'Forget the complicated name.\nThe BPS is the government answering *3 questions* out loud:',
+      bullets:[
+        {dot:'#F5C842', text:'<strong>Where are we now?</strong> How\'s the economy actually doing?'},
+        {dot:'#38B2AC', text:'<strong>Where do we want to go?</strong> What are our big goals for the year?'},
+        {dot:'#9F7AEA', text:'<strong>How much will we need?</strong> And how will we get the money?'}
+      ],
+      badge:'🇰🇪 Kenya Context: BPS is the parent of every County Fiscal Strategy Paper (CFSP). Whatever BPS prioritises nationally — your county must align with it when planning local markets, health centres, and roads.'
+    }
+  },
+  {
+    id:'analogy', type:'concept', bg:'bg-gold',
+    orbA:'rgba(245,200,66,.4)', orbB:'rgba(229,62,62,.2)',
+    content:{
+      tag:'Think of it this way', tagBg:'rgba(245,200,66,.2)', tagColor:'#F5C842',
+      question:'The BPS is the *roadmap*.\nThe April Budget is the actual *trip.*',
+      bullets:[
+        {dot:'#F5C842', text:'Tabled in Parliament by <strong>February 15th</strong> every year'},
+        {dot:'#F5C842', text:'Think of it as the government\'s <strong>term paper</strong> before the final exam (the April budget)'},
+        {dot:'#F5C842', text:'Updates every year based on new economic data — like your <strong>maps app recalculating</strong>'},
+        {dot:'#38B2AC', text:'Also sets <strong>budget ceilings</strong> for ministries so departments can\'t over-budget beyond what\'s available'}
+      ]
+    }
+  },
+  {
+    id:'chapters', type:'chapters', bg:'bg-dark',
+    orbA:'rgba(159,122,234,.35)', orbB:'rgba(245,200,66,.2)',
+    content:{
+      headline:'The 5 Core Chapters\nof every BPS',
+      chapters:[
+        {num:'1', label:'Vision', name:'Development Agenda'},
+        {num:'2', label:'Reality', name:'Economic Outlook'},
+        {num:'3', label:'Numbers', name:'Government Spending & Revenue'},
+        {num:'4', label:'Counties', name:'Devolution Allocation'},
+        {num:'5', label:'Risks', name:'Debt & Climate'}
+      ]
+    }
+  },
+  {
+    id:'snapshot-spending', type:'snapshot', bg:'bg-dark',
+    orbA:'rgba(229,62,62,.3)', orbB:'rgba(245,200,66,.2)',
+    content:{
+      headline:'BPS 2026 — The Numbers',
+      divider1:'Budget',
+      tiles1:[
+        {icon:'💰', val:'KES 4.74T', label:'Total spending planned', accent:'accent-gold'},
+        {icon:'📥', val:'KES 3.59T', label:'Revenue expected', accent:'accent-teal'},
+        {icon:'📉', val:'KES 1.15T', label:'Fiscal deficit (gap)', accent:'accent-red'},
+        {icon:'⚠️', val:'~KES 1.2T', label:'Debt interest — pre-committed', accent:'accent-purple'}
+      ],
+      debtNote:'That KES 1.2T debt interest? It\'s money that *can\'t go* to roads, teachers, or healthcare. It\'s already spoken for before Budget Day.'
+    }
+  },
+  {
+    id:'snapshot-counties', type:'snapshot', bg:'bg-teal',
+    orbA:'rgba(56,178,172,.4)', orbB:'rgba(72,187,120,.2)',
+    content:{
+      headline:'Counties & Communities',
+      divider1:'Devolution numbers',
+      tiles1:[
+        {icon:'🏛', val:'KES 420B', label:'County equitable share', accent:'accent-teal'},
+        {icon:'🏥', val:'KES 3.24B', label:'Community Health Workers', accent:'accent-teal'},
+        {icon:'🏭', val:'KES 3.25B', label:'Industrial Parks', accent:''},
+        {icon:'⚖️', val:'KES 9.6B', label:'Equalisation Fund', accent:''}
+      ]
+    }
+  },
+  {
+    id:'five-pillars', type:'pillars', bg:'bg-dark',
+    orbA:'rgba(72,187,120,.3)', orbB:'rgba(56,178,172,.2)',
+    content:{
+      headline:'The 5 Pillars — what the\ngovernment is betting on',
+      sub:'Each pillar has actual money attached. Find your tab.',
+      pillars:[
+        {emoji:'🌽', title:'Agriculture', desc:'Irrigation, crop diversification, improved agricultural value chain', money:'Funded priority'},
+        {emoji:'🏪', title:'MSMEs (Small Business)', desc:'Hustler Fund expansion, NYOTA fund, business hubs in all 47 counties', money:'47 county hubs'},
+        {emoji:'🏥', title:'Healthcare', desc:'Target: 35 million Kenyans covered by Universal Health Coverage + SHA', money:'35M target'},
+        {emoji:'🏘', title:'Housing', desc:'Jobs in construction + affordable loans for homeownership', money:'Construction jobs'},
+        {emoji:'💻', title:'Digital & Creative', desc:'Fibre internet + backing film, music, fashion, and the creative economy', money:'Creative economy'}
+      ]
+    }
+  },
+  {
+    id:'infrastructure', type:'concept', bg:'bg-purple',
+    orbA:'rgba(159,122,234,.4)', orbB:'rgba(245,200,66,.2)',
+    content:{
+      tag:'Infrastructure & Enablers', tagBg:'rgba(159,122,234,.18)', tagColor:'#9F7AEA',
+      question:'Behind every pillar are the *systems* that make them work:',
+      bullets:[
+        {dot:'#9F7AEA', text:'More roads, railways, increased power connectivity, gas exploration'},
+        {dot:'#9F7AEA', text:'<strong>National Infrastructure Fund</strong> — pooled money for big projects'},
+        {dot:'#9F7AEA', text:'<strong>Sovereign Wealth Fund</strong> — savings from natural resources'},
+      ],
+      badge:'These are the government\'s five open tabs. If you\'re a farmer, a small business owner, an artist — this is where your opportunities live. Know which tab is yours.'
+    }
+  },
+  {
+    id:'risks', type:'risks', bg:'bg-red',
+    orbA:'rgba(229,62,62,.4)', orbB:'rgba(245,200,66,.2)',
+    content:{
+      headline:'⚡ What Could Go Wrong?',
+      sub:'This is mature budgeting. The government is literally listing what could break.',
+      risks:[
+        {icon:'🌪️', title:'Climate shocks', text:'Drought or floods cost unplanned emergency money'},
+        {icon:'📉', title:'Revenue gaps', text:'If businesses struggle, tax collection drops'},
+        {icon:'💸', title:'Debt pressure', text:'If the shilling weakens, foreign debt gets more expensive'},
+        {icon:'🏛', title:'Devolution drama', text:'Counties\' unpaid bills continue to pile up'}
+      ],
+      quote:'When you know the risks, you can <strong>spot them early and ask the right questions</strong> before crisis hits.'
+    }
+  },
+  {
+    id:'quiz-1', type:'quiz', bg:'bg-dark', quizIdx:0,
+    orbA:'rgba(245,200,66,.3)', orbB:'rgba(56,178,172,.15)',
+    content:{
+      question:'The BPS is best described as:',
+      options:[
+        {letter:'A', text:'The final, detailed list of every government project'},
+        {letter:'B', text:'The government\'s strategic roadmap setting priorities and spending limits'},
+        {letter:'C', text:'A tax collection manual'}
+      ],
+      correct:1,
+      feedback:{
+        correct:'✓ Exactly! The BPS is the roadmap — priorities and ceilings — not the detailed project list. That comes later in the Estimates.',
+        wrong:'Think roadmap, not project list. The BPS sets direction and spending limits. The detailed projects come in the Estimates of Revenue & Expenditure.'
+      }
+    }
+  },
+  {
+    id:'quiz-2', type:'quiz', bg:'bg-dark', quizIdx:1,
+    orbA:'rgba(245,200,66,.3)', orbB:'rgba(229,62,62,.15)',
+    content:{
+      question:'In FY 2026/27, the government projects spending of KES 4.74T but revenue of only KES 3.59T. The KES 1.15T gap is called:',
+      options:[
+        {letter:'A', text:'A Surplus'},
+        {letter:'B', text:'An Emergency Fund'},
+        {letter:'C', text:'A Fiscal Deficit'}
+      ],
+      correct:2,
+      feedback:{
+        correct:'✓ Correct. When spending exceeds revenue, that\'s a fiscal deficit. Kenya bridges it through borrowing — which is why the KES 1.2T debt interest figure matters so much.',
+        wrong:'When a government spends more than it earns, that gap is a fiscal deficit — not a surplus (that\'s when you earn more), and not an emergency fund (that\'s a reserve).'
+      }
+    }
+  },
+  {
+    id:'cta', type:'cta', bg:'bg-gold',
+    orbA:'rgba(245,200,66,.5)', orbB:'rgba(56,178,172,.2)',
+    content:{
+      title:'You finished\n*Module 001.*',
+      sub:'Budget Policy Statement 2026. You now know what the government is planning, what it\'s betting on, and what could go wrong.',
+      actions:[
+        {icon:'🔍', style:'cta-btn-primary', title:'Track the numbers', sub:'Check if projects match BPS priorities', onclick:'showToast("Opening Budget Tracker →")'},
+        {icon:'🗳️', style:'cta-btn-teal', title:'Use your voice', sub:'Join public participation informed', onclick:'showToast("Public participation dates →")'},
+        {icon:'🚀', style:'cta-btn-gold', title:'Monetise your talent', sub:'Creative economy = your next opportunity', onclick:'showToast("Creative economy opportunities →")'}
+      ]
+    }
+  }
+];
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+const S = {
+  slide: 0,
+  total: BPS_SLIDES.length,
+  quizAnswered: [false, false],
+  quizCorrect: [null, null],
+  progress: JSON.parse(localStorage.getItem('bns_progress') || '{}'),
+  theme: localStorage.getItem('bns_theme') || 'dark',
+  inStory: false,
+  barTimer: null,
+  barAnim: null,
+};
+
+// Apply theme
+document.documentElement.setAttribute('data-theme', S.theme);
+['theme-btn','theme-btn-ms'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = S.theme === 'dark' ? '🌙' : '☀️';
+});
+
+// ════════════════════════════════════════════════
+// THEME
+// ════════════════════════════════════════════════
+function toggleTheme() {
+  S.theme = S.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', S.theme);
+  ['theme-btn','theme-btn-ms'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = S.theme === 'dark' ? '🌙' : '☀️';
+  });
+  localStorage.setItem('bns_theme', S.theme);
+}
+
+// ════════════════════════════════════════════════
+// MODULE SELECT SCREEN
+// ════════════════════════════════════════════════
+function renderModuleScreen() {
+  const cont = document.getElementById('ms-modules');
+  const totalDone = Object.values(S.progress).filter(p => p.completed).length;
+  cont.innerHTML = MODULES_LIST.map((m, i) => {
+    const prog = S.progress[m.id] || {};
+    const pct = prog.completed ? 100 : prog.slide ? Math.round((prog.slide / (m.slides || 1)) * 100) : 0;
+    const status = prog.completed ? 'done' : prog.slide > 0 ? 'progress' : m.locked ? 'locked' : '';
+    const statusLabel = prog.completed ? '✓ Done' : prog.slide > 0 ? 'In Progress' : m.locked ? 'Coming soon' : 'New';
+    const statusClass = prog.completed ? 'status-done' : prog.slide > 0 ? 'status-progress' : 'status-locked';
+    return `<div class="ms-module-card" onclick="${m.locked ? "showToast('Coming soon! Finish Module 001 first')" : `startModule('${m.id}')`}" style="opacity:${m.locked?.6:1}">
+      <div class="ms-module-bar" style="background:linear-gradient(90deg,${m.accentA},${m.accentB})"></div>
+      <div class="ms-module-inner">
+        <div class="ms-mod-top">
+          <div class="ms-badge" style="background:${m.catBg};color:${m.catColor}">${m.category}</div>
+          <div style="display:flex;align-items:center;gap:.4rem">
+            <div class="ms-mod-status ${statusClass}">${statusLabel}</div>
+            <div class="ms-mod-num">${m.num}</div>
+          </div>
+        </div>
+        <div class="ms-mod-title">${m.title}</div>
+        <div class="ms-mod-desc">${m.desc}</div>
+        <div class="ms-mod-footer">
+          <span>⏱ ${m.duration}</span>
+          <span>·</span>
+          <span>📋 ${m.slides || '?'} slides</span>
+          <div class="ms-teacher">
+            <span>${m.teacher.avatar}</span>
+            <span>${m.teacher.name.split(' ')[0]}</span>
+          </div>
+        </div>
+        ${pct > 0 ? `<div class="ms-prog-bar"><div class="ms-prog-fill" style="width:${pct}%;background:linear-gradient(90deg,${m.accentA},${m.accentB})"></div></div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════
+// START / EXIT
+// ════════════════════════════════════════════════
+function startModule(id) {
+  S.inStory = true;
+  const prog = S.progress[id] || {};
+  S.slide = prog.slide && !prog.completed ? Math.min(prog.slide, BPS_SLIDES.length - 1) : 0;
+  S.quizAnswered = [false, false];
+  S.quizCorrect = [null, null];
+
+  document.getElementById('module-screen').classList.add('hidden');
+  document.getElementById('top-bar').style.display = '';
+  document.getElementById('story-viewport').style.display = '';
+  document.getElementById('bottom-nav').style.display = '';
+
+  const m = MODULES_LIST[0];
+  document.getElementById('t-ring').textContent = m.teacher.avatar;
+  document.getElementById('t-name').textContent = m.teacher.name;
+  document.getElementById('t-role').textContent = m.teacher.role;
+
+  buildBars();
+  goToSlide(S.slide, false);
+}
+
+function exitToMenu() {
+  S.inStory = false;
+  stopBar();
+  document.getElementById('module-screen').classList.remove('hidden');
+  document.getElementById('top-bar').style.display = 'none';
+  document.getElementById('story-viewport').style.display = 'none';
+  document.getElementById('bottom-nav').style.display = 'none';
+  renderModuleScreen();
+}
+
+// ════════════════════════════════════════════════
+// STORY BARS
+// ════════════════════════════════════════════════
+function buildBars() {
+  const cont = document.getElementById('story-bars');
+  cont.innerHTML = BPS_SLIDES.map((_, i) =>
+    `<div class="story-bar-track"><div class="story-bar-fill" id="bar-${i}"></div></div>`
+  ).join('');
+}
+
+function updateBars() {
+  BPS_SLIDES.forEach((_, i) => {
+    const bar = document.getElementById(`bar-${i}`);
+    if (!bar) return;
+    if (i < S.slide) { bar.style.transition = 'none'; bar.style.width = '100%'; }
+    else if (i > S.slide) { bar.style.transition = 'none'; bar.style.width = '0%'; }
+    else { bar.style.transition = 'none'; bar.style.width = '0%'; }
+  });
+}
+
+function startBar() {
+  stopBar();
+  const slide = BPS_SLIDES[S.slide];
+  if (slide.type === 'quiz') return; // quizzes don't auto-advance
+  const bar = document.getElementById(`bar-${S.slide}`);
+  if (!bar) return;
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => {
+    bar.style.transition = `width 8s linear`;
+    bar.style.width = '100%';
+  });
+  S.barTimer = setTimeout(() => {
+    if (S.slide < S.total - 1) nextSlide();
+  }, 8200);
+}
+
+function stopBar() {
+  clearTimeout(S.barTimer);
+  const bar = document.getElementById(`bar-${S.slide}`);
+  if (bar) { bar.style.transition = 'none'; }
+}
+
+// ════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════
+function tapRight() {
+  const slide = BPS_SLIDES[S.slide];
+  if (slide.type === 'quiz') {
+    const qi = slide.quizIdx;
+    if (!S.quizAnswered[qi]) { showToast('Answer the question first!'); return; }
+  }
+  nextSlide();
+}
+
+function nextSlide() {
+  if (S.slide >= S.total - 1) return;
+  goToSlide(S.slide + 1, true);
+}
+
+function prevSlide() {
+  if (S.slide <= 0) return;
+  goToSlide(S.slide - 1, false, true);
+}
+
+function goToSlide(idx, forward = true, backward = false) {
+  stopBar();
+  const old = document.getElementById('active-slide');
+
+  S.slide = idx;
+  updateBars();
+  updateCounter();
+  updateNavBtns();
+  saveProgress();
+
+  // Exit old
+  if (old && old.children.length) {
+    old.classList.remove('entering','enter-prev');
+    old.classList.add(backward ? 'exiting-prev' : 'exiting-next');
+    setTimeout(() => old.innerHTML = '', 300);
+  }
+
+  // New slide
+  setTimeout(() => {
+    const el = document.getElementById('active-slide');
+    const slideData = BPS_SLIDES[idx];
+    el.className = 'story-slide';
+    el.innerHTML = buildSlide(slideData);
+    el.classList.add(backward ? 'enter-prev' : 'entering');
+    staggerItems(el);
+  }, 50);
+
+  // Start bar (non-quiz)
+  setTimeout(startBar, 400);
+
+  // nav dots
+  updateDots();
+}
+
+function updateCounter() {
+  document.getElementById('slide-counter').textContent = `${S.slide + 1}/${S.total}`;
+}
+
+function updateNavBtns() {
+  const prev = document.getElementById('nav-prev');
+  const next = document.getElementById('nav-next');
+  prev.disabled = S.slide === 0;
+  const slideData = BPS_SLIDES[S.slide];
+  if (S.slide === S.total - 1) {
+    next.className = 'nav-next final';
+    next.textContent = '✓';
+    next.onclick = () => { completedModule(); exitToMenu(); confetti(); };
+  } else if (slideData.type === 'quiz') {
+    const qi = slideData.quizIdx;
+    if (!S.quizAnswered[qi]) {
+      next.className = 'nav-next quiz-trigger';
+      next.textContent = '?';
+      next.onclick = tapRight;
+    } else {
+      next.className = 'nav-next';
+      next.textContent = '→';
+      next.onclick = tapRight;
+    }
+  } else {
+    next.className = 'nav-next';
+    next.textContent = '→';
+    next.onclick = tapRight;
+  }
+}
+
+function updateDots() {
+  const cont = document.getElementById('nav-dots');
+  cont.innerHTML = BPS_SLIDES.map((_, i) =>
+    `<div class="nc-dot ${i < S.slide ? 'done' : i === S.slide ? 'current' : ''}" onclick="goToSlide(${i})"></div>`
+  ).join('');
+}
+
+function staggerItems(container) {
+  container.querySelectorAll('.cb-item,.ch-item,.snap-tile,.pillar-card,.risk-item,.cta-btn,.qz-opt').forEach((el, i) => {
+    el.style.animationDelay = `${0.05 + i * 0.07}s`;
+  });
+}
+
+// ════════════════════════════════════════════════
+// SLIDE BUILDER
+// ════════════════════════════════════════════════
+function buildSlide(s) {
+  const bg = `<div class="slide-bg ${s.bg}">
+    <div class="orb orb-1" style="background:${s.orbA||'transparent'}"></div>
+    <div class="orb orb-2" style="background:${s.orbB||'transparent'}"></div>
+  </div>`;
+
+  const c = s.content;
+  let inner = '';
+
+  if (s.type === 'cover') {
+    const titleLines = c.title.split('\n').map(l => l.startsWith('*') ? `<em>${l.replace(/\*/g,'')}</em>` : l).join('<br>');
+    inner = `<div class="slide-cover slide-inner">
+      <div class="cover-module-tag">${c.tag}</div>
+      <h1 class="cover-title">${titleLines}</h1>
+      <p class="cover-sub">${c.sub}</p>
+      <div class="cover-promise"><div class="cp-icon">⏱</div><div>${c.promise}</div></div>
+    </div>`;
+  }
+
+  if (s.type === 'concept') {
+    const qLines = c.question.split('\n').map(l => l.replace(/\*([^*]+)\*/g,'<em>$1</em>')).join('<br>');
+    inner = `<div class="slide-concept slide-inner">
+      <div class="concept-tag" style="background:${c.tagBg||'rgba(255,255,255,.1)'};color:${c.tagColor||'var(--text)'}">${c.tag}</div>
+      <div class="concept-question">${qLines}</div>
+      <div class="concept-bullets">${c.bullets.map(b=>`<div class="cb-item"><div class="cb-dot" style="background:${b.dot}"></div><div>${b.text}</div></div>`).join('')}</div>
+      ${c.badge ? `<div class="kenya-badge"><div class="kb-flag">🇰🇪</div><div>${c.badge}</div></div>` : ''}
+    </div>`;
+  }
+
+  if (s.type === 'chapters') {
+    inner = `<div class="slide-chapters slide-inner">
+      <div class="slide-headline">${c.headline.split('\n').join('<br>')}</div>
+      <div class="chapter-list">${c.chapters.map(ch=>`<div class="ch-item">
+        <div class="ch-num">${ch.num}</div>
+        <div class="ch-body"><div class="ch-label">${ch.label}</div><div class="ch-name">${ch.name}</div></div>
+      </div>`).join('')}</div>
+    </div>`;
+  }
+
+  if (s.type === 'snapshot') {
+    inner = `<div class="slide-inner">
+      <div class="slide-headline">${c.headline}</div>
+      ${c.divider1 ? `<div class="snap-divider">${c.divider1}</div>` : ''}
+      <div class="snapshot-grid">${c.tiles1.map(t=>`<div class="snap-tile ${t.accent||''}">
+        <span class="snap-icon">${t.icon}</span>
+        <div class="snap-val">${t.val}</div>
+        <div class="snap-label">${t.label}</div>
+      </div>`).join('')}</div>
+      ${c.debtNote ? `<div class="kenya-badge" style="margin-top:.25rem"><div class="kb-flag">⚠️</div><div style="font-size:.78rem;line-height:1.55">${c.debtNote.replace(/\*([^*]+)\*/g,'<em>$1</em>')}</div></div>` : ''}
+    </div>`;
+  }
+
+  if (s.type === 'pillars') {
+    inner = `<div class="slide-inner">
+      <div class="slide-headline">${c.headline.split('\n').join('<br>')}</div>
+      <div style="font-size:.75rem;color:var(--text-m);margin-bottom:.65rem">${c.sub}</div>
+      <div class="pillar-scroll">${c.pillars.map(p=>`<div class="pillar-card">
+        <div class="pillar-emoji">${p.emoji}</div>
+        <div class="pillar-body">
+          <div class="pillar-title">${p.title}</div>
+          <div class="pillar-desc">${p.desc}</div>
+          <div class="pillar-money">💰 ${p.money}</div>
+        </div>
+      </div>`).join('')}</div>
+    </div>`;
+  }
+
+  if (s.type === 'risks') {
+    inner = `<div class="slide-inner">
+      <div class="slide-headline">${c.headline}</div>
+      <div style="font-size:.78rem;color:var(--text-m);margin-bottom:.75rem">${c.sub}</div>
+      <div class="risk-list">${c.risks.map(r=>`<div class="risk-item">
+        <div class="risk-icon">${r.icon}</div>
+        <div class="risk-text"><strong>${r.title}</strong> — ${r.text}</div>
+      </div>`).join('')}</div>
+      <div class="quote-block">${c.quote}</div>
+    </div>`;
+  }
+
+  if (s.type === 'quiz') {
+    const qi = s.quizIdx;
+    const answered = S.quizAnswered[qi];
+    const correctIdx = S.quizCorrect[qi];
+    inner = `<div class="quiz-slide slide-inner">
+      <div class="qz-tag">✦ Knowledge Check ${qi + 1}</div>
+      <div class="qz-question">${c.question}</div>
+      <div class="qz-options" id="qz-opts-${qi}">
+        ${c.options.map((o, i) => {
+          let cls = 'qz-opt';
+          if (answered) {
+            if (i === c.correct) cls += ' reveal-correct';
+            if (i === correctIdx && i !== c.correct) cls += ' selected-wrong';
+            if (i === correctIdx && i === c.correct) cls = 'qz-opt selected-correct';
+          }
+          return `<button class="${cls}" onclick="answerQuiz(${qi},${i})" ${answered?'disabled':''}><span class="opt-ltr">${o.letter}</span>${o.text}</button>`;
+        }).join('')}
+      </div>
+      <div class="qz-feedback ${answered ? 'show' : ''} ${answered ? (correctIdx === c.correct ? 'correct-fb' : 'wrong-fb') : ''}" id="qz-fb-${qi}">
+        ${answered ? (correctIdx === c.correct ? c.feedback.correct : c.feedback.wrong) : ''}
+      </div>
+      <button class="qz-next ${answered ? 'show' : ''}" id="qz-next-${qi}" onclick="nextSlide()">Continue →</button>
+    </div>`;
+  }
+
+  if (s.type === 'cta') {
+    const titleLines = c.title.split('\n').map(l => l.startsWith('*') ? `<em>${l.replace(/\*/g,'')}</em>` : l).join('<br>');
+    inner = `<div class="cta-slide slide-inner">
+      <div class="cta-celebration">🎉</div>
+      <h2 class="cta-title">${titleLines}</h2>
+      <p class="cta-sub">${c.sub}</p>
+      <div class="cta-buttons">
+        ${c.actions.map((a,i)=>`<button class="cta-btn ${a.style}" style="animation-delay:${.1+i*.08}s" onclick="${a.onclick}">
+          <div class="cta-btn-icon">${a.icon}</div>
+          <div class="cta-btn-body"><div class="cta-btn-title">${a.title}</div><div class="cta-btn-sub">${a.sub}</div></div>
+        </button>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  return `${bg}<div class="story-slide-content" style="position:relative;z-index:2;padding:1rem 1rem 0">${inner}</div>`;
+}
+
+// ════════════════════════════════════════════════
+// QUIZ
+// ════════════════════════════════════════════════
+function answerQuiz(qi, idx) {
+  if (S.quizAnswered[qi]) return;
+  S.quizAnswered[qi] = true;
+  S.quizCorrect[qi] = idx;
+
+  const slide = BPS_SLIDES.find(s => s.quizIdx === qi);
+  const correct = slide.content.correct;
+  const isCorrect = idx === correct;
+
+  // Update options
+  const opts = document.querySelectorAll(`#qz-opts-${qi} .qz-opt`);
+  opts.forEach((o, i) => {
+    o.disabled = true;
+    if (i === correct) o.classList.add(i === idx ? 'selected-correct' : 'reveal-correct');
+    if (i === idx && i !== correct) o.classList.add('selected-wrong');
+  });
+
+  // Show feedback
+  const fb = document.getElementById(`qz-fb-${qi}`);
+  if (fb) {
+    fb.textContent = isCorrect ? slide.content.feedback.correct : slide.content.feedback.wrong;
+    fb.className = `qz-feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+  }
+
+  // Show next
+  const nxt = document.getElementById(`qz-next-${qi}`);
+  if (nxt) nxt.className = 'qz-next show';
+
+  // Update nav button
+  updateNavBtns();
+}
+
+// ════════════════════════════════════════════════
+// PROGRESS
+// ════════════════════════════════════════════════
+function saveProgress() {
+  if (!S.progress['bps-2026']) S.progress['bps-2026'] = {};
+  S.progress['bps-2026'].slide = S.slide;
+  localStorage.setItem('bns_progress', JSON.stringify(S.progress));
+}
+
+function completedModule() {
+  S.progress['bps-2026'] = { slide: BPS_SLIDES.length - 1, completed: true };
+  localStorage.setItem('bns_progress', JSON.stringify(S.progress));
+}
+
+// ════════════════════════════════════════════════
+// CONFETTI
+// ════════════════════════════════════════════════
+function confetti() {
+  const cols = ['#F5C842','#E53E3E','#38B2AC','#9F7AEA','#48BB78'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti-p';
+      c.style.cssText = `left:${Math.random()*100}%;width:${Math.random()*8+4}px;height:${Math.random()*6+3}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${Math.random()*2+1.5}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3500);
+    }, i * 28);
+  }
+}
+
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ════════════════════════════════════════════════
+// KEYBOARD
+// ════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (!S.inStory) return;
+  if (e.key === 'ArrowRight') tapRight();
+  if (e.key === 'ArrowLeft') prevSlide();
+  if (e.key === 'Escape') exitToMenu();
+});
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+renderModuleScreen();
+</script>
+</body>
+</html>

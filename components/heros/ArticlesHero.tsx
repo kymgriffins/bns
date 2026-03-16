@@ -76,7 +76,7 @@ export function ArticlesHero() {
                 size="lg"
                 className="rounded-full transition-transform active:scale-[0.98]"
               >
-                <Link href="/learn">Learn first</Link>
+                <Link href="/civic-hub">Learn first</Link>
               </Button>
             </motion.div>
           </motion.div>

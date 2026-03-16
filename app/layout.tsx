@@ -2,11 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-// import Footer from "@/components/footer";
 import { ScrollShell } from "@/components/scroll";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Navbar from "@/components/navbar";
-import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
 import { CombinedFeedbackProvider } from "@/components/feedback";
 import { ChatWidget } from "@/components/chatbot";
 import { AuthProvider } from "@/hooks/useAuth";
@@ -14,6 +11,7 @@ import { GlobalEmailPopup } from "@/components/global-email-popup";
 import { ConsentProvider } from "@/hooks/useConsent";
 import { CookieConsentBanner } from "@/components/cookie-consent";
 import { AnalyticsProvider } from "@/components/analytics-provider";
+import { AppShell } from "@/components/AppShell";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -98,6 +96,7 @@ const NO_NAVBAR_ROUTES = [
   "/admin",
   "/dashboard-shell-01",
   "/protected",
+  "/civic-hub",
 ];
 
 export default function RootLayout({
@@ -114,6 +113,10 @@ export default function RootLayout({
       <head>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=DM+Sans:wght@300;400;500;600&display=swap"
           rel="stylesheet"
         />
         {/* Cookie Consent Meta Tags */}
@@ -139,11 +142,7 @@ export default function RootLayout({
                 <ConsentProvider>
                   <AnalyticsProvider>
                     <AuthProvider>
-                      <div className="min-h-screen flex flex-col">
-                        <Navbar />
-                        <main>{children}</main>
-                        <Footer2 />
-                      </div>
+                      <AppShell>{children}</AppShell>
                       <GlobalEmailPopup />
                       <ChatWidget />
                       <CookieConsentBanner />

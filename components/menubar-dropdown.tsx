@@ -37,7 +37,7 @@ const defaultNavSections: NavSection[] = [
   {
     title: "Learn",
     links: [
-      { href: "/learn", label: "Budget Basics", description: "Understand the fundamentals" },
+      { href: "/civic-hub", label: "Budget Basics", description: "Understand the fundamentals" },
       { href: "/insights", label: "Insights", description: "Deep dive into budget data" },
     ],
   },

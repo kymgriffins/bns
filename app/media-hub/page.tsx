@@ -3,9 +3,43 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Loader2, X, Mail, Bell, Share2, Send } from 'lucide-react';
+import { Loader2, X, Mail, Bell, Share2, Send, Sparkles, Target, TrendingUp, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+// Floating Particles Component
+function FloatingParticles() {
+  const particles = useMemo(() => {
+    return Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      size: Math.random() * 6 + 2,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 10,
+      opacity: Math.random() * 0.4 + 0.1,
+    }));
+  }, []);
+
+  return (
+    <div className="particles absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size,
+            background: p.id % 3 === 0 ? 'var(--gold)' : p.id % 3 === 1 ? 'var(--teal)' : 'var(--coral)',
+            animation: `floatUp ${p.duration}s linear infinite`,
+            animationDelay: `${p.delay}s`,
+            opacity: p.opacity,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 // Social platform configurations
 const socialPlatforms = [
@@ -470,15 +504,85 @@ function TabContent({ platform, isActive }: { platform: typeof socialPlatforms[0
 
 export default function MediaHubPage() {
   const [activeTab, setActiveTab] = useState('tiktok');
+  const [stats, setStats] = useState({ followers: 0, engagement: 0, videos: 0 });
+  
+  // Animate stats on mount
+  useEffect(() => {
+    const targetStats = { followers: 125000, engagement: 89, videos: 342 };
+    const duration = 2000;
+    const steps = 60;
+    const interval = duration / steps;
+    let step = 0;
+    
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      setStats({
+        followers: Math.floor(targetStats.followers * progress),
+        engagement: Math.floor(targetStats.engagement * progress),
+        videos: Math.floor(targetStats.videos * progress),
+      });
+      if (step >= steps) clearInterval(timer);
+    }, interval);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <style jsx global>{`
+        @keyframes floatUp {
+          0% { transform: translateY(100vh) scale(0); opacity: 0; }
+          10% { opacity: 0.6; }
+          90% { opacity: 0.2; }
+          100% { transform: translateY(-20px) scale(1); opacity: 0; }
+        }
+        .particles > div {
+          position: absolute;
+          border-radius: 50%;
+          animation: floatUp linear infinite;
+        }
+        :root {
+          --gold: #f5c842;
+          --teal: #3ecfb2;
+          --coral: #ff7c5c;
+        }
+      `}</style>
+      <FloatingParticles />
       <EmailPopup />
       
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gray-100" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-teal-50 dark:from-amber-950/20 dark:via-background dark:to-teal-950/20" />
         <div className="container relative z-10">
+          {/* Stats Banner */}
+          <div className="flex flex-wrap justify-center gap-6 md:gap-12 mb-8">
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-amber-600 dark:text-amber-400">
+                {stats.followers.toLocaleString()}+
+              </div>
+              <div className="text-sm text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="w-3 h-3" /> Followers
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-teal-600 dark:text-teal-400">
+                {stats.engagement}%
+              </div>
+              <div className="text-sm text-muted-foreground flex items-center gap-1">
+                <Target className="w-3 h-3" /> Engagement
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-orange-600 dark:text-orange-400">
+                {stats.videos}
+              </div>
+              <div className="text-sm text-muted-foreground flex items-center gap-1">
+                <Sparkles className="w-3 h-3" /> Videos
+              </div>
+            </div>
+          </div>
+          
           <div className="max-w-3xl mx-auto text-center space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
               Media Hub
@@ -511,7 +615,7 @@ export default function MediaHubPage() {
             <div className="mt-8 pt-8 border-t border-border/50 flex flex-wrap justify-center gap-3 text-sm">
               <span className="text-muted-foreground">Want to go deeper?</span>
               <Button asChild variant="outline" size="sm" className="rounded-full">
-                <Link href="/learn">Learn Budget 101</Link>
+                <Link href="/civic-hub">Learn Budget 101</Link>
               </Button>
               <Button asChild variant="outline" size="sm" className="rounded-full">
                 <Link href="/take-action">Take action</Link>

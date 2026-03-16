@@ -7,7 +7,7 @@ import { X, Instagram, Facebook, Youtube, Mail } from "lucide-react";
 
 const exploreLinks = [
   { label: "Budget Reports", href: "/reports" },
-  { label: "Learn", href: "/learn" },
+  { label: "Civic Hub", href: "/civic-hub" },
   { label: "Articles", href: "/blogs" },
 ];
 

@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/sheet";
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
@@ -30,6 +32,7 @@ import { Heart, MessageCircle, Sparkles } from "lucide-react";
 export type NavigationSection = {
   title: string;
   href: string;
+  items?: { title: string; href: string; description: string }[];
 };
 
 type HeaderProps = {
@@ -190,8 +193,13 @@ export default function Navbar() {
     //   href: "/partners",
     // },
     {
-      title: "Budget Reports",
+      title: "Budget",
       href: "/reports",
+      items: [
+        { title: "Reports", href: "/reports", description: "Access detailed municipal budget reports and financial documents" },
+        { title: "Tracker", href: "/tracker", description: "Track spending in real-time across different departments and projects" },
+        { title: "Insights", href: "/insights", description: "Get analytical insights and visualizations on budget allocation" },
+      ],
     },
     // {
     //   title: "Media Hub",
@@ -210,8 +218,8 @@ export default function Navbar() {
     //   href: "/take-action",
     // },
     {
-      title: "Learn",
-      href: "/learn",
+      title: "Civic Hub",
+      href: "/civic-hub",
     },
     // {
     //   title: "News",
@@ -268,20 +276,51 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div>
-            <NavigationMenu className="max-lg:hidden p-0.5 rounded-full">
+          <NavigationMenu className="max-lg:hidden p-0.5 rounded-full">
             <NavigationMenuList className="flex gap-0">
               {navigationData.map((navItem) => (
                 <NavigationMenuItem key={navItem.title}>
-                  <NavigationMenuLink
-                    href={navItem.href}
-                    className={cn(
-                      "px-2 lg:px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 tracking-normal hover:opacity-100 hover:translate-x-0.5",
-                      onHeroState ? "text-white" : "text-foreground",
-                      pathname === navItem.href && "opacity-100 font-semibold underline underline-offset-4"
-                    )}
-                  >
-                    {navItem.title}
-                  </NavigationMenuLink>
+                  {navItem.items ? (
+                    <>
+                      <NavigationMenuTrigger
+                        className={cn(
+                          "px-2 lg:px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 tracking-normal hover:opacity-100 hover:translate-x-0.5",
+                          onHeroState ? "text-white" : "text-foreground",
+                          pathname.startsWith("/reports") && "opacity-100 font-semibold"
+                        )}
+                      >
+                        {navItem.title}
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="w-56 p-2 bg-background/95 dark:bg-background/90 backdrop-blur-lg rounded-xl border border-border shadow-lg">
+                          {navItem.items.map((item) => (
+                            <NavigationMenuLink
+                              key={item.title}
+                              href={item.href}
+                              className={cn(
+                                "block rounded-lg px-3 py-2 text-sm hover:bg-muted transition-colors",
+                                pathname === item.href && "bg-muted font-medium"
+                              )}
+                            >
+                              <div className="font-medium">{item.title}</div>
+                              <div className="text-xs text-muted-foreground">{item.description}</div>
+                            </NavigationMenuLink>
+                          ))}
+                        </div>
+                      </NavigationMenuContent>
+                    </>
+                  ) : (
+                    <NavigationMenuLink
+                      href={navItem.href}
+                      className={cn(
+                        "px-2 lg:px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 tracking-normal hover:opacity-100 hover:translate-x-0.5",
+                        onHeroState ? "text-white" : "text-foreground",
+                        pathname === navItem.href && "opacity-100 font-semibold underline underline-offset-4"
+                      )}
+                    >
+                      {navItem.title}
+                    </NavigationMenuLink>
+                  )}
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
@@ -433,6 +472,43 @@ export default function Navbar() {
                             </Link>
                           </SheetClose>
                         ))}
+                        {/* Budget dropdown items for mobile */}
+                        <p className="mt-4 mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                          Budget
+                        </p>
+                        <SheetClose asChild>
+                          <Link
+                            href="/reports"
+                            className={cn(
+                              "block border-b border-dotted border-border py-3 text-base font-medium text-foreground transition-colors hover:text-foreground/90",
+                              pathname === "/reports" && "text-primary"
+                            )}
+                          >
+                            Reports
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            href="/tracker"
+                            className={cn(
+                              "block border-b border-dotted border-border py-3 text-base font-medium text-foreground transition-colors hover:text-foreground/90",
+                              pathname === "/tracker" && "text-primary"
+                            )}
+                          >
+                            Tracker
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            href="/insights"
+                            className={cn(
+                              "block border-b border-dotted border-border py-3 text-base font-medium text-foreground transition-colors hover:text-foreground/90",
+                              pathname === "/insights" && "text-primary"
+                            )}
+                          >
+                            Insights
+                          </Link>
+                        </SheetClose>
                       </nav>
                     </section>
 

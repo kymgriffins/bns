@@ -1,0 +1,376 @@
+{
+  "version": "2026-03-16",
+  "teachers": {
+    "wanjiru": {
+      "id": "wanjiru",
+      "name": "Millicent Makini",
+      "role": "Budget Literacy Educator",
+      "avatar": "👩🏾‍💼",
+      "accentColor": "#F5C842",
+      "tone": "warm-mentor",
+      "formality": "casual",
+      "signature": "Here's what this means for you...",
+      "avoids": ["complex jargon", "passive voice", "long sentences"],
+      "signoffLine": "You now have the knowledge. The next step — and the power — is yours."
+    },
+    "amara": {
+      "id": "amara",
+      "name": "Dr. Amara Osei",
+      "role": "Head of Fiscal Analysis",
+      "avatar": "👩🏿‍🏫",
+      "accentColor": "#38B2AC",
+      "tone": "sharp-analyst",
+      "formality": "professional",
+      "signature": "The data tells a clear story...",
+      "avoids": ["vague language", "passive tense"],
+      "signoffLine": "The numbers don't lie. Now you can read them."
+    },
+    "marcus": {
+      "id": "marcus",
+      "name": "Marcus Odhiambo",
+      "role": "Civic Rights Advocate",
+      "avatar": "👨🏾‍💼",
+      "accentColor": "#E53E3E",
+      "tone": "inspiring-coach",
+      "formality": "casual",
+      "signature": "Here's the thing most people don't know...",
+      "avoids": ["technical jargon", "overly formal language"],
+      "signoffLine": "Your voice belongs in this conversation. Use it."
+    }
+  },
+  "modules": [
+    {
+      "id": "budget-basics",
+      "slug": "budget-basics",
+      "moduleNumber": 1,
+      "title": "Budget Basics",
+      "category": "budget-basics",
+      "status": "published",
+      "estimatedMinutes": 18,
+      "accentA": "#E53E3E",
+      "accentB": "#F5C842",
+      "badgeBg": "rgba(229,62,62,.12)",
+      "badgeColor": "#E53E3E",
+      "badgeLabel": "Budget Basics",
+      "teacherId": "wanjiru",
+      "steps": [
+        {
+          "type": "intro",
+          "id": "s1-intro",
+          "label": "Introduction",
+          "title": "What is Kenya's Budget?",
+          "teacherLine": {
+            "intro": "Wanjiru says",
+            "text": "*Here's what this means for you...* Every year, Kenya's government decides how to spend KES 4.8 trillion — that's the money collected from your taxes, fees, and loans. Most Kenyans never see where it goes. <strong>That changes today.</strong>"
+          },
+          "hook": {
+            "headline": "The budget affects every Kenyan — every single day",
+            "statTiles": [
+              { "value": "KES 4.8T", "label": "National budget 2024/25" },
+              { "value": "47", "label": "Counties with their own budgets" },
+              { "value": "6", "label": "Moments per year to participate" }
+            ],
+            "outcomes": [
+              "Read any budget document and understand its core structure",
+              "Explain the difference between national and county budgets",
+              "Identify the 4 major budget documents and when they are released"
+            ]
+          }
+        },
+        {
+          "type": "lesson",
+          "id": "s1-l1",
+          "label": "Lesson 1",
+          "title": "The 4 Budget Documents",
+          "teacherLine": {
+            "intro": "Wanjiru explains",
+            "text": "Most people think the budget is one document released on Budget Day. It's not. It's four separate documents, released at different times, each controlling a different part of the money story. Once you know all four, you can track government promises from intention to implementation."
+          },
+          "content": {
+            "blockType": "concept-cards",
+            "sectionTitle": "The 4 documents that control Kenya's money",
+            "cards": [
+              {
+                "id": "c1",
+                "title": "Budget Policy Statement",
+                "body": "Released in February. Sets the overall targets — how much the government plans to spend, borrow, and invest. This is the vision document.",
+                "keyPoint": "Published by Treasury. Read this first every February."
+              },
+              {
+                "id": "c2",
+                "title": "Finance Bill",
+                "body": "Introduced after the Budget Speech in June. Proposes changes to tax laws — VAT rates, excise duties, income tax brackets. This directly affects your wallet.",
+                "keyPoint": "This is the bill you can submit comments on. Every Kenyan has that right."
+              },
+              {
+                "id": "c3",
+                "title": "Estimates of Revenue & Expenditure",
+                "body": "The detailed line-by-line breakdown — how much each ministry gets. Tabled in April alongside the Finance Bill.",
+                "keyPoint": "This is where you find youth fund allocations, health budgets, education figures."
+              },
+              {
+                "id": "c4",
+                "title": "Appropriation Act",
+                "body": "The final approved budget signed into law. Once this is passed, money can legally be released to government entities.",
+                "keyPoint": "Track whether allocations survive from Estimates to the Appropriation Act."
+              }
+            ]
+          },
+          "callout": {
+            "label": "Key Insight",
+            "text": "A government can promise KES 10B for youth in the BPS — and quietly reduce it to KES 3B in the Estimates. Tracking all four documents exposes this pattern."
+          },
+          "quiz": {
+            "question": "The Finance Bill is introduced after the Budget Speech. What is its primary purpose?",
+            "options": [
+              "To report on money already spent by the government",
+              "To propose changes to tax laws and revenue collection",
+              "To approve county government budgets across all 47 counties",
+              "To set the salaries of government officials"
+            ],
+            "correct": 1,
+            "feedback": {
+              "correct": "✓ Exactly right. The Finance Bill proposes new or amended rules for how the government raises money — taxes, levies, and fees. It's the \"income rules\" bill, not the spending bill.",
+              "wrong": "The Finance Bill is forward-looking — it proposes changes to how the government raises revenue. Think of it as the \"income rules\" document, not the spending one."
+            }
+          }
+        },
+        {
+          "type": "lesson",
+          "id": "s1-l2",
+          "label": "Lesson 2",
+          "title": "How Money Actually Flows",
+          "teacherLine": {
+            "intro": "Wanjiru breaks it down",
+            "text": "Understanding the budget cycle isn't just academic. When you know *when* money is supposed to flow from the national government to your county — and to your school, or clinic, or road project — you can ask real questions when it doesn't arrive. That's accountability."
+          },
+          "content": {
+            "blockType": "framework",
+            "sectionTitle": "The 6 stages of Kenya's budget year",
+            "steps": [
+              {
+                "id": "f1",
+                "stepNumber": 1,
+                "verb": "Prepare",
+                "description": "Treasury prepares the Budget Policy Statement (August–January). Macroeconomic targets are set."
+              },
+              {
+                "id": "f2",
+                "stepNumber": 2,
+                "verb": "Consult",
+                "description": "Public participation forums open (January–March). Citizens can submit input — this is your first window."
+              },
+              {
+                "id": "f3",
+                "stepNumber": 3,
+                "verb": "Table",
+                "description": "Budget Speech + Finance Bill + Estimates of Revenue tabled in Parliament (June)."
+              },
+              {
+                "id": "f4",
+                "stepNumber": 4,
+                "verb": "Scrutinise",
+                "description": "Parliamentary committees review, amend, and approve. The Finance Bill goes through public participation here."
+              },
+              {
+                "id": "f5",
+                "stepNumber": 5,
+                "verb": "Approve",
+                "description": "Appropriation Act signed. Money is legally approved for release to all government entities."
+              },
+              {
+                "id": "f6",
+                "stepNumber": 6,
+                "verb": "Implement & Track",
+                "description": "Ministries and counties begin spending. This is where tracking begins — and where things go wrong."
+              }
+            ],
+            "resources": [
+              { "id": "r1", "type": "article", "label": "Kenya Law: Finance Bill 2024 full text" },
+              { "id": "r2", "type": "video", "label": "3-min explainer: Reading the Estimates" }
+            ]
+          },
+          "quiz": {
+            "question": "A county governor announces a new hospital will be built using \"the national government allocation.\" What document would confirm this allocation exists?",
+            "options": [
+              "The Budget Policy Statement — it outlines all spending intentions",
+              "The Estimates of Revenue & Expenditure — the detailed line-by-line budget",
+              "The Appropriation Act — which legally approves spending",
+              "Both B and C must align before money can legally flow"
+            ],
+            "correct": 3,
+            "feedback": {
+              "correct": "✓ Both matter. The Estimates show the proposed allocation, but the Appropriation Act is what legally allows the money to be released. A line in the Estimates can be cut before the Act is passed.",
+              "wrong": "Think about what legally authorises spending. The Estimates propose, the Appropriation Act authorises. Both must show the allocation for it to legally flow to the county."
+            }
+          }
+        },
+        {
+          "type": "cta",
+          "id": "s1-cta",
+          "label": "Complete",
+          "title": "You're Budget Literate Now",
+          "teacherLine": {
+            "intro": "Wanjiru's sign-off",
+            "text": "You now have the knowledge. You know the four documents. You know the cycle. You know when your voice is supposed to be heard. <strong>The next step — and the power — is yours.</strong>"
+          }
+        }
+      ]
+    },
+    {
+      "id": "national-vs-county",
+      "slug": "national-vs-county",
+      "moduleNumber": 2,
+      "title": "National vs County",
+      "category": "national",
+      "status": "published",
+      "estimatedMinutes": 15,
+      "accentA": "#38B2AC",
+      "accentB": "#9F7AEA",
+      "badgeBg": "rgba(56,178,172,.12)",
+      "badgeColor": "#38B2AC",
+      "badgeLabel": "National",
+      "teacherId": "amara",
+      "steps": [
+        {
+          "type": "intro",
+          "id": "s2-intro",
+          "label": "Introduction",
+          "title": "Two Budgets. One Kenya.",
+          "teacherLine": {
+            "intro": "Dr. Amara says",
+            "text": "*The data tells a clear story...* Kenya has 48 active budgets — one national budget and one for each of the 47 counties. Most citizens know about Budget Day. But the county budget? That's where your roads, your water, your local health clinic actually gets funded."
+          },
+          "hook": {
+            "headline": "The county budget is closer to your life than the national one",
+            "statTiles": [
+              { "value": "47", "label": "County governments with independent budgets" },
+              { "value": "35%", "label": "Of national revenue shared to counties (equitable share)" },
+              { "value": "KES 385B", "label": "Total county allocations 2024/25" }
+            ],
+            "outcomes": [
+              "Distinguish between national and county budget responsibilities",
+              "Identify which level funds which services in your life",
+              "Know when and how to participate in your county's budget process"
+            ]
+          }
+        },
+        {
+          "type": "lesson",
+          "id": "s2-l1",
+          "label": "Lesson 1",
+          "title": "Who Controls What",
+          "teacherLine": {
+            "intro": "Dr. Amara analyses",
+            "text": "The Constitution of Kenya 2010 divided government functions between two levels. This wasn't accidental — it was designed to bring decision-making closer to the people who need services. When your road isn't built, you need to know which government to hold accountable."
+          },
+          "content": {
+            "blockType": "key-points",
+            "sectionTitle": "The division of functions — national vs county",
+            "points": [
+              {
+                "id": "p1",
+                "text": "**National government** funds: national security, foreign affairs, immigration, major infrastructure (highways, railways, ports), national hospitals"
+              },
+              {
+                "id": "p2",
+                "text": "**County governments** fund: local roads, primary healthcare, early childhood education, agriculture extension, local markets"
+              },
+              {
+                "id": "p3",
+                "text": "**Devolved functions** include health and education at the primary level — this is why county health budgets matter so much"
+              },
+              {
+                "id": "p4",
+                "text": "Some functions are **concurrent** — shared between levels. Water is a classic example: national policy, county implementation"
+              },
+              {
+                "id": "p5",
+                "text": "Counties receive an **equitable share** (minimum 15% of revenue, currently ~35%) plus conditional grants and their own locally-generated revenue"
+              }
+            ],
+            "callout": {
+              "label": "Watch Out",
+              "text": "When a county hospital runs out of medicine, the first question is: was the county health budget funded? Was it released? Was it spent correctly? Three separate failure points."
+            }
+          },
+          "quiz": {
+            "question": "Your county primary school has no textbooks. Which level of government is primarily responsible for funding primary education supplies?",
+            "options": [
+              "The national government through the Ministry of Education",
+              "The county government — primary education is a devolved function",
+              "The Teachers Service Commission (TSC) which manages all schools",
+              "The school board through parent contributions"
+            ],
+            "correct": 1,
+            "feedback": {
+              "correct": "✓ Right. Primary education was devolved to counties under the Constitution. The county education department budget is where textbook allocations should appear — and where you should look when they're missing.",
+              "wrong": "Under Kenya's devolved system, primary education is a county function. The county government's education budget is the primary source for school supplies — not the national budget."
+            }
+          }
+        },
+        {
+          "type": "cta",
+          "id": "s2-cta",
+          "label": "Complete",
+          "title": "Know Your Budget Rights",
+          "teacherLine": {
+            "intro": "Dr. Amara closes",
+            "text": "The numbers don't lie. Your county received money. Your services should exist. When they don't, you now have the vocabulary, the legal grounding, and the process knowledge to ask why — and to be taken seriously when you do."
+          }
+        }
+      ]
+    },
+    {
+      "id": "finance-bill-101",
+      "slug": "finance-bill-101",
+      "moduleNumber": 3,
+      "title": "Finance Bill 101",
+      "category": "national",
+      "status": "draft",
+      "estimatedMinutes": 20,
+      "accentA": "#9F7AEA",
+      "accentB": "#F06060",
+      "badgeBg": "rgba(159,122,234,.12)",
+      "badgeColor": "#9F7AEA",
+      "badgeLabel": "National",
+      "teacherId": "marcus",
+      "steps": [
+        {
+          "type": "intro",
+          "id": "s3-intro",
+          "label": "Introduction",
+          "title": "The Bill That Changes Your Wallet",
+          "teacherLine": {
+            "intro": "Marcus says",
+            "text": "*Here's the thing most people don't know...* Every June, Parliament passes a bill that directly determines how much you pay for cooking oil, mobile data, and basic goods. It's called the Finance Bill — and in 2023, it nearly tripled certain excise duties before public pressure reversed it. <strong>Your voice worked then. Let's make sure you're ready for next time.</strong>"
+          },
+          "hook": {
+            "headline": "The Finance Bill determines what things cost in Kenya",
+            "statTiles": [
+              { "value": "June", "label": "When the Finance Bill is introduced each year" },
+              { "value": "30 days", "label": "Parliament has to pass it (constitutional limit)" },
+              { "value": "2023", "label": "Year Kenyans defeated key Finance Bill clauses" }
+            ],
+            "outcomes": [
+              "Explain what a Finance Bill is and what it can and cannot change",
+              "Identify where proposed tax changes are documented in the Bill",
+              "Know your rights to submit comments during parliamentary debate"
+            ]
+          }
+        },
+        {
+          "type": "cta",
+          "id": "s3-cta",
+          "label": "Complete",
+          "title": "Draft Module",
+          "teacherLine": {
+            "intro": "Marcus notes",
+            "text": "This module is still being drafted in Studio. Teachers can publish updates to make it available in the Civic Hub."
+          }
+        }
+      ]
+    }
+  ]
+}
+

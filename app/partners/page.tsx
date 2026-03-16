@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { 
   Globe, 
   Award, 
@@ -13,7 +13,10 @@ import {
   Calendar,
   ExternalLink,
   CheckCircle2,
-  ArrowUpRight
+  ArrowUpRight,
+  Sparkles,
+  Verified,
+  Shield
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -194,6 +197,55 @@ function PartnerLogo({ initials, color, size = "lg" }: { initials: string; color
   );
 }
 
+// Floating Particles Background
+function PartnerParticles() {
+  const particles = Array.from({ length: 25 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    size: Math.random() * 8 + 2,
+    duration: 20 + Math.random() * 15,
+    delay: Math.random() * 10,
+    opacity: Math.random() * 0.3 + 0.1,
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size,
+            background: p.id % 4 === 0 ? '#f5c842' : p.id % 4 === 1 ? '#3ecfb2' : p.id % 4 === 2 ? '#ff7b5c' : '#8b5cf6',
+            animation: `floatParticle ${p.duration}s linear infinite`,
+            animationDelay: `${p.delay}s`,
+            opacity: p.opacity,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// Partner Verification Badge Component
+function VerificationBadge({ level }: { level: 'verified' | 'trusted' | 'official' }) {
+  const config = {
+    verified: { icon: Verified, color: 'text-blue-500', bg: 'bg-blue-100 dark:bg-blue-900/30', label: 'Verified Partner' },
+    trusted: { icon: Shield, color: 'text-green-500', bg: 'bg-green-100 dark:bg-green-900/30', label: 'Trusted Partner' },
+    official: { icon: Award, color: 'text-amber-500', bg: 'bg-amber-100 dark:bg-amber-900/30', label: 'Official Partner' },
+  };
+  const { icon: Icon, color, bg, label } = config[level];
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${bg} ${color}`}>
+      <Icon className="w-3 h-3" />
+      {label}
+    </span>
+  );
+}
+
 export default function PartnersPage() {
   const regionalHubsRef = useRef<HTMLElement>(null);
   const strategicPartnersRef = useRef<HTMLElement>(null);
@@ -204,7 +256,16 @@ export default function PartnersPage() {
   const benefitsInView = useInView(benefitsRef, { once: true, amount: 0.2 });
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background relative overflow-hidden">
+      <style jsx global>{`
+        @keyframes floatParticle {
+          0% { transform: translateY(100vh) scale(0); opacity: 0; }
+          10% { opacity: 0.6; }
+          90% { opacity: 0.2; }
+          100% { transform: translateY(-20px) scale(1); opacity: 0; }
+        }
+      `}</style>
+      <PartnerParticles />
       {/* Hero Section - Minimalistic */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Subtle background pattern */}

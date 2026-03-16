@@ -58,7 +58,7 @@ export function LearnHero() {
                 size="lg"
                 className="rounded-full bg-primary-foreground font-semibold text-primary hover:bg-primary-foreground/95 focus-visible:ring-2 focus-visible:ring-primary-foreground/50 transition-transform active:scale-[0.98]"
               >
-                <Link href="/learn/budget-101" className="inline-flex items-center gap-2">
+                <Link href="/civic-hub/budget-101" className="inline-flex items-center gap-2">
                   Start Budget 101
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -88,7 +88,7 @@ export function LearnHero() {
             transition={{ delay: 0.35, duration: 0.45 }}
           >
             <Link
-              href="/learn/budget-101"
+              href="/civic-hub/budget-101"
               className="group block rounded-2xl border border-primary-foreground/20 bg-primary-foreground/10 p-6 shadow-xl backdrop-blur-sm transition-all hover:border-primary-foreground/30 hover:bg-primary-foreground/15"
             >
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground/20">

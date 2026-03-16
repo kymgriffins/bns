@@ -44,7 +44,7 @@ export default function TikTokPage() {
                   </a>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="rounded-full px-6">
-                  <Link href="/learn">Start Budget 101</Link>
+                  <Link href="/civic-hub">Start Budget 101</Link>
                 </Button>
               </div>
             }
@@ -59,7 +59,7 @@ export default function TikTokPage() {
             <p className="text-sm text-muted-foreground mb-4">Want to go deeper?</p>
             <div className="flex flex-wrap justify-center gap-3">
               <Button asChild variant="outline" size="sm" className="rounded-full">
-                <Link href="/learn">Learn Budget 101</Link>
+                <Link href="/civic-hub">Learn Budget 101</Link>
               </Button>
               <Button asChild variant="outline" size="sm" className="rounded-full">
                 <Link href="/take-action">Take action</Link>

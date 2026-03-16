@@ -100,7 +100,7 @@ const screens = [
     title: "Learn",
     subtitle: "Budget 101 Basics",
     description: "Educational modules on understanding Kenyan budgets and the budget cycle",
-    path: "/learn:_budget_101_basics",
+    path: "/civic-hub:_budget_101_basics",
     category: "Education",
     icon: "school",
     color: "bg-teal-500",

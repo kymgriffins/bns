@@ -1,15 +1,42 @@
-import { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, MapPin, Wallet, CheckCircle, Clock, AlertCircle, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, MapPin, Wallet, CheckCircle, Clock, AlertCircle, Send, Target, TrendingUp, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageSection, Container2026, SectionHeader } from "@/components/layout";
 import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
-export const metadata: Metadata = {
-  title: "Budget Tracker - Budget Ndio Story",
-  description: "Track delivery, not promises. Follow selected budget lines from allocation to delivery.",
-};
+// Floating Progress Particles
+function ProgressParticles() {
+  const particles = Array.from({ length: 15 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    delay: Math.random() * 5,
+    duration: 15 + Math.random() * 10,
+    size: 3 + Math.random() * 4,
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute rounded-full bg-gradient-to-r from-green-400 to-teal-400"
+          style={{
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size,
+            animation: `floatUp ${p.duration}s linear infinite`,
+            animationDelay: `${p.delay}s`,
+            opacity: 0.3,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 const categories = [
   "Youth livelihoods",
@@ -77,9 +104,94 @@ function formatCurrency(amount: number): string {
   return `KES ${amount.toLocaleString()}`;
 }
 
+// Interactive Budget Impact Calculator
+function ImpactCalculator() {
+  const [budget, setBudget] = useState(1000000);
+  const [impact, setImpact] = useState({ beneficiaries: 0, projects: 0, jobs: 0 });
+  
+  useEffect(() => {
+    // Calculate impact based on budget
+    const beneficiaries = Math.floor(budget / 5000);
+    const projects = Math.floor(budget / 50000000);
+    const jobs = Math.floor(budget / 100000);
+    
+    const animateValue = (target: number, setter: (v: number) => void) => {
+      const duration = 1000;
+      const steps = 30;
+      const increment = target / steps;
+      let current = 0;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          setter(target);
+          clearInterval(timer);
+        } else {
+          setter(Math.floor(current));
+        }
+      }, duration / steps);
+    };
+    
+    animateValue(beneficiaries, (v) => setImpact(p => ({ ...p, beneficiaries: v })));
+    animateValue(projects, (v) => setImpact(p => ({ ...p, projects: v })));
+    animateValue(jobs, (v) => setImpact(p => ({ ...p, jobs: v })));
+  }, [budget]);
+
+  return (
+    <div className="bg-gradient-to-br from-green-900 to-teal-900 rounded-2xl p-6 text-white">
+      <div className="flex items-center gap-2 mb-4">
+        <Target className="w-5 h-5 text-green-400" />
+        <h3 className="font-semibold">Budget Impact Calculator</h3>
+      </div>
+      <p className="text-green-200 text-sm mb-4">See the potential impact of budget allocations</p>
+      
+      <div className="mb-6">
+        <label className="text-sm text-green-200 mb-2 block">Budget Amount (KES)</label>
+        <input
+          type="range"
+          min="100000"
+          max="100000000"
+          step="100000"
+          value={budget}
+          onChange={(e) => setBudget(Number(e.target.value))}
+          className="w-full h-2 bg-green-700 rounded-lg appearance-none cursor-pointer"
+        />
+        <div className="flex justify-between text-xs text-green-300 mt-1">
+          <span>KSh 100K</span>
+          <span className="font-semibold text-white">{formatCurrency(budget)}</span>
+          <span>KSh 100M</span>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-3 gap-3">
+        <div className="bg-white/10 rounded-xl p-3 text-center">
+          <div className="text-xl font-bold text-green-300">{impact.beneficiaries.toLocaleString()}</div>
+          <div className="text-xs text-green-200">Beneficiaries</div>
+        </div>
+        <div className="bg-white/10 rounded-xl p-3 text-center">
+          <div className="text-xl font-bold text-teal-300">{impact.projects}</div>
+          <div className="text-xs text-green-200">Projects</div>
+        </div>
+        <div className="bg-white/10 rounded-xl p-3 text-center">
+          <div className="text-xl font-bold text-amber-300">{impact.jobs}</div>
+          <div className="text-xs text-green-200">Jobs</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TrackerPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen relative overflow-hidden">
+      <style jsx global>{`
+        @keyframes floatUp {
+          0% { transform: translateY(100vh) scale(0); opacity: 0; }
+          10% { opacity: 0.6; }
+          90% { opacity: 0.2; }
+          100% { transform: translateY(-20px) scale(1); opacity: 0; }
+        }
+      `}</style>
+      <ProgressParticles />
       <PageSection size="lg" className="border-t-0">
         <Container2026>
           <SectionHeader

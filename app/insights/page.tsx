@@ -1,5 +1,8 @@
+"use client";
+
 import { Metadata } from "next";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import {
   ArrowRight,
   BarChart3,
@@ -14,6 +17,7 @@ import {
   Target,
   Lightbulb,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,11 +35,6 @@ import {
   BentoSectionHeader,
 } from "@/components/ui/bento-animations";
 import { PageSection, Container2026, SectionHeader } from "@/components/layout";
-
-export const metadata: Metadata = {
-  title: "Budget Insights - Budget Ndio Story",
-  description: "National, county, and sector breakdowns built for clarity and accountability.",
-};
 
 const sectors = [
   { name: "Youth Budget Perception Surveys", icon: Users, color: "bg-purple-500" },
@@ -229,9 +228,97 @@ const budgetStats = [
   { label: "Youth Sectors", value: "KSh 892B", change: "+18%", positive: true },
 ];
 
+// Floating Particles Component
+function FloatingOrbs() {
+  const orbs = [
+    { size: 120, x: '10%', y: '20%', duration: 25, color: 'from-amber-400/20 to-orange-500/20' },
+    { size: 80, x: '80%', y: '30%', duration: 20, color: 'from-teal-400/20 to-cyan-500/20' },
+    { size: 100, x: '60%', y: '60%', duration: 30, color: 'from-purple-400/20 to-pink-500/20' },
+    { size: 60, x: '30%', y: '70%', duration: 22, color: 'from-blue-400/20 to-indigo-500/20' },
+  ];
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {orbs.map((orb, i) => (
+        <div
+          key={i}
+          className={`absolute rounded-full bg-gradient-to-br ${orb.color} blur-3xl`}
+          style={{
+            width: orb.size,
+            height: orb.size,
+            left: orb.x,
+            top: orb.y,
+            animation: `pulse ${orb.duration}s ease-in-out infinite`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// Interactive Budget Explorer
+function BudgetExplorer() {
+  const [selectedSector, setSelectedSector] = useState<string | null>(null);
+  const [animatedValue, setAnimatedValue] = useState(0);
+  
+  const sectors = [
+    { name: 'Education', value: 45, color: 'bg-blue-500' },
+    { name: 'Health', value: 30, color: 'bg-red-500' },
+    { name: 'Infrastructure', value: 25, color: 'bg-amber-500' },
+  ];
+  
+  useEffect(() => {
+    if (selectedSector) {
+      const target = sectors.find(s => s.name === selectedSector)?.value || 0;
+      const timer = setTimeout(() => setAnimatedValue(target), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedSector]);
+
+  return (
+    <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white">
+      <div className="flex items-center gap-2 mb-4">
+        <Sparkles className="w-5 h-5 text-amber-400" />
+        <h3 className="font-semibold">Interactive Budget Explorer</h3>
+      </div>
+      <p className="text-slate-300 text-sm mb-4">Click a sector to see its allocation</p>
+      <div className="space-y-3">
+        {sectors.map((sector) => (
+          <button
+            key={sector.name}
+            onClick={() => setSelectedSector(sector.name)}
+            className={`w-full p-3 rounded-xl transition-all duration-300 ${
+              selectedSector === sector.name 
+                ? 'bg-white/20 ring-2 ring-amber-400' 
+                : 'bg-white/5 hover:bg-white/10'
+            }`}
+          >
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-sm font-medium">{sector.name}</span>
+              <span className="text-sm text-slate-300">{sector.value}%</span>
+            </div>
+            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div 
+                className={`h-full ${sector.color} rounded-full transition-all duration-1000`}
+                style={{ width: selectedSector === sector.name ? `${sector.value}%` : '0%' }}
+              />
+            </div>
+          </button>
+        ))}
+      </div>
+      {selectedSector && (
+        <div className="mt-4 p-3 bg-amber-400/20 rounded-xl text-center animate-in fade-in">
+          <span className="text-amber-400 font-semibold">{selectedSector}: {animatedValue}% of budget</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function InsightsPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen relative">
+      <FloatingOrbs />
       <PageSection size="lg" className="border-t-0">
         <Container2026>
           <SectionHeader
