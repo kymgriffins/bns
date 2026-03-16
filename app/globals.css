@@ -685,10 +685,21 @@ body.landing-cursor-active * {
     margin: 5vh auto;
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255,255,255,0.05);
+    overflow: hidden;
   }
   
   [data-theme="light"] .civic-shell {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.05);
+  }
+  
+  /* Ensure no scrollbar on desktop */
+  .civic-shell {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .civic-shell::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -1015,6 +1026,8 @@ body.landing-cursor-active * {
   z-index: 2;
   overflow-y: auto;
   max-height: calc(100vh - 160px);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .civic-slide-inner::-webkit-scrollbar {
@@ -1991,6 +2004,12 @@ body.landing-cursor-active * {
   background: var(--ch-bg);
   overflow-y: auto;
   transition: transform 0.4s var(--ch-ease-out), opacity 0.3s;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.civic-module-screen::-webkit-scrollbar {
+  display: none;
 }
 
 .civic-module-screen.civic-hidden {
