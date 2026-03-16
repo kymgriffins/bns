@@ -1,8 +1,44 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+
+// Custom hook for swipe gestures
+function useSwipeGesture(onSwipeLeft: () => void, onSwipeRight: () => void, enabled: boolean = true) {
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!enabled || touchStartX.current === null || touchStartY.current === null) return;
+    
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const deltaX = touchEndX - touchStartX.current;
+    const deltaY = touchEndY - touchStartY.current;
+    
+    // Only trigger if horizontal swipe is dominant
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+      if (deltaX > 0) {
+        onSwipeRight();
+      } else {
+        onSwipeLeft();
+      }
+    }
+    
+    touchStartX.current = null;
+    touchStartY.current = null;
+  }, [enabled, onSwipeLeft, onSwipeRight]);
+
+  return { handleTouchStart, handleTouchEnd };
+}
 
 type StoryModule = {
   id: string;
@@ -850,6 +886,27 @@ export function StoryCivicHub() {
   const currentSlides = activeModule.id === "bps-2026-advanced" ? ADVANCED_BPS_SLIDES : BPS_SLIDES;
   const totalSlides = currentSlides.length;
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!activeModuleId) return;
+      
+      if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        handleTapRight();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goPrev();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        exitToMenu();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeModuleId, slideIdx, quizState]);
+
   useEffect(() => {
     const storedTheme = loadTheme();
     setTheme(storedTheme);
@@ -968,6 +1025,13 @@ export function StoryCivicHub() {
     return 0;
   });
 
+  // Swipe gesture handlers
+  const swipeHandlers = useSwipeGesture(
+    () => handleTapRight(), // swipe left = next
+    () => goPrev(), // swipe right = prev
+    !!activeModuleId
+  );
+
   return (
     <>
       <div className="civic-shell" id="shell">
@@ -1067,6 +1131,12 @@ export function StoryCivicHub() {
         {/* Story UI */}
         {activeModuleId && (
           <>
+            {/* Keyboard hints for desktop */}
+            <div className="civic-keyboard-hints" aria-hidden="true">
+              <span>←</span>
+              <span>→</span>
+            </div>
+
             {/* Top bar */}
             <div className="civic-top-bar">
               <div className="civic-story-bars">
@@ -1085,19 +1155,23 @@ export function StoryCivicHub() {
                   </div>
                 </div>
                 <div className="civic-slide-counter">{slideCounterLabel}</div>
-                <button className="civic-top-btn" onClick={toggleTheme}>
+                <button className="civic-top-btn" onClick={toggleTheme} aria-label="Toggle theme">
                   {theme === "dark" ? "🌙" : "☀️"}
                 </button>
-                <button className="civic-top-btn" onClick={exitToMenu}>
+                <button className="civic-top-btn" onClick={exitToMenu} aria-label="Exit to menu">
                   ✕
                 </button>
               </div>
             </div>
 
             {/* Story viewport */}
-            <div className="civic-story-viewport">
-              <div className="civic-tap-zone civic-tap-left" onClick={goPrev} />
-              <div className="civic-tap-zone civic-tap-right" onClick={handleTapRight} />
+            <div 
+              className="civic-story-viewport"
+              onTouchStart={swipeHandlers.handleTouchStart}
+              onTouchEnd={swipeHandlers.handleTouchEnd}
+            >
+              <div className="civic-tap-zone civic-tap-left" onClick={goPrev} aria-label="Previous slide" />
+              <div className="civic-tap-zone civic-tap-right" onClick={handleTapRight} aria-label="Next slide" />
               <div className="civic-story-slide entering">
                 <div className={`civic-slide-bg ${currentSlide.bg}`}>
                   <div className="civic-orb civic-orb-1" style={{ background: currentSlide.orbA || "transparent" }} />

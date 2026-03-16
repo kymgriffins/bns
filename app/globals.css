@@ -677,6 +677,35 @@ body.landing-cursor-active * {
   font-family: var(--ch-font-b);
 }
 
+/* Desktop Enhancements */
+@media (min-width: 768px) {
+  .civic-shell {
+    max-width: 900px;
+    height: 90vh;
+    margin: 5vh auto;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  
+  [data-theme="light"] .civic-shell {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.05);
+  }
+}
+
+/* Module Screen Desktop Grid */
+@media (min-width: 768px) {
+  #civic-ms-modules {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    padding: 0.5rem 0;
+  }
+  
+  .civic-ms-module-card {
+    min-height: 200px;
+  }
+}
+
 /* Top Bar */
 .civic-top-bar {
   position: absolute;
@@ -990,6 +1019,38 @@ body.landing-cursor-active * {
 
 .civic-slide-inner::-webkit-scrollbar {
   display: none;
+}
+
+/* Desktop slide content improvements */
+@media (min-width: 768px) {
+  .civic-slide-inner {
+    max-height: calc(90vh - 180px);
+    padding: 0.5rem;
+  }
+  
+  .civic-slide-cover .civic-cover-title {
+    font-size: 3rem;
+  }
+  
+  .civic-slide-cover .civic-cover-sub {
+    font-size: 1.1rem;
+    max-width: 500px;
+  }
+  
+  .civic-snapshot-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .civic-pillar-scroll {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .civic-pillar-card {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 200px;
+  }
 }
 
 /* Cover Slide */
@@ -1422,7 +1483,7 @@ body.landing-cursor-active * {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 0.8rem 0.9rem;
+  padding: 0.85rem 1rem;
   border: 1.5px solid var(--ch-border);
   border-radius: 12px;
   cursor: pointer;
@@ -1433,6 +1494,8 @@ body.landing-cursor-active * {
   font-family: var(--ch-font-b);
   text-align: left;
   width: 100%;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 52px;
 }
 
 [data-theme="light"] .civic-qz-opt {
@@ -1442,6 +1505,10 @@ body.landing-cursor-active * {
 .civic-qz-opt:hover {
   border-color: rgba(245,200,66,.5);
   background: rgba(245,200,66,.07);
+}
+
+.civic-qz-opt:active {
+  transform: scale(0.99);
 }
 
 .civic-qz-opt.civic-selected-correct {
@@ -1612,10 +1679,37 @@ body.landing-cursor-active * {
   transition: all 0.2s;
   text-align: left;
   animation: civic-cbIn 0.4s var(--ch-ease-out) both;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 52px;
 }
 
 .civic-cta-btn:hover {
-  transform: scale(1.01);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.civic-cta-btn:active {
+  transform: scale(0.98);
+}
+
+/* Desktop CTA buttons */
+@media (min-width: 768px) {
+  .civic-cta-buttons {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+  
+  .civic-cta-btn {
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 1rem 1.25rem;
+  }
+  
+  .civic-cta-btn-icon {
+    margin-bottom: 0.25rem;
+  }
 }
 
 .civic-cta-btn-primary {
@@ -1693,6 +1787,74 @@ body.landing-cursor-active * {
 
 [data-theme="light"] .civic-bottom-nav {
   background: linear-gradient(to top,rgba(250,250,245,.95) 0%,transparent 100%);
+}
+
+/* Desktop bottom nav */
+@media (min-width: 768px) {
+  .civic-bottom-nav {
+    padding: 0.8rem 2rem 1.25rem;
+    gap: 1rem;
+  }
+  
+  .civic-nav-prev,
+  .civic-nav-next {
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+  }
+  
+  .civic-nav-center {
+    gap: 6px;
+  }
+  
+  .civic-nc-dot {
+    height: 5px;
+    max-width: 32px;
+  }
+  
+  .civic-nc-dot:hover {
+    background: rgba(255,255,255,0.3);
+  }
+}
+
+/* Keyboard hints for desktop */
+.civic-keyboard-hints {
+  display: none;
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  font-size: 0.7rem;
+  color: var(--ch-text-m);
+  z-index: 40;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.civic-keyboard-hints span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  font-size: 0.65rem;
+}
+
+@media (hover: hover) and (min-width: 768px) {
+  .civic-keyboard-hints {
+    display: flex;
+  }
+  
+  .civic-shell:hover .civic-keyboard-hints {
+    opacity: 0;
+  }
 }
 
 .civic-nav-prev,
@@ -1781,6 +1943,7 @@ body.landing-cursor-active * {
   width: 35%;
   z-index: 30;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .civic-tap-left {
@@ -1789,6 +1952,35 @@ body.landing-cursor-active * {
 
 .civic-tap-right {
   right: 0;
+}
+
+/* Touch feedback for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .civic-tap-zone:active {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .civic-nav-prev:active,
+  .civic-nav-next:active {
+    transform: scale(0.92);
+  }
+}
+
+/* Desktop: show subtle indicator on hover */
+@media (hover: hover) {
+  .civic-tap-zone {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  
+  .civic-tap-zone:hover {
+    opacity: 1;
+    background: linear-gradient(to right, rgba(255,255,255,0.03), transparent);
+  }
+  
+  .civic-tap-right:hover {
+    background: linear-gradient(to left, rgba(255,255,255,0.03), transparent);
+  }
 }
 
 /* Module Select Screen */
@@ -1817,6 +2009,28 @@ body.landing-cursor-active * {
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+/* Desktop header */
+@media (min-width: 768px) {
+  .civic-ms-top {
+    padding: 1.25rem 2rem 1rem;
+  }
+  
+  .civic-ms-body {
+    padding: 1.5rem 2rem;
+  }
+  
+  .civic-ms-greeting {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .civic-ms-sub {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+  }
 }
 
 .civic-ms-logo {
@@ -1876,18 +2090,31 @@ body.landing-cursor-active * {
   overflow: hidden;
   margin-bottom: 0.75rem;
   cursor: pointer;
-  transition: transform 0.2s var(--ch-ease-spring), border-color 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   text-align: left;
+  position: relative;
 }
 
 .civic-ms-module-card:hover {
-  transform: scale(1.01);
-  border-color: var(--ch-border);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px -8px var(--ch-shadow);
+  border-color: rgba(245, 200, 66, 0.35);
 }
 
 .civic-ms-module-card:active {
-  transform: scale(0.99);
+  transform: scale(0.98);
+}
+
+/* Desktop grid layout */
+@media (min-width: 768px) {
+  .civic-ms-module-card {
+    margin-bottom: 0;
+  }
+  
+  .civic-ms-module-card:hover .civic-ms-module-inner {
+    background: rgba(255,255,255,0.02);
+  }
 }
 
 .civic-ms-module-bar {
@@ -1955,48 +2182,67 @@ body.landing-cursor-active * {
 
 .civic-ms-prog-bar {
   margin-top: 0.6rem;
-  height: 2.5px;
-  background: rgba(255,255,255,.06);
+  height: 4px;
+  background: rgba(255,255,255,0.08);
   border-radius: 100px;
   overflow: hidden;
+  position: relative;
 }
 
 [data-theme="light"] .civic-ms-prog-bar {
-  background: rgba(0,0,0,.06);
+  background: rgba(0,0,0,0.08);
 }
 
 .civic-ms-prog-fill {
   height: 100%;
   border-radius: 100px;
-  transition: width 0.6s;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
+.civic-ms-prog-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: inherit;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Enhanced status badges */
 .civic-ms-mod-status {
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.4px;
   text-transform: uppercase;
-  padding: 2px 8px;
+  padding: 4px 10px;
   border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .civic-status-done {
-  background: rgba(72,187,120,.15);
-  color: var(--ch-green);
+  background: rgba(72,187,120,0.2);
+  color: #48BB78;
 }
 
 .civic-status-progress {
-  background: rgba(245,200,66,.15);
-  color: var(--ch-gold);
+  background: rgba(245,200,66,0.2);
+  color: #ECC94B;
 }
 
 .civic-status-locked {
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,0.08);
   color: var(--ch-text-d);
 }
 
 [data-theme="light"] .civic-status-locked {
-  background: rgba(0,0,0,.05);
+  background: rgba(0,0,0,0.06);
 }
 
 /* Toast */
