@@ -123,23 +123,22 @@ const MODULES_LIST: StoryModule[] = [
     },
   },
   {
-    id: "national-county",
+    id: "bps-2026-advanced",
     num: "002",
-    title: "National vs County Budget",
-    desc: "47 counties, one national government. Who funds what? Coming soon.",
-    duration: "12 min",
-    slides: 0,
-    category: "National",
-    catColor: "#38B2AC",
-    catBg: "rgba(56,178,172,.15)",
-    accentA: "#38B2AC",
-    accentB: "#9F7AEA",
+    title: "Reflecting on Kenya's 2026 Budget Policy Statement",
+    desc: "Deep dive into BPS: BETA Agenda, debt analysis, fiscal risks and policy solutions. 20 minutes.",
+    duration: "20 min",
+    slides: 20,
+    category: "Advanced",
+    catColor: "#9F7AEA",
+    catBg: "rgba(159,122,234,.15)",
+    accentA: "#9F7AEA",
+    accentB: "#38B2AC",
     teacher: {
-      name: "Dr. Amara Osei",
-      role: "Head of Fiscal Analysis",
-      avatar: "👩🏿‍🏫",
+      name: "Millicent Makini",
+      role: "Budget Literacy Educator",
+      avatar: "👩🏾‍💼",
     },
-    locked: true,
   },
   {
     id: "finance-bill",
@@ -455,6 +454,347 @@ const BPS_SLIDES: StorySlide[] = [
   },
 ];
 
+const ADVANCED_BPS_SLIDES: StorySlide[] = [
+  {
+    id: "adv-cover",
+    type: "cover",
+    bg: "bg-purple",
+    orbA: "rgba(159,122,234,.5)",
+    orbB: "rgba(56,178,172,.3)",
+    content: {
+      tag: "Module 002 · Advanced",
+      title: "Reflecting on Kenya's 2026\n*Budget Policy Statement*",
+      sub: "Deep dive into the BETA Agenda, trillion-shilling debt, and fiscal risks.",
+      promise:
+        "In the next 20 minutes, you'll master the BPS: understand the 5 pillars, analyze the big numbers, and form your own policy opinions.",
+    },
+  },
+  {
+    id: "adv-what-is-bps",
+    type: "concept",
+    bg: "bg-dark",
+    orbA: "rgba(159,122,234,.3)",
+    orbB: "rgba(245,200,66,.2)",
+    content: {
+      tag: "What is a Budget Policy Statement?",
+      tagBg: "rgba(159,122,234,.15)",
+      tagColor: "#9F7AEA",
+      question: "The Budget Policy Statement (BPS) is a *government policy document* that sets out:",
+      bullets: [
+        { dot: "#9F7AEA", text: "<strong>Strategic priorities</strong> for national and county budgets" },
+        { dot: "#38B2AC", text: "<strong>Economic assessments</strong> and growth forecasts" },
+        { dot: "#F5C842", text: "<strong>Expenditure ceilings</strong> and revenue projections" },
+        { dot: "#E53E3E", text: "<strong>Fiscal risks</strong> and responsibility principles" },
+      ],
+      badge:
+        "📅 The BPS is submitted to Parliament by February 15th every year. It guides the County Fiscal Strategy Paper (CFSP) at county level.",
+    },
+  },
+  {
+    id: "adv-bps-2026-theme",
+    type: "cover",
+    bg: "bg-gold",
+    orbA: "rgba(245,200,66,.5)",
+    orbB: "rgba(56,178,172,.3)",
+    content: {
+      tag: "BPS 2026 Theme",
+      title: "Consolidating Gains\n*Under the Bottom-Up*\nEconomic Transformation Agenda",
+      sub: "For Inclusive and Sustainable Growth.",
+      promise:
+        "The BETA Agenda focuses on 5 key pillars: Agriculture, MSMEs, Healthcare, Housing, and Digital Economy.",
+    },
+  },
+  {
+    id: "adv-pillar-1",
+    type: "pillars",
+    bg: "bg-green",
+    orbA: "rgba(72,187,120,.4)",
+    orbB: "rgba(56,178,172,.2)",
+    content: {
+      headline: "Pillar 1: Agricultural Transformation",
+      sub: "Prioritizing food security through:",
+      pillars: [
+        { emoji: "🌾", title: "Crop Diversification", desc: "Modernizing value chains, extension services", money: "KSh 12.5B" },
+        { emoji: "💧", title: "Irrigation", desc: "Large-scale irrigation projects", money: "KSh 8.2B" },
+        { emoji: "🛡️", title: "Agricultural Insurance", desc: "Crop and livestock protection schemes", money: "KSh 3.1B" },
+        { emoji: "🚜", title: "Fertilizer Subsidies", desc: "Expanded access to affordable inputs", money: "KSh 6.8B" },
+      ],
+    },
+  },
+  {
+    id: "adv-pillar-2",
+    type: "pillars",
+    bg: "bg-teal",
+    orbA: "rgba(56,178,172,.4)",
+    orbB: "rgba(159,122,234,.2)",
+    content: {
+      headline: "Pillar 2: Transforming MSMEs",
+      sub: "Addressing structural constraints:",
+      pillars: [
+        { emoji: "💰", title: "Hustler Fund Expansion", desc: "Affordable credit for small businesses", money: "KSh 25B" },
+        { emoji: "🤝", title: "Credit Guarantee Scheme", desc: "Reducing collateral requirements", money: "KSh 15B" },
+        { emoji: "🏢", title: "MSME Hubs", desc: "Business mentorship in all 47 counties", money: "KSh 4.2B" },
+        { emoji: "📈", title: "NYOTA Graduation", desc: "Linking beneficiaries to financial programs", money: "KSh 2.8B" },
+      ],
+    },
+  },
+  {
+    id: "adv-pillar-3",
+    type: "pillars",
+    bg: "bg-red",
+    orbA: "rgba(229,62,62,.4)",
+    orbB: "rgba(245,200,66,.2)",
+    content: {
+      headline: "Pillar 3: Healthcare",
+      sub: "Working towards Universal Health Coverage:",
+      pillars: [
+        { emoji: "🏥", title: "Social Health Authority", desc: "Targeting 35 million enrolled", money: "KSh 45B" },
+        { emoji: "👩‍⚕️", title: "Community Health", desc: "Strengthening grassroots services", money: "KSh 8.5B" },
+        { emoji: "🏗️", title: "Health Facilities", desc: "Building and equipping centers", money: "KSh 12.3B" },
+        { emoji: "💻", title: "Digital Health Systems", desc: "Modernizing health records", money: "KSh 3.2B" },
+      ],
+    },
+  },
+  {
+    id: "adv-pillar-4",
+    type: "pillars",
+    bg: "bg-purple",
+    orbA: "rgba(159,122,234,.4)",
+    orbB: "rgba(56,178,172,.2)",
+    content: {
+      headline: "Pillar 4: Housing & Settlement",
+      sub: "Supporting affordable housing:",
+      pillars: [
+        { emoji: "🏠", title: "KMRC Support", desc: "Kenya Mortgage Refinance Company", money: "KSh 18B" },
+        { emoji: "👷", title: "Construction Jobs", desc: "Creating employment in building sector", money: "KSh 8.5B" },
+        { emoji: "🏙️", title: "Urban Renewal", desc: "Markets and urban development", money: "KSh 6.2B" },
+        { emoji: "🏘️", title: "Affordable Housing", desc: "Social housing programs", money: "KSh 22B" },
+      ],
+    },
+  },
+  {
+    id: "adv-pillar-5",
+    type: "pillars",
+    bg: "bg-teal",
+    orbA: "rgba(56,178,172,.4)",
+    orbB: "rgba(245,200,66,.2)",
+    content: {
+      headline: "Pillar 5: Digital Superhighway & Creative Economy",
+      sub: "Building the digital future:",
+      pillars: [
+        { emoji: "📡", title: "Fibre Internet", desc: "Expanding connectivity nationwide", money: "KSh 15B" },
+        { emoji: "📶", title: "Public Wi-Fi", desc: "Hotspots across the country", money: "KSh 3.5B" },
+        { emoji: "🎬", title: "Creative Industries", desc: "Film, music, fashion, content", money: "KSh 5.2B" },
+        { emoji: "👨‍💻", title: "Digital Skills", desc: "Youth training programs", money: "KSh 4.8B" },
+      ],
+    },
+  },
+  {
+    id: "adv-economy-snapshot",
+    type: "snapshot",
+    bg: "bg-dark",
+    orbA: "rgba(245,200,66,.3)",
+    orbB: "rgba(72,187,120,.2)",
+    content: {
+      headline: "2025 Economic Performance",
+      divider1: "Key Indicators",
+      tiles1: [
+        { icon: "📈", val: "5.0%", label: "GDP Growth", accent: "gold" },
+        { icon: "📉", val: "4.2%", label: "Inflation Rate", accent: "teal" },
+        { icon: "💵", val: "KSh 3.37T", label: "Revenue Collected", accent: "purple" },
+        { icon: "⚠️", val: "KSh 933B", label: "Revenue Target Gap", accent: "red" },
+      ],
+    },
+  },
+  {
+    id: "adv-budget-2026",
+    type: "snapshot",
+    bg: "bg-red",
+    orbA: "rgba(229,62,62,.4)",
+    orbB: "rgba(245,200,66,.2)",
+    content: {
+      headline: "FY 2026/27 Budget Projections",
+      divider1: "The Big Numbers",
+      tiles1: [
+        { icon: "💰", val: "KSh 3.59T", label: "Total Revenue", accent: "gold" },
+        { icon: "💸", val: "KSh 4.74T", label: "Total Expenditure", accent: "red" },
+        { icon: "📊", val: "KSh 1.20T", label: "Interest Payments", accent: "purple" },
+        { icon: "📉", val: "KSh 1.15T", label: "Fiscal Deficit", accent: "teal" },
+      ],
+    },
+  },
+  {
+    id: "adv-debt-analysis",
+    type: "risks",
+    bg: "bg-dark",
+    orbA: "rgba(229,62,62,.4)",
+    orbB: "rgba(245,200,66,.2)",
+    content: {
+      headline: "The Trillion-Shilling Debt",
+      sub: "Interest payments are the biggest budget pressure:",
+      risks: [
+        { icon: "💳", title: "KSh 1.2 Trillion", text: "Interest payments on public debt in 2026/27" },
+        { icon: "📈", title: "27% of Revenue", text: "Goes just to paying interest on debt" },
+        { icon: "🏦", title: "KSh 924 Billion", text: "Domestic borrowing to cover deficit" },
+        { icon: "🌍", title: "KSh 225.5 Billion", text: "Foreign borrowing required" },
+      ],
+      quote: "When interest payments consume nearly a third of revenue, there's less money for roads, schools, and hospitals.",
+    },
+  },
+  {
+    id: "adv-county-allocations",
+    type: "snapshot",
+    bg: "bg-teal",
+    orbA: "rgba(56,178,172,.4)",
+    orbB: "rgba(159,122,234,.2)",
+    content: {
+      headline: "County Government Allocations",
+      divider1: "FY 2026/27",
+      tiles1: [
+        { icon: "🏛️", val: "KSh 420B", label: "Total County Share", accent: "teal" },
+        { icon: "➕", val: "+KSh 5B", label: "Increase from 2025/26", accent: "gold" },
+        { icon: "🤝", val: "KSh 75.7B", label: "Additional Allocations", accent: "purple" },
+        { icon: "⚖️", val: "KSh 9.6B", label: "Equalization Fund", accent: "gold" },
+      ],
+    },
+  },
+  {
+    id: "adv-fiscal-risks",
+    type: "risks",
+    bg: "bg-red",
+    orbA: "rgba(229,62,62,.5)",
+    orbB: "rgba(245,200,66,.2)",
+    content: {
+      headline: "Fiscal Risks to Watch",
+      sub: "What could derail the budget?",
+      risks: [
+        { icon: "📊", title: "Public Debt Risk", text: "Rising debt levels, interest rate pressures, exchange rate volatility" },
+        { icon: "⚠️", title: "Contingent Liabilities", text: "Government guarantees, SOE obligations, PPP commitments" },
+        { icon: "📉", title: "Macroeconomic Risks", text: "Lower growth, revenue shortfalls, global uncertainty" },
+        { icon: "🌍", title: "Climate Risks", text: "Droughts, floods, food insecurity, infrastructure damage" },
+        { icon: "🏛️", title: "Devolution Risks", text: "County fiscal pressures, pending bills" },
+      ],
+      quote: "Climate change alone could cost Kenya billions in emergency relief and agricultural losses.",
+    },
+  },
+  {
+    id: "adv-quiz-1",
+    type: "quiz",
+    bg: "bg-purple",
+    quizIdx: 1,
+    content: {
+      question: "What is the main purpose of the Budget Policy Statement (BPS)?",
+      options: [
+        { letter: "A", text: "To collect taxes from citizens" },
+        { letter: "B", text: "To guide how national and county governments prepare their budgets" },
+        { letter: "C", text: "To replace the national development plan" },
+        { letter: "D", text: "To approve all government projects" },
+      ],
+      correct: 1,
+      feedback: {
+        correct: "✅ Correct! The BPS sets strategic priorities that guide budget preparation at both national and county levels.",
+        wrong: "❌ Not quite. The BPS guides budget preparation, not tax collection or project approval.",
+      },
+    },
+  },
+  {
+    id: "adv-quiz-2",
+    type: "quiz",
+    bg: "bg-gold",
+    quizIdx: 2,
+    content: {
+      question: "By law, when must the BPS be submitted to Parliament?",
+      options: [
+        { letter: "A", text: "January 1st" },
+        { letter: "B", text: "February 15th" },
+        { letter: "C", text: "March 30th" },
+        { letter: "D", text: "April 30th" },
+      ],
+      correct: 1,
+      feedback: {
+        correct: "✅ Correct! The BPS must be submitted by February 15th each year per Section 25 of the PFM Act.",
+        wrong: "❌ Not quite. The deadline is February 15th - any later would be a legal violation.",
+      },
+    },
+  },
+  {
+    id: "adv-quiz-3",
+    type: "quiz",
+    bg: "bg-teal",
+    quizIdx: 3,
+    content: {
+      question: "Which agenda guides the development priorities in the 2026 BPS?",
+      options: [
+        { letter: "A", text: "Vision 2030" },
+        { letter: "B", text: "Bottom-Up Economic Transformation Agenda (BETA)" },
+        { letter: "C", text: "East African Development Strategy" },
+        { letter: "D", text: "National Industrial Policy" },
+      ],
+      correct: 1,
+      feedback: {
+        correct: "✅ Correct! The BETA (Bottom-Up Economic Transformation Agenda) is the guiding framework for the 2026 BPS.",
+        wrong: "❌ Not quite. It's the BETA Agenda - focusing on the bottom-up approach to economic transformation.",
+      },
+    },
+  },
+  {
+    id: "adv-quiz-4",
+    type: "quiz",
+    bg: "bg-green",
+    quizIdx: 4,
+    content: {
+      question: "When government spending exceeds revenue, this is called:",
+      options: [
+        { letter: "A", text: "Fiscal surplus" },
+        { letter: "B", text: "Fiscal deficit" },
+        { letter: "C", text: "Monetary balance" },
+        { letter: "D", text: "Public investment" },
+      ],
+      correct: 1,
+      feedback: {
+        correct: "✅ Correct! A fiscal deficit means the government must borrow to cover the spending gap.",
+        wrong: "❌ Not quite. A deficit is when spending exceeds revenue - the opposite of a surplus.",
+      },
+    },
+  },
+  {
+    id: "adv-quiz-5",
+    type: "quiz",
+    bg: "bg-red",
+    quizIdx: 5,
+    content: {
+      question: "Interest payments on debt projected at KSh 1.2 trillion could lead to:",
+      options: [
+        { letter: "A", text: "Reduced funds for development and social services" },
+        { letter: "B", text: "Lower tax collection" },
+        { letter: "C", text: "Faster economic growth" },
+        { letter: "D", text: "Reduced public borrowing" },
+      ],
+      correct: 0,
+      feedback: {
+        correct: "✅ Correct! When interest payments take 27% of revenue, there's less money for services.",
+        wrong: "❌ Not quite. High interest payments mean less money available for development projects and services.",
+      },
+    },
+  },
+  {
+    id: "adv-cta",
+    type: "cta",
+    bg: "bg-purple",
+    orbA: "rgba(159,122,234,.5)",
+    orbB: "rgba(56,178,172,.3)",
+    content: {
+      title: "You've Completed\n*Advanced BPS 2026*",
+      sub: "Now you understand Kenya's budget roadmap, the BETA pillars, and fiscal challenges. What's your take?",
+      actions: [
+        { icon: "💬", style: "cta-btn-teal", title: "Share Your Opinion", sub: "What policy would you change?", onclickMsg: "Opening feedback form →" },
+        { icon: "📱", style: "cta-btn-gold", title: "Challenge a Friend", sub: "Test their budget knowledge", onclickMsg: "Sharing module link →" },
+        { icon: "🏛️", style: "cta-btn-primary", title: "Take Action", sub: "Contact your county assembly", onclickMsg: "Finding representatives →" },
+      ],
+    },
+  },
+];
+
 const PROGRESS_KEY = "bns_progress_stories";
 const THEME_KEY = "bns_theme_stories";
 
@@ -507,7 +847,8 @@ export function StoryCivicHub() {
     [activeModuleId],
   );
 
-  const totalSlides = BPS_SLIDES.length;
+  const currentSlides = activeModule.id === "bps-2026-advanced" ? ADVANCED_BPS_SLIDES : BPS_SLIDES;
+  const totalSlides = currentSlides.length;
 
   useEffect(() => {
     const storedTheme = loadTheme();
@@ -568,7 +909,7 @@ export function StoryCivicHub() {
   }
 
   function handleTapRight() {
-    const slide = BPS_SLIDES[slideIdx];
+    const slide = currentSlides[slideIdx];
     if (slide.type === "quiz" && typeof slide.quizIdx === "number") {
       if (!quizState.answered[slide.quizIdx]) {
         showToast("Answer the question first!");
@@ -605,7 +946,7 @@ export function StoryCivicHub() {
   }
 
   function answerQuiz(qi: number, idx: number) {
-    const slide = BPS_SLIDES.find((s) => s.quizIdx === qi);
+    const slide = currentSlides.find((s) => s.quizIdx === qi);
     if (!slide || slide.type !== "quiz" || quizState.answered[qi]) return;
 
     setQuizState((prev) => {
@@ -617,11 +958,11 @@ export function StoryCivicHub() {
     });
   }
 
-  const currentSlide = BPS_SLIDES[slideIdx];
+  const currentSlide = currentSlides[slideIdx];
 
   const slideCounterLabel = `${slideIdx + 1}/${totalSlides}`;
 
-  const slideBars = BPS_SLIDES.map((_, i) => {
+  const slideBars = currentSlides.map((_, i) => {
     if (i < slideIdx) return 100;
     if (i === slideIdx) return 100;
     return 0;
@@ -774,7 +1115,7 @@ export function StoryCivicHub() {
                 ←
               </button>
               <div className="civic-nav-center">
-                {BPS_SLIDES.map((_, i) => (
+                {currentSlides.map((_, i) => (
                   <button
                     key={i}
                     className={[
