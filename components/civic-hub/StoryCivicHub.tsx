@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 type StoryModule = {
   id: string;
@@ -634,9 +635,8 @@ export function StoryCivicHub() {
           <div className="civic-module-screen">
             <div className="civic-ms-top">
               <div className="civic-ms-logo">
-                <div className="civic-ms-logo-icon">📊</div>
-                <div className="civic-ms-logo-text">
-                  Budget <strong>Ndio</strong> Story
+                <div className="relative h-8 w-28">
+                  <Image src="/logo.svg" alt="Budget Ndio Story" fill className="object-contain" />
                 </div>
               </div>
               <button className="civic-top-btn" onClick={toggleTheme} style={{ marginLeft: 'auto' }}>
