@@ -3,9 +3,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Loader2, X, Mail, Bell, Share2, Send, Sparkles, Target, TrendingUp, Award } from 'lucide-react';
+import { Loader2, X, Mail, Bell, Share2, Send, Sparkles, Target, TrendingUp, Award, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { YouTubeVideoCard, LessonCard, VideoGrid } from '@/components/youtube/YouTubeVideoCard';
+import { useYouTubeVideos, useLessons } from '@/hooks/useYouTube';
+
 
 // Floating Particles Component
 function FloatingParticles() {
@@ -43,6 +46,20 @@ function FloatingParticles() {
 
 // Social platform configurations
 const socialPlatforms = [
+  {
+    id: 'lessons',
+    name: 'Lessons',
+    username: 'Video Lessons',
+    color: 'from-amber-500 via-orange-500 to-red-500',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+        <path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+      </svg>
+    ),
+    followUrl: '/media-hub',
+  },
   {
     id: 'tiktok',
     name: 'TikTok',
@@ -375,9 +392,55 @@ function TwitterFeedComponent({ username, count = 5 }: { username: string; count
   );
 }
 
-// YouTube Feed Component
+// YouTube Feed Component - Fetches videos dynamically from API
 function YouTubeFeed({ username, count = 6 }: { username: string; count?: number }) {
-  const videos = youtubeVideos.slice(0, count);
+  const { videos, loading, error } = useYouTubeVideos(count);
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center">
+            <span className="text-2xl font-bold text-white">B</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-lg">{username}</h3>
+            <p className="text-sm text-muted-foreground">Budget Ndio Story</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: count }).map((_, i) => (
+            <div key={i} className="rounded-xl overflow-hidden bg-card animate-pulse">
+              <div className="aspect-video bg-muted" />
+              <div className="p-3 space-y-2">
+                <div className="h-4 bg-muted rounded w-full" />
+                <div className="h-4 bg-muted rounded w-2/3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center">
+            <span className="text-2xl font-bold text-white">B</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-lg">{username}</h3>
+            <p className="text-sm text-muted-foreground">Budget Ndio Story</p>
+          </div>
+        </div>
+        <div className="text-center py-8 text-muted-foreground">
+          <p>Unable to load videos. Using fallback content.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -387,41 +450,11 @@ function YouTubeFeed({ username, count = 6 }: { username: string; count?: number
         </div>
         <div>
           <h3 className="font-bold text-lg">{username}</h3>
-          <p className="text-sm text-muted-foreground">Budget Ndio Story</p>
+          <p className="text-sm text-muted-foreground">Budget Ndio Story - Latest Videos</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {videos.map((video) => (
-          <a
-            key={video.id}
-            href={`https://www.youtube.com/watch?v=${video.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block rounded-xl overflow-hidden bg-card hover:shadow-lg transition-all hover:-translate-y-1"
-          >
-            <div className="relative aspect-video">
-              <img
-                src={video.thumbnail}
-                alt={video.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5 ml-1">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div className="p-3">
-              <p className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                {video.title}
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
+      <VideoGrid videos={videos} />
 
       <div className="text-center">
         <a
@@ -435,6 +468,114 @@ function YouTubeFeed({ username, count = 6 }: { username: string; count?: number
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
         </a>
+      </div>
+    </div>
+  );
+}
+
+// Lessons Feed Component - Shows videos as lessons with key takeaways
+function LessonsFeed({ count = 6 }: { count?: number }) {
+  const { lessons, loading, error, refetch } = useLessons(count);
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      await fetch(`${apiUrl}/api/youtube/sync?limit=${count}&takeaways=true`, {
+        method: 'POST',
+      });
+      refetch();
+    } catch (err) {
+      console.error('Error syncing lessons:', err);
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+              <BookOpen className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg">Video Lessons</h3>
+              <p className="text-sm text-muted-foreground">Learn budget concepts through videos</p>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: count }).map((_, i) => (
+            <div key={i} className="rounded-xl overflow-hidden bg-card animate-pulse">
+              <div className="aspect-video bg-muted" />
+              <div className="p-4 space-y-2">
+                <div className="h-4 bg-muted rounded w-full" />
+                <div className="h-4 bg-muted rounded w-2/3" />
+                <div className="h-3 bg-muted rounded w-full mt-4" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error || lessons.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+              <BookOpen className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg">Video Lessons</h3>
+              <p className="text-sm text-muted-foreground">Learn budget concepts through videos</p>
+            </div>
+          </div>
+          <Button onClick={handleSync} disabled={syncing} size="sm" className="rounded-full">
+            {syncing ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sync Lessons'}
+          </Button>
+        </div>
+        <div className="text-center py-12 text-muted-foreground">
+          <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
+          <p className="mb-4">No lessons available yet. Sync from YouTube to get started.</p>
+          <p className="text-sm">Configure YOUTUBE_API_KEY and OPENAI_API_KEY in your environment.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+            <BookOpen className="w-8 h-8 text-white" />
+          </div>
+          <div>
+            <h3 className="font-bold text-lg">Video Lessons</h3>
+            <p className="text-sm text-muted-foreground">Watch and learn with key takeaways</p>
+          </div>
+        </div>
+        <Button onClick={handleSync} disabled={syncing} variant="outline" size="sm" className="rounded-full">
+          {syncing ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Refresh'}
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {lessons.map((lesson) => (
+          <LessonCard key={lesson.id} lesson={lesson} />
+        ))}
+      </div>
+
+      <div className="text-center pt-4">
+        <p className="text-sm text-muted-foreground">
+          {lessons.length} lessons available
+        </p>
       </div>
     </div>
   );
@@ -494,6 +635,7 @@ function TabContent({ platform, isActive }: { platform: typeof socialPlatforms[0
       <EngagementButtons platform={platform} />
       
       <div className="mt-8">
+        {platform.id === 'lessons' && <LessonsFeed count={9} />}
         {platform.id === 'tiktok' && <TikTokFeed username={platform.username} count={6} />}
         {platform.id === 'twitter' && <TwitterFeedComponent username={platform.username} count={5} />}
         {platform.id === 'youtube' && <YouTubeFeed username={platform.username} count={6} />}
@@ -503,7 +645,7 @@ function TabContent({ platform, isActive }: { platform: typeof socialPlatforms[0
 }
 
 export default function MediaHubPage() {
-  const [activeTab, setActiveTab] = useState('tiktok');
+  const [activeTab, setActiveTab] = useState('lessons');
   const [stats, setStats] = useState({ followers: 0, engagement: 0, videos: 0 });
   
   // Animate stats on mount
@@ -594,7 +736,13 @@ export default function MediaHubPage() {
             
             {/* Social Links Row */}
             <div className="flex justify-center gap-4 pt-4 flex-wrap">
-              {socialPlatforms.map((platform) => (
+              <Button asChild variant="outline" size="sm" className="rounded-full border-amber-500 text-amber-600 hover:bg-amber-50">
+                <Link href="/media-hub?tab=lessons">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Lessons
+                </Link>
+              </Button>
+              {socialPlatforms.filter(p => p.id !== 'lessons').map((platform) => (
                 <a
                   key={platform.id}
                   href={platform.followUrl}
@@ -644,6 +792,7 @@ export default function MediaHubPage() {
                 >
                   <span className={cn(
                     'p-1 rounded',
+                    platform.id === 'lessons' && 'text-amber-500',
                     platform.id === 'tiktok' && 'text-pink-500',
                     platform.id === 'twitter' && 'text-gray-900',
                     platform.id === 'youtube' && 'text-red-600'

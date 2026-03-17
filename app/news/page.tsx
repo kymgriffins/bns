@@ -5,7 +5,13 @@ import { Loader2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "News & Updates - Budget Ndio Story",
-  description: "Stories, videos, and updates. Built for clarity and action.",
+  description: "Stories, videos, and updates from Budget Ndio Story. Built for clarity and action. Stay informed about Kenya's budget process and civic engagement opportunities.",
+  keywords: ["budget news", "Kenya budget updates", "civic engagement news", "budget transparency", "finance bill", "public participation"],
+  openGraph: {
+    title: "News & Updates - Budget Ndio Story",
+    description: "Stories, videos, and updates. Built for clarity and action.",
+    type: "website",
+  },
 };
 
 // Server-side data fetching via our own proxy endpoint

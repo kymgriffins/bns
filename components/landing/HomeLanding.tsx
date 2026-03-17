@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
+  ArrowUpRight,
   BookOpen,
   BarChart3,
   MapPin,
@@ -14,7 +15,9 @@ import {
   GraduationCap,
   Quote,
   Folder,
+  Play,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { DonateSection } from '@/components/donate-section';
 import { Marquee } from '@/components/shadcn-space/animations/marquee';
@@ -22,6 +25,120 @@ import { SectionHeader } from '@/components/layout';
 import { ScrollSection } from '@/components/scroll';
 import { LandingCursor } from './LandingCursor';
 import { LandingSection } from './LandingSection';
+import { FeaturedYouTubeVideo } from '@/components/youtube/YouTubeVideoCard';
+import { useYouTubeVideos } from '@/hooks/useYouTube';
+
+const podcastUrl =
+  process.env.NEXT_PUBLIC_YOUTUBE_PODCAST_URL || 'https://www.youtube.com/@BudgetNdioStory';
+
+function getYouTubePlayerConfig(url: string) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, '');
+
+    // Playlist embed
+    const list = u.searchParams.get('list');
+    if (list) {
+      return {
+        embedUrl: `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(list)}`,
+        videoId: null as string | null,
+      };
+    }
+
+    // Video embed (watch?v= or youtu.be/<id>)
+    const v = u.searchParams.get('v');
+    if (v) {
+      return {
+        embedUrl: `https://www.youtube.com/embed/${encodeURIComponent(v)}`,
+        videoId: v,
+      };
+    }
+
+    if (host === 'youtu.be') {
+      const id = u.pathname.replace('/', '').trim();
+      if (id) {
+        return {
+          embedUrl: `https://www.youtube.com/embed/${encodeURIComponent(id)}`,
+          videoId: id,
+        };
+      }
+    }
+
+    // Fallback: don't embed unknown types (channels, handles, etc.)
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function FeaturedYouTubePlayer({
+  url,
+  title,
+}: {
+  url: string;
+  title: string;
+}) {
+  const config = getYouTubePlayerConfig(url);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  if (!config) return null;
+
+  const thumbnail = config.videoId
+    ? `https://i.ytimg.com/vi/${encodeURIComponent(config.videoId)}/hqdefault.jpg`
+    : null;
+
+  return (
+    <div className="relative aspect-video w-full bg-black/90">
+      {!isPlaying ? (
+        <button
+          type="button"
+          onClick={() => setIsPlaying(true)}
+          className="group relative h-full w-full overflow-hidden text-left"
+          aria-label="Play featured video"
+        >
+          {thumbnail ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={thumbnail}
+              alt=""
+              className="h-full w-full object-cover opacity-90 transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              loading="lazy"
+            />
+          ) : (
+            <div className="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.35),transparent_55%),radial-gradient(circle_at_70%_80%,rgba(14,165,233,0.25),transparent_55%)]" />
+          )}
+
+          <div className="pointer-events-none absolute inset-0 bg-black/35" />
+
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black shadow-lg transition-transform duration-200 ease-out group-hover:scale-[1.03]">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white">
+                <Play className="h-4 w-4 translate-x-[0.5px]" />
+              </span>
+              Play
+            </span>
+          </div>
+
+          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-3 text-[11px] text-white/85 sm:bottom-4 sm:left-4 sm:right-4 sm:text-xs">
+            <p className="min-w-0 truncate font-medium">{title}</p>
+            <span className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 font-semibold text-white/90 backdrop-blur-sm">
+              YouTube
+            </span>
+          </div>
+        </button>
+      ) : (
+        <iframe
+          className="h-full w-full"
+          src={`${config.embedUrl}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      )}
+    </div>
+  );
+}
 
 const statistics = [
   { value: 10, suffix: ' years', label: 'Budget Reports Analyzed', icon: FileText },
@@ -389,6 +506,15 @@ const partners = [
 export function HomeLanding() {
   const [activeHowStep, setActiveHowStep] = useState<typeof howItWorks[number]>(howItWorks[0]);
   const mediaScrollRef = useRef<HTMLDivElement | null>(null);
+  const siteNoteStamp = new Intl.DateTimeFormat('en-KE', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  }).format(new Date());
+
+  // Fetch latest video from YouTube channel
+  const { videos: latestVideos, loading: videoLoading, error: videoError } = useYouTubeVideos(1);
+  const latestVideo = latestVideos.length > 0 ? latestVideos[0] : null;
 
   const scrollMedia = (direction: 'left' | 'right') => {
     const el = mediaScrollRef.current;
@@ -527,6 +653,202 @@ export function HomeLanding() {
             </div>
           </Marquee>
         </LandingSection>
+
+        {/* Podcast series (YouTube) */}
+        <ScrollSection animation={scrollFadeUpXs} className="h-full min-h-full snap-start">
+          <LandingSection id="podcast" variant="muted" contained>
+            <div className="grid min-h-0 flex-1 gap-6 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:items-center md:gap-10">
+              <motion.div
+                initial={{ opacity: 0, y: 18, scale: 0.985 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                className="order-2 relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:order-1"
+              >
+                <div className="pointer-events-none absolute -left-12 -top-12 h-48 w-48 rounded-full bg-primary/15 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-sky-500/10 blur-3xl" />
+
+                <div className="relative">
+                  {/* Dynamic YouTube video - fetches latest from channel */}
+                  {latestVideo && !videoError ? (
+                    <FeaturedYouTubeVideo
+                      video={latestVideo}
+                      loading={videoLoading}
+                    />
+                  ) : getYouTubePlayerConfig(podcastUrl) ? (
+                    <FeaturedYouTubePlayer
+                      url={podcastUrl}
+                      title="Budget Ndio Story podcast on YouTube"
+                    />
+                  ) : (
+                    <div className="flex aspect-video w-full items-center justify-center bg-black/90 p-6 text-center">
+                      <div className="max-w-md space-y-3">
+                        <p className="text-sm font-semibold text-white">Podcast series on YouTube</p>
+                        <p className="text-xs text-white/70">
+                          Add a direct YouTube video or playlist URL to{' '}
+                          <span className="font-medium">NEXT_PUBLIC_YOUTUBE_PODCAST_URL</span> to show the player here.
+                        </p>
+                        <a
+                          href={podcastUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-black transition-colors hover:bg-white/90"
+                        >
+                          Open on YouTube <ArrowUpRight className="h-4 w-4" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex flex-col gap-3 border-t border-border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                        Latest Video
+                      </p>
+                      <p className="mt-1 truncate text-sm font-semibold">
+                        {latestVideo?.title || 'Budget Ndio Story · Latest Episode'}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Button asChild size="sm" className="rounded-full">
+                        <a href={podcastUrl} target="_blank" rel="noopener noreferrer">
+                          Watch on YouTube <ArrowUpRight className="ml-1.5 h-4 w-4" />
+                        </a>
+                      </Button>
+                      <Button asChild variant="outline" size="sm" className="rounded-full">
+                        <Link href="/media-hub">More media</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+                transition={{ duration: 0.55, ease: 'easeOut', delay: 0.05 }}
+                className="order-1 space-y-4 md:order-2"
+              >
+                <SectionHeader
+                  label="Podcast"
+                  title="Budget talk — in real time."
+                  description="One featured episode. Built for sharing."
+                />
+                <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                        Site note · {siteNoteStamp}
+                      </p>
+                      <p className="mt-1 text-sm font-semibold">
+                        BNS-001 · The 5 Trillion Shilling Question
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        National Infrastructure Fund · public finance & governance.
+                      </p>
+                    </div>
+                    <div className="hidden shrink-0 md:flex items-center gap-2">
+                      <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
+                        LIVE
+                      </span>
+                      <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                        ~45 min
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 space-y-3">
+                    {/* Compact hero data point */}
+                    <div className="grid gap-3 rounded-2xl border border-border bg-background p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                            Proposed fund size
+                          </p>
+                          <div className="mt-1 flex items-baseline gap-2">
+                            <motion.p
+                              initial={{ opacity: 0, y: 6 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, margin: '-20% 0px -20% 0px' }}
+                              transition={{ duration: 0.5, ease: 'easeOut' }}
+                              className="text-2xl font-semibold tracking-tight"
+                            >
+                              KSh 5T
+                            </motion.p>
+                            <p className="text-xs font-semibold text-muted-foreground">(~$38B)</p>
+                          </div>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            The question is not “can we build?” — it’s “who holds the key?”
+                          </p>
+                        </div>
+                        <div className="hidden sm:flex flex-col items-end gap-2">
+                          <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
+                            Intermediate
+                          </span>
+                          <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                            Kenya
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          { label: 'Marketing vs mechanics', tone: 'bg-muted' },
+                          { label: 'Participation paradox', tone: 'bg-muted' },
+                          { label: 'Safaricom test', tone: 'bg-muted' },
+                        ].map((t) => (
+                          <span
+                            key={t.label}
+                            className={`rounded-full ${t.tone} px-3 py-1 text-[11px] font-semibold text-foreground/80`}
+                          >
+                            {t.label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Governance mini scorecard */}
+                    <div className="space-y-2">
+                      {[
+                        { label: 'Public participation', value: 0.28 },
+                        { label: 'Parliament oversight', value: 0.34 },
+                        { label: 'Audit access', value: 0.22 },
+                      ].map((m, idx) => (
+                        <div key={m.label} className="grid grid-cols-[110px_1fr_40px] items-center gap-3">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                            {m.label}
+                          </p>
+                          <div className="h-2 overflow-hidden rounded-full bg-muted">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${Math.round(m.value * 100)}%` }}
+                              viewport={{ once: true, margin: '-20% 0px -20% 0px' }}
+                              transition={{ duration: 0.7, ease: 'easeOut', delay: 0.05 + idx * 0.06 }}
+                              className="h-full rounded-full bg-gradient-to-r from-primary/90 to-sky-500/80"
+                            />
+                          </div>
+                          <p className="text-xs font-semibold text-foreground/70">
+                            {Math.round(m.value * 100)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                        In one line
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        “No more debt” pitch — but governance decides whether it helps youth.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </LandingSection>
+        </ScrollSection>
 
         {/* Budget story – fixed height, responsive */}
         <ScrollSection animation={scrollFadeUp} className="h-full min-h-full snap-start">

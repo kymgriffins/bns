@@ -16,7 +16,6 @@ import {
   DollarSign,
   MessageSquare,
   Shield,
-  Sparkles,
   BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -70,7 +69,7 @@ const initialMessages: Message[] = [
   {
     id: "1",
     role: "assistant",
-    content: "Hi! I'm your **AI assistant** for Budget Ndio Story. I can help you understand Kenya's budget, find reports, and answer questions about the platform.\n\nAsk anything—e.g. \"What is BPS?\", \"Where are county briefs?\", or pick a suggestion below.",
+    content: "Hi! I’m the Budget Ndio Story support assistant. I can help you understand Kenya's budget, find reports, and answer questions about the platform.\n\nAsk anything—e.g. \"What is BPS?\", \"Where are county briefs?\", or pick a suggestion below.",
     timestamp: new Date(),
   },
 ];
@@ -97,6 +96,11 @@ function renderMessageContent(text: string) {
 }
 
 export function ChatWidget() {
+  // Check if chat widget should be hidden via environment variable
+  if (process.env.NEXT_PUBLIC_HIDE_CHAT_WIDGET === 'true') {
+    return null;
+  }
+  
   const [isOpen, setIsOpen] = React.useState(false);
   const [messages, setMessages] = React.useState<Message[]>(initialMessages);
   const [input, setInput] = React.useState("");
@@ -215,9 +219,9 @@ export function ChatWidget() {
             ? "bg-muted-foreground text-muted"
             : "bg-primary text-primary-foreground hover:bg-primary/90"
         )}
-        aria-label={isOpen ? "Close AI assistant" : "Open AI assistant"}
+        aria-label={isOpen ? "Close support chat" : "Open support chat"}
       >
-        {isOpen ? <X className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
+        {isOpen ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
       </Button>
 
       <div
@@ -230,15 +234,12 @@ export function ChatWidget() {
           {/* Header */}
           <div className="flex items-center gap-3 border-b border-border bg-muted/40 px-4 py-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-              <Sparkles className="h-5 w-5" />
+              <MessageCircle className="h-5 w-5" />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-foreground">Budget Ndio Story</h3>
               <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                  AI
-                </span>
-                Assistant · Ask about budget & reports
+                Support · Ask about budget & reports
               </p>
             </div>
             <div className="relative group">
@@ -340,7 +341,7 @@ export function ChatWidget() {
                         {msg.role === "user" ? (
                           <span className="text-[10px] font-medium">You</span>
                         ) : msg.role === "assistant" ? (
-                          <Sparkles className="h-4 w-4" />
+                          <MessageCircle className="h-4 w-4" />
                         ) : (
                           <HelpCircle className="h-4 w-4" />
                         )}
@@ -367,7 +368,7 @@ export function ChatWidget() {
                   {isLoading && (
                     <div className="flex gap-2">
                       <div className="h-8 w-8 shrink-0 rounded-full bg-primary/15 flex items-center justify-center">
-                        <Sparkles className="h-4 w-4 text-primary" />
+                        <MessageCircle className="h-4 w-4 text-primary" />
                       </div>
                       <div className="rounded-2xl rounded-bl-md bg-muted/60 border border-border px-4 py-2.5">
                         <div className="flex gap-1">

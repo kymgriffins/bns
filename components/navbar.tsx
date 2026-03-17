@@ -27,7 +27,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { usePathname } from "next/navigation";
 import { NavbarMobileAd } from "@/components/navbar-mobile-ad";
 import { AppreciationToken } from "@/components/appreciation-token";
-import { Heart, MessageCircle, Sparkles } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
 
 export type NavigationSection = {
   title: string;
@@ -234,6 +234,8 @@ export default function Navbar() {
       href: "/about",
     },
   ];
+
+  const mobileDiscoverLinks = navigationData.filter((item) => item.title !== "Budget");
 
   return (
     <motion.header
@@ -459,7 +461,7 @@ export default function Navbar() {
                         Discover
                       </p>
                       <nav className="flex flex-col">
-                        {navigationData.map((item) => (
+                        {mobileDiscoverLinks.map((item) => (
                           <SheetClose asChild key={item.title}>
                             <Link
                               href={item.href}
@@ -563,7 +565,7 @@ export default function Navbar() {
                             href="/donate"
                             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                           >
-                            <Sparkles className="h-4 w-4 shrink-0" />
+                            <Heart className="h-4 w-4 shrink-0" />
                             Support our work
                           </Link>
                         </SheetClose>

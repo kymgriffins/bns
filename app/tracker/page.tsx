@@ -8,6 +8,7 @@ import { PageSection, Container2026, SectionHeader } from "@/components/layout";
 import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
 
+
 // Floating Progress Particles
 function ProgressParticles() {
   const particles = Array.from({ length: 15 }, (_, i) => ({

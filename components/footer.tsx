@@ -1,10 +1,18 @@
 "use client";
-import { Mail, MapPin, Phone, Sun, Moon, Laptop, Twitter } from "lucide-react";
+import { Mail, MapPin, Phone, Sun, Moon, Laptop } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 // import Newsletter from "./newsletter";
 import { Button } from "./ui/button";
+
+function XLogo(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" {...props}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
 
 const navLinks = [
   { name: "Reports", href: "/reports" },
@@ -212,7 +220,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="text-sm font-NeueMontreal text-foreground/60 hover:text-foreground transition-colors"
                   >
-                    {social.name === "X" ? <Twitter size={20} /> : social.name}
+                    {social.name === "X" ? <XLogo className="h-5 w-5" /> : social.name}
                   </Link>
                 ))}
               </div>

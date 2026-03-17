@@ -1,6 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowRight, Calendar, FileQuestion, Users, GraduationCap, MapPin, BookOpen, MessageSquare, HandHeart, Sparkles, Target, CheckCircle } from "lucide-react";
@@ -8,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PageSection, Container2026, SectionHeader } from "@/components/layout";
 import { BentoCard, BentoSection, BentoCTASection } from "@/components/ui/bento-frame";
 import { BentoScrollAnimation, BentoStaggerGrid, BentoGridItem, BentoSectionHeader } from "@/components/ui/bento-animations";
+
 
 // Pathway Progress Tracker
 function PathwayTracker() {

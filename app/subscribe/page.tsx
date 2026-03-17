@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
+
 // Floating Particles for Subscribe Page
 function SubscribeParticles() {
   const particles = Array.from({ length: 20 }, (_, i) => ({

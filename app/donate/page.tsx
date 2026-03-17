@@ -8,6 +8,7 @@ import { ScrollReveal } from "@/components/animations/hig-motion";
 import { DonatePageForm } from "@/components/donate/DonatePageForm";
 import { DonateSuccessView } from "@/components/donate/DonateSuccessView";
 
+
 type PaymentMethod = "mpesa" | "stripe";
 
 export default function DonatePage() {
