@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer2 from "@/components/shadcn-space/blocks/footer-01/footer";
 
-const NO_CHROME_PREFIXES = ["/admin", "/dashboard-shell-01", "/protected", "/civic-hub"];
+const NO_CHROME_PREFIXES = ["/admin", "/dashboard-shell-01", "/protected", "/learn", "/civic-hub"];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

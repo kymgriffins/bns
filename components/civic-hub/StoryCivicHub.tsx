@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import Link from "next/link";
 
 // Custom hook for swipe gestures
 function useSwipeGesture(onSwipeLeft: () => void, onSwipeRight: () => void, enabled: boolean = true) {
@@ -1044,36 +1045,84 @@ export function StoryCivicHub() {
                   <Image src="/logo.svg" alt="Budget Ndio Story" fill className="object-contain" />
                 </div>
               </div>
+              <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                <Link href="/" style={{ fontSize: 12, color: "var(--ch-muted)", textDecoration: "none" }}>
+                  Home
+                </Link>
+                <span aria-hidden="true" style={{ opacity: 0.45, fontSize: 12 }}>
+                  /
+                </span>
+                <Link href="/learn" style={{ fontSize: 12, color: "var(--ch-text)", textDecoration: "none" }}>
+                  Learn
+                </Link>
+              </nav>
               <button className="civic-top-btn" onClick={toggleTheme} style={{ marginLeft: 'auto' }}>
                 {theme === "dark" ? "🌙" : "☀️"}
               </button>
             </div>
-            <div className="civic-ms-body">
-              <div className="civic-ms-greeting">
-                Civic <em>Hub</em>
+            <div className="mx-auto w-full max-w-6xl px-5 pb-16 pt-8 sm:px-6">
+              <div className="mb-6 space-y-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                  Learn · Story modules
+                </p>
+                <h1 className="font-neue-montreal text-2xl font-medium tracking-tight sm:text-3xl">
+                  Budget literacy, but make it scroll-stopping.
+                </h1>
+                <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  Short lessons you can finish fast. Swipe through, quiz yourself, then take action with receipts.
+                </p>
+
+                {(() => {
+                  const unlocked = MODULES_LIST.filter((m) => !m.locked && (m.slides ?? 0) > 0);
+                  const completedCount = unlocked.filter((m) => progress[m.id]?.completed).length;
+                  const progressPct = unlocked.length ? Math.round((completedCount / unlocked.length) * 100) : 0;
+                  return (
+                    <div className="flex flex-wrap items-center gap-2 pt-2">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        {unlocked.length} modules · {completedCount} done
+                      </span>
+                      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+                        <span className="font-semibold text-foreground">{progressPct}%</span> overall
+                      </span>
+                    </div>
+                  );
+                })()}
               </div>
-              <div className="civic-ms-sub">
-                Quick civic lessons — like stories. Swipe (or click) through, learn something real, then act on it.
-              </div>
-              <div id="civic-ms-modules">
+
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                Modules
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {MODULES_LIST.map((m) => {
                   const p = progress[m.id] ?? { slide: 0, completed: false };
                   const pct = p.completed ? 100 : m.slides ? Math.round((p.slide / (m.slides || 1)) * 100) : 0;
-                  const status = p.completed ? "done" : p.slide > 0 ? "progress" : m.locked ? "locked" : "";
-                  const statusLabel = p.completed
-                    ? "✓ Done"
-                    : p.slide > 0
-                    ? "In Progress"
-                    : m.locked
-                    ? "Coming soon"
-                    : "New";
-                  const statusClass =
-                    status === "done" ? "civic-status-done" : status === "progress" ? "civic-status-progress" : "civic-status-locked";
+                  const status = p.completed ? "done" : p.slide > 0 ? "progress" : m.locked ? "locked" : "new";
+                  const statusLabel =
+                    status === "done"
+                      ? "Done"
+                      : status === "progress"
+                      ? "In progress"
+                      : status === "locked"
+                      ? "Coming soon"
+                      : "New";
                   const locked = m.locked;
+                  const levelClass =
+                    m.category.toLowerCase().includes("advanced")
+                      ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                      : "bg-teal-500/10 text-teal-400 border-teal-500/20";
+                  const statusClass =
+                    status === "done"
+                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                      : status === "progress"
+                      ? "bg-teal-500/10 text-teal-400 border-teal-500/20"
+                      : status === "locked"
+                      ? "bg-muted text-muted-foreground border-border"
+                      : "bg-amber-500/10 text-amber-400 border-amber-500/20";
+
                   return (
                     <button
                       key={m.id}
-                      className="civic-ms-module-card"
                       onClick={() => {
                         if (locked) {
                           showToast("Coming soon! Finish Module 001 first");
@@ -1081,37 +1130,53 @@ export function StoryCivicHub() {
                         }
                         startModule(m.id);
                       }}
+                      className="group relative overflow-hidden rounded-2xl border border-border bg-card text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                       style={{ opacity: locked ? 0.6 : 1 }}
                     >
                       <div
-                        className="civic-ms-module-bar"
+                        className="h-1.5 w-full"
                         style={{ background: `linear-gradient(90deg,${m.accentA},${m.accentB})` }}
+                        aria-hidden="true"
                       />
-                      <div className="civic-ms-module-inner">
-                        <div className="civic-ms-mod-top">
-                          <div className="civic-ms-badge" style={{ background: m.catBg, color: m.catColor }}>
-                            {m.category}
+                      <div className="p-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex min-w-0 flex-wrap items-center gap-2">
+                            <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold ${levelClass}`}>
+                              {m.category}
+                            </span>
+                            <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold ${statusClass}`}>
+                              {statusLabel}
+                            </span>
                           </div>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                            <div className={`civic-ms-mod-status ${statusClass}`}>{statusLabel}</div>
-                            <div className="civic-ms-mod-num">{m.num}</div>
-                          </div>
+                          <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                            {m.num}
+                          </span>
                         </div>
-                        <div className="civic-ms-mod-title">{m.title}</div>
-                        <div className="civic-ms-mod-desc">{m.desc}</div>
-                        <div className="civic-ms-mod-footer">
-                          <span>⏱ {m.duration}</span>
-                          <span>·</span>
-                          <span>📋 {m.slides || "?"} slides</span>
-                          <div className="civic-ms-teacher">
-                            <span>{m.teacher.avatar}</span>
-                            <span>{m.teacher.name.split(" ")[0]}</span>
-                          </div>
+
+                        <p className="mt-3 line-clamp-2 text-base font-semibold leading-snug">
+                          {m.title}
+                        </p>
+                        <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
+                          {m.desc}
+                        </p>
+
+                        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                          <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1">
+                            ⏱ {m.duration}
+                          </span>
+                          <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-1">
+                            📋 {m.slides || "?"} slides
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1">
+                            <span aria-hidden="true">{m.teacher.avatar}</span>
+                            {m.teacher.name.split(" ")[0]}
+                          </span>
                         </div>
+
                         {pct > 0 && (
-                          <div className="civic-ms-prog-bar">
+                          <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-muted">
                             <div
-                              className="civic-ms-prog-fill"
+                              className="h-full rounded-full transition-[width] duration-700"
                               style={{
                                 width: `${pct}%`,
                                 background: `linear-gradient(90deg,${m.accentA},${m.accentB})`,

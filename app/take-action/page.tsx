@@ -75,21 +75,21 @@ const pathways = [
     title: "Budget Calendar",
     description: "Track participation windows and key dates in the budget cycle",
     cta: "View Calendar",
-    href: "/civic-hub",
+    href: "/learn",
   },
   {
     icon: FileQuestion,
     title: "Submission Support",
     description: "Templates and guidance for submitting memoranda and public comments",
     cta: "Get Template",
-    href: "/civic-hub",
+    href: "/learn",
   },
   {
     icon: MessageSquare,
     title: "Question Bank",
     description: "Questions to ask at public forums and participation sessions",
     cta: "Browse Questions",
-    href: "/civic-hub",
+    href: "/learn",
   },
   {
     icon: MapPin,
@@ -217,7 +217,7 @@ export default function TakeActionPage() {
         <BentoStaggerGrid stagger={0.1} className="grid-cols-2 md:grid-cols-5 gap-4">
           {toolkit.map((item, index) => (
             <BentoGridItem key={item.name} animation="scaleIn" delay={index * 0.1}>
-              <Link href="/civic-hub" className="block h-full">
+              <Link href="/learn" className="block h-full">
                 <BentoCard padding="md" accentColor="teal" hover className="h-full group">
                   <BookOpen className="h-5 w-5 text-teal-600 dark:text-teal-400 mb-3" />
                   <h3 className="font-medium text-sm mb-1">{item.name}</h3>
@@ -231,7 +231,7 @@ export default function TakeActionPage() {
         <BentoScrollAnimation animation="fadeInUp" delay={0.3}>
           <div className="text-center mt-8">
             <Button asChild className="rounded-full">
-              <Link href="/civic-hub">
+              <Link href="/learn">
                 Access Full Toolkit <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -278,7 +278,7 @@ export default function TakeActionPage() {
         <BentoScrollAnimation animation="fadeInUp" delay={0.2}>
           <div className="text-center mt-8">
             <Button asChild variant="outline" className="rounded-full">
-              <Link href="/civic-hub">
+              <Link href="/learn">
                 View Full Calendar <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -325,7 +325,7 @@ export default function TakeActionPage() {
                 <Link href="mailto:info@budgetndiostory.org">Contact Us</Link>
               </Button>
               <Button asChild variant="outline" className="rounded-full">
-                <Link href="/civic-hub">Learn More</Link>
+                <Link href="/learn">Learn More</Link>
               </Button>
             </div>
           </BentoCard>

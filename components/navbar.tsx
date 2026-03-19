@@ -218,8 +218,8 @@ export default function Navbar() {
     //   href: "/take-action",
     // },
     {
-      title: "Civic Hub",
-      href: "/civic-hub",
+      title: "Learn",
+      href: "/learn",
     },
     // {
     //   title: "News",

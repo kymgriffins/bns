@@ -763,7 +763,7 @@ export default function MediaHubPage() {
             <div className="mt-8 pt-8 border-t border-border/50 flex flex-wrap justify-center gap-3 text-sm">
               <span className="text-muted-foreground">Want to go deeper?</span>
               <Button asChild variant="outline" size="sm" className="rounded-full">
-                <Link href="/civic-hub">Learn Budget 101</Link>
+                <Link href="/learn">Learn Budget 101</Link>
               </Button>
               <Button asChild variant="outline" size="sm" className="rounded-full">
                 <Link href="/take-action">Take action</Link>

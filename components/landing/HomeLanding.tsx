@@ -154,8 +154,8 @@ const howItWorks = [
     description:
       'Start at the civic hub: BPS 2026 basics and Millicent Makini’s summary—who decides, key documents, and where you show up.',
     icon: GraduationCap,
-    href: '/civic-hub',
-    badge: 'Civic hub',
+    href: '/learn',
+    badge: 'Learn',
   },
   {
     step: '02',
@@ -227,10 +227,10 @@ const budgetStoryChapters = [
 
 const civicHubLinks = [
   {
-    title: 'Learn at the civic hub',
+    title: 'Learn in story mode',
     description: 'BPS 2026 basics + Millicent Makini’s summary—decode the budget, quiz & reflections.',
-    href: '/civic-hub',
-    badge: 'Civic hub',
+    href: '/learn',
+    badge: 'Learn',
   },
   {
     title: 'Track county delivery',
@@ -264,7 +264,7 @@ const civicHubLearnModules = [
     id: 'budget-101',
     title: 'Budget 101',
     subtitle: 'Interactive',
-    href: '/civic-hub/budget-101',
+    href: '/learn/budget-101',
     minutes: 12,
     mediaType: 'video',
     mediaSrc: '/bnsoo1.mp4',
@@ -273,7 +273,7 @@ const civicHubLearnModules = [
     id: 'budget-cycle',
     title: 'Budget Policy: The Data',
     subtitle: 'BPS 2026 · Data-first explainer',
-    href: '/civic-hub/budget-cycle',
+    href: '/learn/budget-cycle',
     minutes: 12,
     mediaType: 'link',
   },
@@ -281,7 +281,7 @@ const civicHubLearnModules = [
     id: 'roles',
     title: 'Public Advanced Learning 001',
     subtitle: "Reflecting on Kenya's 2026 BPS",
-    href: '/civic-hub/roles',
+    href: '/learn/roles',
     minutes: 10,
     mediaType: 'link',
   },
@@ -451,8 +451,8 @@ function CivicHubCard() {
             variant="secondary"
             className="w-full rounded-full bg-primary-foreground text-primary shadow-md sm:w-auto"
           >
-            <Link href="/civic-hub" className="inline-flex items-center justify-center">
-              Open civic hub
+            <Link href="/learn" className="inline-flex items-center justify-center">
+              Open Learn
               <ArrowRight className="ml-2 h-3 w-3" />
             </Link>
           </Button>
@@ -574,8 +574,8 @@ export function HomeLanding() {
                     size="lg"
                     className="rounded-full bg-white px-4 text-sm font-semibold text-[var(--hero-bg)] hover:bg-white/95 focus-visible:ring-white/50 sm:px-6 sm:text-base"
                   >
-                    <Link href="/civic-hub">
-                      Enter the civic hub
+                    <Link href="/learn">
+                      Enter Learn
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -1162,8 +1162,8 @@ export function HomeLanding() {
                   variant="secondary"
                   className="group mt-2 w-full rounded-full bg-primary-foreground text-primary shadow-sm transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] md:w-auto md:px-6"
                 >
-                  <Link href="/civic-hub">
-                    Enter the civic hub
+                  <Link href="/learn">
+                    Enter Learn
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </Link>
                 </Button>

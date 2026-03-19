@@ -96,6 +96,7 @@ const NO_NAVBAR_ROUTES = [
   "/admin",
   "/dashboard-shell-01",
   "/protected",
+  "/learn",
   "/civic-hub",
 ];
 

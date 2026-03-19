@@ -15,7 +15,7 @@ function XLogo(props: React.SVGProps<SVGSVGElement>) {
 
 const exploreLinks = [
   { label: "Budget Reports", href: "/reports" },
-  { label: "Civic Hub", href: "/civic-hub" },
+  { label: "Learn", href: "/learn" },
   { label: "Articles", href: "/blogs" },
 ];
 
