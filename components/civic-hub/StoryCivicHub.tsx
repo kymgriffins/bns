@@ -128,6 +128,9 @@ type StorySlide = {
   quizIdx?: number;
 };
 
+type ViewMode = "hub" | "module" | "stories";
+type ActiveTab = "stories" | "learn" | "videos" | "quiz";
+
 type ProgressState = {
   [moduleId: string]: {
     slide: number;
@@ -138,6 +141,32 @@ type ProgressState = {
 type QuizState = {
   answered: boolean[];
   selectedIdx: (number | null)[];
+};
+
+// Hub Module Card Data
+type HubModule = {
+  id: string;
+  num: string;
+  title: string;
+  desc: string;
+  duration: string;
+  category: string;
+  catColor: string;
+  catBg: string;
+  level: "basic" | "advanced";
+  slidesCount: number;
+  lessonsCount: number;
+  videosCount: number;
+  quizCount: number;
+  accentA: string;
+  accentB: string;
+  teacher: {
+    name: string;
+    role: string;
+    avatar: string;
+  };
+  types: ("stories" | "learn" | "videos" | "quiz")[];
+  locked?: boolean;
 };
 
 const MODULES_LIST: StoryModule[] = [
@@ -180,7 +209,7 @@ const MODULES_LIST: StoryModule[] = [
   {
     id: "finance-bill",
     num: "003",
-    title: "Finance Bill 101",
+    title: "National Infrastructure Fund",
     desc: "The bill that changes what you pay. How to read it, track it, and respond to it. Coming soon.",
     duration: "15 min",
     slides: 0,
@@ -198,7 +227,86 @@ const MODULES_LIST: StoryModule[] = [
   },
 ];
 
+// Hub Modules - For the new hub grid layout from HTML bible
+const HUB_MODULES: HubModule[] = [
+  {
+    id: 'bps-2026',
+    num: '001',
+    title: 'The Budget Policy Statement 2026',
+    level: 'basic',
+    credits: 'Budget Ndio Story Team',
+    desc: "Understand how Kenya's budget roadmap works and exactly where you fit in. No jargon. Plain language.",
+    duration: '10 min',
+    slidesCount: 12,
+    lessonsCount: 5,
+    videosCount: 3,
+    quizCount: 4,
+    category: 'Budget Basics',
+    catColor: '#38B2AC',
+    catBg: 'rgba(56,178,172,.12)',
+    accentA: '#E53E3E',
+    accentB: '#F5C842',
+    teacher: { name: 'Wanjiru Kamau', role: 'Budget Literacy Educator', avatar: '👩🏾‍💼' },
+    types: ['stories', 'learn', 'videos', 'quiz']
+  },
+  {
+    id: 'bps-2026-advanced',
+    num: '002',
+    title: 'Reflecting on Kenya\'s 2026 Budget Policy Statement',
+    level: 'advanced',
+    credits: 'Millicent Makini',
+    desc: "Decode the budget's secret, master the 5 BETA Agenda pillars, track the trillion-shilling debt, and understand fiscal risks.",
+    duration: '25 min',
+    slidesCount: 12,
+    lessonsCount: 8,
+    videosCount: 5,
+    quizCount: 15,
+    category: 'Advanced',
+    catColor: '#9F7AEA',
+    catBg: 'rgba(159,122,234,.12)',
+    accentA: '#9F7AEA',
+    accentB: '#F06060',
+    teacher: { name: 'Millicent Makini', role: 'Budget & Policy Analyst', avatar: '👩🏾‍💻' },
+    types: ['stories', 'learn', 'videos', 'quiz']
+  },
+  {
+    id: 'finance-bill',
+    num: '003',
+    title: 'National Infrastructure Fund',
+    level: 'basic',
+    credits: 'Marcus Odhiambo',
+    desc: 'The bill that changes what you pay. How to read it, track it, and respond to it. Coming soon.',
+    duration: '15 min',
+    slidesCount: 0,
+    lessonsCount: 0,
+    videosCount: 0,
+    quizCount: 0,
+    category: 'National',
+    catColor: '#F06060',
+    catBg: 'rgba(240,96,96,.12)',
+    accentA: '#F06060',
+    accentB: '#9F7AEA',
+    teacher: { name: 'Marcus Odhiambo', role: 'Civic Rights Advocate', avatar: '👨🏾‍💼' },
+    types: [],
+    locked: true
+  }
+];
+
 const BPS_SLIDES: StorySlide[] = [
+  {
+    id: "cover",
+    type: "cover",
+    bg: "bg-red",
+    orbA: "rgba(229,62,62,.5)",
+    orbB: "rgba(245,200,66,.3)",
+    content: {
+      tag: "Module 001 · Budget Basics",
+      title: "Budget\nPolicy\n*Statement* 2026",
+      sub: "How Kenya's budget roadmap works — and exactly where you fit in.",
+      promise:
+        "In the next 10 minutes, you'll understand how the government plans public money. No jargon. No confusion. Just the facts, in your language.",
+    },
+  },
   {
     id: "cover",
     type: "cover",
@@ -870,6 +978,8 @@ export function StoryCivicHub() {
   const { theme: nextTheme, setTheme: setNextTheme } = useTheme();
 
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [viewMode, setViewMode] = useState<ViewMode>("hub");
+  const [activeTab, setActiveTab] = useState<ActiveTab>("stories");
   const [progress, setProgress] = useState<ProgressState>({});
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [slideIdx, setSlideIdx] = useState(0);
@@ -878,6 +988,12 @@ export function StoryCivicHub() {
     selectedIdx: [null, null],
   });
   const [toast, setToast] = useState<{ show: boolean; msg: string }>({ show: false, msg: "" });
+
+  // Get current hub module
+  const currentHubModule = useMemo(
+    () => HUB_MODULES.find((m) => m.id === activeModuleId) ?? HUB_MODULES[0],
+    [activeModuleId]
+  );
 
   const activeModule = useMemo(
     () => MODULES_LIST.find((m) => m.id === (activeModuleId ?? "bps-2026")) ?? MODULES_LIST[0],
@@ -1066,7 +1182,7 @@ export function StoryCivicHub() {
                   Learn · Story modules
                 </p>
                 <h1 className="font-neue-montreal text-2xl font-medium tracking-tight sm:text-3xl">
-                  Budget literacy, but make it scroll-stopping.
+                  Watch Kenya's budget explained — episode by episode. Each part includes takeaways, discussion prompts, notes, and a quiz.
                 </h1>
                 <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                   Short lessons you can finish fast. Swipe through, quiz yourself, then take action with receipts.
