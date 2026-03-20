@@ -1,0 +1,389 @@
+{
+  "id": "bps-2026-basic",
+  "moduleId": "bps-2026",
+  "level": "basic",
+  "title": "Budget Policy Statement 2026",
+  "slides": [
+    {
+      "id": "cover",
+      "type": "cover",
+      "bg": "bg-red",
+      "orbA": "rgba(229,62,62,.5)",
+      "orbB": "rgba(245,200,66,.3)",
+      "content": {
+        "tag": "Module 001 · Budget Basics",
+        "title": "Budget\nPolicy\n*Statement* 2026",
+        "sub": "How Kenya's budget roadmap works — and exactly where you fit in.",
+        "promise": "In the next 10 minutes, you'll understand how the government plans public money. No jargon. No confusion. Just the facts, in your language."
+      }
+    },
+    {
+      "id": "what-is-bps",
+      "type": "concept",
+      "bg": "bg-dark",
+      "orbA": "rgba(245,200,66,.3)",
+      "orbB": "rgba(56,178,172,.2)",
+      "content": {
+        "tag": "What is the BPS?",
+        "tagBg": "rgba(245,200,66,.15)",
+        "tagColor": "#F5C842",
+        "question": "Forget the complicated name.\nThe BPS is the government answering *3 questions* out loud:",
+        "bullets": [
+          {
+            "dot": "#F5C842",
+            "text": "<strong>Where are we now?</strong> How's the economy actually doing?"
+          },
+          {
+            "dot": "#38B2AC",
+            "text": "<strong>Where do we want to go?</strong> What are our big goals for the year?"
+          },
+          {
+            "dot": "#9F7AEA",
+            "text": "<strong>How much will we need?</strong> And how will we get the money?"
+          }
+        ],
+        "badge": "🇰🇪 Kenya Context: BPS is the parent of every County Fiscal Strategy Paper (CFSP). Whatever BPS prioritises nationally — your county must align with it when planning local markets, health centres, and roads."
+      }
+    },
+    {
+      "id": "analogy",
+      "type": "concept",
+      "bg": "bg-gold",
+      "orbA": "rgba(245,200,66,.4)",
+      "orbB": "rgba(229,62,62,.2)",
+      "content": {
+        "tag": "Think of it this way",
+        "tagBg": "rgba(245,200,66,.2)",
+        "tagColor": "#F5C842",
+        "question": "The BPS is the *roadmap*.\nThe April Budget is the actual *trip.*",
+        "bullets": [
+          {
+            "dot": "#F5C842",
+            "text": "Tabled in Parliament by <strong>February 15th</strong> every year"
+          },
+          {
+            "dot": "#F5C842",
+            "text": "Think of it as the government's <strong>term paper</strong> before the final exam (the April budget)"
+          },
+          {
+            "dot": "#F5C842",
+            "text": "Updates every year based on new economic data — like your <strong>maps app recalculating</strong>"
+          },
+          {
+            "dot": "#38B2AC",
+            "text": "Also sets <strong>budget ceilings</strong> for ministries so departments can't over-budget beyond what's available"
+          }
+        ]
+      }
+    },
+    {
+      "id": "chapters",
+      "type": "chapters",
+      "bg": "bg-dark",
+      "orbA": "rgba(159,122,234,.35)",
+      "orbB": "rgba(245,200,66,.2)",
+      "content": {
+        "headline": "The 5 Core Chapters\nof every BPS",
+        "chapters": [
+          {
+            "num": "1",
+            "label": "Vision",
+            "name": "Development Agenda"
+          },
+          {
+            "num": "2",
+            "label": "Reality",
+            "name": "Economic Outlook"
+          },
+          {
+            "num": "3",
+            "label": "Numbers",
+            "name": "Government Spending & Revenue"
+          },
+          {
+            "num": "4",
+            "label": "Counties",
+            "name": "Devolution Allocation"
+          },
+          {
+            "num": "5",
+            "label": "Risks",
+            "name": "Debt & Climate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "snapshot-spending",
+      "type": "snapshot",
+      "bg": "bg-dark",
+      "orbA": "rgba(229,62,62,.3)",
+      "orbB": "rgba(245,200,66,.2)",
+      "content": {
+        "headline": "BPS 2026 — The Numbers",
+        "divider1": "Budget",
+        "tiles1": [
+          {
+            "icon": "💰",
+            "val": "KES 4.74T",
+            "label": "Total spending planned",
+            "accent": "accent-gold"
+          },
+          {
+            "icon": "📥",
+            "val": "KES 3.59T",
+            "label": "Revenue expected",
+            "accent": "accent-teal"
+          },
+          {
+            "icon": "📉",
+            "val": "KES 1.15T",
+            "label": "Fiscal deficit (gap)",
+            "accent": "accent-red"
+          },
+          {
+            "icon": "⚠️",
+            "val": "~KES 1.2T",
+            "label": "Debt interest — pre-committed",
+            "accent": "accent-purple"
+          }
+        ],
+        "debtNote": "That KES 1.2T debt interest? It's money that *can't go* to roads, teachers, or healthcare. It's already spoken for before Budget Day."
+      }
+    },
+    {
+      "id": "snapshot-counties",
+      "type": "snapshot",
+      "bg": "bg-teal",
+      "orbA": "rgba(56,178,172,.4)",
+      "orbB": "rgba(72,187,120,.2)",
+      "content": {
+        "headline": "Counties & Communities",
+        "divider1": "Devolution numbers",
+        "tiles1": [
+          {
+            "icon": "🏛",
+            "val": "KES 420B",
+            "label": "County equitable share",
+            "accent": "accent-teal"
+          },
+          {
+            "icon": "🏥",
+            "val": "KES 3.24B",
+            "label": "Community Health Workers",
+            "accent": "accent-teal"
+          },
+          {
+            "icon": "🏭",
+            "val": "KES 3.25B",
+            "label": "Industrial Parks"
+          },
+          {
+            "icon": "⚖️",
+            "val": "KES 9.6B",
+            "label": "Equalisation Fund"
+          }
+        ]
+      }
+    },
+    {
+      "id": "five-pillars",
+      "type": "pillars",
+      "bg": "bg-dark",
+      "orbA": "rgba(72,187,120,.3)",
+      "orbB": "rgba(56,178,172,.2)",
+      "content": {
+        "headline": "The 5 Pillars — what the\ngovernment is betting on",
+        "sub": "Each pillar has actual money attached. Find your tab.",
+        "pillars": [
+          {
+            "emoji": "🌽",
+            "title": "Agriculture",
+            "desc": "Irrigation, crop diversification, improved agricultural value chain",
+            "money": "Funded priority"
+          },
+          {
+            "emoji": "🏪",
+            "title": "MSMEs (Small Business)",
+            "desc": "Hustler Fund expansion, NYOTA fund, business hubs in all 47 counties",
+            "money": "47 county hubs"
+          },
+          {
+            "emoji": "🏥",
+            "title": "Healthcare",
+            "desc": "Target: 35 million Kenyans covered by Universal Health Coverage + SHA",
+            "money": "35M target"
+          },
+          {
+            "emoji": "🏘",
+            "title": "Housing",
+            "desc": "Jobs in construction + affordable loans for homeownership",
+            "money": "Construction jobs"
+          },
+          {
+            "emoji": "💻",
+            "title": "Digital & Creative",
+            "desc": "Fibre internet + backing film, music, fashion, and the creative economy",
+            "money": "Creative economy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "infrastructure",
+      "type": "concept",
+      "bg": "bg-purple",
+      "orbA": "rgba(159,122,234,.4)",
+      "orbB": "rgba(245,200,66,.2)",
+      "content": {
+        "tag": "Infrastructure & Enablers",
+        "tagBg": "rgba(159,122,234,.18)",
+        "tagColor": "#9F7AEA",
+        "question": "Behind every pillar are the *systems* that make them work:",
+        "bullets": [
+          {
+            "dot": "#9F7AEA",
+            "text": "More roads, railways, increased power connectivity, gas exploration"
+          },
+          {
+            "dot": "#9F7AEA",
+            "text": "<strong>National Infrastructure Fund</strong> — pooled money for big projects"
+          },
+          {
+            "dot": "#9F7AEA",
+            "text": "<strong>Sovereign Wealth Fund</strong> — savings from natural resources"
+          }
+        ],
+        "badge": "These are the government's five open tabs. If you're a farmer, a small business owner, an artist — this is where your opportunities live. Know which tab is yours."
+      }
+    },
+    {
+      "id": "risks",
+      "type": "risks",
+      "bg": "bg-red",
+      "orbA": "rgba(229,62,62,.4)",
+      "orbB": "rgba(245,200,66,.2)",
+      "content": {
+        "headline": "⚡ What Could Go Wrong?",
+        "sub": "This is mature budgeting. The government is literally listing what could break.",
+        "risks": [
+          {
+            "icon": "🌪️",
+            "title": "Climate shocks",
+            "text": "Drought or floods cost unplanned emergency money"
+          },
+          {
+            "icon": "📉",
+            "title": "Revenue gaps",
+            "text": "If businesses struggle, tax collection drops"
+          },
+          {
+            "icon": "💸",
+            "title": "Debt pressure",
+            "text": "If the shilling weakens, foreign debt gets more expensive"
+          },
+          {
+            "icon": "🏛",
+            "title": "Devolution drama",
+            "text": "Counties' unpaid bills continue to pile up"
+          }
+        ],
+        "quote": "When you know the risks, you can <strong>spot them early and ask the right questions</strong> before crisis hits."
+      }
+    },
+    {
+      "id": "quiz-1",
+      "type": "quiz",
+      "bg": "bg-dark",
+      "orbA": "rgba(245,200,66,.3)",
+      "orbB": "rgba(56,178,172,.15)",
+      "quizIdx": 0,
+      "content": {
+        "question": "The BPS is best described as:",
+        "options": [
+          {
+            "letter": "A",
+            "text": "The final, detailed list of every government project"
+          },
+          {
+            "letter": "B",
+            "text": "The government's strategic roadmap setting priorities and spending limits"
+          },
+          {
+            "letter": "C",
+            "text": "A tax collection manual"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "correct": "✓ Exactly! The BPS is the roadmap — priorities and ceilings — not the detailed project list. That comes later in the Estimates.",
+          "wrong": "Think roadmap, not project list. The BPS sets direction and spending limits. The detailed projects come in the Estimates of Revenue & Expenditure."
+        }
+      }
+    },
+    {
+      "id": "quiz-2",
+      "type": "quiz",
+      "bg": "bg-dark",
+      "orbA": "rgba(245,200,66,.3)",
+      "orbB": "rgba(229,62,62,.15)",
+      "quizIdx": 1,
+      "content": {
+        "question": "In FY 2026/27, the government projects spending of KES 4.74T but revenue of only KES 3.59T. The KES 1.15T gap is called:",
+        "options": [
+          {
+            "letter": "A",
+            "text": "A Surplus"
+          },
+          {
+            "letter": "B",
+            "text": "An Emergency Fund"
+          },
+          {
+            "letter": "C",
+            "text": "A Fiscal Deficit"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "correct": "✓ Correct. When spending exceeds revenue, that's a fiscal deficit. Kenya bridges it through borrowing — which is why the KES 1.2T debt interest figure matters so much.",
+          "wrong": "When a government spends more than it earns, that gap is a fiscal deficit — not a surplus (that's when you earn more), and not an emergency fund (that's a reserve)."
+        }
+      }
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "bg": "bg-gold",
+      "orbA": "rgba(245,200,66,.5)",
+      "orbB": "rgba(56,178,172,.2)",
+      "content": {
+        "title": "You finished\n*Module 001.*",
+        "sub": "Budget Policy Statement 2026. You now know what the government is planning, what it's betting on, and what could go wrong.",
+        "actions": [
+          {
+            "icon": "🔍",
+            "style": "cta-btn-primary",
+            "title": "Track the numbers",
+            "sub": "Check if projects match BPS priorities",
+            "onclickMsg": "Opening Budget Tracker →"
+          },
+          {
+            "icon": "🗳️",
+            "style": "cta-btn-teal",
+            "title": "Use your voice",
+            "sub": "Join public participation informed",
+            "onclickMsg": "Public participation dates →"
+          },
+          {
+            "icon": "🚀",
+            "style": "cta-btn-gold",
+            "title": "Monetise your talent",
+            "sub": "Creative economy = your next opportunity",
+            "onclickMsg": "Creative economy opportunities →"
+          }
+        ]
+      }
+    }
+  ]
+}

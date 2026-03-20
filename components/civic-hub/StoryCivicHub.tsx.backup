@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
-import { loadModuleMetadata, loadModuleSlides, convertToHubModule } from "@/app/learn/utils";
+import { getModule, loadModuleSlides, getUnlockedModules, getAllModules, convertToHubModule } from "@/app/learn/utils";
 import type { ModuleMetadata, HubModule, StorySlide, QuizState } from "@/app/learn/utils";
 
 // Custom hook for swipe gestures
@@ -87,18 +87,6 @@ function saveTheme(theme: "dark" | "light") {
   window.localStorage.setItem(THEME_KEY, theme);
 }
 
-function getBaseModuleId(activeModuleId: string): string {
-  return activeModuleId
-    .replace(/-advanced$/, "")
-    .replace(/-stories$/, "");
-}
-
-function getActiveLevel(activeModuleId: string): "basic" | "advanced" | "stories" {
-  if (activeModuleId.endsWith("-advanced")) return "advanced";
-  if (activeModuleId.endsWith("-stories")) return "stories";
-  return "basic";
-}
-
 export function StoryCivicHub() {
   const { theme: nextTheme, setTheme: setNextTheme } = useTheme();
 
@@ -123,14 +111,8 @@ export function StoryCivicHub() {
   // Load modules on mount
   useEffect(() => {
     const loadModules = async () => {
-      try {
-        const res = await fetch("/api/learn/modules?unlocked=true");
-        const json = (await res.json()) as { success?: boolean; data?: ModuleMetadata[] };
-        setModules(json.data ?? []);
-      } catch (e) {
-        console.error("Failed to load /api/learn/modules:", e);
-        setModules([]);
-      }
+      const unlockedModules = getUnlockedModules();
+      setModules(unlockedModules);
     };
     loadModules();
   }, []);
@@ -145,14 +127,12 @@ export function StoryCivicHub() {
 
       setLoadingSlides(true);
       try {
-        const baseModuleId = getBaseModuleId(activeModuleId);
-        const level = getActiveLevel(activeModuleId);
-        const slides = await loadModuleSlides(baseModuleId, level);
+        // Determine which level to load (basic or advanced)
+        const level = activeModuleId.includes("advanced") ? "advanced" : "basic";
+        const slides = await loadModuleSlides(activeModuleId.replace("-advanced", ""), level);
 
         if (slides) {
           setCurrentSlides(slides);
-          // Clamp resumed progress to available slides after JSON load.
-          setSlideIdx((prev) => (slides.length ? Math.max(0, Math.min(prev, slides.length - 1)) : 0));
           // Validate and re-initialize quiz state based on number of quizzes
           const quizCount = slides.filter((s) => s.type === "quiz").length;
           setQuizState({
@@ -175,8 +155,9 @@ export function StoryCivicHub() {
   const currentHubModule = useMemo(() => {
     if (!activeModule) return null;
 
-    const level = activeModuleId ? getActiveLevel(activeModuleId) : "basic";
-    return convertToHubModule(activeModule, level);
+    // Determine level from activeModuleId
+    const level = activeModuleId?.includes("advanced") ? "advanced" : "basic";
+    return convertToHubModule(activeModule, level as any);
   }, [activeModule, activeModuleId]);
 
   const totalSlides = currentSlides.length;
@@ -243,18 +224,15 @@ export function StoryCivicHub() {
     });
   }
 
-  async function startModule(id: string) {
-    const baseModuleId = getBaseModuleId(id);
-
-    const fromList = modules.find((m) => m.id === baseModuleId);
-    const moduleData = fromList ?? (await loadModuleMetadata(baseModuleId));
+  function startModule(id: string) {
+    const moduleData = getModule(id);
     if (!moduleData) return;
 
     setActiveModule(moduleData);
     setActiveModuleId(id);
 
     const existing = progress[id];
-    const startAt = existing && !existing.completed ? existing.slide : 0;
+    const startAt = existing && !existing.completed ? Math.min(existing.slide, totalSlides - 1) : 0;
     setSlideIdx(startAt);
   }
 
@@ -312,7 +290,7 @@ export function StoryCivicHub() {
     const slide = currentSlides.find((s) => s.quizIdx === qi);
     if (!slide || slide.type !== "quiz" || quizState.answered[qi]) return;
 
-    setQuizState((prev: QuizState) => {
+    setQuizState((prev) => {
       const answered = [...prev.answered];
       const selectedIdx = [...prev.selectedIdx];
       answered[qi] = true;
@@ -348,10 +326,6 @@ export function StoryCivicHub() {
       }
       if (metadata.structure.advanced) {
         const hub = convertToHubModule(metadata, "advanced");
-        if (hub) hubs.push(hub);
-      }
-      if (metadata.structure.stories) {
-        const hub = convertToHubModule(metadata, "stories");
         if (hub) hubs.push(hub);
       }
     });
@@ -434,9 +408,7 @@ export function StoryCivicHub() {
                   const levelClass =
                     m.level === "advanced"
                       ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
-                      : m.level === "stories"
-                        ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                        : "bg-teal-500/10 text-teal-400 border-teal-500/20";
+                      : "bg-teal-500/10 text-teal-400 border-teal-500/20";
                   const statusClass =
                     status === "done"
                       ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
@@ -454,7 +426,7 @@ export function StoryCivicHub() {
                           showToast("Coming soon! Finish Module 001 first");
                           return;
                         }
-                        void startModule(m.id);
+                        startModule(m.id);
                       }}
                       className="group relative overflow-hidden rounded-2xl border border-border bg-card text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                       style={{ opacity: locked ? 0.6 : 1 }}
@@ -468,7 +440,7 @@ export function StoryCivicHub() {
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex min-w-0 flex-wrap items-center gap-2">
                             <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold ${levelClass}`}>
-                              {m.level === "stories" ? "Stories" : m.level === "advanced" ? "Advanced" : "Basic"}
+                              {m.level === "advanced" ? "Advanced" : "Basic"}
                             </span>
                             <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold ${statusClass}`}>
                               {statusLabel}
@@ -741,35 +713,6 @@ function renderSlideContent(
             <div style={{ fontSize: "0.78rem", lineHeight: 1.55 }}>{c.debtNote.replace(/\*(.+?)\*/g, "<em>$1</em>")}</div>
           </div>
         )}
-      </div>
-    );
-  }
-
-  if (slide.type === "stats") {
-    return (
-      <div className="civic-slide-inner">
-        <div className="civic-slide-headline">{c.headline}</div>
-        <div className="civic-snapshot-grid">
-          {c.stats?.map((s: any, idx: number) => (
-            <div key={idx} className={`civic-snap-tile ${s.accent ? `civic-${s.accent}` : ""}`}>
-              <span className="civic-snap-icon">{s.emoji}</span>
-              <div className="civic-snap-val">{s.value}</div>
-              <div className="civic-snap-label">{s.label}</div>
-              {s.desc ? (
-                <div
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "var(--ch-text-m)",
-                    lineHeight: 1.35,
-                    marginTop: "0.25rem",
-                  }}
-                >
-                  {s.desc}
-                </div>
-              ) : null}
-            </div>
-          ))}
-        </div>
       </div>
     );
   }
