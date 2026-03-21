@@ -1,0 +1,324 @@
+{
+  "id": "bps-2026-stories",
+  "moduleId": "bps-2026",
+  "level": "stories",
+  "title": "Budget Policy Statement 2026 - Stories",
+  "slides": [
+    {
+      "id": "story-cover",
+      "type": "cover",
+      "bg": "bg-red",
+      "orbA": "rgba(229,62,62,.5)",
+      "orbB": "rgba(245,200,66,.3)",
+      "content": {
+        "tag": "Module 001 · Budget Stories",
+        "title": "Follow the Budget.\nFind the *Story*",
+        "sub": "Understanding how public money is planned, spent, and monitored.",
+        "promise": "In the next 10 minutes, you will learn how Kenya's budget roadmap works and exactly where you fit in. No jargon. No confusion. Just the facts, in your language."
+      }
+    },
+    {
+      "id": "story-what-is-bps",
+      "type": "concept",
+      "bg": "bg-dark",
+      "orbA": "rgba(245,200,66,.3)",
+      "orbB": "rgba(56,178,172,.2)",
+      "content": {
+        "tag": "What is the BPS?",
+        "tagBg": "rgba(245,200,66,.15)",
+        "tagColor": "#F5C842",
+        "question": "Forget the complicated name.\nThe BPS is simply the government answering *3 questions* out loud:",
+        "bullets": [
+          {
+            "dot": "#F5C842",
+            "text": "<strong>Where are we now?</strong> How's the economy doing?"
+          },
+          {
+            "dot": "#38B2AC",
+            "text": "<strong>Where do we want to go?</strong> What are our big goals?"
+          },
+          {
+            "dot": "#9F7AEA",
+            "text": "<strong>How much cash will we need?</strong> And how will we get it?"
+          }
+        ],
+        "badge": "💡 Key Fact: It's tabled in Parliament every year by February 15th—think of it as the government submitting its term paper before the final exam (which is the actual budget in April)."
+      }
+    },
+    {
+      "id": "story-cfsp-connection",
+      "type": "concept",
+      "bg": "bg-teal",
+      "orbA": "rgba(56,178,172,.3)",
+      "orbB": "rgba(159,122,234,.2)",
+      "content": {
+        "tag": "🇰🇪 Kenya Context",
+        "tagBg": "rgba(56,178,172,.15)",
+        "tagColor": "#38B2AC",
+        "question": "Why should *you* care about the BPS?",
+        "bullets": [
+          {
+            "dot": "#38B2AC",
+            "text": "The BPS is the <strong>parent of every County Fiscal Strategy Paper (CFSP)</strong>"
+          },
+          {
+            "dot": "#F5C842",
+            "text": "Whatever the BPS prioritizes at the <strong>national level</strong>... that's what <strong>your county government</strong> has to align with"
+          },
+          {
+            "dot": "#E53E3E",
+            "text": "This affects <strong>local markets, health centers, roads</strong> in your community"
+          },
+          {
+            "dot": "#9F7AEA",
+            "text": "When you understand the BPS, you can <strong>track how money flows to your county</strong>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-roadmap-analogy",
+      "type": "concept",
+      "bg": "bg-gold",
+      "orbA": "rgba(245,200,66,.4)",
+      "orbB": "rgba(229,62,62,.2)",
+      "content": {
+        "tag": "Think of it this way",
+        "tagBg": "rgba(245,200,66,.2)",
+        "tagColor": "#F5C842",
+        "question": "The BPS is the *roadmap*\nBefore a long journey.\nThe budget in April is the actual *trip.*",
+        "bullets": [
+          {
+            "dot": "#F5C842",
+            "text": "This document? <strong>It's the plan.</strong>"
+          },
+          {
+            "dot": "#38B2AC",
+            "text": "Just like your maps app, it <strong>updates every year</strong> based on new economic data"
+          },
+          {
+            "dot": "#9F7AEA",
+            "text": "The BPS also <strong>sets budget ceilings</strong> for ministries, parliament, the judiciary, and other govt departments"
+          },
+          {
+            "dot": "#E53E3E",
+            "text": "This prevents agencies from <strong>over-budgeting beyond what's available</strong>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-five-chapters",
+      "type": "chapters",
+      "bg": "bg-dark",
+      "orbA": "rgba(159,122,234,.35)",
+      "orbB": "rgba(245,200,66,.2)",
+      "content": {
+        "headline": "The 5 Core Chapters\nof a BPS",
+        "chapters": [
+          {
+            "num": "1",
+            "label": "Vision",
+            "name": "Development Agenda",
+            "desc": "What the government wants to achieve"
+          },
+          {
+            "num": "2",
+            "label": "Reality",
+            "name": "Economic Outlook",
+            "desc": "How the economy is actually performing"
+          },
+          {
+            "num": "3",
+            "label": "Numbers",
+            "name": "Government Spending & Revenue",
+            "desc": "Billions and trillions: where money comes from and goes"
+          },
+          {
+            "num": "4",
+            "label": "Counties",
+            "name": "Devolution Allocation",
+            "desc": "How much each county government gets"
+          },
+          {
+            "num": "5",
+            "label": "Risks",
+            "name": "Debt & Climate",
+            "desc": "What could go wrong and why we need to prepare"
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-budget-numbers",
+      "type": "stats",
+      "bg": "bg-purple",
+      "orbA": "rgba(159,122,234,.4)",
+      "orbB": "rgba(245,200,66,.2)",
+      "content": {
+        "headline": "Snapshot of BPS 2026\n*Key Numbers*",
+        "stats": [
+          {
+            "emoji": "💰",
+            "label": "Total Spending",
+            "value": "KES 4.74T",
+            "desc": "What government will spend"
+          },
+          {
+            "emoji": "📥",
+            "label": "Revenue",
+            "value": "KES 3.59T",
+            "desc": "What government collects in taxes"
+          },
+          {
+            "emoji": "📉",
+            "label": "Fiscal Deficit",
+            "value": "KES 1.15T",
+            "desc": "The gap between spending & revenue"
+          },
+          {
+            "emoji": "⚠️",
+            "label": "Debt Interest",
+            "value": "~KES 1.2T",
+            "desc": "Money already committed to paying back debt"
+          },
+          {
+            "emoji": "🏛️",
+            "label": "Counties",
+            "value": "KES 420B",
+            "desc": "Allocation for county governments"
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-five-pillars",
+      "type": "pillars",
+      "bg": "bg-red",
+      "orbA": "rgba(229,62,62,.4)",
+      "orbB": "rgba(245,200,66,.2)",
+      "content": {
+        "headline": "The 5 Pillars of BPS 2026",
+        "sub": "What the government is betting on in 2026:",
+        "pillars": [
+          {
+            "emoji": "🌽",
+            "title": "Agriculture",
+            "desc": "Irrigation, crop diversification, improved value chains"
+          },
+          {
+            "emoji": "🏪",
+            "title": "MSMEs",
+            "desc": "Hustler Fund expansion, business hubs in all 47 counties"
+          },
+          {
+            "emoji": "🏥",
+            "title": "Healthcare",
+            "desc": "Universal Health Coverage for 35 million Kenyans"
+          },
+          {
+            "emoji": "🏘️",
+            "title": "Housing",
+            "desc": "Jobs in construction + affordable loans"
+          },
+          {
+            "emoji": "💻",
+            "title": "Digital & Creative",
+            "desc": "Fibre internet + backing film, music, fashion"
+          }
+        ]
+      }
+    },
+    {
+      "id": "story-risks",
+      "type": "concept",
+      "bg": "bg-orange",
+      "orbA": "rgba(237,137,54,.4)",
+      "orbB": "rgba(229,62,62,.2)",
+      "content": {
+        "tag": "⚡ Potential Risks",
+        "tagBg": "rgba(237,137,54,.15)",
+        "tagColor": "#ED8936",
+        "question": "What could go wrong?\nWhat should we watch for?",
+        "bullets": [
+          {
+            "dot": "#ED8936",
+            "text": "<strong>Climate shocks:</strong> Drought/floods cost unplanned money"
+          },
+          {
+            "dot": "#F5C842",
+            "text": "<strong>Revenue gaps:</strong> If businesses struggle, taxes drop"
+          },
+          {
+            "dot": "#E53E3E",
+            "text": "<strong>Debt pressure:</strong> If the shilling weakens, debt gets expensive"
+          },
+          {
+            "dot": "#9F7AEA",
+            "text": "<strong>Devolution drama:</strong> Counties' unpaid bills pile up; can't go to roads, teachers, or healthcare"
+          }
+        ],
+        "badge": "💡 Why This Matters: When you know the risks, you can spot them early and ask the right questions before crisis hits. <strong>This is mature budgeting.</strong>"
+      }
+    },
+    {
+      "id": "story-quiz",
+      "type": "quiz",
+      "bg": "bg-teal",
+      "quizIdx": 0,
+      "content": {
+        "question": "Let's see if you can explain the BPS to your crew.\n\nThe BPS is best described as:",
+        "options": [
+          {
+            "letter": "A",
+            "text": "The final, detailed list of every government project"
+          },
+          {
+            "letter": "B",
+            "text": "The government's strategic roadmap setting priorities and spending limits"
+          },
+          {
+            "letter": "C",
+            "text": "A tax collection manual"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "correct": "✓ Exactly! You got it. The BPS is a strategic roadmap—the big picture before the detailed budget.",
+          "wrong": "Try again. Think about what the BPS does—it sets the roadmap and priorities for the year."
+        }
+      }
+    },
+    {
+      "id": "story-action",
+      "type": "cta",
+      "bg": "bg-green",
+      "orbA": "rgba(72,187,120,.5)",
+      "orbB": "rgba(56,178,172,.3)",
+      "content": {
+        "title": "You finished!\n*Stories Module*",
+        "sub": "Great job! You now understand how Kenya's budget roadmap works. Ready to use your voice?",
+        "actions": [
+          {
+            "icon": "🔍",
+            "style": "cta-btn-primary",
+            "title": "Track the Budget",
+            "sub": "Check if projects in your county match BPS priorities"
+          },
+          {
+            "icon": "✅",
+            "style": "cta-btn-secondary",
+            "title": "Join Public Participation",
+            "sub": "Show up informed to budget discussions"
+          },
+          {
+            "icon": "⚡",
+            "style": "cta-btn-accent",
+            "title": "Ask Questions",
+            "sub": "Budget literacy = Civic power"
+          }
+        ]
+      }
+    }
+  ]
+}

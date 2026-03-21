@@ -1,0 +1,62 @@
+{
+  "id": "bps-2026",
+  "num": "001",
+  "title": "Budget Policy Statement 2026",
+  "description": "Understand Kenya's budget roadmap and its impact on your life.",
+  "category": "Budget Basics",
+  "credits": ["Millicent Makini", "Budget Ndio Story Team"],
+  "accentA": "#E53E3E",
+  "accentB": "#F5C842",
+  "teacher": {
+    "name": "Millicent Makini",
+    "role": "Budget Literacy Educator",
+    "avatar": "👩🏾‍💼"
+  },
+  "structure": {
+    "stories": {
+      "title": "Budget Policy Statement 2026 - Stories",
+      "description": "Follow the budget. Find the story. A 10-minute narrative journey through Kenya's budget roadmap.",
+      "duration": "10 min",
+      "level": "stories",
+      "slides": 10,
+      "isActive": true,
+      "icon": "📖",
+      "order": 1
+    },
+    "basic": {
+      "title": "Budget Policy Statement 2026 (Basics)",
+      "description": "Understand how Kenya's budget roadmap works and exactly where you fit in. No jargon. 10 minutes.",
+      "duration": "10 min",
+      "level": "basic",
+      "slides": 12,
+      "isActive": true,
+      "icon": "📚",
+      "order": 2
+    },
+    "advanced": {
+      "title": "Reflecting on Kenya's 2026 Budget Policy Statement",
+      "description": "Deep dive into BPS: BETA Agenda, debt analysis, fiscal risks and policy solutions. 20 minutes.",
+      "duration": "20 min",
+      "level": "advanced",
+      "slides": 20,
+      "isActive": true,
+      "icon": "🎓",
+      "order": 3
+    }
+  },
+  "tags": ["budget", "policy", "kenya", "economics", "fiscal"],
+  "isLocked": false,
+  "keywords": ["Budget Policy Statement", "BPS 2026", "Kenya budget", "BETA Agenda", "Public participation"],
+  "createdAt": "2026-03-20T00:00:00Z",
+  "updatedAt": "2026-03-20T00:00:00Z",
+  "authorId": "system",
+  "status": "published",
+  "version": "1.0.0",
+  "features": {
+    "hasPopups": true,
+    "hasTransitions": true,
+    "isResponsive": true,
+    "supportsCRUD": true,
+    "supportsEditing": true
+  }
+}
