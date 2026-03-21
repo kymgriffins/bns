@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Civic Hub — Premium Learning · Budget Ndio Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════ */
+:root{
+  --red:#E53E3E;--red2:#FC4444;--red-dim:rgba(229,62,62,.1);--red-border:rgba(229,62,62,.22);
+  --gold:#F5C842;--gold2:#FFD54F;--gold-dim:rgba(245,200,66,.1);--gold-border:rgba(245,200,66,.22);
+  --teal:#38B2AC;--teal-dim:rgba(56,178,172,.1);
+  --green:#48BB78;--green-dim:rgba(72,187,120,.1);
+  --purple:#9F7AEA;--purple-dim:rgba(159,122,234,.1);
+  --coral:#F06060;
+  --font-d:'Fraunces',serif;--font-b:'DM Sans',sans-serif;--font-m:'DM Mono',monospace;
+  --r:14px;--rsm:9px;--rlg:20px;
+  --ease-s:cubic-bezier(.34,1.56,.64,1);--ease-o:cubic-bezier(.22,1,.36,1);
+  --nav-h:56px;--sidebar-w:260px;
+}
+[data-theme="dark"]{
+  --bg:#0D0D14;--surf:#13131F;--surf2:#1A1A2C;--surf3:#222238;--surf4:#2A2A42;
+  --border:rgba(255,255,255,.07);--border-h:rgba(255,255,255,.14);--border-s:rgba(255,255,255,.04);
+  --text:#F0EDE6;--text-m:rgba(240,237,230,.58);--text-d:rgba(240,237,230,.3);--text-x:rgba(240,237,230,.16);
+  --sh:rgba(0,0,0,.55);--sh2:rgba(0,0,0,.35);
+}
+[data-theme="light"]{
+  --bg:#F8F7F2;--surf:#FFFFFF;--surf2:#F4F2EB;--surf3:#ECEAE1;--surf4:#E4E2D8;
+  --border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.15);--border-s:rgba(0,0,0,.04);
+  --text:#1A1A10;--text-m:rgba(26,26,16,.6);--text-d:rgba(26,26,16,.35);--text-x:rgba(26,26,16,.15);
+  --sh:rgba(0,0,0,.12);--sh2:rgba(0,0,0,.06);
+}
+/* ── RESET ── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);height:100%;overflow:hidden;transition:background .3s,color .3s}
+::selection{background:var(--gold);color:#1A1200}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+[data-theme="light"]::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12)}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-b);cursor:pointer}
+input,textarea{font-family:var(--font-b)}
+img{max-width:100%;display:block}
+
+/* ══════════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════════ */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;
+  transition:opacity .4s var(--ease-o),transform .4s var(--ease-o)}
+.screen.off{opacity:0;pointer-events:none;transform:scale(.97)}
+
+/* ══════════════════════════════════════════════
+   GLOBAL NAV
+══════════════════════════════════════════════ */
+.gnav{
+  height:var(--nav-h);flex-shrink:0;background:var(--surf);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;z-index:100;
+}
+.gnav-logo{display:flex;align-items:center;gap:.6rem;cursor:pointer;flex-shrink:0}
+.gnav-logo-icon{width:32px;height:32px;background:var(--red);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.gnav-logo-text{font-family:var(--font-d);font-size:.9rem;font-weight:300;line-height:1.2}
+.gnav-logo-text strong{color:var(--red)}
+.gnav-pill{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--surf2);border:1px solid var(--border);border-radius:100px;
+  padding:.3rem .75rem;font-size:.75rem;color:var(--text-m);
+}
+.gnav-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--red);
+  animation:pulse-dot 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(229,62,62,.4)}50%{box-shadow:0 0 0 5px rgba(229,62,62,0)}}
+.gnav-breadcrumbs{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--text-m)}
+.bc-item{cursor:pointer;transition:color .2s}
+.bc-item:hover{color:var(--text)}
+.bc-sep{color:var(--text-d)}
+.bc-current{color:var(--text);font-weight:500}
+.gnav-right{display:flex;align-items:center;gap:.6rem;margin-left:auto}
+.icon-btn{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surf2);display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;transition:all .2s;color:var(--text);
+}
+.icon-btn:hover{border-color:var(--gold);background:var(--gold-dim)}
+.gnav-prog{
+  display:flex;align-items:center;gap:.6rem;
+  background:var(--surf2);border:1px solid var(--border);border-radius:100px;
+  padding:.25rem .75rem .25rem .5rem;
+}
+.gnav-prog-bar{width:52px;height:3px;background:var(--border);border-radius:100px;overflow:hidden}
+.gnav-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:100px;transition:width .6s var(--ease-o)}
+.gnav-prog-txt{font-size:.7rem;font-weight:600;color:var(--text-m)}
+
+/* ══════════════════════════════════════════════
+   HUB SCREEN
+══════════════════════════════════════════════ */
+#hub-screen{background:var(--bg)}
+.hub-body{flex:1;overflow-y:auto;padding:2rem 1.5rem 4rem;max-width:1100px;margin:0 auto;width:100%}
+.hub-hero{margin-bottom:2.5rem}
+.hub-hero h1{font-family:var(--font-d);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;
+  line-height:1.15;letter-spacing:-.5px;margin-bottom:.5rem}
+.hub-hero h1 em{color:var(--red);font-style:italic}
+.hub-hero p{font-size:.92rem;color:var(--text-m);max-width:520px;line-height:1.7}
+.trust-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-top:.9rem}
+.trust-chip{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text-d);
+  background:var(--surf2);border:1px solid var(--border);padding:3px 10px;border-radius:100px}
+.trust-chip .tdot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+
+.hub-section-label{font-size:.68rem;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--text-d);margin-bottom:.85rem;margin-top:2rem}
+.hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.1rem}
+.hub-card{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;cursor:pointer;
+  transition:transform .25s var(--ease-s),border-color .2s,box-shadow .25s;
+}
+.hub-card:hover{transform:translateY(-4px);border-color:var(--border-h);box-shadow:0 18px 50px var(--sh)}
+.hub-card-accent{height:3px}
+.hub-card-body{padding:1.25rem}
+.hub-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.75rem}
+.level-badge{font-size:.62rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;display:inline-flex;align-items:center;gap:4px}
+.level-basic{background:rgba(56,178,172,.12);color:var(--teal)}
+.level-advanced{background:rgba(159,122,234,.12);color:var(--purple)}
+.hub-card-num{font-family:var(--font-m);font-size:.72rem;color:var(--text-d)}
+.hub-card-title{font-family:var(--font-d);font-size:1.1rem;font-weight:400;line-height:1.3;margin-bottom:.35rem}
+.hub-card-credits{font-size:.72rem;color:var(--text-d);margin-bottom:.75rem}
+.hub-card-desc{font-size:.8rem;color:var(--text-m);line-height:1.6;margin-bottom:1rem}
+.hub-card-meta{display:flex;align-items:center;gap:.6rem;font-size:.72rem;color:var(--text-d);margin-bottom:.9rem;flex-wrap:wrap}
+.content-type-pills{display:flex;gap:.35rem;flex-wrap:wrap}
+.ct-pill{font-size:.65rem;font-weight:600;letter-spacing:.3px;text-transform:uppercase;
+  padding:2px 8px;border-radius:100px;border:1px solid var(--border)}
+.ct-pill.stories{background:rgba(229,62,62,.1);color:var(--red);border-color:rgba(229,62,62,.2)}
+.ct-pill.learn{background:rgba(245,200,66,.1);color:var(--gold);border-color:rgba(245,200,66,.2)}
+.ct-pill.videos{background:rgba(56,178,172,.1);color:var(--teal);border-color:rgba(56,178,172,.2)}
+.ct-pill.quiz{background:rgba(159,122,234,.1);color:var(--purple);border-color:rgba(159,122,234,.2)}
+.hub-card-prog{height:2.5px;background:var(--surf3);border-radius:100px;overflow:hidden;margin-top:.75rem}
+.hub-card-prog-fill{height:100%;border-radius:100px;transition:width .6s}
+.hub-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.9rem;padding-top:.75rem;border-top:1px solid var(--border-s)}
+.hub-card-teacher{display:flex;align-items:center;gap:.45rem;font-size:.75rem;color:var(--text-m)}
+.hub-card-status{font-size:.62rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:100px}
+.s-new{background:rgba(245,200,66,.1);color:var(--gold)}
+.s-progress{background:rgba(56,178,172,.1);color:var(--teal)}
+.s-done{background:rgba(72,187,120,.1);color:var(--green)}
+
+/* ══════════════════════════════════════════════
+   MODULE SCREEN
+══════════════════════════════════════════════ */
+#mod-screen{flex-direction:column;background:var(--bg)}
+.mod-nav{
+  height:var(--nav-h);flex-shrink:0;background:var(--surf);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 1.5rem;gap:.75rem;z-index:50;
+}
+.mod-nav-back{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text-m);
+  background:none;border:none;padding:5px 10px;border-radius:var(--rsm);transition:all .2s}
+.mod-nav-back:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.mod-nav-crumb{font-size:.78rem;color:var(--text-m);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-nav-crumb strong{color:var(--text);font-weight:500}
+.mod-body{flex:1;display:flex;overflow:hidden}
+
+/* Sidebar */
+.mod-sidebar{
+  width:var(--sidebar-w);flex-shrink:0;background:var(--surf);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  overflow-y:auto;padding:1.25rem 0;
+}
+.sb-module-info{padding:0 1.25rem 1.25rem;border-bottom:1px solid var(--border)}
+.sb-level-tag{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:100px;margin-bottom:.6rem}
+.sb-title{font-family:var(--font-d);font-size:.9rem;font-weight:400;line-height:1.35;margin-bottom:.25rem}
+.sb-credits{font-size:.7rem;color:var(--text-d);margin-bottom:.85rem}
+.sb-overall-prog{margin-bottom:0}
+.sb-prog-label{display:flex;justify-content:space-between;font-size:.68rem;color:var(--text-m);margin-bottom:.3rem}
+.sb-prog-track{height:3.5px;background:var(--surf3);border-radius:100px;overflow:hidden}
+.sb-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:100px;transition:width .6s}
+.sb-score-chips{display:flex;gap:.4rem;margin-top:.75rem;flex-wrap:wrap}
+.sb-score-chip{font-size:.65rem;font-weight:600;padding:2px 8px;border-radius:100px;display:flex;align-items:center;gap:3px}
+
+.sb-nav-label{font-size:.62rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--text-d);padding:1rem 1.25rem .3rem}
+.sb-nav-item{display:flex;align-items:center;gap:.7rem;padding:.55rem 1.25rem;
+  font-size:.8rem;color:var(--text-m);cursor:pointer;background:none;border:none;
+  text-align:left;width:100%;transition:all .2s;border-left:2px solid transparent}
+.sb-nav-item:hover{background:rgba(255,255,255,.03);color:var(--text)}
+.sb-nav-item.active{background:var(--gold-dim);color:var(--gold);border-left-color:var(--gold)}
+.sb-nav-item.done{color:var(--green)}
+.sb-item-dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;
+  flex-shrink:0;background:var(--surf2);transition:all .25s}
+.sb-nav-item.active .sb-item-dot{background:var(--gold);border-color:var(--gold);color:#1A1200}
+.sb-nav-item.done .sb-item-dot{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.sb-item-info{flex:1;min-width:0}
+.sb-item-label{font-size:.68rem;color:var(--text-d)}
+.sb-item-title{font-size:.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Main content pane */
+.mod-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tab-bar{
+  display:flex;gap:2px;padding:.6rem 1.25rem;
+  background:var(--surf);border-bottom:1px solid var(--border);
+  flex-shrink:0;overflow-x:auto;scrollbar-width:none;
+}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{
+  display:flex;align-items:center;gap:.45rem;
+  padding:.5rem 1rem;border-radius:var(--rsm);font-size:.8rem;font-weight:500;
+  background:transparent;border:none;color:var(--text-m);transition:all .2s;white-space:nowrap;
+}
+.tab-btn:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.tab-btn.active{background:var(--surf3);color:var(--text);border:1px solid var(--border)}
+.tab-btn .tb-icon{font-size:1rem}
+.tab-btn .tb-badge{
+  font-size:.58rem;font-weight:700;padding:1px 5px;border-radius:100px;
+  background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);
+  margin-left:.2rem;
+}
+
+.tab-pane{display:none;flex:1;overflow:hidden}
+.tab-pane.active{display:flex;flex-direction:column}
+
+/* ══════════════════════════════════════════════
+   LEARN TAB — document reader
+══════════════════════════════════════════════ */
+.learn-pane{flex:1;overflow-y:auto}
+.learn-inner{max-width:760px;padding:2rem 2rem 5rem;margin:0 auto}
+
+/* Document chrome */
+.doc-chrome{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;margin-bottom:2rem;
+}
+.doc-topbar{
+  display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;
+  background:var(--surf2);border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.doc-dots{display:flex;gap:.3rem}
+.doc-dot{width:10px;height:10px;border-radius:50%}
+.doc-title-bar{font-size:.72rem;color:var(--text-m);flex:1;text-align:center;font-family:var(--font-m)}
+.doc-badge-view{
+  font-size:.62rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  padding:2px 8px;border-radius:100px;background:var(--red-dim);color:var(--red);
+  border:1px solid var(--red-border);
+}
+.doc-pages{font-size:.68rem;color:var(--text-d);font-family:var(--font-m)}
+
+.doc-body{padding:2rem 2.5rem;user-select:none;-webkit-user-select:none}
+.doc-cover{text-align:center;padding:2rem 0;border-bottom:1px solid var(--border);margin-bottom:2rem}
+.doc-cover-tag{font-size:.7rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--purple);background:var(--purple-dim);border:1px solid rgba(159,122,234,.2);
+  padding:3px 12px;border-radius:100px;display:inline-block;margin-bottom:.75rem}
+.doc-cover h1{font-family:var(--font-d);font-size:1.6rem;font-weight:400;line-height:1.25;
+  margin-bottom:.5rem;letter-spacing:-.3px}
+.doc-cover-credits{font-size:.8rem;color:var(--text-m);margin-top:.5rem}
+.doc-cover-line{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:1.25rem auto 0;width:60%}
+
+.doc-section{margin-bottom:2rem}
+.doc-section-num{
+  font-family:var(--font-m);font-size:.65rem;font-weight:500;letter-spacing:.5px;
+  color:var(--text-d);margin-bottom:.35rem;text-transform:uppercase;
+}
+.doc-h1{font-family:var(--font-d);font-size:1.3rem;font-weight:400;margin-bottom:1rem;
+  line-height:1.3;letter-spacing:-.2px;padding-bottom:.65rem;border-bottom:1px solid var(--border)}
+.doc-h2{font-family:var(--font-d);font-size:1.1rem;font-weight:400;margin-bottom:.75rem;
+  margin-top:1.5rem;line-height:1.3;color:var(--text)}
+.doc-h3{font-size:.92rem;font-weight:600;margin-bottom:.5rem;margin-top:1.25rem;color:var(--text)}
+.doc-p{font-size:.88rem;line-height:1.75;color:var(--text-m);margin-bottom:.75rem}
+.doc-p strong{color:var(--text);font-weight:600}
+.doc-ol,.doc-ul{padding-left:1.25rem;margin-bottom:.75rem}
+.doc-ol li,.doc-ul li{font-size:.86rem;line-height:1.7;color:var(--text-m);margin-bottom:.35rem}
+.doc-ol li strong,.doc-ul li strong{color:var(--text)}
+
+.doc-highlight{
+  background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:var(--rsm);
+  padding:.85rem 1rem;margin:1rem 0;
+}
+.doc-highlight-label{font-size:.65rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.3rem}
+.doc-highlight p{font-size:.84rem;color:var(--text-m);line-height:1.65;margin:0}
+
+.doc-numbers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.65rem;margin:1rem 0}
+.doc-num-tile{background:var(--surf2);border:1px solid var(--border);border-radius:var(--rsm);padding:.9rem}
+.doc-num-tile.accent-gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.doc-num-tile.accent-red{background:var(--red-dim);border-color:var(--red-border)}
+.doc-num-tile.accent-teal{background:var(--teal-dim);border-color:rgba(56,178,172,.2)}
+.doc-num-tile.accent-purple{background:var(--purple-dim);border-color:rgba(159,122,234,.2)}
+.doc-num-icon{font-size:.9rem;margin-bottom:.3rem}
+.doc-num-val{font-family:var(--font-d);font-size:1.3rem;font-weight:300;line-height:1;margin-bottom:.25rem}
+.doc-num-label{font-size:.7rem;color:var(--text-m);line-height:1.4}
+
+.doc-pillar-card{
+  display:flex;gap:.85rem;background:var(--surf2);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:.9rem 1rem;margin-bottom:.55rem;
+}
+.doc-pillar-emoji{font-size:1.4rem;flex-shrink:0}
+.doc-pillar-title{font-size:.9rem;font-weight:600;margin-bottom:.2rem}
+.doc-pillar-text{font-size:.8rem;color:var(--text-m);line-height:1.55}
+
+.doc-risk-item{
+  display:flex;align-items:flex-start;gap:.7rem;
+  background:var(--red-dim);border:1px solid var(--red-border);
+  border-radius:var(--rsm);padding:.75rem .9rem;margin-bottom:.45rem;
+}
+.doc-risk-num{font-family:var(--font-m);font-size:.75rem;font-weight:600;color:var(--red);
+  width:22px;flex-shrink:0;padding-top:1px}
+.doc-risk-text{font-size:.82rem;color:var(--text-m);line-height:1.55}
+.doc-risk-text strong{color:var(--text)}
+
+/* ══════════════════════════════════════════════
+   VIDEOS TAB
+══════════════════════════════════════════════ */
+.videos-pane{flex:1;display:flex;overflow:hidden}
+.video-player-col{flex:1;display:flex;flex-direction:column;overflow-y:auto;padding:1.5rem}
+.video-player-wrap{
+  background:#000;border-radius:var(--r);overflow:hidden;
+  aspect-ratio:16/9;position:relative;margin-bottom:1rem;
+}
+.video-placeholder{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.75rem;
+  background:linear-gradient(135deg,#0A0A0A,#111);
+  color:rgba(255,255,255,.3);
+}
+.vph-icon{font-size:2.5rem}
+.vph-text{font-size:.82rem;text-align:center;line-height:1.5;max-width:220px}
+.vph-badge{font-size:.68rem;background:rgba(255,255,255,.08);padding:3px 10px;border-radius:100px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4)}
+.video-embed{width:100%;height:100%;border:none}
+
+.video-meta{margin-bottom:1rem}
+.vm-title{font-family:var(--font-d);font-size:1.1rem;font-weight:400;margin-bottom:.35rem;line-height:1.3}
+.vm-sub{display:flex;align-items:center;gap:.75rem;font-size:.78rem;color:var(--text-m);flex-wrap:wrap}
+.vm-tag{font-size:.65rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  padding:2px 8px;border-radius:100px;background:var(--red-dim);color:var(--red);border:1px solid var(--red-border)}
+.video-desc{background:var(--surf2);border:1px solid var(--border);border-radius:var(--rsm);padding:1rem;
+  font-size:.82rem;color:var(--text-m);line-height:1.7}
+
+.playlist-col{
+  width:300px;flex-shrink:0;border-left:1px solid var(--border);
+  overflow-y:auto;background:var(--surf);
+}
+.playlist-header{padding:1rem 1.1rem .5rem;font-size:.68rem;font-weight:700;
+  letter-spacing:.6px;text-transform:uppercase;color:var(--text-d);
+  position:sticky;top:0;background:var(--surf);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.playlist-progress-text{font-size:.68rem;color:var(--text-d)}
+.playlist-item{
+  display:flex;gap:.75rem;padding:.85rem 1.1rem;cursor:pointer;
+  border-bottom:1px solid var(--border-s);transition:background .15s;
+}
+.playlist-item:hover{background:rgba(255,255,255,.03)}
+.playlist-item.active{background:var(--gold-dim);border-left:2px solid var(--gold)}
+.pi-thumb{
+  width:88px;height:52px;border-radius:6px;background:var(--surf3);
+  flex-shrink:0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+}
+.pi-thumb img{width:100%;height:100%;object-fit:cover}
+.pi-thumb-play{
+  position:absolute;width:22px;height:22px;border-radius:50%;
+  background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:#fff;
+}
+.pi-body{flex:1;min-width:0}
+.pi-num{font-size:.62rem;color:var(--text-d);font-family:var(--font-m);margin-bottom:.15rem}
+.pi-title{font-size:.78rem;font-weight:500;line-height:1.35;margin-bottom:.2rem;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pi-meta{font-size:.68rem;color:var(--text-d);display:flex;gap:.4rem}
+.pi-watched{font-size:.6rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
+  padding:1px 5px;border-radius:100px;background:var(--green-dim);color:var(--green);margin-left:auto;align-self:flex-start}
+
+/* ══════════════════════════════════════════════
+   QUIZ TAB
+══════════════════════════════════════════════ */
+.quiz-pane{flex:1;overflow-y:auto}
+.quiz-inner{max-width:680px;padding:2rem 2rem 5rem;margin:0 auto}
+.quiz-header{margin-bottom:1.75rem}
+.qh-title{font-family:var(--font-d);font-size:1.4rem;font-weight:300;margin-bottom:.35rem}
+.qh-sub{font-size:.83rem;color:var(--text-m);margin-bottom:.85rem;line-height:1.6}
+.quiz-prog-row{display:flex;align-items:center;gap:.75rem}
+.qpr-track{flex:1;height:4px;background:var(--surf3);border-radius:100px;overflow:hidden}
+.qpr-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:100px;transition:width .5s var(--ease-o)}
+.qpr-text{font-size:.72rem;font-weight:600;color:var(--text-m);white-space:nowrap}
+.quiz-score-banner{
+  display:flex;align-items:center;gap.75rem;
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--rsm);
+  padding:.65rem 1rem;margin-bottom:1.25rem;font-size:.8rem;
+}
+.qsb-score{font-size:1.2rem;font-weight:700;font-family:var(--font-d);color:var(--gold)}
+.qsb-label{color:var(--text-m);flex:1;margin-left:.5rem}
+
+/* Question cards */
+.q-card{
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  margin-bottom:1rem;overflow:hidden;
+}
+.q-card-header{
+  display:flex;align-items:flex-start;gap:.75rem;padding:1.1rem 1.25rem .75rem;
+}
+.q-num{
+  width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;
+  flex-shrink:0;font-family:var(--font-m);background:var(--surf2);
+}
+.q-num.answered{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.q-num.correct{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.q-num.wrong{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.q-meta{flex:1}
+.q-type-badge{display:inline-flex;align-items:center;gap:3px;font-size:.6rem;font-weight:700;
+  letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:100px;margin-bottom:.3rem}
+.qt-mcq{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border)}
+.qt-scenario{background:rgba(56,178,172,.1);color:var(--teal);border:1px solid rgba(56,178,172,.2)}
+.qt-reflect{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(159,122,234,.2)}
+.q-question{font-family:var(--font-d);font-size:.98rem;font-weight:300;line-height:1.5;color:var(--text)}
+
+.q-options{padding:.25rem 1.25rem 1.1rem}
+.q-opt{
+  display:flex;align-items:center;gap:.65rem;width:100%;
+  padding:.75rem .9rem;border-radius:var(--rsm);border:1.5px solid var(--border);
+  background:transparent;color:var(--text);font-size:.85rem;text-align:left;
+  transition:all .2s;margin-bottom:.4rem;
+}
+.q-opt:last-child{margin-bottom:0}
+.q-opt:hover:not(:disabled){border-color:var(--gold-border);background:var(--gold-dim)}
+.q-opt.sel-correct{border-color:var(--teal);background:var(--teal-dim);color:var(--teal)}
+.q-opt.sel-wrong{border-color:var(--red);background:var(--red-dim);color:var(--red)}
+.q-opt.reveal-correct{border-color:var(--teal);background:rgba(56,178,172,.06)}
+.q-opt:disabled{cursor:not-allowed}
+.q-opt-letter{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;
+  flex-shrink:0;background:rgba(255,255,255,.04);transition:all .2s}
+[data-theme="light"] .q-opt-letter{border-color:rgba(0,0,0,.12);background:rgba(0,0,0,.04)}
+.q-opt.sel-correct .q-opt-letter{background:var(--teal);border-color:var(--teal);color:#002a24}
+.q-opt.sel-wrong .q-opt-letter{background:var(--red);border-color:var(--red);color:#fff}
+.q-opt.reveal-correct .q-opt-letter{background:var(--teal);border-color:var(--teal);color:#002a24}
+.q-feedback{
+  margin:.25rem 1.25rem 1rem;padding:.8rem 1rem;border-radius:var(--rsm);
+  font-size:.82rem;line-height:1.65;display:none;
+}
+.q-feedback.show{display:block;animation:fadeUp .3s var(--ease-o)}
+.q-feedback.correct-fb{background:var(--teal-dim);border:1px solid rgba(56,178,172,.2);color:var(--teal)}
+.q-feedback.wrong-fb{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold)}
+
+/* Reflection questions */
+.q-reflect-body{padding:.25rem 1.25rem 1.1rem}
+.q-reflect-options{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.75rem}
+.q-reflect-opt{
+  padding:.4rem .85rem;border-radius:100px;border:1px solid var(--border);
+  background:transparent;color:var(--text-m);font-size:.78rem;transition:all .2s;
+}
+.q-reflect-opt:hover{border-color:var(--purple-dim);background:var(--purple-dim)}
+.q-reflect-opt.selected{border-color:var(--purple);background:var(--purple-dim);color:var(--purple)}
+.q-textarea{
+  width:100%;background:var(--surf2);border:1px solid var(--border);
+  border-radius:var(--rsm);color:var(--text);font-size:.83rem;
+  padding:.75rem .9rem;resize:none;line-height:1.65;
+  transition:border-color .2s;
+}
+.q-textarea:focus{outline:none;border-color:var(--purple)}
+.q-textarea::placeholder{color:var(--text-d)}
+.q-save-reflect{
+  margin-top:.5rem;padding:.55rem 1.1rem;background:var(--purple-dim);
+  border:1px solid rgba(159,122,234,.25);border-radius:100px;
+  font-size:.75rem;font-weight:600;color:var(--purple);transition:all .2s;
+}
+.q-save-reflect:hover{background:var(--purple);color:#fff}
+.q-saved-badge{display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.72rem;color:var(--green);display:none}
+.q-saved-badge.show{display:flex;animation:fadeUp .25s var(--ease-o)}
+
+/* Quiz completion */
+.quiz-complete{
+  text-align:center;padding:2.5rem 1rem;background:var(--surf);
+  border:1px solid var(--border);border-radius:var(--r);margin-top:1.5rem;
+}
+.qc-emoji{font-size:3rem;margin-bottom:1rem;animation:bounceIn .6s var(--ease-s)}
+.qc-title{font-family:var(--font-d);font-size:1.6rem;font-weight:300;margin-bottom:.5rem}
+.qc-title em{color:var(--gold);font-style:italic}
+.qc-sub{font-size:.88rem;color:var(--text-m);max-width:380px;margin:0 auto 1.5rem;line-height:1.7}
+.qc-score-display{
+  display:inline-flex;align-items:center;gap:1rem;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  border-radius:var(--r);padding:1rem 1.75rem;margin-bottom:1.5rem;
+}
+.qc-score-num{font-family:var(--font-d);font-size:2.5rem;font-weight:300;color:var(--gold);line-height:1}
+.qc-score-label{font-size:.78rem;color:var(--text-m);text-align:left;line-height:1.4}
+.qc-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+
+/* ══════════════════════════════════════════════
+   STORIES OVERLAY (full-screen)
+══════════════════════════════════════════════ */
+#stories-overlay{
+  position:fixed;inset:0;z-index:200;background:var(--bg);
+  display:flex;flex-direction:column;
+  transition:opacity .4s var(--ease-o),transform .4s var(--ease-o);
+}
+#stories-overlay.off{opacity:0;pointer-events:none;transform:scale(.97)}
+.so-top{
+  position:absolute;top:0;left:0;right:0;z-index:30;
+  padding:.75rem 1rem .4rem;
+  background:linear-gradient(to bottom,rgba(13,13,20,.92) 0%,transparent 100%);
+}
+[data-theme="light"] .so-top{background:linear-gradient(to bottom,rgba(248,247,242,.92) 0%,transparent 100%)}
+.so-bars{display:flex;gap:3px;margin-bottom:.5rem}
+.so-bar-track{flex:1;height:2.5px;background:rgba(255,255,255,.18);border-radius:100px;overflow:hidden}
+[data-theme="light"] .so-bar-track{background:rgba(0,0,0,.14)}
+.so-bar-fill{height:100%;background:#fff;border-radius:100px;width:0%;transition:width linear}
+[data-theme="light"] .so-bar-fill{background:var(--text)}
+.so-bar-fill.done{width:100%!important;transition:none}
+.so-top-row{display:flex;align-items:center;gap:.6rem}
+.so-teacher-chip{
+  display:flex;align-items:center;gap:.5rem;flex:1;
+  background:rgba(0,0,0,.3);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.1);border-radius:100px;
+  padding:.3rem .7rem .3rem .3rem;min-width:0;
+}
+[data-theme="light"] .so-teacher-chip{background:rgba(255,255,255,.55);border-color:rgba(0,0,0,.08)}
+.so-t-avatar{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;background:var(--surf2);flex-shrink:0}
+.so-t-name{font-size:.7rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.so-counter{
+  font-size:.68rem;font-weight:600;color:var(--text-m);
+  background:rgba(0,0,0,.3);backdrop-filter:blur(6px);
+  padding:3px 9px;border-radius:100px;border:1px solid rgba(255,255,255,.1);
+  white-space:nowrap;flex-shrink:0;
+}
+[data-theme="light"] .so-counter{background:rgba(255,255,255,.55);border-color:rgba(0,0,0,.08)}
+.so-close{
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(0,0,0,.3);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;
+  justify-content:center;font-size:.75rem;cursor:pointer;color:var(--text);flex-shrink:0;
+}
+[data-theme="light"] .so-close{background:rgba(255,255,255,.55)}
+
+.so-viewport{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.so-tap-l{position:absolute;top:55px;bottom:60px;left:0;width:35%;z-index:20;cursor:pointer}
+.so-tap-r{position:absolute;top:55px;bottom:60px;right:0;width:35%;z-index:20;cursor:pointer}
+.story-card{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:1rem 1rem 5rem;overflow:hidden}
+.story-card.in-r{animation:stIn .35s var(--ease-o) both}
+.story-card.in-l{animation:stInL .35s var(--ease-o) both}
+.story-card.out-l{animation:stOutL .3s var(--ease-o) both}
+.story-card.out-r{animation:stOutR .3s var(--ease-o) both}
+@keyframes stIn{from{opacity:0;transform:translateX(35px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes stInL{from{opacity:0;transform:translateX(-35px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes stOutL{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-35px) scale(.96)}}
+@keyframes stOutR{from{opacity:1;transform:none}to{opacity:0;transform:translateX(35px) scale(.96)}}
+
+/* Story card types (reuse from stories version) */
+.sc-bg{position:absolute;inset:0;transition:opacity .4s}
+.sc-orb{position:absolute;border-radius:50%;filter:blur(55px);pointer-events:none;opacity:.3}
+.sc-orb-1{width:280px;height:280px;top:-80px;right:-50px}
+.sc-orb-2{width:180px;height:180px;bottom:-30px;left:-30px}
+.sc-inner{position:relative;z-index:2;overflow-y:auto;max-height:calc(100vh - 150px)}
+.sc-inner::-webkit-scrollbar{display:none}
+
+/* Story content components (shared across slides) */
+.sc-cover-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(159,122,234,.18);border:1px solid rgba(159,122,234,.3);color:var(--purple);font-size:.68rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:4px 11px;border-radius:100px;margin-bottom:.9rem}
+.sc-cover-h1{font-family:var(--font-d);font-size:clamp(2rem,6vw,2.6rem);font-weight:300;line-height:1.1;letter-spacing:-.5px;margin-bottom:.6rem}
+.sc-cover-h1 em{color:var(--gold);font-style:italic}
+.sc-cover-sub{font-size:.88rem;color:var(--text-m);line-height:1.65;margin-bottom:1.1rem}
+.sc-cover-promise{display:flex;align-items:flex-start;gap:.6rem;background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.18);border-radius:11px;padding:.85rem .95rem;font-size:.8rem;line-height:1.55}
+
+.sc-tag{display:inline-flex;font-size:.65rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin-bottom:.75rem}
+.sc-q{font-family:var(--font-d);font-size:clamp(1.35rem,4vw,1.7rem);font-weight:300;line-height:1.2;letter-spacing:-.2px;margin-bottom:.9rem}
+.sc-q em{font-style:italic}
+.sc-bullets{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.75rem}
+.sc-bullet{display:flex;align-items:flex-start;gap:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.65rem .8rem;font-size:.83rem;line-height:1.5;animation:fadeUp .35s var(--ease-o) both}
+[data-theme="light"] .sc-bullet{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.06)}
+.sc-bdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.sc-bullet strong{font-weight:600;color:var(--text)}
+.sc-badge{display:flex;gap:.6rem;align-items:flex-start;background:rgba(72,187,120,.1);border:1px solid rgba(72,187,120,.18);border-radius:10px;padding:.7rem .85rem;font-size:.78rem;line-height:1.6;color:var(--text-m)}
+.sc-badge-icon{font-size:1rem;flex-shrink:0}
+.sc-headline{font-family:var(--font-d);font-size:1.45rem;font-weight:300;line-height:1.2;margin-bottom:.85rem;letter-spacing:-.2px}
+.sc-tiles{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.65rem}
+.sc-tile{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:.8rem .75rem;animation:fadeUp .35s var(--ease-o) both}
+[data-theme="light"] .sc-tile{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.07)}
+.sc-tile.a-gold{background:rgba(245,200,66,.1);border-color:rgba(245,200,66,.25)}
+.sc-tile.a-red{background:rgba(229,62,62,.1);border-color:rgba(229,62,62,.25)}
+.sc-tile.a-teal{background:rgba(56,178,172,.1);border-color:rgba(56,178,172,.25)}
+.sc-tile.a-purple{background:rgba(159,122,234,.1);border-color:rgba(159,122,234,.25)}
+.sc-tile-icon{font-size:.9rem;margin-bottom:.3rem}
+.sc-tile-val{font-family:var(--font-d);font-size:1.25rem;font-weight:300;line-height:1;margin-bottom:.2rem}
+.sc-tile-label{font-size:.65rem;color:var(--text-m);line-height:1.35}
+.sc-pillars{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.65rem}
+.sc-pillar{display:flex;align-items:flex-start;gap:.7rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:.75rem .85rem;animation:fadeUp .35s var(--ease-o) both}
+[data-theme="light"] .sc-pillar{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06)}
+.sc-pillar-emoji{font-size:1.2rem;flex-shrink:0}
+.sc-pillar-title{font-size:.85rem;font-weight:600;margin-bottom:.15rem}
+.sc-pillar-desc{font-size:.73rem;color:var(--text-m);line-height:1.5}
+.sc-risks{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.65rem}
+.sc-risk{display:flex;align-items:flex-start;gap:.6rem;background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.15);border-radius:10px;padding:.65rem .8rem;animation:fadeUp .35s var(--ease-o) both}
+.sc-risk-icon{font-size:.95rem;flex-shrink:0}
+.sc-risk-text{font-size:.8rem;color:var(--text-m);line-height:1.5}
+.sc-risk-text strong{color:var(--text)}
+.sc-quote-block{background:rgba(245,200,66,.08);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:.8rem .95rem;margin-top:.6rem;font-family:var(--font-d);font-size:.86rem;font-weight:300;line-height:1.65;color:var(--text-m);font-style:italic}
+.sc-quote-block strong{color:var(--gold);font-style:normal;font-weight:500}
+
+/* Story quiz */
+.sc-qz-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(245,200,66,.15);color:var(--gold);font-size:.68rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:4px 11px;border-radius:100px;margin-bottom:.7rem;border:1px solid rgba(245,200,66,.25)}
+.sc-qz-q{font-family:var(--font-d);font-size:1.15rem;font-weight:300;line-height:1.45;margin-bottom:.85rem;letter-spacing:-.15px}
+.sc-qz-opts{display:flex;flex-direction:column;gap:.38rem}
+.sc-qz-opt{display:flex;align-items:center;gap:.6rem;padding:.75rem .85rem;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;background:rgba(255,255,255,.04);font-size:.82rem;color:var(--text);transition:all .2s;font-family:var(--font-b);text-align:left;width:100%}
+[data-theme="light"] .sc-qz-opt{background:rgba(0,0,0,.03)}
+.sc-qz-opt:hover{border-color:rgba(245,200,66,.5);background:rgba(245,200,66,.07)}
+.sc-qz-opt.qcorrect{border-color:var(--teal);background:rgba(56,178,172,.12);color:var(--teal)}
+.sc-qz-opt.qwrong{border-color:var(--red);background:rgba(229,62,62,.1);color:var(--red)}
+.sc-qz-opt.qreveal{border-color:var(--teal);background:rgba(56,178,172,.06)}
+.sc-qz-opt:disabled{cursor:not-allowed}
+.sc-qz-ltr{width:23px;height:23px;border-radius:50%;border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0;background:rgba(255,255,255,.05);transition:all .2s}
+[data-theme="light"] .sc-qz-ltr{border-color:rgba(0,0,0,.12);background:rgba(0,0,0,.04)}
+.sc-qz-opt.qcorrect .sc-qz-ltr{background:var(--teal);border-color:var(--teal);color:#002a24}
+.sc-qz-opt.qwrong .sc-qz-ltr{background:var(--red);border-color:var(--red);color:#fff}
+.sc-qz-opt.qreveal .sc-qz-ltr{background:var(--teal);border-color:var(--teal);color:#002a24}
+.sc-qz-fb{margin-top:.65rem;padding:.75rem .85rem;border-radius:10px;font-size:.79rem;line-height:1.6;display:none}
+.sc-qz-fb.show{display:block;animation:fadeUp .3s var(--ease-o)}
+.sc-qz-fb.cfb{background:rgba(56,178,172,.12);border:1px solid rgba(56,178,172,.25);color:var(--teal)}
+.sc-qz-fb.wfb{background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.2);color:var(--gold)}
+.sc-qz-next{margin-top:.6rem;width:100%;padding:.75rem;background:var(--gold);border:none;border-radius:100px;font-size:.87rem;font-weight:700;color:#1A1200;cursor:pointer;font-family:var(--font-b);display:none;transition:all .2s}
+.sc-qz-next.show{display:block;animation:fadeUp .3s var(--ease-o)}
+.sc-qz-next:hover{background:var(--gold2)}
+
+/* Story CTA */
+.sc-cta-celebration{font-size:2.8rem;text-align:center;margin-bottom:.85rem;animation:bounceIn .6s var(--ease-s)}
+.sc-cta-title{font-family:var(--font-d);font-size:1.8rem;font-weight:300;line-height:1.15;letter-spacing:-.4px;text-align:center;margin-bottom:.5rem}
+.sc-cta-title em{color:var(--gold);font-style:italic}
+.sc-cta-sub{font-size:.83rem;color:var(--text-m);line-height:1.65;text-align:center;margin-bottom:1.1rem}
+.sc-cta-btns{display:flex;flex-direction:column;gap:.5rem}
+.sc-cta-btn{display:flex;align-items:center;gap:.7rem;padding:.85rem .95rem;border-radius:13px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--font-b);border:none;transition:all .2s;text-align:left;animation:fadeUp .35s var(--ease-o) both}
+.sc-cta-btn:hover{transform:scale(1.01)}
+.sc-cta-btn.primary{background:var(--red);color:#fff}
+.sc-cta-btn.teal{background:rgba(56,178,172,.15);border:1px solid rgba(56,178,172,.3);color:var(--teal)}
+.sc-cta-btn.gold{background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.3);color:var(--gold)}
+.sc-cta-btn-icon{font-size:1.1rem;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);flex-shrink:0}
+.sc-cta-btn-title{font-size:.82rem;font-weight:600}
+.sc-cta-btn-sub{font-size:.68rem;opacity:.75;font-weight:400}
+
+/* Story bottom nav */
+.so-bottom{
+  position:absolute;bottom:0;left:0;right:0;z-index:30;
+  padding:.55rem 1rem .9rem;
+  background:linear-gradient(to top,rgba(13,13,20,.92) 0%,transparent 100%);
+  display:flex;align-items:center;gap:.5rem;
+}
+[data-theme="light"] .so-bottom{background:linear-gradient(to top,rgba(248,247,242,.92) 0%,transparent 100%)}
+.so-prev,.so-next{
+  width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.3);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;cursor:pointer;flex-shrink:0;color:var(--text);transition:all .2s;
+}
+[data-theme="light"] .so-prev,[data-theme="light"] .so-next{background:rgba(255,255,255,.55);border-color:rgba(0,0,0,.1)}
+.so-prev:hover,.so-next:hover{border-color:var(--gold);background:rgba(245,200,66,.14)}
+.so-prev:disabled{opacity:.3;cursor:not-allowed}
+.so-dots{flex:1;display:flex;gap:.35rem}
+.so-dot{flex:1;height:4px;border-radius:100px;background:rgba(255,255,255,.1);cursor:pointer;transition:all .2s}
+[data-theme="light"] .so-dot{background:rgba(0,0,0,.1)}
+.so-dot.done{background:rgba(255,255,255,.3)}
+[data-theme="light"] .so-dot.done{background:rgba(0,0,0,.2)}
+.so-dot.current{background:var(--gold)}
+.so-next.final{background:var(--gold);border-color:var(--gold);color:#1A1200}
+.so-next.qblock{background:rgba(245,200,66,.18);border-color:var(--gold);color:var(--gold)}
+
+/* ══════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes bounceIn{from{transform:scale(0)}to{transform:scale(1)}}
+.anim-stagger .sc-bullet,.anim-stagger .sc-tile,.anim-stagger .sc-pillar,
+.anim-stagger .sc-risk,.anim-stagger .sc-cta-btn{opacity:0}
+
+/* ══════════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════════ */
+.btn{padding:.65rem 1.25rem;border-radius:100px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--font-b);transition:all .2s;border:none;display:inline-flex;align-items:center;gap:.45rem}
+.btn-gold{background:var(--gold);color:#1A1200}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-m)}
+.btn-ghost:hover{border-color:var(--border-h);color:var(--text)}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red2)}
+.btn-purple{background:var(--purple-dim);border:1px solid rgba(159,122,234,.25);color:var(--purple)}
+.btn-purple:hover{background:var(--purple);color:#fff}
+
+/* ══════════════════════════════════════════════
+   TOAST + CONFETTI
+══════════════════════════════════════════════ */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--surf);border:1px solid var(--gold-border);border-radius:100px;
+  padding:.6rem 1.2rem;font-size:.8rem;color:var(--text);
+  display:flex;align-items:center;gap:.5rem;
+  transition:transform .3s var(--ease-s);z-index:999;white-space:nowrap;
+  box-shadow:0 10px 40px var(--sh)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-icon{color:var(--gold)}
+.confp{position:fixed;pointer-events:none;z-index:999;border-radius:2px;animation:confFall linear forwards}
+@keyframes confFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .playlist-col{width:240px}
+}
+@media(max-width:768px){
+  :root{--sidebar-w:0px}
+  .mod-sidebar{display:none}
+  .videos-pane{flex-direction:column}
+  .video-player-col{padding:1rem}
+  .playlist-col{width:100%;border-left:none;border-top:1px solid var(--border);max-height:280px}
+  .doc-body{padding:1.25rem}
+  .doc-numbers-grid{grid-template-columns:1fr 1fr}
+  .learn-inner{padding:1.25rem 1rem 4rem}
+  .quiz-inner{padding:1.25rem 1rem 4rem}
+  .gnav-pill{display:none}
+}
+@media(max-width:480px){
+  .hub-grid{grid-template-columns:1fr}
+  .doc-numbers-grid{grid-template-columns:1fr 1fr}
+  .sc-tiles{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     HUB SCREEN
+════════════════════════════════════════════ -->
+<div class="screen" id="hub-screen">
+  <nav class="gnav">
+    <div class="gnav-logo" onclick="goHub()">
+      <img src="/logo.svg" alt="Budget Ndio Story" class="gnav-logo-icon" style="width:32px;height:32px;border-radius:9px;object-fit:contain;background:var(--red);padding:4px;">
+    </div>
+    <div class="gnav-breadcrumbs">
+      <span class="bc-item" onclick="goHub()">Home</span>
+      <span class="bc-sep">›</span>
+      <span class="bc-item bc-current">Learn</span>
+    </div>
+    <div class="gnav-pill"><div class="gnav-pill-dot"></div>Civic Hub · Learning Platform</div>
+    <div class="gnav-right">
+      <div class="gnav-prog">
+        <div class="gnav-prog-bar"><div class="gnav-prog-fill" id="hp-fill" style="width:0%"></div></div>
+        <span class="gnav-prog-txt" id="hp-txt">0/2</span>
+      </div>
+      <button class="icon-btn" onclick="toggleTheme()" id="theme-btn-hub">🌙</button>
+    </div>
+  </nav>
+  <div class="hub-body">
+    <div class="hub-hero">
+      <h1>Follow the Budget.<br><em>Find the Story.</em></h1>
+      <p>Premium civic education — structured as lessons, stories, and videos. Learn at your pace, on any device.</p>
+      <div class="trust-row">
+        <div class="trust-chip"><div class="tdot" style="background:var(--green)"></div>Plain language</div>
+        <div class="trust-chip"><div class="tdot" style="background:var(--teal)"></div>Source-linked</div>
+        <div class="trust-chip"><div class="tdot" style="background:var(--gold)"></div>Youth-first</div>
+        <div class="trust-chip"><div class="tdot" style="background:var(--red)"></div>47 counties tracked</div>
+      </div>
+    </div>
+    <div class="hub-section-label">Public Learning Modules</div>
+    <div class="hub-grid" id="hub-grid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     MODULE SCREEN
+════════════════════════════════════════════ -->
+<div class="screen off" id="mod-screen">
+  <nav class="mod-nav">
+    <button class="mod-nav-back" onclick="goHub()">← Hub</button>
+    <div class="mod-nav-crumb" id="mod-crumb">Module 002</div>
+    <div class="gnav-right">
+      <div class="gnav-prog">
+        <div class="gnav-prog-bar"><div class="gnav-prog-fill" id="mp-fill" style="width:0%"></div></div>
+        <span class="gnav-prog-txt" id="mp-txt">0%</span>
+      </div>
+      <button class="icon-btn" onclick="toggleTheme()" id="theme-btn-mod">🌙</button>
+    </div>
+  </nav>
+  <div class="mod-body">
+    <!-- SIDEBAR (desktop) -->
+    <div class="mod-sidebar">
+      <div class="sb-module-info">
+        <div class="sb-level-tag level-advanced">Advanced · Module 002</div>
+        <div class="sb-title">Reflecting on Kenya's 2026 Budget Policy Statement</div>
+        <div class="sb-credits">Credits: Millicent Makini</div>
+        <div class="sb-overall-prog">
+          <div class="sb-prog-label"><span>Overall progress</span><span id="sb-pct">0%</span></div>
+          <div class="sb-prog-track"><div class="sb-prog-fill" id="sb-fill" style="width:0%"></div></div>
+        </div>
+        <div class="sb-score-chips" id="sb-score-chips"></div>
+      </div>
+      <div class="sb-nav-label">Content</div>
+      <button class="sb-nav-item active" onclick="switchTab('stories')" id="sb-stories">
+        <div class="sb-item-dot">📱</div>
+        <div class="sb-item-info"><div class="sb-item-label">12 slides</div><div class="sb-item-title">Stories Mode</div></div>
+      </button>
+      <button class="sb-nav-item" onclick="switchTab('learn')" id="sb-learn">
+        <div class="sb-item-dot">📖</div>
+        <div class="sb-item-info"><div class="sb-item-label">8 sections</div><div class="sb-item-title">Full Lesson</div></div>
+      </button>
+      <button class="sb-nav-item" onclick="switchTab('videos')" id="sb-videos">
+        <div class="sb-item-dot">▶</div>
+        <div class="sb-item-info"><div class="sb-item-label">5 videos</div><div class="sb-item-title">Video Playlist</div></div>
+      </button>
+      <button class="sb-nav-item" onclick="switchTab('quiz')" id="sb-quiz">
+        <div class="sb-item-dot">✦</div>
+        <div class="sb-item-info"><div class="sb-item-label">15 questions</div><div class="sb-item-title">Learning Challenges</div></div>
+      </button>
+      <div class="sb-nav-label" style="margin-top:.5rem">Lesson Outline</div>
+      <button class="sb-nav-item" onclick="scrollLearnTo('s-intro')"><div class="sb-item-dot" style="font-size:.5rem">●</div><div class="sb-item-info"><div class="sb-item-label">Section 1</div><div class="sb-item-title">What is a BPS?</div></div></button>
+      <button class="sb-nav-item" onclick="scrollLearnTo('s-beta')"><div class="sb-item-dot" style="font-size:.5rem">●</div><div class="sb-item-info"><div class="sb-item-label">Section 2</div><div class="sb-item-title">BETA Agenda</div></div></button>
+      <button class="sb-nav-item" onclick="scrollLearnTo('s-numbers')"><div class="sb-item-dot" style="font-size:.5rem">●</div><div class="sb-item-info"><div class="sb-item-label">Section 3</div><div class="sb-item-title">Budget Numbers</div></div></button>
+      <button class="sb-nav-item" onclick="scrollLearnTo('s-counties')"><div class="sb-item-dot" style="font-size:.5rem">●</div><div class="sb-item-info"><div class="sb-item-label">Section 4</div><div class="sb-item-title">County Allocations</div></div></button>
+      <button class="sb-nav-item" onclick="scrollLearnTo('s-risks')"><div class="sb-item-dot" style="font-size:.5rem">●</div><div class="sb-item-info"><div class="sb-item-label">Section 5</div><div class="sb-item-title">Fiscal Risks</div></div></button>
+    </div>
+
+    <!-- MAIN -->
+    <div class="mod-main">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('stories')" id="tb-stories"><span class="tb-icon">📱</span> Stories<span class="tb-badge">12</span></button>
+        <button class="tab-btn" onclick="switchTab('learn')" id="tb-learn"><span class="tb-icon">📖</span> Full Lesson<span class="tb-badge">8</span></button>
+        <button class="tab-btn" onclick="switchTab('videos')" id="tb-videos"><span class="tb-icon">▶</span> Videos<span class="tb-badge">5</span></button>
+        <button class="tab-btn" onclick="switchTab('quiz')" id="tb-quiz"><span class="tb-icon">✦</span> Quiz<span class="tb-badge">15</span></button>
+      </div>
+
+      <!-- STORIES TAB -->
+      <div class="tab-pane active" id="tab-stories">
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;padding:2rem">
+          <div style="width:72px;height:72px;background:linear-gradient(135deg,var(--purple),var(--red));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:2rem">📱</div>
+          <div style="text-align:center;max-width:360px">
+            <div style="font-family:var(--font-d);font-size:1.3rem;font-weight:300;margin-bottom:.5rem">Stories Mode</div>
+            <div style="font-size:.85rem;color:var(--text-m);line-height:1.7;margin-bottom:1.25rem">12 slides from Module 002. Quick, visual, and easy — like Instagram Stories or WhatsApp Statuses. Tap through in under 5 minutes.</div>
+            <button class="btn btn-red" onclick="launchStories()" style="font-size:.9rem;padding:.8rem 2rem">Start Stories →</button>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center">
+            <div style="font-size:.7rem;background:var(--surf2);border:1px solid var(--border);padding:3px 10px;border-radius:100px;color:var(--text-m)">12 slides</div>
+            <div style="font-size:.7rem;background:var(--surf2);border:1px solid var(--border);padding:3px 10px;border-radius:100px;color:var(--text-m)">~5 min</div>
+            <div style="font-size:.7rem;background:var(--surf2);border:1px solid var(--border);padding:3px 10px;border-radius:100px;color:var(--text-m)">2 quiz questions</div>
+            <div style="font-size:.7rem;background:var(--surf2);border:1px solid var(--border);padding:3px 10px;border-radius:100px;color:var(--text-m)">Auto-advance</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEARN TAB -->
+      <div class="tab-pane" id="tab-learn">
+        <div class="learn-pane" id="learn-pane">
+          <div class="learn-inner" id="learn-content"></div>
+        </div>
+      </div>
+
+      <!-- VIDEOS TAB -->
+      <div class="tab-pane" id="tab-videos">
+        <div class="videos-pane">
+          <div class="video-player-col">
+            <div class="video-player-wrap">
+              <div class="video-placeholder" id="video-placeholder">
+                <div class="vph-icon">▶</div>
+                <div class="vph-text">Select a video from the playlist to start watching</div>
+                <div class="vph-badge">YouTube · Embedded</div>
+              </div>
+              <iframe class="video-embed" id="video-embed" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:none"></iframe>
+            </div>
+            <div class="video-meta" id="video-meta">
+              <div class="vm-title" id="vm-title">Introduction to Kenya's Budget Policy Statement</div>
+              <div class="vm-sub">
+                <span class="vm-tag" id="vm-tag">Module 002</span>
+                <span id="vm-duration">—</span>
+                <span id="vm-views">—</span>
+              </div>
+            </div>
+            <div class="video-desc" id="video-desc">Select a video from the playlist to see its description.</div>
+          </div>
+          <div class="playlist-col">
+            <div class="playlist-header">
+              Playlist <span class="playlist-progress-text" id="pl-prog">0/5 watched</span>
+            </div>
+            <div id="playlist-items"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUIZ TAB -->
+      <div class="tab-pane" id="tab-quiz">
+        <div class="quiz-pane">
+          <div class="quiz-inner">
+            <div class="quiz-header">
+              <div class="qh-title">Learning Challenges</div>
+              <div class="qh-sub">15 questions — a mix of multiple choice, scenario-based, and reflection. Take your time.</div>
+              <div class="quiz-prog-row">
+                <div class="qpr-track"><div class="qpr-fill" id="qpr-fill" style="width:0%"></div></div>
+                <div class="qpr-text" id="qpr-text">0 / 15</div>
+              </div>
+            </div>
+            <div id="quiz-questions"></div>
+            <div class="quiz-complete off" id="quiz-complete">
+              <div class="qc-emoji">🎉</div>
+              <h2 class="qc-title">Challenges <em>complete!</em></h2>
+              <p class="qc-sub">You've worked through all 15 learning challenges in Module 002. Your reflections and answers show real civic engagement.</p>
+              <div class="qc-score-display">
+                <div class="qc-score-num" id="qc-score">0</div>
+                <div class="qc-score-label">out of 9<br>MCQ correct</div>
+              </div>
+              <div class="qc-actions">
+                <button class="btn btn-gold" onclick="goHub();confetti()">Browse more modules</button>
+                <button class="btn btn-ghost" onclick="resetQuiz()">Retake quiz</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STORIES OVERLAY
+════════════════════════════════════════════ -->
+<div id="stories-overlay" class="off">
+  <div class="so-top">
+    <div class="so-bars" id="so-bars"></div>
+    <div class="so-top-row">
+      <div class="so-teacher-chip">
+        <div class="so-t-avatar" id="so-avatar">👩🏾‍💼</div>
+        <span class="so-t-name">Millicent Makini · Budget Educator</span>
+      </div>
+      <div class="so-counter" id="so-counter">1/12</div>
+      <button class="icon-btn" onclick="toggleTheme()" style="width:28px;height:28px;font-size:.75rem" id="theme-btn-so">🌙</button>
+      <div class="so-close" onclick="closeStories()">✕</div>
+    </div>
+  </div>
+  <div class="so-viewport">
+    <div class="so-tap-l" onclick="storyPrev()"></div>
+    <div class="so-tap-r" onclick="storyTapRight()"></div>
+    <div id="so-card"></div>
+  </div>
+  <div class="so-bottom">
+    <button class="so-prev" id="so-prev" onclick="storyPrev()">←</button>
+    <div class="so-dots" id="so-dots"></div>
+    <button class="so-next" id="so-next" onclick="storyTapRight()">→</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon">✦</span><span id="toast-msg"></span></div>
+
+<script>
+/* ════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════ */
+const MODULES = [
+  {
+    id:'bps-basic', num:'001', title:'The Budget Policy Statement 2026',
+    level:'basic', credits:'Budget Ndio Story Team',
+    desc:'Understand how Kenya\'s budget roadmap works and exactly where you fit in. No jargon. Plain language.',
+    duration:'10 min', slidesCount:12, lessonsCount:5, videosCount:3, quizCount:4,
+    category:'Budget Basics', catColor:'#38B2AC', catBg:'rgba(56,178,172,.12)',
+    accentA:'#E53E3E', accentB:'#F5C842',
+    teacher:{name:'Wanjiru Kamau',role:'Budget Literacy Educator',avatar:'👩🏾‍💼'},
+    types:['stories','learn','videos','quiz']
+  },
+  {
+    id:'bps-advanced', num:'002', title:'Reflecting on Kenya\'s 2026 Budget Policy Statement',
+    level:'advanced', credits:'Millicent Makini',
+    desc:'Decode the budget\'s secret, master the 5 BETA Agenda pillars, track the trillion-shilling debt, and understand fiscal risks.',
+    duration:'25 min', slidesCount:12, lessonsCount:8, videosCount:5, quizCount:15,
+    category:'Advanced', catColor:'#9F7AEA', catBg:'rgba(159,122,234,.12)',
+    accentA:'#9F7AEA', accentB:'#F06060',
+    teacher:{name:'Millicent Makini',role:'Budget & Policy Analyst',avatar:'👩🏾‍💻'},
+    types:['stories','learn','videos','quiz']
+  }
+];
+
+/* Stories slides for Module 002 */
+const STORIES = [
+  {id:'cover',type:'cover',bg:'#100D1A',orb1:'rgba(159,122,234,.45)',orb2:'rgba(245,200,66,.25)'},
+  {id:'expect',type:'bullets',bg:'#0D0D14',orb1:'rgba(159,122,234,.3)',orb2:'rgba(56,178,172,.15)'},
+  {id:'bps-def',type:'bullets',bg:'#041A18',orb1:'rgba(56,178,172,.35)',orb2:'rgba(245,200,66,.18)'},
+  {id:'beta',type:'bullets',bg:'#0D0D14',orb1:'rgba(245,200,66,.3)',orb2:'rgba(229,62,62,.15)'},
+  {id:'pillars-1',type:'pillars',bg:'#0A1A0A',orb1:'rgba(72,187,120,.3)',orb2:'rgba(56,178,172,.18)'},
+  {id:'pillars-2',type:'pillars2',bg:'#0A0A1A',orb1:'rgba(159,122,234,.3)',orb2:'rgba(245,200,66,.15)'},
+  {id:'numbers',type:'tiles',bg:'#1A0A0A',orb1:'rgba(229,62,62,.3)',orb2:'rgba(245,200,66,.2)'},
+  {id:'counties',type:'tiles2',bg:'#041A18',orb1:'rgba(56,178,172,.35)',orb2:'rgba(72,187,120,.18)'},
+  {id:'risks',type:'risks',bg:'#1A0808',orb1:'rgba(229,62,62,.4)',orb2:'rgba(245,200,66,.18)'},
+  {id:'quiz-1',type:'quiz',bg:'#0D0D14',orb1:'rgba(245,200,66,.28)',orb2:'rgba(56,178,172,.12)',quizIdx:0},
+  {id:'quiz-2',type:'quiz',bg:'#0D0D14',orb1:'rgba(245,200,66,.25)',orb2:'rgba(229,62,62,.12)',quizIdx:1},
+  {id:'cta',type:'cta',bg:'#1A1200',orb1:'rgba(245,200,66,.45)',orb2:'rgba(56,178,172,.18)'}
+];
+
+const STORY_QUIZ = [
+  {
+    q:'What is the main purpose of the Budget Policy Statement (BPS)?',
+    opts:['To collect taxes from citizens','To guide how national and county governments prepare their budgets','To replace the national development plan','To approve all government projects'],
+    correct:1,
+    fb:{c:'✓ Correct! The BPS guides budget preparation — it\'s the roadmap, not the final budget itself.',w:'The BPS is a strategic guidance document — it helps governments prepare their budgets. Tax collection is KERA\'s job.'}
+  },
+  {
+    q:'By law, the BPS must be submitted to Parliament by:',
+    opts:['January 1st','February 15th','March 30th','April 30th'],
+    correct:1,
+    fb:{c:'✓ Right! February 15th is the constitutional deadline under the PFM Act.',w:'Section 25 of the Public Finance Management Act sets the deadline as February 15th each year.'}
+  }
+];
+
+/* Video playlist data */
+const VIDEOS = [
+  {id:'1',title:'Understanding Kenya\'s Budget Policy Statement',youtubeId:'',duration:'8:24',views:'14.2K',desc:'A complete breakdown of what the BPS is, why it matters, and how it shapes the national budget every year.',tag:'Module 002'},
+  {id:'2',title:'The BETA Agenda Explained — 5 Pillars of Kenya\'s Growth',youtubeId:'',duration:'12:45',views:'9.8K',desc:'Deep dive into the Bottom-Up Economic Transformation Agenda. Agriculture, MSMEs, healthcare, housing, and digital economy.',tag:'BETA Agenda'},
+  {id:'3',title:'Kenya\'s Fiscal Situation: Debt, Deficit & What It Means',youtubeId:'',duration:'15:30',views:'7.3K',desc:'How KES 1.2 trillion in debt interest affects services. Understanding the fiscal deficit and how it gets financed.',tag:'Fiscal Analysis'},
+  {id:'4',title:'County Budgets & Devolution — 420 Billion Explained',youtubeId:'',duration:'10:15',views:'11.5K',desc:'How the equitable share works, what KES 420 billion funds in your county, and how to track it.',tag:'Counties'},
+  {id:'5',title:'How to Participate in Kenya\'s Budget Process',youtubeId:'',duration:'9:50',views:'18.1K',desc:'Public participation forums, submission windows, and how your voice can influence the final budget.',tag:'Action'}
+];
+
+/* Quiz questions */
+const QUIZ_Qs = [
+  {n:1,type:'mcq',icon:'🕵️‍♀️',typelabel:'Budget Detective',q:'What is the main purpose of the Budget Policy Statement (BPS)?',opts:['To collect taxes from citizens','To guide how national and county governments prepare their budgets','To replace the national development plan','To approve all government projects'],correct:1,fb:{c:'✓ Correct. The BPS is a strategic guidance document — it shapes how both national and county governments approach budget preparation.',w:'The BPS is not a tax or project approval document. It\'s the strategic roadmap that guides budget preparation at both national and county level.'}},
+  {n:2,type:'reflect',icon:'💭',typelabel:'Your First Reflection',q:'Before learning about the BPS, how often did you think about how national budgets affect your daily life?',opts:['Very often','Sometimes','Rarely','Never'],extraQ:'What areas of your life do you think government budgets influence the most?'},
+  {n:3,type:'mcq',icon:'⏳',typelabel:'Timeline Challenge',q:'By law, the Budget Policy Statement must be submitted to Parliament by:',opts:['January 1st','February 15th','March 30th','April 30th'],correct:1,fb:{c:'✓ February 15th — this is set in Section 25 of the Public Finance Management (PFM) Act.',w:'Section 25 of the PFM Act sets this as February 15th. April 30th is when the full budget must be presented.'}},
+  {n:4,type:'mcq',icon:'🔍',typelabel:'Policy Explorer',q:'Which agenda guides the development priorities highlighted in the 2026 BPS?',opts:['Vision 2030 Growth Plan','Bottom-Up Economic Transformation Agenda (BETA)','East African Development Strategy','National Industrial Policy'],correct:1,fb:{c:'✓ BETA — the Bottom-Up Economic Transformation Agenda — is the government\'s current overarching development framework.',w:'The 2026 BPS is themed around the BETA agenda, which focuses on growing the economy from the ground up through 5 key pillars.'}},
+  {n:5,type:'reflect',icon:'🌱',typelabel:'Pause & Reflect',q:'If you were designing an economic strategy for Kenya, which sector would you prioritise first and why?',opts:['Agriculture','Small businesses (MSMEs)','Healthcare','Digital economy','Infrastructure','Education'],extraQ:'Explain your choice in 1–2 sentences.'},
+  {n:6,type:'mcq',icon:'🌾',typelabel:'Farmer\'s Dilemma',q:'You are a farmer benefiting from fertilizer subsidies and improved irrigation. What would likely happen if these programmes succeed?',opts:['Increased crop production','Reduced food supply','Higher unemployment in rural areas','Less agricultural exports'],correct:0,fb:{c:'✓ Correct. Fertilizer subsidies and irrigation improve yields — leading to increased crop production, food security, and potentially higher export volumes.',w:'Better inputs + better irrigation = more crops, not fewer. Successful agricultural interventions increase production and food security.'}},
+  {n:7,type:'mcq',icon:'💼',typelabel:'Business Builder',q:'Many MSMEs struggle to access credit. Which BPS intervention aims to address this?',opts:['Expanding the Hustler Fund and credit guarantee scheme','Increasing business licensing fees','Limiting bank lending to small businesses','Increasing corporate tax'],correct:0,fb:{c:'✓ Right. The BPS proposes expanding the Hustler Fund and the credit guarantee scheme to make affordable credit accessible to small businesses.',w:'The BPS recognises that high interest rates and collateral requirements block MSME growth — the solution is expanding access to affordable credit, not restricting it.'}},
+  {n:8,type:'reflect',icon:'🚀',typelabel:'Reflection: Entrepreneurship',q:'Imagine you are a young entrepreneur starting a small business. Which support would make the biggest difference for you?',opts:['Affordable loans','Business mentorship','Digital skills training','Access to markets'],extraQ:'Why? Write 1–2 sentences about your choice.'},
+  {n:9,type:'mcq',icon:'⚖️',typelabel:'Budget Balancing Act',q:'When government spending is higher than its revenue, the difference is known as:',opts:['Fiscal surplus','Fiscal deficit','Monetary balance','Public investment'],correct:1,fb:{c:'✓ A fiscal deficit occurs when spending exceeds revenue. Kenya\'s projected deficit for FY 2026/27 is KES 1.15 trillion.',w:'A surplus is when revenue exceeds spending. When spending exceeds revenue, that\'s a deficit — the gap must be financed through borrowing.'}},
+  {n:10,type:'mcq',icon:'💰',typelabel:'Debt Pressure Puzzle',q:'Interest payments on Kenya\'s public debt are projected at over KES 1.2 trillion. What challenge does this create?',opts:['Reduced funds for development and social services','Lower tax collection','Faster economic growth','Reduced public borrowing'],correct:0,fb:{c:'✓ Exactly. Over KES 1.2 trillion in debt interest is money that cannot go to roads, healthcare, or education — it\'s pre-committed before Budget Day.',w:'Debt interest is a fixed obligation. When it consumes a large share of the budget, less money is available for development spending and social services.'}},
+  {n:11,type:'reflect',icon:'👀',typelabel:'Citizens\' Lens',q:'Why do you think citizens should understand government budgets, even if they are not economists?',opts:[],extraQ:'Write one or two reasons.'},
+  {n:12,type:'mcq',icon:'🗺️',typelabel:'County Impact Map',q:'The BPS proposes allocating KES 420 billion to county governments. What is the main purpose of this transfer?',opts:['Funding local development and public services','Repaying domestic loans','Supporting foreign investments','Honouring the constitution'],correct:0,fb:{c:'✓ The equitable share funds counties to deliver devolved services — roads, health, water, markets, and local development.',w:'The equitable share is transferred to counties specifically to fund local development and public services. It is the basis of devolution.'}},
+  {n:13,type:'mcq',icon:'⚠️',typelabel:'Risk Radar',q:'Which of the following is identified as a major fiscal risk in the BPS?',opts:['Rising public debt and interest payments','Decreasing internet use','Reduced population growth','Lower rainfall every year'],correct:0,fb:{c:'✓ Public debt risk — including rising debt levels and interest payment pressure — is the first and most prominent fiscal risk identified in the BPS.',w:'The BPS identifies 5 fiscal risks. Rising public debt and interest payments is the primary one, followed by contingent liabilities, macroeconomic risks, climate change, and devolution pressures.'}},
+  {n:14,type:'reflect',icon:'🌍',typelabel:'Future Thinking',q:'The BPS identifies climate change risks such as droughts and floods. How might these affect Kenya\'s economy and public finances?',opts:[],extraQ:'Think about agriculture, infrastructure, or food security.'},
+  {n:15,type:'reflect',icon:'🏁',typelabel:'Final Budget Challenge',q:'If Parliament asked for one key improvement before approving the BPS, which area would you strengthen most?',opts:['Agriculture and food security','MSME development','Healthcare','Digital economy and youth innovation','Infrastructure investment'],extraQ:'Explain your choice in 2–3 sentences.'}
+];
+
+/* ════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════ */
+const S = {
+  screen:'hub',
+  module: null,
+  tab: 'stories',
+  storySlide: 0,
+  storyQuizAnswered: [false, false],
+  storyQuizCorrect: [null, null],
+  storyBarTimer: null,
+  quizState: {}, // { qIdx: { answered, correct, reflectText } }
+  progress: JSON.parse(localStorage.getItem('bns2_prog') || '{}'),
+  watched: JSON.parse(localStorage.getItem('bns2_watched') || '[]'),
+  theme: localStorage.getItem('bns2_theme') || 'dark',
+  activeVideo: null,
+};
+
+// Init theme
+document.documentElement.setAttribute('data-theme', S.theme);
+const TBTN_ICON = S.theme === 'dark' ? '🌙' : '☀️';
+['theme-btn-hub','theme-btn-mod','theme-btn-so'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = TBTN_ICON;
+});
+
+/* ════════════════════════════════════════════
+   THEME
+════════════════════════════════════════════ */
+function toggleTheme() {
+  S.theme = S.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', S.theme);
+  const ico = S.theme === 'dark' ? '🌙' : '☀️';
+  ['theme-btn-hub','theme-btn-mod','theme-btn-so'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = ico;
+  });
+  localStorage.setItem('bns2_theme', S.theme);
+}
+
+/* ════════════════════════════════════════════
+   SCREENS
+════════════════════════════════════════════ */
+function showScreen(id) {
+  document.getElementById('hub-screen').classList.toggle('off', id !== 'hub');
+  document.getElementById('mod-screen').classList.toggle('off', id !== 'module');
+  S.screen = id;
+}
+
+function goHub() {
+  closeStories();
+  showScreen('hub');
+  renderHub();
+}
+
+function openModule(id) {
+  S.module = MODULES.find(m => m.id === id) || MODULES[1];
+  document.getElementById('mod-crumb').textContent = `Module ${S.module.num} · ${S.module.title.substring(0,40)}...`;
+  showScreen('module');
+  switchTab('stories');
+  renderLearnContent();
+  renderPlaylist();
+  renderQuiz();
+  updateModProgress();
+}
+
+/* ════════════════════════════════════════════
+   HUB
+════════════════════════════════════════════ */
+function renderHub() {
+  const grid = document.getElementById('hub-grid');
+  grid.innerHTML = MODULES.map((m, i) => {
+    const prog = S.progress[m.id] || {};
+    const pct = prog.pct || 0;
+    const status = prog.completed ? 'done' : pct > 0 ? 'progress' : 'new';
+    const statusLabel = prog.completed ? '✓ Complete' : pct > 0 ? `${pct}% done` : 'New';
+    const statusClass = {done:'s-done', progress:'s-progress', new:'s-new'}[status];
+    return `<div class="hub-card" onclick="openModule('${m.id}')" style="animation:fadeUp .4s var(--ease-o) ${i*.07}s both">
+      <div class="hub-card-accent" style="background:linear-gradient(90deg,${m.accentA},${m.accentB})"></div>
+      <div class="hub-card-body">
+        <div class="hub-card-top">
+          <div class="level-badge level-${m.level}">${m.level === 'advanced' ? '⚡' : '📘'} ${m.level.charAt(0).toUpperCase()+m.level.slice(1)}</div>
+          <div class="hub-card-num">${m.num}</div>
+        </div>
+        <div class="hub-card-title">${m.title}</div>
+        <div class="hub-card-credits">Credits: ${m.credits}</div>
+        <div class="hub-card-desc">${m.desc}</div>
+        <div class="hub-card-meta">
+          <span>⏱ ${m.duration}</span><span>·</span>
+          <span>📋 ${m.lessonsCount} lessons</span><span>·</span>
+          <span>🎯 ${m.quizCount} questions</span>
+        </div>
+        <div class="content-type-pills">
+          <span class="ct-pill stories">📱 Stories</span>
+          <span class="ct-pill learn">📖 Learn</span>
+          <span class="ct-pill videos">▶ Videos</span>
+          <span class="ct-pill quiz">✦ Quiz</span>
+        </div>
+        <div class="hub-card-prog">
+          <div class="hub-card-prog-fill" style="width:${pct}%;background:linear-gradient(90deg,${m.accentA},${m.accentB})"></div>
+        </div>
+        <div class="hub-card-footer">
+          <div class="hub-card-teacher"><span>${m.teacher.avatar}</span>${m.teacher.name}</div>
+          <div class="hub-card-status ${statusClass}">${statusLabel}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  updateHubProgress();
+}
+
+function updateHubProgress() {
+  const done = Object.values(S.progress).filter(p => p.completed).length;
+  const total = MODULES.length;
+  document.getElementById('hp-fill').style.width = `${(done/total)*100}%`;
+  document.getElementById('hp-txt').textContent = `${done}/${total}`;
+}
+
+/* ════════════════════════════════════════════
+   TABS
+════════════════════════════════════════════ */
+function switchTab(tab) {
+  S.tab = tab;
+  ['stories','learn','videos','quiz'].forEach(t => {
+    document.getElementById(`tab-${t}`)?.classList.toggle('active', t === tab);
+    document.getElementById(`tb-${t}`)?.classList.toggle('active', t === tab);
+    document.getElementById(`sb-${t}`)?.classList.toggle('active', t === tab);
+  });
+  // Mark tab as visited in progress
+  if (!S.progress['bps-advanced']) S.progress['bps-advanced'] = { visited: [] };
+  if (!S.progress['bps-advanced'].visited) S.progress['bps-advanced'].visited = [];
+  if (!S.progress['bps-advanced'].visited.includes(tab)) {
+    S.progress['bps-advanced'].visited.push(tab);
+    saveProgress();
+    updateModProgress();
+  }
+}
+
+function scrollLearnTo(id) {
+  switchTab('learn');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function updateModProgress() {
+  const prog = S.progress['bps-advanced'] || {};
+  const visited = prog.visited?.length || 0;
+  const quizDone = Object.keys(S.quizState).length;
+  const pct = Math.round(((visited/4)*40 + (quizDone/15)*60));
+  document.getElementById('mp-fill').style.width = pct + '%';
+  document.getElementById('mp-txt').textContent = pct + '%';
+  document.getElementById('sb-pct').textContent = pct + '%';
+  document.getElementById('sb-fill').style.width = pct + '%';
+  if (!S.progress['bps-advanced']) S.progress['bps-advanced'] = {};
+  S.progress['bps-advanced'].pct = pct;
+  if (pct >= 80) S.progress['bps-advanced'].completed = true;
+  saveProgress();
+  updateHubProgress();
+  // Score chips
+  const mcqCorrect = Object.values(S.quizState).filter(q => q.type === 'mcq' && q.correct).length;
+  const reflections = Object.values(S.quizState).filter(q => q.type === 'reflect' && q.saved).length;
+  const chips = document.getElementById('sb-score-chips');
+  if (chips) {
+    chips.innerHTML = `
+      <div class="sb-score-chip" style="background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border)">✦ ${mcqCorrect}/9 MCQ</div>
+      <div class="sb-score-chip" style="background:var(--purple-dim);color:var(--purple);border:1px solid rgba(159,122,234,.2)">💭 ${reflections}/6 Reflect</div>
+    `;
+  }
+}
+
+function saveProgress() {
+  localStorage.setItem('bns2_prog', JSON.stringify(S.progress));
+}
+
+/* ════════════════════════════════════════════
+   LEARN CONTENT
+════════════════════════════════════════════ */
+function renderLearnContent() {
+  document.getElementById('learn-content').innerHTML = `
+  <div class="doc-chrome">
+    <div class="doc-topbar">
+      <div class="doc-dots"><div class="doc-dot" style="background:#E53E3E"></div><div class="doc-dot" style="background:#F5C842"></div><div class="doc-dot" style="background:#48BB78"></div></div>
+      <div class="doc-title-bar">BPS_2026_Advanced_Module_002.pdf</div>
+      <div class="doc-badge-view">🔒 View only</div>
+      <div class="doc-pages" id="doc-pages">Page 1 of 8</div>
+    </div>
+    <div class="doc-body" oncontextmenu="return false">
+
+      <div class="doc-cover">
+        <div class="doc-cover-tag">Public Advanced Learning · Module 002</div>
+        <h1 class="doc-cover" style="font-family:var(--font-d);font-size:1.5rem;font-weight:400;line-height:1.25;margin-bottom:.5rem">Reflecting on Kenya's 2026 Budget Policy Statement (BPS)</h1>
+        <div class="doc-cover-credits">Credits: Millicent Makini</div>
+        <div class="doc-cover-line"></div>
+        <div style="margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center">
+          ${['Decode the Budget','Master 5 Pillars','Track the Debt','Battle Climate Risk','Detective Quiz','Share Your Opinion'].map(e => `<div style="font-size:.68rem;background:var(--surf3);border:1px solid var(--border);padding:3px 10px;border-radius:100px;color:var(--text-m)">${e}</div>`).join('')}
+        </div>
+      </div>
+
+      <div class="doc-section" id="s-intro">
+        <div class="doc-section-num">Section 1</div>
+        <div class="doc-h1">What is a Budget Policy Statement?</div>
+        <p class="doc-p">The Budget Policy Statement (BPS) is a government policy document that sets out the broad <strong>strategic priorities and policy goals</strong> that should guide the national and county governments in preparing their budgets for the next financial year and over the medium term.</p>
+        <p class="doc-p">The document is submitted to Parliament by the <strong>15th of February every year</strong> in line with Section 25 of the Public Finance Management (PFM) Act.</p>
+        <div class="doc-h2">The BPS contains five key elements:</div>
+        <ol class="doc-ol">
+          <li>An assessment of the current state of the economy including <strong>macroeconomic forecasts</strong> and government priorities</li>
+          <li>The <strong>financial outlook</strong> with respect to government revenue, expenditures and borrowing for the next financial year</li>
+          <li>The proposed <strong>expenditure ceilings</strong> for the National Government including Parliament, the Judiciary, and indicative transfers to county governments</li>
+          <li>The <strong>fiscal responsibility principles</strong> and financial objectives over the medium-term including limits on total annual debt</li>
+          <li>A <strong>statement of specific fiscal risks</strong></li>
+        </ol>
+        <div class="doc-highlight">
+          <div class="doc-highlight-label">Key Connection</div>
+          <p>The BPS guides the <strong>County Fiscal Strategy Paper (CFSP)</strong> — the equivalent document at county level. Once approved by Parliament, it forms the basis for the national budget presented by April 30th.</p>
+        </div>
+      </div>
+
+      <div class="doc-section" id="s-beta">
+        <div class="doc-section-num">Section 2</div>
+        <div class="doc-h1">The 2026 BPS — BETA Agenda</div>
+        <div class="doc-highlight" style="margin-bottom:1.25rem">
+          <div class="doc-highlight-label">BPS 2026 Theme</div>
+          <p><strong>"Consolidating Gains Under the Bottom-Up Economic Transformation Agenda for Inclusive and Sustainable Growth."</strong></p>
+        </div>
+        <div class="doc-h2">2.1 The 5 BETA Pillars</div>
+
+        <div class="doc-pillar-card">
+          <div class="doc-pillar-emoji">🌽</div>
+          <div><div class="doc-pillar-title">Agricultural Transformation</div><div class="doc-pillar-text">Prioritising food security through crop diversification, modernising agricultural value chains, strengthening extension services, improving livestock productivity, and expanding agricultural insurance. Key interventions: fertilizer subsidies, large-scale irrigation, livestock vaccination and traceability, meat/dairy/leather processing infrastructure.</div></div>
+        </div>
+        <div class="doc-pillar-card">
+          <div class="doc-pillar-emoji">🏪</div>
+          <div><div class="doc-pillar-title">Transforming MSMEs</div><div class="doc-pillar-text">The BPS recognises structural constraints facing MSMEs — limited credit access, punitive collateral requirements, high interest rates averaging 18%, restrictive licensing, and weak market linkages. Solutions: expanding the Hustler Fund, credit guarantee scheme expansion, NYOTA beneficiary linkages, and MSME hubs in all 47 counties for mentorship and technical training.</div></div>
+        </div>
+        <div class="doc-pillar-card">
+          <div class="doc-pillar-emoji">🏥</div>
+          <div><div class="doc-pillar-title">Healthcare</div><div class="doc-pillar-text">Target: achieve Universal Health Coverage. Government plans to expand enrolment into the Social Health Authority, <strong>targeting 35 million people</strong>. Also: strengthen community health services, build and equip health facilities, and improve digital health systems.</div></div>
+        </div>
+        <div class="doc-pillar-card">
+          <div class="doc-pillar-emoji">🏘</div>
+          <div><div class="doc-pillar-title">Housing and Settlement</div><div class="doc-pillar-text">Continue supporting housing finance through KMRC, create jobs in construction, develop markets and urban renewal projects. Affordable homeownership loans remain a priority.</div></div>
+        </div>
+        <div class="doc-pillar-card">
+          <div class="doc-pillar-emoji">💻</div>
+          <div><div class="doc-pillar-title">Digital Superhighway & Creative Economy</div><div class="doc-pillar-text">Expand fibre internet nationally, install public Wi-Fi hotspots, digitise all government services, train youth in digital skills; support <strong>film, music, fashion, and digital content industries</strong>.</div></div>
+        </div>
+
+        <div class="doc-h2">2.2 Enablers and Support Systems</div>
+        <ul class="doc-ul">
+          <li>Roads and railways; electricity and renewable energy</li>
+          <li>Water and irrigation; manufacturing; oil and gas exploration</li>
+          <li>E-mobility (electric vehicles)</li>
+          <li><strong>National Infrastructure Fund</strong> — for long-term investments</li>
+          <li><strong>Sovereign Wealth Fund</strong> — to save from natural resources</li>
+        </ul>
+      </div>
+
+      <div class="doc-section" id="s-numbers">
+        <div class="doc-section-num">Section 3</div>
+        <div class="doc-h1">Budget for FY 2026/27 — The Big Numbers</div>
+        <p class="doc-p">In FY 2026/27, total revenue including appropriations-in-aid is forecasted at <strong>KES 3,588.1 billion</strong>, up from KES 3,368.6 billion in 2025/26. Total expenditure is projected at <strong>KES 4,737.5 billion</strong>.</p>
+        <div class="doc-numbers-grid">
+          <div class="doc-num-tile accent-teal"><div class="doc-num-icon">📥</div><div class="doc-num-val">KES 3.59T</div><div class="doc-num-label">Total revenue (FY 2026/27)</div></div>
+          <div class="doc-num-tile accent-gold"><div class="doc-num-icon">💰</div><div class="doc-num-val">KES 4.74T</div><div class="doc-num-label">Total expenditure projected</div></div>
+          <div class="doc-num-tile accent-red"><div class="doc-num-icon">📉</div><div class="doc-num-val">KES 1.15T</div><div class="doc-num-label">Fiscal deficit (spending gap)</div></div>
+          <div class="doc-num-tile accent-purple"><div class="doc-num-icon">⚠️</div><div class="doc-num-val">KES 1.2T</div><div class="doc-num-label">Debt interest payments</div></div>
+        </div>
+        <div class="doc-highlight">
+          <div class="doc-highlight-label">Deficit Financing</div>
+          <p>The KES 1.15T deficit will be financed through: <strong>KES 225.5B from foreign borrowing</strong> and <strong>KES 924B from domestic borrowing</strong>. GDP is expected to grow at 5.3% in 2026 and 2027.</p>
+        </div>
+      </div>
+
+      <div class="doc-section" id="s-counties">
+        <div class="doc-section-num">Section 4</div>
+        <div class="doc-h1">County Financial Management & Division of Revenue</div>
+        <p class="doc-p">The BPS proposes to allocate <strong>KES 420 billion</strong> to county governments in FY 2026/27 — a KES 5 billion increase from the 2025/26 level.</p>
+        <div class="doc-numbers-grid">
+          <div class="doc-num-tile accent-teal"><div class="doc-num-icon">🏛</div><div class="doc-num-val">KES 420B</div><div class="doc-num-label">County equitable share</div></div>
+          <div class="doc-num-tile"><div class="doc-num-icon">➕</div><div class="doc-num-val">KES 75.7B</div><div class="doc-num-label">Additional county allocations</div></div>
+          <div class="doc-num-tile"><div class="doc-num-icon">🏥</div><div class="doc-num-val">KES 3.24B</div><div class="doc-num-label">Community Health Promoters</div></div>
+          <div class="doc-num-tile"><div class="doc-num-icon">⚖️</div><div class="doc-num-val">KES 9.6B</div><div class="doc-num-label">Equalisation Fund</div></div>
+        </div>
+        <div class="doc-h2">Specific Programme Allocations</div>
+        <ul class="doc-ul">
+          <li><strong>Universal Health Coverage Workers:</strong> KES 8.938 billion</li>
+          <li><strong>Community Health Promoters:</strong> KES 3.235 billion</li>
+          <li><strong>County Aggregation and Industrial Parks (CAIPS):</strong> KES 3.250 billion</li>
+          <li><strong>County Headquarters Construction:</strong> KES 523 million</li>
+          <li><strong>Housing Levy Fund (0.5% to counties):</strong> KES 366 million</li>
+          <li><strong>Court fines + mineral royalties (unconditional):</strong> KES 1,981 million</li>
+        </ul>
+      </div>
+
+      <div class="doc-section" id="s-risks">
+        <div class="doc-section-num">Section 5</div>
+        <div class="doc-h1">Statement of Specific Fiscal Risks</div>
+        <p class="doc-p">The BPS identifies 5 main risks that could affect government finances. Understanding these helps citizens ask the right questions when things go wrong.</p>
+        <div class="doc-risk-item"><div class="doc-risk-num">01</div><div class="doc-risk-text"><strong>Public Debt Risk</strong> — rising debt levels, interest payment pressures, exchange rate risks. Kenya's debt service obligations are approaching unsustainable levels.</div></div>
+        <div class="doc-risk-item"><div class="doc-risk-num">02</div><div class="doc-risk-text"><strong>Contingent Liabilities</strong> — government guarantees, State-Owned Enterprise obligations, public-private partnership commitments that could become government costs.</div></div>
+        <div class="doc-risk-item"><div class="doc-risk-num">03</div><div class="doc-risk-text"><strong>Macroeconomic Risks</strong> — lower than expected GDP growth, revenue shortfalls from reduced economic activity, global economic headwinds.</div></div>
+        <div class="doc-risk-item"><div class="doc-risk-num">04</div><div class="doc-risk-text"><strong>Climate Change Risks</strong> — droughts and floods causing food insecurity, infrastructure damage, and unplanned emergency expenditure.</div></div>
+        <div class="doc-risk-item"><div class="doc-risk-num">05</div><div class="doc-risk-text"><strong>Devolution Risks</strong> — county fiscal pressures, mounting pending bills, and service delivery failures at the local level.</div></div>
+        <div class="doc-highlight" style="margin-top:1rem">
+          <div class="doc-highlight-label">Why This Matters</div>
+          <p>When the government publishes its risks openly, it creates accountability. When any of these risks materialise, citizens can reference this section and ask: <strong>"What was the contingency plan?"</strong></p>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════
+   VIDEOS
+════════════════════════════════════════════ */
+function renderPlaylist() {
+  const cont = document.getElementById('playlist-items');
+  cont.innerHTML = VIDEOS.map((v, i) => {
+    const watched = S.watched.includes(v.id);
+    return `<div class="playlist-item ${S.activeVideo === v.id ? 'active' : ''}" onclick="playVideo('${v.id}')">
+      <div class="pi-thumb" style="background:linear-gradient(135deg,#${['1A0508','041A18','0A0A1A','0A1A0A','1A1200'][i]},#${['2D0A0A','082B28','16163A','14281A','2A1E00'][i]})">
+        <div class="pi-thumb-play">▶</div>
+      </div>
+      <div class="pi-body">
+        <div class="pi-num">${String(i+1).padStart(2,'0')} · ${v.tag}</div>
+        <div class="pi-title">${v.title}</div>
+        <div class="pi-meta"><span>⏱ ${v.duration}</span><span>👁 ${v.views}</span>${watched?'<span class="pi-watched">✓ Watched</span>':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('pl-prog').textContent = `${S.watched.length}/5 watched`;
+}
+
+function playVideo(id) {
+  const v = VIDEOS.find(x => x.id === id);
+  if (!v) return;
+  S.activeVideo = id;
+  const ph = document.getElementById('video-placeholder');
+  const embed = document.getElementById('video-embed');
+  if (v.youtubeId) {
+    ph.style.display = 'none';
+    embed.style.display = 'block';
+    embed.src = `https://www.youtube.com/embed/${v.youtubeId}?autoplay=1`;
+  } else {
+    ph.style.display = 'flex';
+    ph.innerHTML = `<div class="vph-icon">📺</div><div class="vph-text"><strong>${v.title}</strong><br><br>Paste your YouTube video ID here in the source code.<br>Replace the empty youtubeId field.</div><div class="vph-badge">YouTube · Add Video ID</div>`;
+    embed.style.display = 'none';
+  }
+  document.getElementById('vm-title').textContent = v.title;
+  document.getElementById('vm-tag').textContent = v.tag;
+  document.getElementById('vm-duration').textContent = `⏱ ${v.duration}`;
+  document.getElementById('vm-views').textContent = `👁 ${v.views} views`;
+  document.getElementById('video-desc').textContent = v.desc;
+  if (!S.watched.includes(id)) {
+    S.watched.push(id);
+    localStorage.setItem('bns2_watched', JSON.stringify(S.watched));
+  }
+  renderPlaylist();
+  updateModProgress();
+  showToast(`Now playing: ${v.title.substring(0,40)}...`);
+}
+
+/* ════════════════════════════════════════════
+   QUIZ
+════════════════════════════════════════════ */
+function renderQuiz() {
+  const cont = document.getElementById('quiz-questions');
+  cont.innerHTML = QUIZ_Qs.map(q => buildQuizCard(q)).join('');
+  updateQuizProgress();
+}
+
+function buildQuizCard(q) {
+  const state = S.quizState[q.n] || {};
+  const answered = !!state.answered;
+  const numCls = answered ? (q.type === 'mcq' ? (state.correct ? 'correct' : 'wrong') : 'answered') : '';
+  let body = '';
+  if (q.type === 'mcq') {
+    body = `<div class="q-options">${q.opts.map((o, i) => {
+      let cls = '';
+      if (answered) {
+        if (i === q.correct) cls = i === state.picked ? 'sel-correct' : 'reveal-correct';
+        else if (i === state.picked) cls = 'sel-wrong';
+      }
+      return `<button class="q-opt ${cls}" onclick="answerMCQ(${q.n},${i})" ${answered?'disabled':''}><span class="q-opt-letter">${String.fromCharCode(65+i)}</span>${o}</button>`;
+    }).join('')}</div>
+    <div class="q-feedback ${answered?'show':''}  ${answered?(state.correct?'correct-fb':'wrong-fb'):''}" id="qfb-${q.n}">${answered?(state.correct?q.fb.c:q.fb.w):''}</div>`;
+  } else {
+    const saved = state.saved;
+    const selectedOpt = state.selectedOpt || '';
+    const savedText = state.reflectText || '';
+    const optHtml = q.opts.length ? `<div class="q-reflect-options">${q.opts.map(o=>`<button class="q-reflect-opt ${selectedOpt===o?'selected':''}" onclick="selectReflectOpt(${q.n},'${o}',this)">${o}</button>`).join('')}</div>` : '';
+    body = `<div class="q-reflect-body">${optHtml}
+      ${q.extraQ ? `<div style="font-size:.78rem;color:var(--text-m);margin-bottom:.4rem;font-style:italic">${q.extraQ}</div>` : ''}
+      <textarea class="q-textarea" rows="3" placeholder="Write your thoughts here..." id="qt-${q.n}" oninput="typeReflect(${q.n},this)">${savedText}</textarea>
+      <div style="display:flex;align-items:center;gap:.75rem;margin-top:.5rem">
+        <button class="q-save-reflect" onclick="saveReflect(${q.n})">Save reflection →</button>
+        <span class="q-saved-badge ${saved?'show':''}">✓ Saved</span>
+      </div>
+    </div>`;
+  }
+  return `<div class="q-card" id="qcard-${q.n}">
+    <div class="q-card-header">
+      <div class="q-num ${numCls}">${answered && q.type==='mcq' ? (state.correct?'✓':'✗') : q.n}</div>
+      <div class="q-meta">
+        <div class="q-type-badge ${q.type==='mcq'?'qt-mcq':q.type==='scenario'?'qt-scenario':'qt-reflect'}">${q.icon} ${q.typelabel}</div>
+        <div class="q-question">${q.question || q.q}</div>
+      </div>
+    </div>
+    ${body}
+  </div>`;
+}
+
+function answerMCQ(qn, picked) {
+  const q = QUIZ_Qs.find(x => x.n === qn);
+  if (!q || S.quizState[qn]?.answered) return;
+  const correct = picked === q.correct;
+  S.quizState[qn] = { answered: true, type: 'mcq', picked, correct };
+  // Update DOM
+  const card = document.getElementById(`qcard-${qn}`);
+  const num = card.querySelector('.q-num');
+  num.classList.add(correct ? 'correct' : 'wrong');
+  num.textContent = correct ? '✓' : '✗';
+  card.querySelectorAll('.q-opt').forEach((opt, i) => {
+    opt.disabled = true;
+    opt.classList.remove('sel-correct','sel-wrong','reveal-correct');
+    if (i === q.correct) opt.classList.add(i === picked ? 'sel-correct' : 'reveal-correct');
+    else if (i === picked) opt.classList.add('sel-wrong');
+  });
+  const fb = document.getElementById(`qfb-${qn}`);
+  fb.textContent = correct ? q.fb.c : q.fb.w;
+  fb.className = `q-feedback show ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  updateQuizProgress();
+  checkQuizComplete();
+}
+
+function selectReflectOpt(qn, val, el) {
+  if (!S.quizState[qn]) S.quizState[qn] = { type: 'reflect' };
+  S.quizState[qn].selectedOpt = val;
+  el.closest('.q-reflect-options').querySelectorAll('.q-reflect-opt').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function typeReflect(qn, el) {
+  if (!S.quizState[qn]) S.quizState[qn] = { type: 'reflect' };
+  S.quizState[qn].reflectText = el.value;
+}
+
+function saveReflect(qn) {
+  const q = QUIZ_Qs.find(x => x.n === qn);
+  const ta = document.getElementById(`qt-${qn}`);
+  if (!ta) return;
+  if (!ta.value.trim() && !S.quizState[qn]?.selectedOpt) {
+    showToast('Add your reflection before saving'); return;
+  }
+  if (!S.quizState[qn]) S.quizState[qn] = { type: 'reflect' };
+  S.quizState[qn].answered = true;
+  S.quizState[qn].saved = true;
+  S.quizState[qn].reflectText = ta.value;
+  const card = document.getElementById(`qcard-${qn}`);
+  const num = card?.querySelector('.q-num');
+  if (num) { num.classList.add('answered'); num.textContent = '💭'; }
+  const badge = card?.querySelector('.q-saved-badge');
+  if (badge) badge.className = 'q-saved-badge show';
+  showToast('Reflection saved ✓');
+  updateQuizProgress();
+  checkQuizComplete();
+  updateModProgress();
+}
+
+function updateQuizProgress() {
+  const answered = Object.keys(S.quizState).length;
+  document.getElementById('qpr-fill').style.width = `${(answered/15)*100}%`;
+  document.getElementById('qpr-text').textContent = `${answered} / 15`;
+  updateModProgress();
+}
+
+function checkQuizComplete() {
+  const answered = Object.keys(S.quizState).length;
+  if (answered >= 15) {
+    const correct = Object.values(S.quizState).filter(q => q.type === 'mcq' && q.correct).length;
+    document.getElementById('qc-score').textContent = correct;
+    document.getElementById('quiz-complete').classList.remove('off');
+    document.getElementById('quiz-complete').style.display = 'block';
+    confetti();
+    showToast('All challenges complete! 🎉');
+  }
+}
+
+function resetQuiz() {
+  S.quizState = {};
+  renderQuiz();
+  document.getElementById('quiz-complete').classList.add('off');
+  document.getElementById('quiz-complete').style.display = 'none';
+  updateQuizProgress();
+}
+
+/* ════════════════════════════════════════════
+   STORIES
+════════════════════════════════════════════ */
+function launchStories() {
+  S.storySlide = 0;
+  S.storyQuizAnswered = [false, false];
+  S.storyQuizCorrect = [null, null];
+  document.getElementById('stories-overlay').classList.remove('off');
+  buildStoryBars();
+  goToStory(0, true);
+  switchTab('stories');
+}
+
+function closeStories() {
+  stopStoryBar();
+  document.getElementById('stories-overlay').classList.add('off');
+  if (document.getElementById('video-embed')) {
+    document.getElementById('video-embed').src = '';
+  }
+}
+
+function buildStoryBars() {
+  document.getElementById('so-bars').innerHTML = STORIES.map((_,i) =>
+    `<div class="so-bar-track"><div class="so-bar-fill" id="sobar-${i}"></div></div>`
+  ).join('');
+}
+
+function updateStoryBars() {
+  STORIES.forEach((_,i) => {
+    const b = document.getElementById(`sobar-${i}`);
+    if (!b) return;
+    if (i < S.storySlide) { b.style.transition='none'; b.style.width='100%'; b.classList.add('done'); }
+    else if (i > S.storySlide) { b.style.transition='none'; b.style.width='0%'; b.classList.remove('done'); }
+    else { b.style.transition='none'; b.style.width='0%'; b.classList.remove('done'); }
+  });
+}
+
+function startStoryBar() {
+  stopStoryBar();
+  const s = STORIES[S.storySlide];
+  if (s.type === 'quiz') return;
+  const bar = document.getElementById(`sobar-${S.storySlide}`);
+  if (!bar) return;
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => {
+    bar.style.transition = 'width 9s linear';
+    bar.style.width = '100%';
+  });
+  S.storyBarTimer = setTimeout(() => {
+    if (S.storySlide < STORIES.length - 1) storyNext();
+  }, 9200);
+}
+
+function stopStoryBar() {
+  clearTimeout(S.storyBarTimer);
+  const bar = document.getElementById(`sobar-${S.storySlide}`);
+  if (bar) { bar.style.transition = 'none'; }
+}
+
+function storyTapRight() {
+  const s = STORIES[S.storySlide];
+  if (s.type === 'quiz') {
+    const qi = s.quizIdx;
+    if (!S.storyQuizAnswered[qi]) { showToast('Answer the question first!'); return; }
+  }
+  storyNext();
+}
+
+function storyNext() {
+  if (S.storySlide >= STORIES.length - 1) {
+    closeStories();
+    showToast('Stories complete! ✦');
+    if (!S.progress['bps-advanced']) S.progress['bps-advanced'] = {};
+    if (!S.progress['bps-advanced'].visited) S.progress['bps-advanced'].visited = [];
+    if (!S.progress['bps-advanced'].visited.includes('stories')) {
+      S.progress['bps-advanced'].visited.push('stories');
+      saveProgress();
+      updateModProgress();
+    }
+    return;
+  }
+  goToStory(S.storySlide + 1, true);
+}
+
+function storyPrev() {
+  if (S.storySlide <= 0) return;
+  goToStory(S.storySlide - 1, false);
+}
+
+function goToStory(idx, fwd) {
+  stopStoryBar();
+  const old = document.getElementById('so-card');
+  const s = STORIES[idx];
+  S.storySlide = idx;
+  updateStoryBars();
+  document.getElementById('so-counter').textContent = `${idx+1}/${STORIES.length}`;
+  updateStoryNav();
+  updateStoryDots();
+  if (old.innerHTML) {
+    old.querySelector('.story-card')?.classList.add(fwd ? 'out-l' : 'out-r');
+    setTimeout(() => {
+      old.innerHTML = buildStoryCard(s, fwd);
+      animateStoryItems();
+    }, 60);
+  } else {
+    old.innerHTML = buildStoryCard(s, fwd);
+    animateStoryItems();
+  }
+  setTimeout(startStoryBar, 350);
+}
+
+function updateStoryNav() {
+  const prev = document.getElementById('so-prev');
+  const next = document.getElementById('so-next');
+  prev.disabled = S.storySlide === 0;
+  const s = STORIES[S.storySlide];
+  const isLast = S.storySlide === STORIES.length - 1;
+  const isQuiz = s.type === 'quiz';
+  const qi = isQuiz ? s.quizIdx : -1;
+  next.className = isLast ? 'so-next final' : isQuiz && !S.storyQuizAnswered[qi] ? 'so-next qblock' : 'so-next';
+  next.textContent = isLast ? '✓' : isQuiz && !S.storyQuizAnswered[qi] ? '?' : '→';
+}
+
+function updateStoryDots() {
+  document.getElementById('so-dots').innerHTML = STORIES.map((_,i) =>
+    `<div class="so-dot ${i < S.storySlide ? 'done' : i === S.storySlide ? 'current' : ''}"></div>`
+  ).join('');
+}
+
+function animateStoryItems() {
+  const card = document.getElementById('so-card');
+  if (!card) return;
+  card.querySelectorAll('.sc-bullet,.sc-tile,.sc-pillar,.sc-risk,.sc-cta-btn').forEach((el,i) => {
+    el.style.opacity = '0';
+    el.style.animation = 'none';
+    setTimeout(() => {
+      el.style.animation = `fadeUp .4s var(--ease-o) ${.05+i*.07}s forwards`;
+    }, 80);
+  });
+}
+
+function buildStoryCard(s, fwd) {
+  const bg = `<div class="sc-bg" style="background:${s.bg}">
+    <div class="sc-orb sc-orb-1" style="background:${s.orb1||'transparent'}"></div>
+    <div class="sc-orb sc-orb-2" style="background:${s.orb2||'transparent'}"></div>
+  </div>`;
+
+  let inner = '';
+  if (s.type === 'cover') {
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-cover-tag">Module 002 · Advanced · Millicent Makini</div>
+      <h1 class="sc-cover-h1">Reflecting on<br>Kenya's <em>2026 BPS</em></h1>
+      <p class="sc-cover-sub">A deeper analytical look at Kenya's budget roadmap. By Millicent Makini.</p>
+      <div class="sc-cover-promise"><span style="font-size:1.1rem;flex-shrink:0">🎯</span>You'll decode the budget, master 5 BETA pillars, track the trillion-shilling debt, and propose your own solutions.</div>
+    </div>`;
+  }
+  else if (s.type === 'bullets') {
+    const data = {
+      'expect':{tag:'What to expect',tagBg:'rgba(159,122,234,.15)',tagColor:'#9F7AEA',q:'6 things you\'ll *master* in this module:',bullets:[
+        {d:'#9F7AEA',t:'<strong>Decode the Budget\'s Secret</strong> — purpose and timeline of the BPS'},
+        {d:'#F5C842',t:'<strong>Master the 5 BETA Pillars</strong> — Kenya\'s growth agenda'},
+        {d:'#E53E3E',t:'<strong>Track the Trillion-Shilling Debt</strong> — analyse the big numbers'},
+        {d:'#38B2AC',t:'<strong>Battle the Climate Risk</strong> — understand fiscal dangers'},
+        {d:'#48BB78',t:'<strong>Quiz</strong> — multiple-choice detective challenges'},
+        {d:'#F06060',t:'<strong>Share Your Policy Opinion</strong> — reflect and propose solutions'}
+      ]},
+      'bps-def':{tag:'What is a BPS?',tagBg:'rgba(56,178,172,.15)',tagColor:'#38B2AC',q:'The BPS is the government answering *5 questions* — officially:',bullets:[
+        {d:'#38B2AC',t:'Current state of the economy — <strong>macroeconomic forecast</strong>'},
+        {d:'#38B2AC',t:'Financial outlook — <strong>revenue, expenditure, borrowing</strong>'},
+        {d:'#F5C842',t:'Expenditure ceilings — <strong>how much each ministry gets</strong>'},
+        {d:'#F5C842',t:'Fiscal responsibility principles — <strong>debt limits</strong>'},
+        {d:'#E53E3E',t:'Statement of <strong>specific fiscal risks</strong>'},
+      ],badge:'📌 Submitted to Parliament by February 15th each year. After approval, it forms the basis for the April 30th national budget.'},
+      'beta':{tag:'The BETA Agenda',tagBg:'rgba(245,200,66,.15)',tagColor:'#F5C842',q:'BPS 2026 theme: <em>"Consolidating Gains Under the Bottom-Up Economic Transformation Agenda"</em>',bullets:[
+        {d:'#F5C842',t:'BETA = <strong>Bottom-Up Economic Transformation Agenda</strong>'},
+        {d:'#F5C842',t:'5 main pillars — Agriculture, MSMEs, Healthcare, Housing, Digital'},
+        {d:'#F5C842',t:'Plus enablers: roads, electricity, water, e-mobility'},
+        {d:'#38B2AC',t:'National Infrastructure Fund + <strong>Sovereign Wealth Fund</strong> to be created'},
+      ]}
+    };
+    const d = data[s.id] || data['expect'];
+    const qFormatted = (d.q||'').replace(/\*([^*]+)\*/g,'<em>$1</em>');
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-tag" style="background:${d.tagBg};color:${d.tagColor}">${d.tag}</div>
+      <div class="sc-q">${qFormatted}</div>
+      <div class="sc-bullets">${d.bullets.map(b=>`<div class="sc-bullet"><div class="sc-bdot" style="background:${b.d}"></div><div>${b.t}</div></div>`).join('')}</div>
+      ${d.badge?`<div class="sc-badge"><div class="sc-badge-icon">📌</div><div>${d.badge}</div></div>`:''}
+    </div>`;
+  }
+  else if (s.type === 'pillars') {
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-headline">The 5 BETA Pillars — what the government is betting on</div>
+      <div class="sc-pillars">
+        <div class="sc-pillar"><div class="sc-pillar-emoji">🌽</div><div><div class="sc-pillar-title">Agriculture</div><div class="sc-pillar-desc">Irrigation, fertilizer subsidies, livestock, value chains, export growth</div></div></div>
+        <div class="sc-pillar"><div class="sc-pillar-emoji">🏪</div><div><div class="sc-pillar-title">MSMEs</div><div class="sc-pillar-desc">Hustler Fund expansion, credit guarantees, MSME hubs in all 47 counties</div></div></div>
+        <div class="sc-pillar"><div class="sc-pillar-emoji">🏥</div><div><div class="sc-pillar-title">Healthcare</div><div class="sc-pillar-desc">35M Kenyans targeted for Universal Health Coverage via SHA</div></div></div>
+      </div>
+    </div>`;
+  }
+  else if (s.type === 'pillars2') {
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-headline">More pillars + the enablers behind them</div>
+      <div class="sc-pillars">
+        <div class="sc-pillar"><div class="sc-pillar-emoji">🏘</div><div><div class="sc-pillar-title">Housing</div><div class="sc-pillar-desc">KMRC support, construction jobs, affordable homeownership loans</div></div></div>
+        <div class="sc-pillar"><div class="sc-pillar-emoji">💻</div><div><div class="sc-pillar-title">Digital & Creative</div><div class="sc-pillar-desc">Fibre internet, public Wi-Fi, film/music/fashion support, youth digital skills</div></div></div>
+        <div class="sc-pillar"><div class="sc-pillar-emoji">🏗</div><div><div class="sc-pillar-title">Enablers</div><div class="sc-pillar-desc">Roads, railways, energy, e-mobility, National Infrastructure Fund + Sovereign Wealth Fund</div></div></div>
+      </div>
+    </div>`;
+  }
+  else if (s.type === 'tiles') {
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-headline">FY 2026/27 — The Big Numbers</div>
+      <div class="sc-tiles">
+        <div class="sc-tile a-teal"><div class="sc-tile-icon">📥</div><div class="sc-tile-val">KES 3.59T</div><div class="sc-tile-label">Revenue forecast</div></div>
+        <div class="sc-tile a-gold"><div class="sc-tile-icon">💰</div><div class="sc-tile-val">KES 4.74T</div><div class="sc-tile-label">Total expenditure</div></div>
+        <div class="sc-tile a-red"><div class="sc-tile-icon">📉</div><div class="sc-tile-val">KES 1.15T</div><div class="sc-tile-label">Fiscal deficit</div></div>
+        <div class="sc-tile a-purple"><div class="sc-tile-icon">⚠️</div><div class="sc-tile-val">KES 1.2T</div><div class="sc-tile-label">Debt interest (pre-committed)</div></div>
+      </div>
+      <div class="sc-badge"><div class="sc-badge-icon">⚠️</div><div>That KES 1.2T in debt interest? It's money that <strong>cannot go to roads, teachers, or healthcare.</strong> It's already spoken for.</div></div>
+    </div>`;
+  }
+  else if (s.type === 'tiles2') {
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-headline">County Allocations — 420B for the people</div>
+      <div class="sc-tiles">
+        <div class="sc-tile a-teal"><div class="sc-tile-icon">🏛</div><div class="sc-tile-val">KES 420B</div><div class="sc-tile-label">County equitable share</div></div>
+        <div class="sc-tile"><div class="sc-tile-icon">➕</div><div class="sc-tile-val">KES 75.7B</div><div class="sc-tile-label">Additional allocations</div></div>
+        <div class="sc-tile"><div class="sc-tile-icon">🏥</div><div class="sc-tile-val">KES 3.24B</div><div class="sc-tile-label">Community Health</div></div>
+        <div class="sc-tile"><div class="sc-tile-icon">⚖️</div><div class="sc-tile-val">KES 9.6B</div><div class="sc-tile-label">Equalisation Fund</div></div>
+      </div>
+    </div>`;
+  }
+  else if (s.type === 'risks') {
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-headline" style="color:var(--red)">⚡ The 5 Fiscal Risks</div>
+      <div style="font-size:.75rem;color:var(--text-m);margin-bottom:.65rem">The government listed them. Now you know what to watch for.</div>
+      <div class="sc-risks">
+        <div class="sc-risk"><div class="sc-risk-icon">💸</div><div class="sc-risk-text"><strong>Public Debt Risk</strong> — rising levels, interest pressure, exchange rate</div></div>
+        <div class="sc-risk"><div class="sc-risk-icon">🏦</div><div class="sc-risk-text"><strong>Contingent Liabilities</strong> — government guarantees, SOEs, PPPs</div></div>
+        <div class="sc-risk"><div class="sc-risk-icon">📉</div><div class="sc-risk-text"><strong>Macroeconomic Risks</strong> — lower growth, revenue shortfalls</div></div>
+        <div class="sc-risk"><div class="sc-risk-icon">🌪️</div><div class="sc-risk-text"><strong>Climate Change</strong> — droughts, floods, food insecurity</div></div>
+        <div class="sc-risk"><div class="sc-risk-icon">🏛</div><div class="sc-risk-text"><strong>Devolution Risks</strong> — county pending bills, service failures</div></div>
+      </div>
+      <div class="sc-quote-block">When you know the risks, you can <strong>spot them early and ask the right questions</strong> before crisis hits.</div>
+    </div>`;
+  }
+  else if (s.type === 'quiz') {
+    const qi = s.quizIdx;
+    const q = STORY_QUIZ[qi];
+    const answered = S.storyQuizAnswered[qi];
+    const picked = S.storyQuizCorrect[qi];
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0">
+      <div class="sc-qz-tag">✦ Knowledge Check ${qi+1}</div>
+      <div class="sc-qz-q">${q.q}</div>
+      <div class="sc-qz-opts" id="sqz-opts-${qi}">
+        ${q.opts.map((o,i) => {
+          let cls = '';
+          if (answered) {
+            if (i === q.correct) cls = i === picked ? 'qcorrect' : 'qreveal';
+            else if (i === picked) cls = 'qwrong';
+          }
+          return `<button class="sc-qz-opt ${cls}" onclick="storyAnswerQuiz(${qi},${i})" ${answered?'disabled':''}><span class="sc-qz-ltr">${String.fromCharCode(65+i)}</span>${o}</button>`;
+        }).join('')}
+      </div>
+      <div class="sc-qz-fb ${answered?'show':''} ${answered?(picked===q.correct?'cfb':'wfb'):''}" id="sqz-fb-${qi}">${answered?(picked===q.correct?q.fb.c:q.fb.w):''}</div>
+      <button class="sc-qz-next ${answered?'show':''}" id="sqz-next-${qi}" onclick="storyNext()">Continue →</button>
+    </div>`;
+  }
+  else if (s.type === 'cta') {
+    inner = `<div style="position:relative;z-index:2;padding:1rem 1rem 0;text-align:center">
+      <div class="sc-cta-celebration">🎉</div>
+      <h2 class="sc-cta-title">Stories <em>complete!</em></h2>
+      <p class="sc-cta-sub" style="text-align:center">Module 002 · BPS 2026. You now understand Kenya's fiscal roadmap. Dive deeper in the Full Lesson or take the 15-question challenge.</p>
+      <div class="sc-cta-btns">
+        <button class="sc-cta-btn primary" onclick="closeStories();switchTab('quiz')"><div class="sc-cta-btn-icon">✦</div><div><div class="sc-cta-btn-title">Take the full quiz</div><div class="sc-cta-btn-sub">15 questions · MCQ + reflections</div></div></button>
+        <button class="sc-cta-btn teal" onclick="closeStories();switchTab('learn')"><div class="sc-cta-btn-icon">📖</div><div><div class="sc-cta-btn-title">Read the full lesson</div><div class="sc-cta-btn-sub">Complete document view</div></div></button>
+        <button class="sc-cta-btn gold" onclick="closeStories();goHub()"><div class="sc-cta-btn-icon">🏛</div><div><div class="sc-cta-btn-title">Back to hub</div><div class="sc-cta-btn-sub">Explore more modules</div></div></button>
+      </div>
+    </div>`;
+  }
+
+  return `<div class="story-card ${fwd ? 'in-r' : 'in-l'}">${bg}${inner}</div>`;
+}
+
+function storyAnswerQuiz(qi, picked) {
+  if (S.storyQuizAnswered[qi]) return;
+  S.storyQuizAnswered[qi] = true;
+  S.storyQuizCorrect[qi] = picked;
+  const q = STORY_QUIZ[qi];
+  const correct = picked === q.correct;
+  const optsEl = document.getElementById(`sqz-opts-${qi}`);
+  optsEl?.querySelectorAll('.sc-qz-opt').forEach((o, i) => {
+    o.disabled = true;
+    o.classList.remove('qcorrect','qwrong','qreveal');
+    if (i === q.correct) o.classList.add(i === picked ? 'qcorrect' : 'qreveal');
+    else if (i === picked) o.classList.add('qwrong');
+  });
+  const fb = document.getElementById(`sqz-fb-${qi}`);
+  if (fb) { fb.textContent = correct ? q.fb.c : q.fb.w; fb.className = `sc-qz-fb show ${correct?'cfb':'wfb'}`; }
+  const nxt = document.getElementById(`sqz-next-${qi}`);
+  if (nxt) nxt.className = 'sc-qz-next show';
+  updateStoryNav();
+}
+
+/* ════════════════════════════════════════════
+   CONFETTI + TOAST
+════════════════════════════════════════════ */
+function confetti() {
+  const cols = ['#F5C842','#E53E3E','#38B2AC','#9F7AEA','#48BB78','#F06060'];
+  for (let i = 0; i < 55; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confp';
+      c.style.cssText = `left:${Math.random()*100}%;width:${Math.random()*8+4}px;height:${Math.random()*6+3}px;background:${cols[~~(Math.random()*cols.length)]};animation-duration:${Math.random()*2+1.5}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3500);
+    }, i * 28);
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ════════════════════════════════════════════
+   KEYBOARD
+════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  const overlay = !document.getElementById('stories-overlay').classList.contains('off');
+  if (overlay) {
+    if (e.key === 'ArrowRight') storyTapRight();
+    else if (e.key === 'ArrowLeft') storyPrev();
+    else if (e.key === 'Escape') closeStories();
+  }
+});
+
+/* ════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════ */
+renderHub();
+</script>
+</body>
+</html>

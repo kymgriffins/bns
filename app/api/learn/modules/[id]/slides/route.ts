@@ -1,19 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getModule, loadModuleSlides } from "@/app/learn/utils";
-import type { StorySlide } from "@/app/learn/utils";
 
 interface RouteParams {
   params: {
     id: string;
   };
-}
-
-// In-memory persistence for CRUD operations during runtime.
-// Keyed by `${moduleId}:${level}`.
-const slidesOverrides = new Map<string, StorySlide[]>();
-
-function slidesKey(moduleId: string, level: string): string {
-  return `${moduleId}:${level}`;
 }
 
 /**
@@ -49,11 +40,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const key = slidesKey(id, level);
-
-    // Prefer runtime overrides; otherwise fall back to JSON fetch.
-    const overridden = slidesOverrides.get(key);
-    const slides = overridden ?? (await loadModuleSlides(id, level));
+    // Load slides
+    const slides = await loadModuleSlides(id, level);
 
     if (!slides) {
       return NextResponse.json(
@@ -96,18 +84,6 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const searchParams = request.nextUrl.searchParams;
     const level = searchParams.get("level") as "basic" | "advanced" | "stories" | null;
 
-    // Check module exists
-    const module = getModule(id);
-    if (!module) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Module not found",
-        },
-        { status: 404 }
-      );
-    }
-
     // Validate level parameter
     if (!level || (level !== "basic" && level !== "advanced" && level !== "stories")) {
       return NextResponse.json(
@@ -132,17 +108,11 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const key = slidesKey(id, level);
-    slidesOverrides.set(key, slidesData.slides as StorySlide[]);
-
     return NextResponse.json({
       success: true,
       data: {
         ...slidesData,
         updatedAt: new Date().toISOString(),
-        moduleId: id,
-        level,
-        slideCount: slidesData.slides.length,
       },
     });
   } catch (error) {
@@ -166,18 +136,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const searchParams = request.nextUrl.searchParams;
     const level = searchParams.get("level") as "basic" | "advanced" | "stories" | null;
-
-    // Check module exists
-    const module = getModule(id);
-    if (!module) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Module not found",
-        },
-        { status: 404 }
-      );
-    }
 
     // Validate level parameter
     if (!level || (level !== "basic" && level !== "advanced" && level !== "stories")) {
@@ -203,32 +161,12 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const key = slidesKey(id, level);
-    const existingSlides = slidesOverrides.get(key) ?? (await loadModuleSlides(id, level));
-
-    if (!existingSlides) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `${level} slides not found for this module`,
-        },
-        { status: 404 }
-      );
-    }
-
-    const updatedSlides = [...existingSlides, newSlide as StorySlide];
-    slidesOverrides.set(key, updatedSlides);
-
     return NextResponse.json(
       {
         success: true,
         data: {
           ...newSlide,
           createdAt: new Date().toISOString(),
-          moduleId: id,
-          level,
-          slideCount: updatedSlides.length,
-          slides: updatedSlides,
         },
       },
       { status: 201 }

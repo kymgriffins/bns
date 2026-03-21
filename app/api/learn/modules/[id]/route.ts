@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getModule, removeModule, updateModule } from "@/app/learn/utils";
+import { getModule, loadModuleSlides } from "@/app/learn/utils";
 
 interface RouteParams {
   params: {
@@ -70,18 +70,6 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       updatedAt: new Date().toISOString(),
     };
 
-    // Persist into the in-memory registry so the viewer updates immediately.
-    const persisted = updateModule(updated as any);
-    if (!persisted) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Failed to update module",
-        },
-        { status: 400 }
-      );
-    }
-
     return NextResponse.json({
       success: true,
       data: updated,
@@ -117,18 +105,10 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const success = removeModule(id);
-    if (!success) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Failed to delete module",
-        },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({ success: true, message: `Module ${id} deleted successfully` });
+    return NextResponse.json({
+      success: true,
+      message: `Module ${id} deleted successfully`,
+    });
   } catch (error) {
     console.error("Error deleting module:", error);
     return NextResponse.json(

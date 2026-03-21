@@ -72,17 +72,6 @@ export type StorySlide = {
   quizIdx?: number;
 };
 
-export type ModuleStructure = {
-  title: string;
-  description: string;
-  duration: string;
-  level: string;
-  slides: number;
-  isActive: boolean;
-  icon: string;
-  order: number;
-};
-
 export type ModuleMetadata = {
   id: string;
   num: string;
@@ -98,25 +87,27 @@ export type ModuleMetadata = {
     avatar: string;
   };
   structure: {
-    basic?: ModuleStructure;
-    advanced?: ModuleStructure;
-    stories?: ModuleStructure;
+    basic?: {
+      title: string;
+      description: string;
+      duration: string;
+      level: "basic";
+      slides: number;
+    };
+    advanced?: {
+      title: string;
+      description: string;
+      duration: string;
+      level: "advanced";
+      slides: number;
+    };
+    stories?: {
+      basicCount: number;
+      description: string;
+    };
   };
   tags: string[];
   isLocked: boolean;
-  keywords?: string[];
-  createdAt?: string;
-  updatedAt?: string;
-  authorId?: string;
-  status?: string;
-  version?: string;
-  features?: {
-    hasPopups?: boolean;
-    hasTransitions?: boolean;
-    isResponsive?: boolean;
-    supportsCRUD?: boolean;
-    supportsEditing?: boolean;
-  };
 };
 
 export type ModuleSlides = {

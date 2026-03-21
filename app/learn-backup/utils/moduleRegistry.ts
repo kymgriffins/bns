@@ -15,7 +15,7 @@ export interface ModuleRegistry {
 }
 
 // Import metadata files (these would be dynamically loaded in production)
-import BPS2026Metadata from "../../learn-backup/data/modules/bps-2026/metadata.json";
+import BPS2026Metadata from "../data/modules/bps-2026/metadata.json";
 
 // In-memory registry
 const registry = new Map<string, ModuleMetadata>();
@@ -30,7 +30,7 @@ function initializeRegistry() {
 
 function registerDefaultModules() {
   // BPS 2026 Module
-  registry.set(BPS2026Metadata.id, BPS2026Metadata);
+  registry.set(BPS2026Metadata.id, BPS2026Metadata as ModuleMetadata);
 }
 
 /**
