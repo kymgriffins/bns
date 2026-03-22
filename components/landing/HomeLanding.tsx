@@ -306,25 +306,7 @@ export function HomeLanding() {
       {/* ── 3. STATS STRIP — the premium moment ──────────────────────────── */}
       {/* Full-bleed dark section. Four animated numbers count up on scroll.  */}
       {/* This is the single "holy shit" beat that earns the page credibility. */}
-      <section className="bg-[var(--hero-bg)] px-4 py-20 sm:px-6 sm:py-24 md:py-32">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-12 max-w-sm">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/40">Impact</p>
-          </div>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-14 md:grid-cols-4 md:gap-x-12">
-            {statistics.map((s) => (
-              <div key={s.label} className="flex flex-col gap-3">
-                <p className="text-5xl font-semibold tabular-nums text-white sm:text-6xl md:text-7xl">
-                  <AnimatedNumber value={s.value} suffix={s.suffix} />
-                </p>
-                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/45 md:text-xs">
-                  {s.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
       {/* ── 4. PODCAST ───────────────────────────────────────────────────── */}
       {/* One video. Three lines of copy. One CTA. Nothing else.             */}
