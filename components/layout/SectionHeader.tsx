@@ -3,14 +3,11 @@
 import React from 'react';
 
 export interface SectionHeaderProps {
-  /** Small label above title (e.g. "Impact in numbers") */
   label?: string;
   title: React.ReactNode;
   description?: React.ReactNode;
-  /** Right-side slot (e.g. CTA button) */
   action?: React.ReactNode;
   className?: string;
-  /** Align: left, center */
   align?: 'left' | 'center';
 }
 
@@ -26,17 +23,19 @@ export function SectionHeader({
   const descMaxClass = align === 'center' ? 'md:max-w-2xl md:mx-auto' : 'max-w-xl';
 
   return (
-    <header className={`space-y-3 ${alignClass} ${className}`.trim()}>
+    // space-y-3 → space-y-5 — label + title + description need room to read separately
+    <header className={`space-y-5 ${alignClass} ${className}`.trim()}>
       {label && (
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">
           {label}
         </p>
       )}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div className="space-y-2">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+        <div className="space-y-3">
           <h2 className="text-h2-2026 font-semibold leading-tight text-foreground">{title}</h2>
           {description && (
-            <p className={`text-sm md:text-base text-muted-foreground ${descMaxClass}`.trim()}>
+            // description text capped tighter — forces concise copy
+            <p className={`text-sm md:text-base text-muted-foreground leading-relaxed ${descMaxClass}`.trim()}>
               {description}
             </p>
           )}
