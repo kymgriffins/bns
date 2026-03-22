@@ -7,10 +7,12 @@ import {
   ArrowRight,
   CreditCard,
   Phone,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useWarningAlert, useToast } from "@/components/feedback";
 
 const AMOUNT_OPTIONS = [
   { amount: 10000, label: "KSh 10,000" },
@@ -34,6 +36,8 @@ export function DonatePageForm({
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("mpesa");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; amount?: string }>({});
+  const { showWarning } = useWarningAlert();
+  const toast = useToast();
 
   const getFinalAmount = (): number => {
     if (customAmount) return parseFloat(customAmount) || 0;
@@ -75,9 +79,67 @@ export function DonatePageForm({
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to process donation");
       onSuccess(getFinalAmount(), paymentMethod);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setErrors({ amount: "Something went wrong. Please try again." });
+      // Show toast notification for error
+      toast.error(
+        "Donation Failed",
+        err?.message || "Something went wrong. Please try again or contact support."
+      );
+      setErrors({ amount: "Unable to process donation. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleConfirmDonation = async () => {
+    // Show confirmation dialog
+    const confirmed = await showWarning({
+      title: "Confirm Donation",
+      message: `Are you sure you want to donate KSh ${getFinalAmount().toLocaleString()} ${donationType === 'recurring' ? 'monthly' : 'once'}?`,
+      confirmText: "Yes, Donate",
+      cancelText: "Go Back",
+      confirmVariant: "default",
+    });
+    
+    if (confirmed) {
+      await handleSubmitWithConfirm();
+    }
+  };
+
+  const handleSubmitWithConfirm = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/donation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          donor_name: donorName,
+          donor_email: donorEmail,
+          amount: getFinalAmount(),
+          payment_method: paymentMethod,
+          is_recurring: donationType === "recurring",
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Failed to process donation");
+      
+      // Show success toast
+      toast.success(
+        "Thank You!",
+        `Your donation of KSh ${getFinalAmount().toLocaleString()} has been received.`
+      );
+      onSuccess(getFinalAmount(), paymentMethod);
+    } catch (err: any) {
+      console.error(err);
+      toast.error(
+        "Donation Failed",
+        err?.message || "Something went wrong. Please try again or contact support at info@budgetndiostory.org"
+      );
+      setErrors({ amount: "Unable to process donation. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -222,23 +284,36 @@ export function DonatePageForm({
           )}
         </div>
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full h-12 rounded-xl font-semibold transition-transform duration-200 active:scale-[0.98]"
-        >
-          {isSubmitting ? (
-            <span className="flex items-center gap-2">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-              Processing...
-            </span>
-          ) : (
-            <span className="flex items-center gap-2">
-              Donate KSh {getFinalAmount().toLocaleString()}
-              <ArrowRight className="h-4 w-4" />
-            </span>
-          )}
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => window.history.back()}
+            disabled={isSubmitting}
+            className="flex-1 h-12 rounded-xl font-semibold"
+          >
+            <X className="h-4 w-4 mr-2" />
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            onClick={handleConfirmDonation}
+            disabled={isSubmitting}
+            className="flex-1 h-12 rounded-xl font-semibold transition-transform duration-200 active:scale-[0.98]"
+          >
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                Processing...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                Donate KSh {getFinalAmount().toLocaleString()}
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            )}
+          </Button>
+        </div>
       </form>
 
       <div className="flex items-center justify-center gap-1.5 mt-4 text-xs text-muted-foreground">

@@ -11,13 +11,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const hideChrome = NO_CHROME_PREFIXES.some((prefix) => pathname?.startsWith(prefix));
 
   if (hideChrome) {
-    return <div className="min-h-screen bg-background">{children}</div>;
+    return <div className="min-h-screen bg-background"><main id="main-content" tabIndex={-1}>{children}</main></div>;
   }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main>{children}</main>
+      <main id="main-content" tabIndex={-1}>{children}</main>
       <Footer2 />
     </div>
   );

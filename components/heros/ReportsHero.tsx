@@ -73,7 +73,7 @@ export function ReportsHero() {
                 size="lg"
                 className="rounded-full border-white/50 bg-transparent text-white hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-white/40 transition-transform active:scale-[0.98]"
               >
-                <Link href="/insights">Budget insights</Link>
+                <Link href="/reports">View all reports</Link>
               </Button>
             </motion.div>
             <motion.div

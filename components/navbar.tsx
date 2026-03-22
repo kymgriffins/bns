@@ -198,7 +198,6 @@ export default function Navbar() {
       items: [
         { title: "Reports", href: "/reports", description: "Access detailed municipal budget reports and financial documents" },
         { title: "Tracker", href: "/tracker", description: "Track spending in real-time across different departments and projects" },
-        { title: "Insights", href: "/insights", description: "Get analytical insights and visualizations on budget allocation" },
       ],
     },
     // {
@@ -254,10 +253,10 @@ export default function Navbar() {
           "w-full max-w-full lg:max-w-6xl flex items-center h-fit justify-between gap-3.5 lg:gap-6 transition-[background-color,border-color,box-shadow] duration-300 ease-out",
           "min-w-0",
           sticky
-            ? "p-2.5 bg-background/95 dark:bg-background/90 backdrop-blur-lg rounded-full border border-border shadow-sm"
+            ? "p-2.5 bg-background/95 dark:bg-background/90 backdrop-blur-lg rounded-full lg:border-none border border-border shadow-sm"
             : isHomePage
               ? "bg-transparent"
-              : "rounded-full border border-border/60 bg-background",
+              : "rounded-full border border-border/60 lg:border-none bg-background",
         )}
       >
         {/* Logo – original colors (no invert) */}
@@ -501,15 +500,7 @@ export default function Navbar() {
                           </Link>
                         </SheetClose>
                         <SheetClose asChild>
-                          <Link
-                            href="/insights"
-                            className={cn(
-                              "block border-b border-dotted border-border py-3 text-base font-medium text-foreground transition-colors hover:text-foreground/90",
-                              pathname === "/insights" && "text-primary"
-                            )}
-                          >
-                            Insights
-                          </Link>
+
                         </SheetClose>
                       </nav>
                     </section>

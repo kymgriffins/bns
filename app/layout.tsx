@@ -112,6 +112,22 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning data-ai-optout>
       <head>
+        {/* Skip to main content link for accessibility - Nielsen Heuristic 11 */}
+        <style>{`
+          .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #2F4494;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.2s;
+          }
+          .skip-to-content:focus {
+            top: 0;
+          }
+        `}</style>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
           rel="stylesheet"
@@ -124,6 +140,8 @@ export default function RootLayout({
         <meta name="cookie-consent" content="banner" />
       </head>
       <body className={`${neueMontreal.className} antialiased`}>
+        {/* Skip to main content link for accessibility - Nielsen Heuristic 11 */}
+        <a href="#main-content" className="skip-to-content">Skip to main content</a>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

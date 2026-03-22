@@ -172,7 +172,7 @@ const howItWorks = [
     description:
       'Use timelines, prompts and templates to act at barazas, hearings and other public participation moments.',
     icon: BarChart3,
-    href: '/insights',
+    href: '/reports',
     badge: 'Act',
   },
 ];

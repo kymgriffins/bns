@@ -30,7 +30,6 @@ export const navData: NavItem[] = [
     { label: "Budget Management", isSection: true },
     { title: "Budget Tracker", icon: ClipboardList, href: "/tracker" },
     { title: "Budget Reports", icon: NotepadText, href: "/reports" },
-    { title: "Budget Insights", icon: AlignStartVertical, href: "/insights" },
 
     // Content Section
     { label: "Content", isSection: true },

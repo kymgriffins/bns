@@ -16,7 +16,6 @@ function XLogo(props: React.SVGProps<SVGSVGElement>) {
 
 const navLinks = [
   { name: "Reports", href: "/reports" },
-  { name: "Analysis", href: "/insights" },
   { name: "Tracker", href: "/tracker" },
   { name: "Take Action", href: "/take-action" },
   { name: "Learn", href: "/learn" },
