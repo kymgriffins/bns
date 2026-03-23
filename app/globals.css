@@ -586,9 +586,15 @@
 }
 
 .landing-section {
-  min-height: 100dvh;
+  min-height: auto;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+@media (min-width: 768px) {
+  .landing-section {
+    min-height: 100dvh;
+  }
 }
 
 /* Hero fills viewport minus the marquee bar so hero + marquee = 100dvh */
