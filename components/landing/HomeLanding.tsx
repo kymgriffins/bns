@@ -116,10 +116,10 @@ function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const statistics = [
-  { value: 10,    suffix: ' yrs', label: 'Budget Reports Analyzed' },
-  { value: 15000, suffix: '+',    label: 'Kenyans Reached'         },
-  { value: 47,    suffix: '',     label: 'Counties Covered'        },
-  { value: 20,    suffix: '+',    label: 'Partner Organizations'   },
+  { value: 10, suffix: ' yrs', label: 'Budget Reports Analyzed' },
+  { value: 15000, suffix: '+', label: 'Kenyans Reached' },
+  { value: 47, suffix: '', label: 'Counties Covered' },
+  { value: 20, suffix: '+', label: 'Partner Organizations' },
 ];
 
 const howItWorks = [
@@ -153,70 +153,150 @@ const howItWorks = [
 ];
 
 const latestReports = [
-  { title: 'FY 2025/26 Budget at a Glance',  category: 'National',         date: 'Feb 2025', summary: 'Key highlights from the national budget reading',         href: '/reports' },
-  { title: 'Health Sector Budget Analysis',   category: 'Sector Analysis',  date: 'Jan 2025', summary: 'Where healthcare funding is going and what it means',      href: '/reports' },
-  { title: 'Nairobi County Budget Brief',     category: 'County',           date: 'Dec 2024', summary: 'Understanding the city budget for residents',               href: '/reports' },
+  { title: 'FY 2025/26 Budget at a Glance', category: 'National', date: 'Feb 2025', summary: 'Key highlights from the national budget reading', href: '/reports' },
+  { title: 'Health Sector Budget Analysis', category: 'Sector Analysis', date: 'Jan 2025', summary: 'Where healthcare funding is going and what it means', href: '/reports' },
+  { title: 'Nairobi County Budget Brief', category: 'County', date: 'Dec 2024', summary: 'Understanding the city budget for residents', href: '/reports' },
 ];
 
 const budgetStoryChapters = [
-  { id: 1, label: 'National story', title: 'From Treasury to your county.',        description: 'How the national budget is set and how decisions ripple into county ceilings.' },
-  { id: 2, label: 'County story',   title: 'Promises, projects, ward priorities.', description: 'What your county funded in health, education and infrastructure.' },
-  { id: 3, label: 'People story',   title: 'Stories behind every shilling.',       description: 'Videos and briefs that follow budgets into clinics, classrooms and roads.' },
+  { id: 1, label: 'National story', title: 'From Treasury to your county.', description: 'How the national budget is set and how decisions ripple into county ceilings.' },
+  { id: 2, label: 'County story', title: 'Promises, projects, ward priorities.', description: 'What your county funded in health, education and infrastructure.' },
+  { id: 3, label: 'People story', title: 'Stories behind every shilling.', description: 'Videos and briefs that follow budgets into clinics, classrooms and roads.' },
 ];
 
 const civicHubLearnModules = [
-  { id: 'budget-101',   title: 'Budget 101',                   subtitle: 'Interactive',                  href: '/learn/budget-101',   minutes: 12, mediaType: 'video', mediaSrc: '/bnsoo1.mp4' },
-  { id: 'budget-cycle', title: 'Budget Policy: The Data',      subtitle: 'BPS 2026 · Data-first',        href: '/learn/budget-cycle', minutes: 12, mediaType: 'link'  },
-  { id: 'roles',        title: 'Public Advanced Learning 001', subtitle: "Reflecting on Kenya's 2026 BPS", href: '/learn/roles',      minutes: 10, mediaType: 'link'  },
+  { id: 'budget-101', title: 'Budget 101', subtitle: 'Interactive', href: '/learn/budget-101', minutes: 12, mediaType: 'video', mediaSrc: '/bnsoo1.mp4' },
+  { id: 'budget-cycle', title: 'Budget Policy: The Data', subtitle: 'BPS 2026 · Data-first', href: '/learn/budget-cycle', minutes: 12, mediaType: 'link' },
+  { id: 'roles', title: 'Public Advanced Learning 001', subtitle: "Reflecting on Kenya's 2026 BPS", href: '/learn/roles', minutes: 10, mediaType: 'link' },
 ];
 
 const partners = [
-  { name: 'The Continental Pot', logo: 'TCP', image: 'https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png', website: 'https://continentalpot.africa',    role: 'Media lab & civic storytelling'  },
-  { name: 'Colour Twist Media',  logo: 'CTM', image: 'https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png',                         website: 'https://colortwistmedia.co.ke',  role: 'Creative studio & content'       },
-  { name: 'Sen Media & Events',  logo: 'SME', image: '/senmedia.png',                                                                               website: 'https://senmedia-events.co.ke',  role: 'Events, community & organizing'  },
+  { name: 'The Continental Pot', logo: 'TCP', image: 'https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png', website: 'https://continentalpot.africa', role: 'Media lab & civic storytelling' },
+  { name: 'Colour Twist Media', logo: 'CTM', image: 'https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png', website: 'https://colortwistmedia.co.ke', role: 'Creative studio & content' },
+  { name: 'Sen Media & Events', logo: 'SME', image: '/senmedia.png', website: 'https://senmedia-events.co.ke', role: 'Events, community & organizing' },
+];
+const BUDGET_BARS = [
+  { label: 'Education', value: 580, max: 580 },
+  { label: 'County eq.', value: 387, max: 580 },
+  { label: 'Infrastructure', value: 310, max: 580 },
+  { label: 'Security', value: 168, max: 580 },
+  { label: 'Health', value: 127, max: 580 },
+  { label: 'Agriculture', value: 62, max: 580 },
 ];
 
 // ─── Civic hub card ──────────────────────────────────────────────────────────
 
-function BudgetStoryIllustration(props: React.SVGProps<SVGSVGElement>) {
+// ─── BudgetAllocationChart — replaces BudgetStoryIllustration ────────────────
+// This is the right-side panel of the CivicHubCard.
+// Shows actual sector allocations so the illustration *is* the civic story.
+function AnimatedBar({
+  value,
+  max,
+  delay,
+}: {
+  value: number;
+  max: number;
+  delay: number;
+}) {
+  const pct = Math.round((value / max) * 100);
   return (
-    <svg viewBox="0 0 280 200" preserveAspectRatio="xMidYMid meet" aria-hidden focusable="false" className="size-full text-primary-foreground/25" {...props}>
-      <circle cx="140" cy="100" r="32" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4" />
-      <circle cx="140" cy="100" r="24" fill="currentColor" opacity="0.08" />
-      <text x="140" y="102" textAnchor="middle" fontSize="11" fontWeight="600" fill="currentColor" opacity="0.75">4.3T</text>
-      <g opacity="0.9"><circle cx="72" cy="56" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" /><circle cx="72" cy="56" r="6" fill="currentColor" opacity="0.5" /><path d="M86 68 L118 88" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" /><text x="72" y="48" textAnchor="middle" fontSize="7" fill="currentColor" opacity="0.65">6.2%</text></g>
-      <g opacity="0.9"><circle cx="208" cy="56" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" /><circle cx="208" cy="56" r="6" fill="currentColor" opacity="0.5" /><path d="M194 68 L162 88" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" /><text x="208" y="48" textAnchor="middle" fontSize="7" fill="currentColor" opacity="0.65">BETA</text></g>
-      <g opacity="0.9"><circle cx="140" cy="168" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" /><circle cx="140" cy="168" r="6" fill="currentColor" opacity="0.5" /><path d="M140 154 L140 124" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" /><text x="140" y="182" textAnchor="middle" fontSize="7" fill="currentColor" opacity="0.65">47</text></g>
-      <rect x="94" y="118" width="92" height="22" rx="11" fill="currentColor" opacity="0.08" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.25" />
-      <text x="140" y="133" textAnchor="middle" fontSize="8" fill="currentColor" opacity="0.7">Fun fact: 47 counties</text>
-    </svg>
+    <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+      <motion.div
+        className="h-full rounded-full bg-white/75"
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, margin: '-10% 0px' }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay }}
+        style={{ originX: 0, width: `${pct}%` }}
+      />
+    </div>
+  );
+}
+function BudgetAllocationChart() {
+  return (
+    <div className="flex h-full w-full flex-col justify-center gap-0 px-2 py-6">
+      <p className="mb-5 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/30">
+        FY 2025/26 allocation by sector
+      </p>
+      <div className="space-y-3.5">
+        {BUDGET_BARS.map((bar, i) => (
+          <div key={bar.label} className="grid grid-cols-[80px_1fr_44px] items-center gap-2.5">
+            <span className="text-right text-[9px] font-medium uppercase tracking-[0.12em] text-white/35">
+              {bar.label}
+            </span>
+            <AnimatedBar value={bar.value} max={bar.max} delay={0.04 + i * 0.07} />
+            <span className="text-[10px] font-medium text-white/50">
+              {bar.value}B
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
 function CivicHubCard() {
   return (
-    <div className="relative flex min-h-0 flex-col overflow-hidden rounded-3xl bg-primary text-primary-foreground shadow-xl md:h-full md:min-h-[340px] md:flex-row">
-      <div className="relative z-10 flex min-w-0 flex-1 flex-col justify-between gap-4 p-6 md:max-w-[55%] md:p-8">
-        <div className="space-y-4">
-          <p className="text-[11px] uppercase tracking-[0.25em] opacity-70">Civic hub · 2026</p>
-          <p className="text-base font-semibold leading-snug md:text-lg">Promised, funded and delivered — in one place.</p>
-          <ul className="space-y-2 text-xs opacity-85 sm:text-sm">
-            {['BPS 2026: purpose, timeline, BETA', 'Revenue & debt (Ksh 3.6T → 4.7T)', 'Quiz & reflection lab', 'Tracker, insights & take-action'].map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <span className="h-1 w-1 shrink-0 rounded-full bg-primary-foreground/60" />
-                {item}
-              </li>
-            ))}
-          </ul>
+    <div className="relative flex min-h-0 flex-col overflow-hidden rounded-3xl bg-primary text-primary-foreground shadow-xl md:min-h-[340px] md:max-h-[440px] md:flex-row md:self-start">
+
+      {/* ── Left: headline + two stats + CTA ─────────────────────────── */}
+      <div className="relative z-10 flex min-w-0 flex-col justify-between gap-6 p-7 md:max-w-[52%] md:p-9">
+        <div className="space-y-5">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.25em] text-white/40">
+            Civic hub · FY 2025/26
+          </p>
+
+          {/* Headline — one sharp sentence with a verb */}
+          <p className="text-base font-semibold leading-snug text-white md:text-lg">
+            Follow every shilling from Treasury to your ward.
+          </p>
+
+          {/* Two stats only — less is more */}
+          <div className="flex items-start gap-5">
+            <div>
+              <p className="text-3xl font-semibold tabular-nums text-white">4.3T</p>
+              <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-white/40">
+                Total budget
+              </p>
+            </div>
+            <div className="h-10 w-px self-start bg-white/10 mt-1" aria-hidden />
+            <div>
+              <p className="text-3xl font-semibold tabular-nums text-white">47</p>
+              <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-white/40">
+                Counties
+              </p>
+            </div>
+          </div>
         </div>
-        <Button asChild size="sm" variant="secondary" className="w-full rounded-full bg-primary-foreground text-primary sm:w-auto">
-          <Link href="/learn" className="inline-flex items-center justify-center">Open Learn <ArrowRight className="ml-2 h-3 w-3" /></Link>
+
+        <Button
+          asChild
+          size="sm"
+          variant="secondary"
+          className="w-full rounded-full bg-primary-foreground text-primary shadow-sm sm:w-auto"
+        >
+          <Link href="/learn" className="inline-flex items-center justify-center">
+            Open Learn
+            <ArrowRight className="ml-2 h-3 w-3" />
+          </Link>
         </Button>
       </div>
-      <div className="relative flex min-h-[120px] flex-1 items-center justify-center overflow-hidden sm:min-h-[160px] md:min-h-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-transparent md:from-primary md:via-transparent md:to-transparent" aria-hidden />
-        <div className="relative h-full w-full max-w-[240px] px-4 py-6 sm:max-w-[280px] md:absolute md:bottom-4 md:right-4 md:h-[240px] md:w-[300px] md:max-w-full md:p-0">
-          <BudgetStoryIllustration className="size-full" />
+
+      {/* ── Right: animated bar chart — the illustration IS the data ─── */}
+      <div className="relative flex min-h-[160px] md:min-h-0 md:h-[340px] flex-1 items-stretch overflow-hidden">
+        {/* Fade so chart bleeds seamlessly from left panel */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-primary to-transparent"
+          aria-hidden
+        />
+        {/* Subtle grid lines for chart legibility */}
+        <div className="absolute inset-0 flex items-stretch" aria-hidden>
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="flex-1 border-r border-white/[0.04] last:border-0" />
+          ))}
+        </div>
+        <div className="relative z-0 w-full">
+          <BudgetAllocationChart />
         </div>
       </div>
     </div>
@@ -225,7 +305,7 @@ function CivicHubCard() {
 
 // ─── Easing presets ──────────────────────────────────────────────────────────
 
-const fadeUp   = { from: { opacity: 0, y: 40 }, to: { opacity: 1, y: 0 } };
+const fadeUp = { from: { opacity: 0, y: 40 }, to: { opacity: 1, y: 0 } };
 const fadeUpSm = { from: { opacity: 0, y: 28 }, to: { opacity: 1, y: 0 } };
 const fadeUpXs = { from: { opacity: 0, y: 18 }, to: { opacity: 1, y: 0 } };
 
@@ -306,7 +386,7 @@ export function HomeLanding() {
       {/* ── 3. STATS STRIP — the premium moment ──────────────────────────── */}
       {/* Full-bleed dark section. Four animated numbers count up on scroll.  */}
       {/* This is the single "holy shit" beat that earns the page credibility. */}
-     
+
 
       {/* ── 4. PODCAST ───────────────────────────────────────────────────── */}
       {/* One video. Three lines of copy. One CTA. Nothing else.             */}
@@ -366,7 +446,7 @@ export function HomeLanding() {
       {/* ── 5. BUDGET STORY ──────────────────────────────────────────────── */}
       <ScrollSection animation={fadeUp} className="h-full min-h-full snap-start">
         <LandingSection id="budget-story" contained>
-          <div className="grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-stretch md:gap-12">
+          <div className="grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-12">
             <div className="space-y-8">
               <SectionHeader
                 label="Budget Ndio Story"
