@@ -1,1 +1,54 @@
-/**\n * Story Tiles Slide Component\n * Renders numbered tiles with information\n */\n\nimport React from 'react';\nimport { StoryTilesSlide } from '@/types/learn';\nimport styles from '../story-slides.module.css';\n\ninterface StoryTilesProps {\n  slide: StoryTilesSlide;\n}\n\nconst StoryTiles: React.FC<StoryTilesProps> = ({ slide }) => {\n  const tiles = slide.tiles || [];\n\n  return (\n    <div className={styles['slide']} style={{ backgroundColor: slide.bg }}>\n      <div\n        className={styles['orb']} \n        style={{\n          background: slide.orb1,\n          top: '10%',\n          left: '5%',\n        }}\n      />\n      <div className={styles['content']}>\n        <h2 className={styles['title']}>{slide.title}</h2>\n        <div className={styles['tiles-grid']}>\n          {tiles.map((tile, idx) => (\n            <div key={idx} className={styles['tile']}>\n              <div className={styles['tile-number']}>{tile.num}</div>\n              <h3>{tile.label}</h3>\n              {tile.desc && <p>{tile.desc}</p>}\n            </div>\n          ))}\n        </div>\n      </div>\n      <div\n        className={styles['orb']} \n        style={{\n          background: slide.orb2,\n          bottom: '5%',\n          right: '5%',\n        }}\n      />\n    </div>\n  );\n};\n\nexport default StoryTiles;\n
+"use client";
+
+import React from 'react';
+import { motion } from 'framer-motion';
+
+interface StoryTilesProps {
+  slide: {
+    title: string;
+    tiles: {
+      num: string;
+      label: string;
+      desc: string;
+    }[];
+  };
+}
+
+const StoryTiles: React.FC<StoryTilesProps> = ({ slide }) => {
+  return (
+    <div className="flex-1 flex flex-col pt-8">
+      <motion.h2
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        className="text-2xl font-serif font-light leading-snug text-white mb-8"
+      >
+        {slide.title}
+      </motion.h2>
+
+      <div className="grid grid-cols-2 gap-4">
+        {slide.tiles.map((tile, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 + idx * 0.1 }}
+            className="p-5 rounded-[24px] bg-white/5 border border-white/5 flex flex-col shadow-inner group overflow-hidden relative"
+          >
+            <div className="text-3xl font-serif font-bold text-[#F5C842] mb-1 group-hover:scale-110 transition-transform duration-300 z-10">
+              {tile.num}
+            </div>
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-white/80 mb-2 z-10">
+              {tile.label}
+            </h3>
+            <p className="text-[10px] text-white/40 leading-relaxed z-10">
+              {tile.desc}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default StoryTiles;

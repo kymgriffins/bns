@@ -173,9 +173,11 @@ export interface LessonSection {
 export interface VideoItem {
   id: string; // Video ID in playlist
   title: string;
-  youtubeId: string; // YouTube video ID for embedding
+  url: string; // YouTube video URL or ID
+  youtubeId?: string; // Optional YouTube video ID
+  thumbnail?: string; // Optional thumbnail URL
   duration: string; // e.g., '8:24'
-  views: string; // e.g., '14.2K'
+  views?: string; // e.g., '14.2K'
   desc: string; // Full description
   tag: string; // Tag/category
 }
@@ -202,6 +204,7 @@ export interface UserProgress {
     videoId: string;
     percentage: number; // 0-100
   }[];
+  completedVideos?: string[]; // List of completed video IDs
   
   // Quiz progress
   quizAnswers: {

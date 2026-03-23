@@ -1,1 +1,218 @@
-/**\n * Story Viewer Component\n * Displays story slides with navigation and progress tracking\n * Handles all 7 story slide types with appropriate renderers\n */\n\n'use client';\n\nimport React, { useState } from 'react';\nimport { StorySlide } from '@/types/learn';\nimport StoryCover from './story-slides/StoryCover';\nimport StoryBullets from './story-slides/StoryBullets';\nimport StoryPillars from './story-slides/StoryPillars';\nimport StoryTiles from './story-slides/StoryTiles';\nimport StoryRisks from './story-slides/StoryRisks';\nimport StoryQuiz from './story-slides/StoryQuiz';\nimport StoryCTA from './story-slides/StoryCTA';\nimport styles from './story-viewer.module.css';\n\ninterface StoryViewerProps {\n  slides: StorySlide[];\n  currentSlideIdx: number;\n  onSlideChange: (idx: number) => void;\n  onQuizAnswer?: (slideIdx: number, answer: number) => void;\n  onComplete?: () => void;\n}\n\nconst StoryViewer: React.FC<StoryViewerProps> = ({\n  slides,\n  currentSlideIdx,\n  onSlideChange,\n  onQuizAnswer,\n  onComplete,\n}) => {\n  const [direction, setDirection] = useState<'forward' | 'back'>('forward');\n\n  if (slides.length === 0) {\n    return (\n      <div className={styles['empty-state']}>\n        <p>No story slides available.</p>\n      </div>\n    );\n  }\n\n  const currentSlide = slides[currentSlideIdx];\n  const isFirstSlide = currentSlideIdx === 0;\n  const isLastSlide = currentSlideIdx === slides.length - 1;\n\n  const handleNext = () => {\n    setDirection('forward');\n    if (!isLastSlide) {\n      onSlideChange(currentSlideIdx + 1);\n    } else if (onComplete) {\n      onComplete();\n    }\n  };\n\n  const handlePrev = () => {\n    setDirection('back');\n    if (!isFirstSlide) {\n      onSlideChange(currentSlideIdx - 1);\n    }\n  };\n\n  const handleGoToSlide = (idx: number) => {\n    if (idx > currentSlideIdx) {\n      setDirection('forward');\n    } else {\n      setDirection('back');\n    }\n    onSlideChange(idx);\n  };\n\n  return (\n    <div className={styles['story-viewer']}>\n      {/* Slide renderer */}\n      <div\n        className={`${styles['slide-container']} ${styles[`direction-${direction}`]}`}\n        style={{\n          backgroundColor: currentSlide.bg,\n        }}\n      >\n        {currentSlide.type === 'cover' && (\n          <StoryCover slide={currentSlide as any} />\n        )}\n        {currentSlide.type === 'bullets' && (\n          <StoryBullets slide={currentSlide as any} />\n        )}\n        {currentSlide.type === 'pillars' && (\n          <StoryPillars slide={currentSlide as any} />\n        )}\n        {currentSlide.type === 'tiles' && (\n          <StoryTiles slide={currentSlide as any} />\n        )}\n        {currentSlide.type === 'risks' && (\n          <StoryRisks slide={currentSlide as any} />\n        )}\n        {currentSlide.type === 'quiz' && (\n          <StoryQuiz\n            slide={currentSlide as any}\n            onAnswer={(answer) => {\n              onQuizAnswer?.(currentSlideIdx, answer);\n            }}\n          />\n        )}\n        {currentSlide.type === 'cta' && (\n          <StoryCTA\n            slide={currentSlide as any}\n            onAction={(action) => {\n              if (action === 'next') handleNext();\n              if (action === 'complete') onComplete?.();\n            }}\n          />\n        )}\n      </div>\n\n      {/* Navigation controls */}\n      <div className={styles['controls']}>\n        {/* Previous button */}\n        <button\n          className={`${styles['btn']} ${styles['btn-prev']} ${isFirstSlide ? styles['disabled'] : ''}`}\n          onClick={handlePrev}\n          disabled={isFirstSlide}\n          aria-label=\"Previous slide\"\n        >\n          ← Previous\n        </button>\n\n        {/* Slide indicators */}\n        <div className={styles['indicators']}>\n          {slides.map((_, idx) => (\n            <button\n              key={idx}\n              className={`${styles['indicator']} ${idx === currentSlideIdx ? styles['active'] : ''}`}\n              onClick={() => handleGoToSlide(idx)}\n              aria-label={`Go to slide ${idx + 1}`}\n            >\n              {idx + 1}\n            </button>\n          ))}\n        </div>\n\n        {/* Progress text and next button */}\n        <div className={styles['progress-section']}>\n          <span className={styles['progress-text']}>\n            {currentSlideIdx + 1} / {slides.length}\n          </span>\n          <button\n            className={`${styles['btn']} ${styles['btn-next']}`}\n            onClick={handleNext}\n            aria-label={isLastSlide ? 'Complete story' : 'Next slide'}\n          >\n            {isLastSlide ? 'Complete ✓' : 'Next →'}\n          </button>\n        </div>\n      </div>\n    </div>\n  );\n};\n\nexport default StoryViewer;\n
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, X, Share2, Info } from 'lucide-react';
+import { StorySlide } from '@/types/learn';
+import StoryCover from './story-slides/StoryCover';
+import StoryBullets from './story-slides/StoryBullets';
+import StoryPillars from './story-slides/StoryPillars';
+import StoryTiles from './story-slides/StoryTiles';
+import StoryRisks from './story-slides/StoryRisks';
+import StoryQuiz from './story-slides/StoryQuiz';
+import StoryCTA from './story-slides/StoryCTA';
+import { cn } from '@/lib/utils';
+
+interface StoryViewerProps {
+  slides: StorySlide[];
+  currentSlideIdx: number;
+  onSlideChange: (idx: number) => void;
+  onQuizAnswer?: (slideIdx: number, answer: number) => void;
+  onComplete?: () => void;
+}
+
+export const StoryViewer: React.FC<StoryViewerProps> = ({
+  slides,
+  currentSlideIdx,
+  onSlideChange,
+  onQuizAnswer,
+  onComplete,
+}) => {
+  const [direction, setDirection] = useState(0);
+
+  if (slides.length === 0) {
+    return (
+      <div className="flex h-full items-center justify-center text-[#F0EDE6]/30 font-mono text-xs uppercase tracking-widest">
+        No story slides available.
+      </div>
+    );
+  }
+
+  const currentSlide = slides[currentSlideIdx];
+
+  const handleNext = () => {
+    if (currentSlideIdx < slides.length - 1) {
+      setDirection(1);
+      onSlideChange(currentSlideIdx + 1);
+    } else if (onComplete) {
+      onComplete();
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentSlideIdx > 0) {
+      setDirection(-1);
+      onSlideChange(currentSlideIdx - 1);
+    }
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0,
+      scale: 0.9,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 },
+        scale: { duration: 0.3 }
+      }
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0,
+      scale: 0.9,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 },
+        scale: { duration: 0.3 }
+      }
+    }),
+  };
+
+  return (
+    <div className="relative h-full w-full bg-black overflow-hidden flex flex-col md:items-center md:justify-center md:p-8">
+      {/* Background Animated Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div 
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+            x: [0, 50, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full blur-[120px]"
+          style={{ backgroundColor: currentSlide.orb1 || '#F5C842' }}
+        />
+        <motion.div 
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.4, 0.2],
+            x: [0, -40, 0],
+            y: [0, 60, 0],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[100px]"
+          style={{ backgroundColor: currentSlide.orb2 || '#38B2AC' }}
+        />
+      </div>
+
+      <div className="relative h-full w-full md:max-w-[450px] md:aspect-[9/16] md:max-h-[85vh] bg-[#0D0D14] md:rounded-[32px] md:shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col border border-white/5">
+        
+        {/* Progress Bars */}
+        <div className="absolute top-4 left-4 right-4 z-50 flex gap-1.5 px-1">
+          {slides.map((_, idx) => (
+            <div key={idx} className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden">
+              <motion.div 
+                initial={false}
+                animate={{ 
+                  width: idx < currentSlideIdx ? '100%' : idx === currentSlideIdx ? '100%' : '0%',
+                }}
+                transition={{ duration: idx === currentSlideIdx ? 5 : 0.3, ease: "linear" }}
+                className={cn(
+                  "h-full rounded-full transition-colors",
+                  idx <= currentSlideIdx ? "bg-white" : "bg-transparent"
+                )}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Slide Content */}
+        <div className="flex-1 relative">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div
+              key={currentSlideIdx}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="absolute inset-0 flex flex-col p-8 pt-16 overflow-y-auto no-scrollbar"
+            >
+              {currentSlide.type === 'cover' && <StoryCover slide={currentSlide as any} />}
+              {currentSlide.type === 'bullets' && <StoryBullets slide={currentSlide as any} />}
+              {currentSlide.type === 'pillars' && <StoryPillars slide={currentSlide as any} />}
+              {currentSlide.type === 'tiles' && <StoryTiles slide={currentSlide as any} />}
+              {currentSlide.type === 'risks' && <StoryRisks slide={currentSlide as any} />}
+              {currentSlide.type === 'quiz' && (
+                <StoryQuiz
+                  slide={currentSlide as any}
+                  onAnswer={(answer) => onQuizAnswer?.(currentSlideIdx, answer)}
+                />
+              )}
+              {currentSlide.type === 'cta' && (
+                <StoryCTA
+                  slide={currentSlide as any}
+                  onAction={(action) => {
+                    if (action === 'next') handleNext();
+                    if (action === 'complete') onComplete?.();
+                  }}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Invisible Nav areas */}
+          <div className="absolute inset-0 z-40 flex">
+            <div 
+              className="w-1/3 h-full cursor-west-resize" 
+              onClick={handlePrev} 
+              aria-label="Previous slide"
+            />
+            <div 
+              className="w-2/3 h-full cursor-east-resize" 
+              onClick={handleNext} 
+              aria-label="Next slide"
+            />
+          </div>
+        </div>
+
+        {/* Footer info Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+           <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-white/40">
+              <span>{currentSlideIdx + 1} / {slides.length}</span>
+              <div className="flex gap-4">
+                <Share2 className="h-3.5 w-3.5" />
+                <Info className="h-3.5 w-3.5" />
+              </div>
+           </div>
+        </div>
+      </div>
+
+      {/* Desktop Controls */}
+      <div className="hidden md:flex absolute inset-y-0 left-0 right-0 items-center justify-between px-12 pointer-events-none">
+        <button 
+          onClick={handlePrev}
+          disabled={currentSlideIdx === 0}
+          className="p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-all pointer-events-auto disabled:opacity-0"
+        >
+          <ChevronLeft className="h-8 w-8" />
+        </button>
+        <button 
+          onClick={handleNext}
+          className="p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-all pointer-events-auto"
+        >
+          <ChevronRight className="h-8 w-8" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default StoryViewer;

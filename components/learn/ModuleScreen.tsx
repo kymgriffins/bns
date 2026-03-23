@@ -1,22 +1,29 @@
-/**
- * Module Screen Component
- * Main learning interface for a selected module
- * Manages tab switching between Stories, Learn, Videos, Quiz
- * Integrates with progress tracking
- */
-
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ArrowLeft, 
+  ChevronRight, 
+  Play, 
+  BookOpen, 
+  Video, 
+  Lightbulb, 
+  Menu, 
+  X,
+  Clock,
+  CheckCircle2,
+  Sparkles
+} from 'lucide-react';
 import { LearningModule, UserProgress, ContentType } from '@/types/learn';
 import { getModuleData } from '@/lib/learn-data';
 import StoryViewer from './content/StoryViewer';
 import LessonPane from './content/LessonPane';
 import VideoPlayer from './content/VideoPlayer';
 import QuizPane from './content/QuizPane';
-import TabBar from './TabBar';
-import ModuleSidebar from './ModuleSidebar';
-import styles from './module-screen.module.css';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 interface ModuleScreenProps {
   module: LearningModule;
@@ -34,8 +41,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
   const [activeTab, setActiveTab] = useState<ContentType>('stories');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [moduleData, setModuleData] = useState<ReturnType<typeof getModuleData> | null>(null);
-  const [activeSection, setActiveSection] = useState<string>();
+  const [moduleData, setModuleData] = useState<any>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -43,75 +49,199 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
     const data = getModuleData(module.id);
     setModuleData(data);
     setLoading(false);
+  }, [module.id]);
 
-    // Restore scroll position if available
-    if (activeSection && activeSection.length > 0) {
-      setTimeout(() => {
-        const element = document.getElementById(`section-${activeSection}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  }, [module.id, activeSection]);
-
-  const handleStoryChange = (idx: number) => {
-    setCurrentSlide(idx);
-    if (onProgressUpdate) {
-      const updated = {
-        ...progress,
-        currentSlide: idx,
-        completedSlides: [...new Set([...(progress?.completedSlides || []), idx])],
-      } as UserProgress;
-      onProgressUpdate(updated);
-    }
-  };
-
-  const handleQuizAnswer = (questionIdx: number, answer: number) => {
-    if (onProgressUpdate) {
-      const updated = {
-        ...progress,
-        quizAnswers: [...(progress?.quizAnswers || []), { questionIdx, selected: answer }],
-      } as UserProgress;
-      onProgressUpdate(updated);
-    }
-  };
-
-  const handleVideoWatched = (videoId: string, percentage: number) => {
-    if (onProgressUpdate) {
-      const watchedVideos = [...(progress?.watchedVideos || [])];
-      const idx = watchedVideos.findIndex((v) => v.videoId === videoId);
-      if (idx >= 0) {
-        watchedVideos[idx].percentage = Math.max(watchedVideos[idx].percentage, percentage);
-      } else {
-        watchedVideos.push({ videoId, percentage });
-      }
-
-      const updated = {
-        ...progress,
-        watchedVideos,
-      } as UserProgress;
-      onProgressUpdate(updated);
-    }
-  };
+  const tabs: { id: ContentType; label: string; icon: any; color: string }[] = [
+    { id: 'stories', label: 'Stories', icon: Play, color: '#FC4444' },
+    { id: 'learn', label: 'Lesson', icon: BookOpen, color: '#F5C842' },
+    { id: 'videos', label: 'Videos', icon: Video, color: '#38B2AC' },
+    { id: 'quiz', label: 'Quiz', icon: Lightbulb, color: '#9F7AEA' },
+  ];
 
   if (loading) {
     return (
-      <div className={styles['loading']}>
-        <div className={styles['spinner']} />
-        <p>Loading module content...</p>
+      <div className="flex h-screen items-center justify-center bg-[#0D0D14] text-[#F0EDE6]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-12 w-12 border-4 border-[#F5C842] border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm font-mono uppercase tracking-widest opacity-50">Loading Module...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={styles['module-screen']}>
-      {/* Header with back button */}
-      <header className={styles['module-header']}>
-        <button className={styles['back-btn']} onClick={onBack}>
-          ← Back to Modules
-        </button>
-        <div className={styles['module-title-section']}>
-          <h2>{module.title}</h2>
-          <p
-            className={styles['subtitle']}\n          style={{ color: module.catColor }}\n        >\n          {module.category} • {module.duration}\n        </p>\n      </div>\n      <button\n        className={styles['sidebar-toggle']}\n        onClick={() => setSidebarOpen(!sidebarOpen)}\n        aria-label=\"Toggle sidebar\"\n      >\n        {sidebarOpen ? '▶' : '◀'}\n      </button>\n    </header>\n\n    {/* Tab bar */}\n    <TabBar\n      activeTab={activeTab}\n      onTabChange={setActiveTab}\n      module={module}\n    />\n\n    {/* Main content area */}\n    <div className={styles['content-wrapper']}>\n      {/* Sidebar */}\n      {sidebarOpen && (\n        <ModuleSidebar\n          module={module}\n          progress={progress}\n          activeTab={activeTab}\n          onTabChange={setActiveTab}\n          activeSection={activeSection}\n          onSectionScroll={setActiveSection}\n        />\n      )}\n\n      {/* Content pane */}\n      <main className={styles['content-pane']}>\n        {activeTab === 'stories' && moduleData?.stories && (\n          <StoryViewer\n            slides={moduleData.stories}\n            currentSlideIdx={currentSlide}\n            onSlideChange={handleStoryChange}\n            onQuizAnswer={handleQuizAnswer}\n          />\n        )}\n\n        {activeTab === 'learn' && moduleData?.lessons && (\n          <LessonPane\n            sections={moduleData.lessons}\n            activeSection={activeSection}\n            onSectionChange={setActiveSection}\n          />\n        )}\n\n        {activeTab === 'videos' && moduleData?.videos && (\n          <VideoPlayer\n            videos={moduleData.videos}\n            progress={progress}\n            onVideoWatched={handleVideoWatched}\n          />\n        )}\n\n        {activeTab === 'quiz' && moduleData?.quiz && (\n          <QuizPane\n            questions={moduleData.quiz}\n            progress={progress}\n            onAnswerSubmit={handleQuizAnswer}\n          />\n        )}\n      </main>\n    </div>\n  </div>\n);\n};\n\nexport default ModuleScreen;\n
+    <div className="flex h-screen flex-col bg-[#0D0D14] text-[#F0EDE6] overflow-hidden">
+      {/* Top Navigation */}
+      <nav className="h-14 flex-shrink-0 flex items-center justify-between px-4 border-b border-white/5 bg-[#13131F]/80 backdrop-blur-md z-50">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={onBack}
+            className="group flex items-center gap-2 text-sm text-[#F0EDE6]/60 hover:text-[#F0EDE6] transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="hidden sm:inline">Back to Hub</span>
+          </button>
+          <div className="h-4 w-[1px] bg-white/10 hidden sm:block" />
+          <div className="text-xs font-mono tracking-wider truncate max-w-[200px] sm:max-w-none">
+            <span className="text-[#F0EDE6]/30 uppercase">Module {module.num}</span>
+            <span className="mx-2 text-white/10">/</span>
+            <span className="font-semibold">{module.title}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+           {/* Simple overall progress */}
+           <div className="hidden md:flex items-center gap-3 bg-white/5 rounded-full px-3 py-1 border border-white/5">
+              <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-[#F5C842] to-[#38B2AC] transition-all duration-1000" 
+                  style={{ width: `${progress?.progressPercent || 0}%` }}
+                />
+              </div>
+              <span className="text-[10px] font-bold font-mono">{progress?.progressPercent || 0}%</span>
+           </div>
+           <button 
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 hover:bg-white/5 rounded-full transition-colors text-[#F0EDE6]/60"
+           >
+             {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+           </button>
+        </div>
+      </nav>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.aside
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 280, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              className="hidden lg:flex flex-col flex-shrink-0 border-r border-white/5 bg-[#13131F] overflow-hidden"
+            >
+              <div className="p-6 border-b border-white/5">
+                <Badge className="mb-3 bg-white/5 text-[#F0EDE6]/50 border-none rounded-full px-2 py-0.5 text-[10px] uppercase font-mono">
+                  {module.level} · {module.category}
+                </Badge>
+                <h3 className="font-serif text-lg leading-tight mb-2">{module.title}</h3>
+                <p className="text-[11px] text-[#F0EDE6]/40 mb-4 line-clamp-2">{module.desc}</p>
+                <div className="flex items-center gap-2 text-[10px] text-[#F0EDE6]/50">
+                  <Clock className="h-3 w-3" />
+                  {module.duration} total
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-y-auto py-4">
+                <div className="px-6 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#F0EDE6]/30">Content</div>
+                <div className="space-y-1">
+                  {tabs.map((tab) => {
+                    const isActive = activeTab === tab.id;
+                    const isAvailable = module.types.includes(tab.id);
+                    if (!isAvailable) return null;
+
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={cn(
+                          "w-full flex items-center gap-3 px-6 py-3 transition-all border-l-2",
+                          isActive 
+                            ? "bg-white/5 text-[#F5C842] border-[#F5C842]" 
+                            : "text-[#F0EDE6]/60 border-transparent hover:bg-white/[0.02] hover:text-[#F0EDE6]"
+                        )}
+                      >
+                        <tab.icon className={cn("h-4 w-4", isActive && "text-[#F5C842]")} />
+                        <span className="text-sm font-medium">{tab.label}</span>
+                        {isActive && <ChevronRight className="ml-auto h-3 w-3" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              
+              <div className="p-6 mt-auto border-t border-white/5">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center text-lg shadow-inner">
+                    {module.teacher.avatar}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[11px] font-bold text-[#F0EDE6]">{module.teacher.name}</p>
+                    <p className="text-[10px] text-[#F0EDE6]/40">{module.teacher.role}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.aside>
+          )}
+        </AnimatePresence>
+
+        {/* Main Content Pane */}
+        <main className="flex-1 flex flex-col min-w-0 bg-[#0D0D14] overflow-hidden relative">
+          {/* Mobile/Tablet Tab Bar */}
+          <div className="lg:hidden flex border-b border-white/5 bg-[#13131F] overflow-x-auto no-scrollbar">
+            {tabs.map((tab) => {
+               if (!module.types.includes(tab.id)) return null;
+               return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    "flex-1 flex flex-col items-center gap-1 py-3 px-4 min-w-[80px] transition-all border-b-2",
+                    activeTab === tab.id 
+                      ? "text-[#F5C842] border-[#F5C842]" 
+                      : "text-[#F0EDE6]/40 border-transparent"
+                  )}
+                >
+                  <tab.icon className="h-4 w-4" />
+                  <span className="text-[10px] font-bold uppercase tracking-tighter">{tab.label}</span>
+                </button>
+               );
+            })}
+          </div>
+
+          <div className="flex-1 overflow-y-auto scroll-smooth no-scrollbar">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="h-full"
+              >
+                {activeTab === 'stories' && moduleData?.stories && (
+                  <StoryViewer
+                    slides={moduleData.stories}
+                    currentSlideIdx={currentSlide}
+                    onSlideChange={setCurrentSlide}
+                  />
+                )}
+
+                {activeTab === 'learn' && moduleData?.lessons && (
+                  <LessonPane
+                    sections={moduleData.lessons}
+                  />
+                )}
+
+                {activeTab === 'videos' && moduleData?.videos && (
+                  <VideoPlayer
+                    videos={moduleData.videos}
+                    progress={progress || null}
+                  />
+                )}
+
+                {activeTab === 'quiz' && moduleData?.quiz && (
+                  <QuizPane
+                    questions={moduleData.quiz}
+                    progress={progress || null}
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default ModuleScreen;

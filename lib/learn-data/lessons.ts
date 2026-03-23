@@ -193,7 +193,7 @@ export const LESSON_SECTIONS_002: LessonSection[] = [
       {
         type: 'text',
         content:
-          'Transparency and accountability are central to good governance. Citizens have tools and rights to track government spending and demand accountability.",
+          'Transparency and accountability are central to good governance. Citizens have tools and rights to track government spending and demand accountability.',
       },
       {
         type: 'bullets',

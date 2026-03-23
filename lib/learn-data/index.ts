@@ -96,9 +96,16 @@ export const getModuleData = (moduleId: string) => {
   const module = getModuleById(moduleId);
   if (!module) return null;
 
+  // In a real CRUD app, these would come from a database or a mapping file
+  // For now, we still use the constants but mapped by ID
+  const storiesMap: Record<string, any[]> = {
+    'bps-advanced': STORIES_002,
+    // Add more mappings here or default to empty
+  };
+
   return {
     module,
-    stories: moduleId === 'bps-advanced' ? STORIES_002 : [],
+    stories: storiesMap[moduleId] || [],
     videos: getVideosByModuleId(moduleId),
     lessons: getLessonsByModuleId(moduleId),
     quiz: getQuizByModuleId(moduleId),

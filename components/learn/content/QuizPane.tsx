@@ -1,1 +1,201 @@
-/**\n * Quiz Pane Component\n * Displays quiz questions with answer options\n * Tracks score and provides feedback\n */\n\n'use client';\n\nimport React, { useState } from 'react';\nimport { QuizQuestion, UserProgress } from '@/types/learn';\nimport styles from './quiz-pane.module.css';\n\ninterface QuizPaneProps {\n  questions: QuizQuestion[];\n  progress?: UserProgress;\n  onAnswerSubmit?: (questionIdx: number, answer: number) => void;\n  onComplete?: (score: number) => void;\n}\n\nconst QuizPane: React.FC<QuizPaneProps> = ({\n  questions,\n  progress,\n  onAnswerSubmit,\n  onComplete,\n}) => {\n  const [currentIdx, setCurrentIdx] = useState(0);\n  const [answers, setAnswers] = useState<(number | null)[]>(new Array(questions.length).fill(null));\n  const [submittedIdx, setSubmittedIdx] = useState<number | null>(null);\n  const [score, setScore] = useState(0);\n\n  const currentQuestion = questions[currentIdx];\n  const currentAnswer = answers[currentIdx];\n  const isAnswered = currentAnswer !== null;\n  const isCorrect = isAnswered && currentAnswer === currentQuestion.correct;\n  const allAnswered = answers.every((a) => a !== null);\n\n  const handleAnswerSelect = (optionIdx: number) => {\n    if (submittedIdx === null) {\n      const newAnswers = [...answers];\n      newAnswers[currentIdx] = optionIdx;\n      setAnswers(newAnswers);\n    }\n  };\n\n  const handleSubmit = () => {\n    if (isAnswered && submittedIdx === null) {\n      setSubmittedIdx(currentIdx);\n      onAnswerSubmit?.(currentIdx, currentAnswer);\n      if (currentAnswer === currentQuestion.correct) {\n        setScore(score + 1);\n      }\n    }\n  };\n\n  const handleNext = () => {\n    if (currentIdx < questions.length - 1) {\n      setCurrentIdx(currentIdx + 1);\n      setSubmittedIdx(null);\n    }\n  };\n\n  const handlePrev = () => {\n    if (currentIdx > 0) {\n      setCurrentIdx(currentIdx - 1);\n      setSubmittedIdx(answers[currentIdx - 1] !== null ? currentIdx - 1 : null);\n    }\n  };\n\n  const handleComplete = () => {\n    onComplete?.(score);\n  };\n\n  const handleRetake = () => {\n    setAnswers(new Array(questions.length).fill(null));\n    setCurrentIdx(0);\n    setSubmittedIdx(null);\n    setScore(0);\n  };\n\n  // Results screen\n  if (allAnswered && submittedIdx === questions.length - 1) {\n    const percentage = Math.round((score / questions.length) * 100);\n    const passingScore = Math.ceil(questions.length * 0.7); // 70% pass\n    const passed = score >= passingScore;\n\n    return (\n      <div className={styles['results-screen']}>\n        <div className={styles['results-card']}>\n          <div className={`${styles['score-display']} ${passed ? styles['passed'] : styles['failed']}`}>\n            <div className={styles['score-number']}>{score}/{questions.length}</div>\n            <div className={styles['score-percentage']}>{percentage}%</div>\n          </div>\n\n          <h2>{passed ? '🎉 Great Job!' : 'Keep Trying!'}</h2>\n          <p>\n            {passed\n              ? `You passed! You scored ${percentage}% on the quiz.`\n              : `You need ${passingScore} correct answers (70%) to pass. You got ${score}.`}\n          </p>\n\n          {/* Answer summary */}\n          <div className={styles['answer-summary']}>\n            <h3>Summary</h3>\n            {questions.map((q, idx) => {\n              const selected = answers[idx];\n              const isCorrectAnswer = selected === q.correct;\n              return (\n                <div key={idx} className={`${styles['summary-item']} ${isCorrectAnswer ? styles['correct'] : styles['incorrect']}`}>\n                  <span className={styles['question-num']}>Q{idx + 1}</span>\n                  <span className={styles['question-text']}>{q.q.substring(0, 50)}...</span>\n                  <span className={styles['status']}>{isCorrectAnswer ? '✓' : '✗'}</span>\n                </div>\n              );\n            })}\n          </div>\n\n          {/* Action buttons */}\n          <div className={styles['action-buttons']}>\n            <button className={styles['btn-retake']} onClick={handleRetake}>\n              ↻ Retake Quiz\n            </button>\n            <button className={styles['btn-continue']} onClick={handleComplete}>\n              ✓ Continue\n            </button>\n          </div>\n        </div>\n      </div>\n    );\n  }\n\n  return (\n    <div className={styles['quiz-pane']}>\n      {/* Quiz header */}\n      <div className={styles['quiz-header']}>\n        <div className={styles['progress']}>\n          <span>Question {currentIdx + 1} of {questions.length}</span>\n          <div className={styles['progress-bar']}>\n            <div\n              className={styles['progress-fill']}\n              style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}\n            />\n          </div>\n        </div>\n        <div className={styles['score-preview']}>\n          Current: {answers.filter((a, i) => i <= currentIdx && a === questions[i].correct).length}/{currentIdx + 1}\n        </div>\n      </div>\n\n      {/* Question */}\n      <div className={styles['question-section']}>\n        <h3 className={styles['question-text']}>❓ {currentQuestion.q}</h3>\n\n        {/* Answer options */}\n        <div className={styles['options']}>\n          {currentQuestion.opts.map((option, idx) => (\n            <button\n              key={idx}\n              className={`${styles['option']} ${\n                currentAnswer === idx ? styles['selected'] : ''\n              } ${\n                submittedIdx !== null\n                  ? idx === currentQuestion.correct\n                    ? styles['correct']\n                    : idx === currentAnswer\n                    ? styles['incorrect']\n                    : ''\n                  : ''\n              }`}\n              onClick={() => handleAnswerSelect(idx)}\n              disabled={submittedIdx !== null}\n            >\n              <span className={styles['option-letter']}>\n                {String.fromCharCode(65 + idx)}\n              </span>\n              <span className={styles['option-text']}>{option}</span>\n            </button>\n          ))}\n        </div>\n\n        {/* Feedback */}\n        {submittedIdx === currentIdx && (\n          <div className={`${styles['feedback']} ${styles[isCorrect ? 'correct' : 'incorrect']}`}>\n            <p>\n              {isCorrect ? '✓ Correct!' : '✗ Incorrect'} {isCorrect ? currentQuestion.fb.c : currentQuestion.fb.w}\n            </p>\n          </div>\n        )}\n      </div>\n\n      {/* Navigation buttons */}\n      <div className={styles['nav-buttons']}>\n        <button\n          className={styles['btn-prev']}\n          onClick={handlePrev}\n          disabled={currentIdx === 0}\n        >\n          ← Previous\n        </button>\n\n        {submittedIdx === null ? (\n          <button\n            className={styles['btn-submit']}\n            onClick={handleSubmit}\n            disabled={!isAnswered}\n          >\n            Submit Answer\n          </button>\n        ) : (\n          <button\n            className={styles['btn-next']}\n            onClick={currentIdx === questions.length - 1 ? handleComplete : handleNext}\n          >\n            {currentIdx === questions.length - 1 ? 'See Results' : 'Next Question'} →\n          </button>\n        )}\n      </div>\n    </div>\n  );\n};\n\nexport default QuizPane;\n
+"use client";
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  HelpCircle, 
+  CheckCircle2, 
+  XCircle, 
+  ArrowRight, 
+  RotateCcw,
+  Trophy,
+  Lightbulb
+} from 'lucide-react';
+import { QuizQuestion, UserProgress } from '@/types/learn';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+interface QuizPaneProps {
+  questions: QuizQuestion[];
+  progress: UserProgress | null;
+  onComplete?: (score: number) => void;
+}
+
+export const QuizPane: React.FC<QuizPaneProps> = ({
+  questions,
+  progress,
+  onComplete,
+}) => {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+
+  const question = questions[currentIdx];
+  const selectedAnswer = answers[currentIdx];
+  
+  const handleAnswer = (optIdx: number) => {
+    if (showFeedback) return;
+    setAnswers({ ...answers, [currentIdx]: optIdx });
+    setShowFeedback(true);
+  };
+
+  const nextQuestion = () => {
+    if (currentIdx < questions.length - 1) {
+      setCurrentIdx(currentIdx + 1);
+      setShowFeedback(false);
+    } else {
+      setIsFinished(true);
+      const score = questions.reduce((acc, q, idx) => acc + (answers[idx] === q.correct ? 1 : 0), 0);
+      onComplete?.(score);
+    }
+  };
+
+  const restart = () => {
+    setCurrentIdx(0);
+    setAnswers({});
+    setShowFeedback(false);
+    setIsFinished(false);
+  };
+
+  if (isFinished) {
+    const score = questions.reduce((acc, q, idx) => acc + (answers[idx] === q.correct ? 1 : 0), 0);
+    const percent = Math.round((score / questions.length) * 100);
+    
+    return (
+      <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-[#0D0D14] text-center max-w-2xl mx-auto overflow-y-auto no-scrollbar">
+        <motion.div
+           initial={{ scale: 0.8, opacity: 0 }}
+           animate={{ scale: 1, opacity: 1 }}
+           className="mb-8 p-10 rounded-[48px] bg-gradient-to-br from-[#F5C842]/20 to-[#F5C842]/5 border border-[#F5C842]/20 shadow-[0_30px_60px_rgba(0,0,0,0.4)]"
+        >
+          <Trophy className="h-20 w-20 text-[#F5C842] mx-auto mb-6" />
+          <h2 className="text-4xl font-serif text-white mb-2">Quiz Complete!</h2>
+          <p className="text-sm text-white/50 uppercase tracking-[0.3em] font-mono">You scored {percent}%</p>
+        </motion.div>
+
+        <div className="w-full space-y-3">
+          <Button 
+            onClick={restart}
+            variant="outline"
+            className="w-full py-6 rounded-[24px] border-white/10 bg-white/5 text-white hover:bg-white/10 flex items-center justify-center gap-3"
+          >
+            <RotateCcw className="h-4 w-4" /> Try Again
+          </Button>
+          <Button 
+            className="w-full py-6 rounded-[24px] bg-[#F5C842] text-[#1A1200] font-bold hover:scale-[1.02] transition-transform"
+          >
+            Continue Learning <ArrowRight className="h-4 w-4 ml-2" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const isCorrect = selectedAnswer === question.correct;
+
+  return (
+    <div className="h-full w-full bg-[#0D0D14] flex flex-col p-6 lg:p-12 max-w-4xl mx-auto overflow-y-auto no-scrollbar">
+      <div className="flex items-center justify-between mb-12">
+        <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-[#9F7AEA]">
+          <HelpCircle className="h-4 w-4" />
+          Knowledge Check
+        </div>
+        <div className="text-[10px] font-bold uppercase tracking-widest text-white/20">
+          Question {currentIdx + 1} of {questions.length}
+        </div>
+      </div>
+
+      <div className="flex-1">
+        <motion.h2
+          key={currentIdx}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="text-2xl md:text-3xl font-serif font-light leading-snug text-white mb-12"
+        >
+          {question.q}
+        </motion.h2>
+
+        <div className="grid gap-4">
+          {question.opts.map((opt, idx) => {
+            const isSelected = selectedAnswer === idx;
+            const isActuallyCorrect = idx === question.correct;
+            
+            let btnBg = "bg-white/5 border-white/5 text-[#F0EDE6]/80 hover:bg-white/[0.08] hover:border-white/10";
+            if (showFeedback) {
+              if (isActuallyCorrect) btnBg = "bg-[#48BB78]/20 border-[#48BB78]/30 text-[#48BB78]";
+              else if (isSelected) btnBg = "bg-[#E53E3E]/20 border-[#E53E3E]/30 text-[#E53E3E]";
+              else btnBg = "bg-white/[0.02] border-white/5 text-white/30 opacity-60";
+            }
+
+            return (
+              <motion.button
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                onClick={() => handleAnswer(idx)}
+                disabled={showFeedback}
+                className={cn(
+                  "relative w-full p-6 p-8 rounded-[32px] border text-left text-base transition-all flex items-center justify-between group",
+                  btnBg
+                )}
+              >
+                <div className="flex items-center gap-6">
+                   <div className={cn(
+                     "h-10 w-10 rounded-full border flex items-center justify-center text-xs font-mono font-bold transition-colors shadow-inner",
+                     isSelected ? "bg-currentColor" : "bg-white/5 border-white/10"
+                   )}>
+                      {String.fromCharCode(65 + idx)}
+                   </div>
+                   <span className="font-sans">{opt}</span>
+                </div>
+                {showFeedback && isActuallyCorrect && <CheckCircle2 className="h-6 w-6" />}
+                {showFeedback && isSelected && !isActuallyCorrect && <XCircle className="h-6 w-6" />}
+              </motion.button>
+            );
+          })}
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {showFeedback && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-12 p-8 rounded-[40px] bg-white/[0.04] border border-white/10 flex flex-col md:flex-row items-center gap-6"
+          >
+            <div className={cn(
+              "p-4 rounded-full flex items-center justify-center",
+              isCorrect ? "bg-[#48BB78]/20 text-[#48BB78]" : "bg-[#E53E3E]/20 text-[#E53E3E]"
+            )}>
+               <Lightbulb className="h-8 w-8" />
+            </div>
+            
+            <div className="flex-1 text-center md:text-left">
+              <p className={cn(
+                "text-[10px] font-bold uppercase tracking-[0.2em] mb-1",
+                isCorrect ? "text-[#48BB78]" : "text-[#E53E3E]"
+              )}>
+                {isCorrect ? 'Correct Answer!' : 'Needs Review'}
+              </p>
+              <p className="text-base text-white/70 leading-relaxed italic">
+                {isCorrect ? question.fb?.c : question.fb?.w}
+              </p>
+            </div>
+
+            <Button 
+               onClick={nextQuestion}
+               className="bg-white text-black hover:bg-white/90 rounded-full px-8 py-6 uppercase font-bold text-xs tracking-widest whitespace-nowrap"
+            >
+               {currentIdx < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
+               <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default QuizPane;
