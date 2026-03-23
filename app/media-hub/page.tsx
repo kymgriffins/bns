@@ -3,159 +3,278 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Loader2, X, Mail, Bell, Share2, Send, Sparkles, Target, TrendingUp, Award, BookOpen } from 'lucide-react';
+import { 
+  Loader2, X, Mail, Bell, Share2, Send, Sparkles, 
+  Target, TrendingUp, Award, BookOpen, Play, 
+  Heart, MessageCircle, Share, Eye, ExternalLink,
+  Youtube, Twitter, Instagram, Facebook, Linkedin
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { YouTubeVideoCard, LessonCard, VideoGrid } from '@/components/youtube/YouTubeVideoCard';
-import { useYouTubeVideos, useLessons } from '@/hooks/useYouTube';
+import { 
+  fetchYouTubeVideos, 
+  fallbackContent, 
+  platformConfigs, 
+  formatNumber, 
+  timeAgo,
+  SocialMediaPost
+} from '@/lib/socialMedia';
 
+// Bento Card Component
+interface BentoCardProps {
+  title: string;
+  platform: 'youtube' | 'twitter' | 'tiktok' | 'instagram' | 'facebook' | 'linkedin';
+  posts: SocialMediaPost[];
+  className?: string;
+  size?: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+}
 
-// Floating Particles Component
-function FloatingParticles() {
-  const particles = useMemo(() => {
-    return Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      size: Math.random() * 6 + 2,
-      duration: Math.random() * 20 + 15,
-      delay: Math.random() * 10,
-      opacity: Math.random() * 0.4 + 0.1,
-    }));
-  }, []);
+function BentoCard({ title, platform, posts, className, size = 'medium' }: BentoCardProps) {
+  const config = platformConfigs[platform];
+  
+  const sizeClasses = {
+    small: 'col-span-1 row-span-1',
+    medium: 'col-span-1 md:col-span-1 lg:col-span-1 row-span-1',
+    large: 'col-span-1 md:col-span-2 row-span-2',
+    wide: 'col-span-1 md:col-span-2 row-span-1',
+    tall: 'col-span-1 row-span-2',
+  };
 
   return (
-    <div className="particles absolute inset-0 pointer-events-none overflow-hidden z-0">
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="absolute rounded-full"
-          style={{
-            left: `${p.x}%`,
-            width: p.size,
-            height: p.size,
-            background: p.id % 3 === 0 ? 'var(--gold)' : p.id % 3 === 1 ? 'var(--teal)' : 'var(--coral)',
-            animation: `floatUp ${p.duration}s linear infinite`,
-            animationDelay: `${p.delay}s`,
-            opacity: p.opacity,
-          }}
-        />
-      ))}
+    <div className={cn(
+      'relative rounded-3xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl',
+      sizeClasses[size],
+      'bg-gradient-to-br from-card to-card/80 border border-border/50',
+      className
+    )}>
+      {/* Platform Header */}
+      <div className={cn(
+        'absolute top-0 left-0 right-0 p-4 bg-gradient-to-r',
+        config.color
+      )}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-white">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+              <path d={config.icon} />
+            </svg>
+            <span className="font-bold">{title}</span>
+          </div>
+          <a
+            href={platform === 'twitter' ? 'https://x.com/BudgetNdioStory' : 
+                  platform === 'youtube' ? 'https://www.youtube.com/@budgetndiostory' :
+                  platform === 'tiktok' ? 'https://www.tiktok.com/@budget.ndio.story' :
+                  platform === 'instagram' ? 'https://www.instagram.com/budgetndiostory' :
+                  platform === 'facebook' ? 'https://www.facebook.com/BudgetNdioStory' :
+                  'https://linkedin.com/company/budget-ndio-story'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-1.5 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
+          >
+            <ExternalLink className="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="pt-16 p-4 h-full overflow-y-auto">
+        <div className={cn(
+          'grid gap-3',
+          size === 'large' ? 'grid-cols-2' : 'grid-cols-1'
+        )}>
+          {posts.slice(0, size === 'large' ? 4 : size === 'wide' ? 3 : 2).map((post, idx) => (
+            <a
+              key={post.id}
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'group block p-3 rounded-2xl bg-background/50 hover:bg-background transition-all',
+                idx === 0 && size === 'large' && 'col-span-2'
+              )}
+            >
+              {/* Thumbnail for YouTube/Video posts */}
+              {post.thumbnail && platform !== 'twitter' && (
+                <div className="relative aspect-video rounded-xl overflow-hidden mb-2">
+                  <img 
+                    src={post.thumbnail} 
+                    alt={post.content}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {platform === 'youtube' && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center">
+                        <Play className="w-6 h-6 text-white ml-1" />
+                      </div>
+                    </div>
+                  )}
+                  {post.metrics?.views && (
+                    <div className="absolute bottom-2 right-2 px-2 py-1 rounded-md bg-black/70 text-white text-xs flex items-center gap-1">
+                      <Eye className="w-3 h-3" />
+                      {formatNumber(post.metrics.views)}
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Content */}
+              <p className={cn(
+                'text-sm font-medium line-clamp-2 group-hover:text-primary transition-colors',
+                platform === 'youtube' && 'line-clamp-1'
+              )}>
+                {post.content}
+              </p>
+              
+              {/* Metrics & Time */}
+              <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Heart className="w-3 h-3" />
+                  {formatNumber(post.metrics?.likes || 0)}
+                </span>
+                {post.metrics?.comments !== undefined && post.metrics?.comments > 0 && (
+                  <span className="flex items-center gap-1">
+                    <MessageCircle className="w-3 h-3" />
+                    {formatNumber(post.metrics.comments)}
+                  </span>
+                )}
+                {post.metrics?.views !== undefined && post.metrics?.views > 0 && (
+                  <span className="flex items-center gap-1">
+                    <Eye className="w-3 h-3" />
+                    {formatNumber(post.metrics.views)}
+                  </span>
+                )}
+                <span className="ml-auto">
+                  {timeAgo(post.publishedAt)}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
-// Social platform configurations
-const socialPlatforms = [
-  {
-    id: 'lessons',
-    name: 'Lessons',
-    username: 'Video Lessons',
-    color: 'from-amber-500 via-orange-500 to-red-500',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-        <path d="M12 14l9-5-9-5-9 5 9 5z" />
-        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-        <path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-      </svg>
-    ),
-    followUrl: '/media-hub',
-  },
-  {
-    id: 'tiktok',
-    name: 'TikTok',
-    username: 'budget.ndio.story',
-    color: 'bg-black',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-      </svg>
-    ),
-    followUrl: 'https://www.tiktok.com/@budget.ndio.story',
-  },
-  {
-    id: 'twitter',
-    name: 'X (Twitter)',
-    username: 'BudgetNdioStory',
-    color: 'from-black via-gray-500 to-black',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-      </svg>
-    ),
-    followUrl: 'https://x.com/BudgetNdioStory',
-  },
-  {
-    id: 'youtube',
-    name: 'YouTube',
-    username: '@BudgetNdioStory',
-    color: 'from-red-500 via-red-600 to-red-700',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-      </svg>
-    ),
-    followUrl: 'https://www.youtube.com/@BudgetNdioStory',
-  },
-];
+// Featured Video Hero Component
+function FeaturedVideo({ video }: { video: SocialMediaPost }) {
+  return (
+    <div className="col-span-1 md:col-span-2 row-span-2 relative rounded-3xl overflow-hidden group">
+      <div className="absolute inset-0 bg-gradient-to-br from-red-600 to-red-800" />
+      <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20" />
+      
+      {/* Video Placeholder/Embed */}
+      <a 
+        href={video.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute inset-0 flex items-center justify-center"
+      >
+        {video.thumbnail ? (
+          <div className="relative w-full h-full">
+            <img 
+              src={video.thumbnail} 
+              alt={video.content}
+              className="w-full h-full object-cover opacity-80 group-hover:opacity-90 transition-opacity"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Play className="w-10 h-10 text-white ml-1" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center">
+            <Play className="w-12 h-12 text-white ml-1" />
+          </div>
+        )}
+      </a>
+      
+      {/* Content Overlay */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="px-2 py-1 rounded-md bg-red-600 text-white text-xs font-medium flex items-center gap-1">
+            <Youtube className="w-3 h-3" />
+            Featured
+          </span>
+          {video.metrics?.views && (
+            <span className="text-white/70 text-xs flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              {formatNumber(video.metrics.views)} views
+            </span>
+          )}
+        </div>
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-2">
+          {video.content}
+        </h3>
+        <div className="flex items-center gap-4 text-white/70 text-sm">
+          <span>{video.author.name}</span>
+          <span>•</span>
+          <span>{timeAgo(video.publishedAt)}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-// Sample TikTok videos (static for now)
-const tiktokVideos = [
-  '7456891072277442848',
-  '7455123456789012345',
-  '7452345678901234567',
-  '7449876543210987654',
-  '7447654321098765432',
-  '7445432109876543210',
-];
+// Stats Card Component
+function StatsCard() {
+  const [stats, setStats] = useState({ followers: 0, engagement: 0, videos: 0 });
+  
+  useEffect(() => {
+    const targetStats = { followers: 125000, engagement: 89, videos: 342 };
+    const duration = 2000;
+    const steps = 60;
+    const interval = duration / steps;
+    let step = 0;
+    
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      setStats({
+        followers: Math.floor(targetStats.followers * progress),
+        engagement: Math.floor(targetStats.engagement * progress),
+        videos: Math.floor(targetStats.videos * progress),
+      });
+      if (step >= steps) clearInterval(timer);
+    }, interval);
+    
+    return () => clearInterval(timer);
+  }, []);
 
-// Sample tweets
-const sampleTweets = [
-  {
-    id: '1',
-    text: "Understanding Kenya's budget process is crucial for citizen engagement. 🏛️ #BudgetNdioStory #Kenya",
-    author: { name: 'Budget Ndio Story', username: 'BudgetNdioStory' },
-    created_at: new Date().toISOString(),
-    public_metrics: { retweet_count: 15, reply_count: 8, like_count: 45 },
-  },
-  {
-    id: '2',
-    text: "Did you know you can participate in your county's budget-making process? Here's how 🗣️ #CitizenEngagement",
-    author: { name: 'Budget Ndio Story', username: 'BudgetNdioStory' },
-    created_at: new Date(Date.now() - 86400000).toISOString(),
-    public_metrics: { retweet_count: 22, reply_count: 12, like_count: 67 },
-  },
-  {
-    id: '3',
-    text: "The Finance Bill 2024 is here! We break down what it means for everyday Kenyans 💰 #FinanceBill2024",
-    author: { name: 'Budget Ndio Story', username: 'BudgetNdioStory' },
-    created_at: new Date(Date.now() - 172800000).toISOString(),
-    public_metrics: { retweet_count: 45, reply_count: 23, like_count: 120 },
-  },
-  {
-    id: '4',
-    text: "Youth voices matter in budget decisions! Join the conversation 🗳️ #YouthPower #Kenya",
-    author: { name: 'Budget Ndio Story', username: 'BudgetNdioStory' },
-    created_at: new Date(Date.now() - 259200000).toISOString(),
-    public_metrics: { retweet_count: 18, reply_count: 9, like_count: 52 },
-  },
-  {
-    id: '5',
-    text: "Track how your tax money is being spent in your county. Transparency matters! 📍 #CountyBudget #OpenGov",
-    author: { name: 'Budget Ndio Story', username: 'BudgetNdioStory' },
-    created_at: new Date(Date.now() - 345600000).toISOString(),
-    public_metrics: { retweet_count: 30, reply_count: 15, like_count: 89 },
-  },
-];
-
-// Sample YouTube videos
-const youtubeVideos = [
-  { id: 'dQw4w9WgXcQ', title: "Understanding Kenya's Budget Process", thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg' },
-  { id: 'jNQXAC9IVRw', title: 'Citizen Engagement in Budget Making', thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/mqdefault.jpg' },
-  { id: '9bZkp7q19f0', title: 'Finance Bill 2024 Breakdown', thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/mqdefault.jpg' },
-  { id: 'kJQP7kiw5Fk', title: 'Youth Voices in County Budget', thumbnail: 'https://img.youtube.com/vi/kJQP7kiw5Fk/mqdefault.jpg' },
-  { id: 'fC7oUOUEEi4', title: 'Tracking Your Tax Money', thumbnail: 'https://img.youtube.com/vi/fC7oUOUEEi4/mqdefault.jpg' },
-  { id: 'uelHwf8o7_U', title: 'Open Government Partnership', thumbnail: 'https://img.youtube.com/vi/uelHwf8o7_U/mqdefault.jpg' },
-];
+  return (
+    <div className="col-span-1 md:col-span-3 row-span-1 rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-6 text-white">
+      <div className="flex flex-wrap items-center justify-between gap-6 h-full">
+        <div className="text-center">
+          <div className="text-3xl md:text-4xl font-bold">
+            {stats.followers.toLocaleString()}+
+          </div>
+          <div className="text-sm text-white/80 flex items-center justify-center gap-1 mt-1">
+            <TrendingUp className="w-3 h-3" /> Followers
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="text-3xl md:text-4xl font-bold">
+            {stats.engagement}%
+          </div>
+          <div className="text-sm text-white/80 flex items-center justify-center gap-1 mt-1">
+            <Target className="w-3 h-3" /> Engagement
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="text-3xl md:text-4xl font-bold">
+            {stats.videos}
+          </div>
+          <div className="text-sm text-white/80 flex items-center justify-center gap-1 mt-1">
+            <Sparkles className="w-3 h-3" /> Videos
+          </div>
+        </div>
+        <div className="hidden lg:block text-right">
+          <h3 className="text-xl font-bold">Stay Connected</h3>
+          <p className="text-sm text-white/80">Follow us on all platforms</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // Email Popup Component
 function EmailPopup() {
@@ -273,402 +392,64 @@ function EmailPopup() {
   );
 }
 
-// TikTok Feed Component
-function TikTokFeed({ username, count = 6 }: { username: string; count?: number }) {
-  const videos = tiktokVideos.slice(0, count);
+// Floating Particles Component
+function FloatingParticles() {
+  const particles = useMemo(() => {
+    return Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      size: Math.random() * 6 + 2,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 10,
+      opacity: Math.random() * 0.4 + 0.1,
+    }));
+  }, []);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">B</span>
-        </div>
-        <div>
-          <h3 className="font-bold text-lg">@{username}</h3>
-          <p className="text-sm text-muted-foreground">Budget Ndio Story</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {videos.map((videoId) => (
-          <a
-            key={videoId}
-            href={`https://www.tiktok.com/@${username}/video/${videoId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative aspect-[9/16] rounded-lg overflow-hidden bg-muted"
-          >
-            <iframe
-              src={`https://www.tiktok.com/embed/v2/${videoId}?embedId=${videoId}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full border-0"
-              title={`TikTok video`}
-            />
-          </a>
-        ))}
-      </div>
-
-      <div className="text-center">
-        <a
-          href={`https://www.tiktok.com/@${username}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-        >
-          View more on TikTok
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  );
-}
-
-// Twitter Feed Component
-function TwitterFeedComponent({ username, count = 5 }: { username: string; count?: number }) {
-  const tweets = sampleTweets.slice(0, count);
-
-  const timeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-    if (diffInSeconds < 60) return 'just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h`;
-    return `${Math.floor(diffInSeconds / 86400)}d`;
-  };
-
-  return (
-    <div className="space-y-4">
-      {tweets.map((tweet) => (
-        <a
-          key={tweet.id}
-          href={`https://x.com/${tweet.author.username}/status/${tweet.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block p-4 rounded-xl border bg-card hover:bg-accent/50 transition-colors"
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-              <span className="text-sm font-bold text-primary">
-                {tweet.author.name.charAt(0)}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-sm truncate">{tweet.author.name}</p>
-              <p className="text-sm text-muted-foreground truncate">@{tweet.author.username}</p>
-            </div>
-            <svg viewBox="0 0 24 24" className="w-5 h-5 text-muted-foreground" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-          </div>
-          <p className="text-sm mb-3 whitespace-pre-wrap">{tweet.text}</p>
-          <div className="flex items-center gap-4 text-muted-foreground text-sm">
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              {tweet.public_metrics.reply_count}
-            </span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              {tweet.public_metrics.retweet_count}
-            </span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-              {tweet.public_metrics.like_count}
-            </span>
-            <span className="ml-auto text-xs">{timeAgo(tweet.created_at)}</span>
-          </div>
-        </a>
+    <div className="particles absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size,
+            background: p.id % 3 === 0 ? 'var(--gold)' : p.id % 3 === 1 ? 'var(--teal)' : 'var(--coral)',
+            animation: `floatUp ${p.duration}s linear infinite`,
+            animationDelay: `${p.delay}s`,
+            opacity: p.opacity,
+          }}
+        />
       ))}
     </div>
   );
 }
 
-// YouTube Feed Component - Fetches videos dynamically from API
-function YouTubeFeed({ username, count = 6 }: { username: string; count?: number }) {
-  const { videos, loading, error } = useYouTubeVideos(count);
-
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center">
-            <span className="text-2xl font-bold text-white">B</span>
-          </div>
-          <div>
-            <h3 className="font-bold text-lg">{username}</h3>
-            <p className="text-sm text-muted-foreground">Budget Ndio Story</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: count }).map((_, i) => (
-            <div key={i} className="rounded-xl overflow-hidden bg-card animate-pulse">
-              <div className="aspect-video bg-muted" />
-              <div className="p-3 space-y-2">
-                <div className="h-4 bg-muted rounded w-full" />
-                <div className="h-4 bg-muted rounded w-2/3" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center">
-            <span className="text-2xl font-bold text-white">B</span>
-          </div>
-          <div>
-            <h3 className="font-bold text-lg">{username}</h3>
-            <p className="text-sm text-muted-foreground">Budget Ndio Story</p>
-          </div>
-        </div>
-        <div className="text-center py-8 text-muted-foreground">
-          <p>Unable to load videos. Using fallback content.</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">B</span>
-        </div>
-        <div>
-          <h3 className="font-bold text-lg">{username}</h3>
-          <p className="text-sm text-muted-foreground">Budget Ndio Story - Latest Videos</p>
-        </div>
-      </div>
-
-      <VideoGrid videos={videos} />
-
-      <div className="text-center">
-        <a
-          href={`https://www.youtube.com/${username}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-        >
-          View more on YouTube
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  );
-}
-
-// Lessons Feed Component - Shows videos as lessons with key takeaways
-function LessonsFeed({ count = 6 }: { count?: number }) {
-  const { lessons, loading, error, refetch } = useLessons(count);
-  const [syncing, setSyncing] = useState(false);
-
-  const handleSync = async () => {
-    setSyncing(true);
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-      await fetch(`${apiUrl}/api/youtube/sync?limit=${count}&takeaways=true`, {
-        method: 'POST',
-      });
-      refetch();
-    } catch (err) {
-      console.error('Error syncing lessons:', err);
-    } finally {
-      setSyncing(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-              <BookOpen className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg">Video Lessons</h3>
-              <p className="text-sm text-muted-foreground">Learn budget concepts through videos</p>
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: count }).map((_, i) => (
-            <div key={i} className="rounded-xl overflow-hidden bg-card animate-pulse">
-              <div className="aspect-video bg-muted" />
-              <div className="p-4 space-y-2">
-                <div className="h-4 bg-muted rounded w-full" />
-                <div className="h-4 bg-muted rounded w-2/3" />
-                <div className="h-3 bg-muted rounded w-full mt-4" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (error || lessons.length === 0) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-              <BookOpen className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg">Video Lessons</h3>
-              <p className="text-sm text-muted-foreground">Learn budget concepts through videos</p>
-            </div>
-          </div>
-          <Button onClick={handleSync} disabled={syncing} size="sm" className="rounded-full">
-            {syncing ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sync Lessons'}
-          </Button>
-        </div>
-        <div className="text-center py-12 text-muted-foreground">
-          <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
-          <p className="mb-4">No lessons available yet. Sync from YouTube to get started.</p>
-          <p className="text-sm">Configure YOUTUBE_API_KEY and OPENAI_API_KEY in your environment.</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-            <BookOpen className="w-8 h-8 text-white" />
-          </div>
-          <div>
-            <h3 className="font-bold text-lg">Video Lessons</h3>
-            <p className="text-sm text-muted-foreground">Watch and learn with key takeaways</p>
-          </div>
-        </div>
-        <Button onClick={handleSync} disabled={syncing} variant="outline" size="sm" className="rounded-full">
-          {syncing ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Refresh'}
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {lessons.map((lesson) => (
-          <LessonCard key={lesson.id} lesson={lesson} />
-        ))}
-      </div>
-
-      <div className="text-center pt-4">
-        <p className="text-sm text-muted-foreground">
-          {lessons.length} lessons available
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// Engagement Buttons Component
-function EngagementButtons({ platform }: { platform: typeof socialPlatforms[0] }) {
-  const handleShare = () => {
-    const shareData = {
-      title: `Follow ${platform.name} - Budget Ndio Story`,
-      text: `Check out ${platform.name} content from Budget Ndio Story`,
-      url: platform.followUrl,
-    };
-    
-    if (navigator.share) {
-      navigator.share(shareData);
-    } else {
-      navigator.clipboard.writeText(platform.followUrl);
-      alert('Link copied to clipboard!');
-    }
-  };
-
-  return (
-    <div className="flex items-center gap-2">
-      <Button
-        asChild
-        className={cn(
-          'gap-2 text-white',
-          platform.id === 'tiktok' && 'bg-black hover:bg-gray-800',
-          platform.id === 'twitter' && 'bg-black hover:bg-black/80',
-          platform.id === 'youtube' && 'bg-red-600 hover:bg-red-700'
-        )}
-      >
-        <a href={platform.followUrl} target="_blank" rel="noopener noreferrer">
-          {platform.icon}
-          Follow
-        </a>
-      </Button>
-      
-      <Button variant="outline" size="icon" onClick={handleShare} title="Share">
-        <Share2 className="w-4 h-4" />
-      </Button>
-      
-      <Button variant="outline" size="icon" onClick={() => window.location.href = '/subscribe'} title="Subscribe">
-        <Bell className="w-4 h-4" />
-      </Button>
-    </div>
-  );
-}
-
-// Tab Content Component
-function TabContent({ platform, isActive }: { platform: typeof socialPlatforms[0]; isActive: boolean }) {
-  if (!isActive) return null;
-
-  return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
-      <EngagementButtons platform={platform} />
-      
-      <div className="mt-8">
-        {platform.id === 'lessons' && <LessonsFeed count={9} />}
-        {platform.id === 'tiktok' && <TikTokFeed username={platform.username} count={6} />}
-        {platform.id === 'twitter' && <TwitterFeedComponent username={platform.username} count={5} />}
-        {platform.id === 'youtube' && <YouTubeFeed username={platform.username} count={6} />}
-      </div>
-    </div>
-  );
-}
-
+// Main Page Component
 export default function MediaHubPage() {
-  const [activeTab, setActiveTab] = useState('lessons');
-  const [stats, setStats] = useState({ followers: 0, engagement: 0, videos: 0 });
-  
-  // Animate stats on mount
+  const [youtubeVideos, setYoutubeVideos] = useState<SocialMediaPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const targetStats = { followers: 125000, engagement: 89, videos: 342 };
-    const duration = 2000;
-    const steps = 60;
-    const interval = duration / steps;
-    let step = 0;
+    async function loadContent() {
+      try {
+        const videos = await fetchYouTubeVideos(6);
+        setYoutubeVideos(videos);
+      } catch (error) {
+        console.error('Error loading YouTube videos:', error);
+        setYoutubeVideos(fallbackContent.youtube);
+      } finally {
+        setLoading(false);
+      }
+    }
     
-    const timer = setInterval(() => {
-      step++;
-      const progress = step / steps;
-      setStats({
-        followers: Math.floor(targetStats.followers * progress),
-        engagement: Math.floor(targetStats.engagement * progress),
-        videos: Math.floor(targetStats.videos * progress),
-      });
-      if (step >= steps) clearInterval(timer);
-    }, interval);
-    
-    return () => clearInterval(timer);
+    loadContent();
   }, []);
+
+  // Combine all content for the bento grid
+  const featuredVideo = youtubeVideos[0] || fallbackContent.youtube[0];
+  const remainingVideos = youtubeVideos.slice(1) || fallbackContent.youtube.slice(1);
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -690,41 +471,14 @@ export default function MediaHubPage() {
           --coral: #ff7c5c;
         }
       `}</style>
+      
       <FloatingParticles />
       <EmailPopup />
       
       {/* Hero Section */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
+      <section className="relative py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-teal-50 dark:from-amber-950/20 dark:via-background dark:to-teal-950/20" />
         <div className="container relative z-10">
-          {/* Stats Banner */}
-          <div className="flex flex-wrap justify-center gap-6 md:gap-12 mb-8">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-amber-600 dark:text-amber-400">
-                {stats.followers.toLocaleString()}+
-              </div>
-              <div className="text-sm text-muted-foreground flex items-center gap-1">
-                <TrendingUp className="w-3 h-3" /> Followers
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-teal-600 dark:text-teal-400">
-                {stats.engagement}%
-              </div>
-              <div className="text-sm text-muted-foreground flex items-center gap-1">
-                <Target className="w-3 h-3" /> Engagement
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-orange-600 dark:text-orange-400">
-                {stats.videos}
-              </div>
-              <div className="text-sm text-muted-foreground flex items-center gap-1">
-                <Sparkles className="w-3 h-3" /> Videos
-              </div>
-            </div>
-          </div>
-          
           <div className="max-w-3xl mx-auto text-center space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
               Media Hub
@@ -735,32 +489,48 @@ export default function MediaHubPage() {
             </p>
             
             {/* Social Links Row */}
-            <div className="flex justify-center gap-4 pt-4 flex-wrap">
-              <Button asChild variant="outline" size="sm" className="rounded-full border-amber-500 text-amber-600 hover:bg-amber-50">
-                <Link href="/media-hub?tab=lessons">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Lessons
-                </Link>
-              </Button>
-              {socialPlatforms.filter(p => p.id !== 'lessons').map((platform) => (
-                <a
-                  key={platform.id}
-                  href={platform.followUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    'inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium text-white transition-transform hover:scale-105',
-                    platform.id === 'tiktok' && 'bg-black',
-                    platform.id === 'twitter' && 'bg-black',
-                    platform.id === 'youtube' && 'bg-red-600'
-                  )}
-                >
-                  {platform.icon}
-                  @{platform.username}
-                </a>
-              ))}
+            <div className="flex justify-center gap-3 pt-4 flex-wrap">
+              <a
+                href="https://www.youtube.com/@budgetndiostory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium bg-red-600 text-white hover:bg-red-700 transition-colors"
+              >
+                <Youtube className="w-4 h-4" />
+                YouTube
+              </a>
+              <a
+                href="https://x.com/BudgetNdioStory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium bg-black text-white hover:bg-gray-800 transition-colors"
+              >
+                <Twitter className="w-4 h-4" />
+                X
+              </a>
+              <a
+                href="https://www.tiktok.com/@budget.ndio.story"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium bg-black text-white hover:bg-gray-800 transition-colors"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                </svg>
+                TikTok
+              </a>
+              <a
+                href="https://www.instagram.com/budgetndiostory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 transition-opacity"
+              >
+                <Instagram className="w-4 h-4" />
+                Instagram
+              </a>
             </div>
-            <div className="mt-8 pt-8 border-t border-border/50 flex flex-wrap justify-center gap-3 text-sm">
+            
+            <div className="mt-6 pt-6 border-t border-border/50 flex flex-wrap justify-center gap-3 text-sm">
               <span className="text-muted-foreground">Want to go deeper?</span>
               <Button asChild variant="outline" size="sm" className="rounded-full">
                 <Link href="/learn">Learn Budget 101</Link>
@@ -773,54 +543,73 @@ export default function MediaHubPage() {
         </div>
       </section>
 
-      {/* Tabs Section */}
-      <section className="container py-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Tab Navigation */}
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center gap-1 p-1 bg-muted rounded-full">
-              {socialPlatforms.map((platform) => (
-                <button
-                  key={platform.id}
-                  onClick={() => setActiveTab(platform.id)}
-                  className={cn(
-                    'inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all',
-                    activeTab === platform.id
-                      ? 'bg-background shadow-sm text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  <span className={cn(
-                    'p-1 rounded',
-                    platform.id === 'lessons' && 'text-amber-500',
-                    platform.id === 'tiktok' && 'text-pink-500',
-                    platform.id === 'twitter' && 'text-gray-900',
-                    platform.id === 'youtube' && 'text-red-600'
-                  )}>
-                    {platform.icon}
-                  </span>
-                  <span className="hidden sm:inline">{platform.name}</span>
-                </button>
+      {/* Bento Grid Section */}
+      <section className="container py-8 pb-20">
+        <div className="max-w-7xl mx-auto">
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-3xl bg-card animate-pulse h-64" />
               ))}
             </div>
-          </div>
-
-          {/* Tab Contents */}
-          <div className="min-h-[600px]">
-            {socialPlatforms.map((platform) => (
-              <TabContent 
-                key={platform.id} 
-                platform={platform} 
-                isActive={activeTab === platform.id} 
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[280px]">
+              {/* Stats Card */}
+              <StatsCard />
+              
+              {/* Featured Video - Takes 2 cols, 2 rows */}
+              <FeaturedVideo video={featuredVideo} />
+              
+              {/* Twitter Feed */}
+              <BentoCard
+                title="X (Twitter)"
+                platform="twitter"
+                posts={fallbackContent.twitter}
+                size="medium"
               />
-            ))}
-          </div>
+              
+              {/* TikTok Feed */}
+              <BentoCard
+                title="TikTok"
+                platform="tiktok"
+                posts={fallbackContent.tiktok}
+                size="medium"
+              />
+              
+              {/* Instagram Feed */}
+              <BentoCard
+                title="Instagram"
+                platform="instagram"
+                posts={fallbackContent.instagram}
+                size="medium"
+              />
+              
+              {/* Facebook Feed */}
+              <BentoCard
+                title="Facebook"
+                platform="facebook"
+                posts={fallbackContent.facebook}
+                size="medium"
+              />
+              
+              {/* YouTube Videos Row */}
+              {remainingVideos.slice(0, 2).map((video) => (
+                <BentoCard
+                  key={video.id}
+                  title="YouTube"
+                  platform="youtube"
+                  posts={[video]}
+                  size="medium"
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="container py-12">
-        <div className="bg-gray-100 rounded-2xl p-8 md:p-12 text-center">
+      <section className="container pb-12">
+        <div className="bg-gray-100 dark:bg-gray-900 rounded-2xl p-8 md:p-12 text-center">
           <h2 className="text-2xl font-bold mb-4">Want to learn more?</h2>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
             Join our training programs and get hands-on experience with Kenya's budget process. 

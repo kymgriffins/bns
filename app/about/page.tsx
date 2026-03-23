@@ -118,81 +118,9 @@ export default function AboutPage() {
         </StaggerChildren>
       </BentoSection>
 
-      {/* Approach */}
-      <BentoSection id="approach" className="border-t border-border/50">
-        <ScrollReveal className="mb-8">
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
-            Our approach
-          </h2>
-          <p className="mt-2 text-muted-foreground max-w-xl">
-            How we turn budget data into civic action.
-          </p>
-        </ScrollReveal>
-        <StaggerChildren className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {approachSteps.map((step) => (
-            <StaggerItem key={step.number}>
-              <CardHover className="relative rounded-xl border border-border bg-card p-6 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-muted/50 text-sm font-semibold text-foreground/80">
-                  {step.number}
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-foreground">{step.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
-                {step.number < 4 && (
-                  <ArrowRight className="absolute -right-3 top-1/2 hidden h-5 w-5 -translate-y-1/2 text-muted-foreground lg:block" />
-                )}
-              </CardHover>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
-      </BentoSection>
+      
 
-      {/* Partner Section */}
-      <BentoSection id="partner" className="border-t border-border/50 bg-muted/20">
-        <ScrollReveal className="mb-8">
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
-            Partner with us
-          </h2>
-          <p className="mt-2 text-muted-foreground max-w-2xl">
-            We work with universities, youth networks, civil society, media, and institutions to expand budget literacy and civic action.
-          </p>
-        </ScrollReveal>
-        <StaggerChildren className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {partnerOptions.map((option) => (
-            <StaggerItem key={option.title}>
-              <CardHover className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-muted/50">
-                  <option.icon className="h-5 w-5 text-foreground/70" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">{option.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{option.description}</p>
-              </CardHover>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
-
-        <ScrollReveal className="mt-10 flex flex-wrap justify-center gap-4">
-          <Button
-            asChild
-            size="lg"
-            className="rounded-full transition-transform duration-200 active:scale-[0.98]"
-          >
-            <Link href="/take-action" className="inline-flex items-center gap-2">
-              Become a partner <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="rounded-full transition-transform duration-200 active:scale-[0.98]"
-          >
-            <Link href="/take-action" className="inline-flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              Request a training
-            </Link>
-          </Button>
-        </ScrollReveal>
-      </BentoSection>
+     
 
       {/* Contact Section */}
       <BentoSection id="contact" className="border-t border-border/50">

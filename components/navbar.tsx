@@ -362,7 +362,7 @@ export default function Navbar() {
               <Icon icon="lucide:instagram" width={18} height={18} />
             </a>
             <a
-              href="https://www.youtube.com/@BudgetNdioStory"
+              href="https://www.youtube.com/@budgetndiostory"
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -588,7 +588,7 @@ export default function Navbar() {
                         <a href="https://www.instagram.com/budgetndiostory" target="_blank" rel="noopener noreferrer" className="rounded-full p-2.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" aria-label="Instagram">
                           <Icon icon="lucide:instagram" width={20} height={20} />
                         </a>
-                        <a href="https://www.youtube.com/@BudgetNdioStory" target="_blank" rel="noopener noreferrer" className="rounded-full p-2.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" aria-label="YouTube">
+                        <a href="https://www.youtube.com/@budgetndiostory" target="_blank" rel="noopener noreferrer" className="rounded-full p-2.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" aria-label="YouTube">
                           <Icon icon="lucide:youtube" width={20} height={20} />
                         </a>
                         <a href="https://www.tiktok.com/@budget.ndio.story" target="_blank" rel="noopener noreferrer" className="rounded-full p-2.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" aria-label="TikTok">

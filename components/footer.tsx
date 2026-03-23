@@ -57,7 +57,7 @@ const socialLinks = [
   { name: "TikTok", href: "https://www.tiktok.com/@budget.ndio.story" },
   { name: "Instagram", href: "https://www.instagram.com/budgetndiostory" },
   { name: "X", href: "https://x.com/BudgetNdioStory" },
-  { name: "YouTube", href: "https://www.youtube.com/@BudgetNdioStory" },
+  { name: "YouTube", href: "https://www.youtube.com/@budgetndiostory" },
 ];
 
 function ThemeToggle() {

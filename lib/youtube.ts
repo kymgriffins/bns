@@ -62,15 +62,108 @@ function getYouTubeConfig() {
   const maxVideos = parseInt(process.env.YOUTUBE_MAX_VIDEOS || '20');
   const autoTranscript = process.env.YOUTUBE_AUTO_TRANSCRIPT === 'true';
 
-  if (!apiKey) {
-    throw new Error('YouTube API key is not configured');
-  }
-
   if (!channelId) {
     throw new Error('YouTube Channel ID is not configured');
   }
 
   return { apiKey, channelId, maxVideos, autoTranscript };
+}
+
+/**
+ * Check if YouTube API is configured
+ */
+function hasYouTubeApiKey(): boolean {
+  return !!process.env.YOUTUBE_API_KEY;
+}
+
+/**
+ * Fetch videos using YouTube RSS feed (no API key required)
+ * RSS feed URL: https://www.youtube.com/feeds/videos.xml?channel_id=UCxxxx
+ */
+async function fetchVideosViaRSS(channelId: string, maxResults: number): Promise<YouTubeVideo[]> {
+  // Try multiple RSS feed URLs (YouTube sometimes changes formats)
+  const rssUrls = [
+    `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`,
+    `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId.replace('UC', 'UC')}`,
+  ];
+  
+  let lastError: Error | null = null;
+  
+  for (const rssUrl of rssUrls) {
+    try {
+      const response = await fetch(rssUrl, {
+        headers: {
+          'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        },
+        // Add cache-busting
+        next: { revalidate: 300 }, // 5 minutes
+      });
+      
+      if (!response.ok) {
+        // Try next URL
+        continue;
+      }
+      
+      const xmlText = await response.text();
+      
+      // Check if we got valid XML (not an error page)
+      if (!xmlText.includes('<entry>')) {
+        continue;
+      }
+      
+      // Parse XML to extract video entries
+      const videoEntries = xmlText.match(/<entry>[\s\S]*?<\/entry>/g) || [];
+      
+      if (videoEntries.length === 0) {
+        continue;
+      }
+      
+      const videos: YouTubeVideo[] = videoEntries.slice(0, maxResults).map((entry: string) => {
+        const getTagContent = (tag: string): string => {
+          const match = entry.match(new RegExp(`<${tag}[^>]*>([^<]+)</${tag}>`));
+          return match ? match[1] : '';
+        };
+        
+        // Extract video ID from yt:videoId or videoId attribute
+        const videoIdMatch = entry.match(/<(?:yt:)?videoId[^>]*>([^<]+)<\/(?:yt:)?videoId>|<videoId=["']([^"']+)["']/);
+        const videoId = videoIdMatch ? (videoIdMatch[1] || videoIdMatch[2]) : '';
+        
+        const publishedMatch = entry.match(/<published>([^<]+)<\/published>/);
+        const publishedAt = publishedMatch ? publishedMatch[1] : new Date().toISOString();
+        
+        // Get thumbnail from media:thumbnail
+        const thumbnailMatch = entry.match(/url="([^"]+)"/);
+        const thumbnail = thumbnailMatch ? thumbnailMatch[1] : '';
+        
+        return {
+          id: videoId,
+          title: getTagContent('title'),
+          description: getTagContent('summary') || getTagContent('content'),
+          thumbnail: thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : ''),
+          publishedAt,
+          duration: 'PT0M0S', // RSS doesn't provide duration
+          viewCount: 0,       // RSS doesn't provide view count
+          likeCount: 0,       // RSS doesn't provide like count
+          channelId,
+          channelTitle: getTagContent('name') || getTagContent('author'),
+          tags: [],
+        };
+      });
+      
+      // If we got valid videos, return them
+      if (videos.length > 0 && videos[0].id) {
+        return videos;
+      }
+    } catch (error) {
+      lastError = error as Error;
+      console.log(`RSS attempt failed, trying next URL...`);
+    }
+  }
+  
+  // If all RSS attempts fail, throw error to trigger fallback
+  console.error('All RSS fetch attempts failed:', lastError);
+  throw lastError || new Error('Failed to fetch from all RSS sources');
 }
 
 /**
@@ -129,6 +222,12 @@ export async function fetchChannelVideos(maxResults?: number): Promise<YouTubeVi
   let resolvedChannelId = channelId;
   if (channelId.startsWith('@')) {
     resolvedChannelId = await resolveChannelId(channelId);
+  }
+
+  // Use RSS feed if no API key is available
+  if (!apiKey) {
+    console.log('No YouTube API key found, using RSS feed fallback');
+    return fetchVideosViaRSS(resolvedChannelId, limit);
   }
 
   const url = `${YOUTUBE_API_BASE}/search?part=snippet&channelId=${resolvedChannelId}&order=date&type=video&maxResults=${limit}&key=${apiKey}`;
@@ -194,10 +293,49 @@ export async function fetchChannelVideos(maxResults?: number): Promise<YouTubeVi
 }
 
 /**
+ * Fetch video info using oEmbed (no API key required)
+ */
+async function fetchVideoViaOEmbed(videoId: string): Promise<YouTubeVideo | null> {
+  try {
+    const oembedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`;
+    const response = await fetch(oembedUrl);
+    
+    if (!response.ok) {
+      return null;
+    }
+    
+    const data = await response.json();
+    
+    return {
+      id: videoId,
+      title: data.title || 'Untitled Video',
+      description: '',
+      thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+      publishedAt: new Date().toISOString(),
+      duration: 'PT0M0S',
+      viewCount: 0,
+      likeCount: 0,
+      channelId: '',
+      channelTitle: data.author_name || 'Unknown Channel',
+      tags: [],
+    };
+  } catch (error) {
+    console.error('Error fetching video via oEmbed:', error);
+    return null;
+  }
+}
+
+/**
  * Fetch a single video by ID
  */
 export async function fetchVideoById(videoId: string): Promise<YouTubeVideo | null> {
   const { apiKey } = getYouTubeConfig();
+
+  // Use oEmbed if no API key is available
+  if (!apiKey) {
+    console.log('No YouTube API key found, using oEmbed fallback');
+    return fetchVideoViaOEmbed(videoId);
+  }
 
   const url = `${YOUTUBE_API_BASE}/videos?part=contentDetails,statistics,snippet&id=${videoId}&key=${apiKey}`;
 
@@ -455,6 +593,7 @@ export async function fetchLessonsFromDB(limit = 20): Promise<Lesson[]> {
         publishedAt: row.video_published_at,
         duration: row.video_duration,
         viewCount: row.video_view_count,
+        likeCount: row.video_like_count || 0,
         channelId: row.video_channel_id,
         channelTitle: row.video_channel_title,
         tags: row.video_tags,

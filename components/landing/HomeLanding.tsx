@@ -27,7 +27,7 @@ import { FeaturedYouTubeVideo } from '@/components/youtube/YouTubeVideoCard';
 import { useYouTubeVideos } from '@/hooks/useYouTube';
 
 const podcastUrl =
-  process.env.NEXT_PUBLIC_YOUTUBE_PODCAST_URL || 'https://www.youtube.com/@BudgetNdioStory';
+  process.env.NEXT_PUBLIC_YOUTUBE_PODCAST_URL || 'https://www.youtube.com/@budgetndiostory';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 

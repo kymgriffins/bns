@@ -32,7 +32,7 @@ const legalLinks = [
 
 const socialLinks = [
   { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61586898487932", icon: Facebook },
-  { name: "YouTube", href: "https://www.youtube.com/@BudgetNdioStory", icon: Youtube },
+  { name: "YouTube", href: "https://www.youtube.com/@budgetndiostory", icon: Youtube },
   { name: "Instagram", href: "https://www.instagram.com/budgetndiostory", icon: Instagram },
   { name: "X", href: "https://x.com/BudgetNdioStory", icon: XLogo },
 ];
