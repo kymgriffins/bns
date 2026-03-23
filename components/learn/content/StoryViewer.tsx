@@ -60,26 +60,21 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
     enter: (direction: number) => ({
       x: direction > 0 ? '100%' : '-100%',
       opacity: 0,
-      scale: 0.9,
     }),
     center: {
       x: 0,
       opacity: 1,
-      scale: 1,
       transition: {
         x: { type: "spring", stiffness: 300, damping: 30 },
         opacity: { duration: 0.2 },
-        scale: { duration: 0.3 }
       }
     },
     exit: (direction: number) => ({
       x: direction < 0 ? '100%' : '-100%',
       opacity: 0,
-      scale: 0.9,
       transition: {
         x: { type: "spring", stiffness: 300, damping: 30 },
         opacity: { duration: 0.2 },
-        scale: { duration: 0.3 }
       }
     }),
   };
@@ -96,28 +91,28 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
             y: [0, -30, 0],
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full blur-[120px]"
-          style={{ backgroundColor: currentSlide.orb1 || '#F5C842' }}
+          className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full blur-[160px]"
+          style={{ backgroundColor: currentSlide.orb1 || '#BB0631' }}
         />
         <motion.div 
           animate={{
             scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2],
+            opacity: [0.1, 0.2, 0.1],
             x: [0, -40, 0],
             y: [0, 60, 0],
           }}
           transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[100px]"
-          style={{ backgroundColor: currentSlide.orb2 || '#38B2AC' }}
+          className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[140px]"
+          style={{ backgroundColor: currentSlide.orb2 || '#006400' }}
         />
       </div>
 
-      <div className="relative h-full w-full md:max-w-[450px] md:aspect-[9/16] md:max-h-[85vh] bg-[#0D0D14] md:rounded-[32px] md:shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col border border-white/5">
+      <div className="relative h-full w-full md:max-w-[420px] md:aspect-[9/19] md:max-h-[90vh] bg-kenya-black md:rounded-none md:shadow-[0_60px_120px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col border border-white/10">
         
         {/* Progress Bars */}
-        <div className="absolute top-4 left-4 right-4 z-50 flex gap-1.5 px-1">
+        <div className="absolute top-6 left-6 right-6 z-50 flex gap-2">
           {slides.map((_, idx) => (
-            <div key={idx} className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden">
+            <div key={idx} className="h-1 flex-1 bg-white/5 rounded-none overflow-hidden">
               <motion.div 
                 initial={false}
                 animate={{ 
@@ -125,8 +120,8 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
                 }}
                 transition={{ duration: idx === currentSlideIdx ? 5 : 0.3, ease: "linear" }}
                 className={cn(
-                  "h-full rounded-full transition-colors",
-                  idx <= currentSlideIdx ? "bg-white" : "bg-transparent"
+                  "h-full rounded-none transition-colors",
+                  idx <= currentSlideIdx ? "bg-kenya-red" : "bg-transparent"
                 )}
               />
             </div>
@@ -196,19 +191,19 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
       </div>
 
       {/* Desktop Controls */}
-      <div className="hidden md:flex absolute inset-y-0 left-0 right-0 items-center justify-between px-12 pointer-events-none">
+      <div className="hidden md:flex absolute inset-y-0 left-0 right-0 items-center justify-between px-24 pointer-events-none">
         <button 
           onClick={handlePrev}
           disabled={currentSlideIdx === 0}
-          className="p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-all pointer-events-auto disabled:opacity-0"
+          className="p-6 rounded-none bg-white/[0.02] border border-white/10 text-white/20 hover:text-white hover:bg-white/5 transition-all pointer-events-auto disabled:opacity-0"
         >
-          <ChevronLeft className="h-8 w-8" />
+          <ChevronLeft className="h-10 w-10" />
         </button>
         <button 
           onClick={handleNext}
-          className="p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-all pointer-events-auto"
+          className="p-6 rounded-none bg-white/[0.02] border border-white/10 text-white/20 hover:text-white hover:bg-white/5 transition-all pointer-events-auto"
         >
-          <ChevronRight className="h-8 w-8" />
+          <ChevronRight className="h-10 w-10" />
         </button>
       </div>
     </div>

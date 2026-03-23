@@ -45,13 +45,13 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
     switch (content.type) {
       case 'title':
         return (
-          <h4 className="text-xl font-serif font-normal text-white mt-8 mb-4 border-l-2 border-[#F5C842] pl-4 italic">
+          <h4 className="text-xl font-bold text-white mt-12 mb-6 border-l-4 border-kenya-red pl-6 tracking-tight">
             {content.content}
           </h4>
         );
       case 'text':
         return (
-          <p className="text-base text-[#F0EDE6]/70 leading-relaxed font-sans mb-6">
+          <p className="text-lg text-[#F0EDE6]/50 leading-relaxed font-medium mb-8">
             {content.content}
           </p>
         );
@@ -64,12 +64,12 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.05 }}
-                className="flex items-start gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/5 shadow-inner"
+                className="flex items-start gap-4 p-6 rounded-none bg-white/[0.02] border border-white/10"
               >
-                <div className="mt-1 h-5 w-5 shrink-0 rounded-full bg-[#38B2AC]/10 flex items-center justify-center text-[#38B2AC]">
+                <div className="mt-1 h-5 w-5 shrink-0 rounded-none bg-kenya-green/20 flex items-center justify-center text-kenya-green">
                    <List className="h-3 w-3" />
                 </div>
-                <span className="text-sm text-[#F0EDE6]/80 leading-relaxed">
+                <span className="text-sm font-medium text-[#F0EDE6]/60 leading-relaxed">
                   {bullet.replace(/^[•*-]\s*/, '')}
                 </span>
               </motion.li>
@@ -78,9 +78,9 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
         );
       case 'quote':
         return (
-          <div className="relative my-10 p-8 rounded-[32px] bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 overflow-hidden group">
-            <Quote className="absolute top-4 left-4 h-12 w-12 text-[#F5C842]/10 group-hover:text-[#F5C842]/20 transition-colors" />
-            <blockquote className="relative z-10 text-lg md:text-xl font-serif italic text-white/90 leading-tight">
+          <div className="relative my-16 p-10 rounded-none bg-white/[0.02] border-l-4 border-kenya-gold overflow-hidden group">
+            <Quote className="absolute top-4 left-4 h-16 w-16 text-kenya-gold/5 group-hover:text-kenya-gold/10 transition-colors" />
+            <blockquote className="relative z-10 text-2xl md:text-3xl font-bold italic text-white/80 leading-tight tracking-tight">
               &ldquo;{content.content}&rdquo;
             </blockquote>
           </div>
@@ -119,8 +119,8 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
   };
 
   return (
-    <div className="h-full w-full bg-[#0D0D14] p-6 lg:p-12 overflow-y-auto no-scrollbar max-w-4xl mx-auto">
-      <div className="flex items-center gap-3 mb-12 text-[10px] font-bold uppercase tracking-[0.4em] text-[#F5C842]">
+    <div className="h-full w-full bg-kenya-black p-6 lg:p-16 overflow-y-auto no-scrollbar max-w-4xl mx-auto font-sans">
+      <div className="flex items-center gap-3 mb-16 text-[10px] font-bold uppercase tracking-[0.4em] text-kenya-gold">
         <BookOpen className="h-4 w-4" />
         Lesson Document
       </div>
@@ -133,10 +133,10 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
             <div
               key={section.id}
               className={cn(
-                "rounded-[32px] border transition-all duration-300 overflow-hidden",
+                "rounded-none border transition-all duration-350 overflow-hidden",
                 isExpanded 
-                  ? "bg-[#13131F] border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)]" 
-                  : "bg-white/[0.02] border-white/5 hover:border-white/10"
+                  ? "bg-white/[0.03] border-white/15" 
+                  : "bg-white/[0.01] border-white/5 hover:border-white/10"
               )}
             >
               <button
@@ -145,19 +145,19 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
               >
                 <div className="flex items-center gap-6">
                   <div className={cn(
-                    "h-12 w-12 rounded-full border flex items-center justify-center text-xs font-mono font-bold transition-colors",
+                    "h-12 w-12 rounded-none border-t-2 border-r-2 flex items-center justify-center text-xs font-bold transition-colors",
                     isExpanded 
-                      ? "bg-[#F5C842] text-[#1A1200] border-[#F5C842]" 
-                      : "bg-white/5 text-[#F0EDE6]/30 border-white/10"
+                      ? "bg-kenya-red text-white border-kenya-red" 
+                      : "bg-white/5 text-[#F0EDE6]/20 border-white/10"
                   )}>
                     {sIdx + 1 < 10 ? `0${sIdx + 1}` : sIdx + 1}
                   </div>
                   <div className="text-left">
-                    <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#F0EDE6]/30 mb-1">{section.label}</p>
-                    <h3 className="text-xl md:text-2xl font-serif font-normal text-white">{section.title}</h3>
+                    <p className="text-[9px] uppercase font-bold tracking-[0.3em] text-[#F0EDE6]/20 mb-1">{section.label}</p>
+                    <h3 className="text-xl md:text-3xl font-bold text-white tracking-tight">{section.title}</h3>
                   </div>
                 </div>
-                {isExpanded ? <ChevronUp className="h-5 w-5 text-[#F5C842]" /> : <ChevronDown className="h-5 w-5 text-white/20" />}
+                {isExpanded ? <ChevronUp className="h-5 w-5 text-kenya-red" /> : <ChevronDown className="h-5 w-5 text-white/10" />}
               </button>
 
               <AnimatePresence>
@@ -168,7 +168,7 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                   >
-                    <div className="px-6 md:px-24 pb-12 border-t border-white/5 pt-10">
+                    <div className="px-6 md:px-24 pb-16 border-t border-white/10 pt-12">
                       {section.content.map((block, bIdx) => (
                         <div
                           key={bIdx}

@@ -25,7 +25,7 @@ const StoryRisks: React.FC<StoryRisksProps> = ({ slide }) => {
       <motion.h2
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="text-2xl font-serif font-light leading-snug text-white mb-10"
+        className="text-3xl md:text-4xl font-black leading-tight text-white mb-12 tracking-tighter uppercase"
       >
         {slide.title}
       </motion.h2>
@@ -37,12 +37,12 @@ const StoryRisks: React.FC<StoryRisksProps> = ({ slide }) => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 + idx * 0.1 }}
-            className="flex items-center gap-4 p-5 rounded-[24px] bg-[#E53E3E]/5 border border-[#E53E3E]/10"
+            className="flex items-center gap-6 p-6 rounded-none bg-kenya-red/5 border-l-4 border-kenya-red"
           >
-            <div className="h-8 w-8 shrink-0 rounded-full bg-[#E53E3E]/10 flex items-center justify-center font-mono text-[10px] font-bold text-[#E53E3E]">
+            <div className="h-10 w-10 shrink-0 border border-kenya-red/20 flex items-center justify-center text-[10px] font-black text-kenya-red uppercase">
               {risk.num}
             </div>
-            <p className="text-sm font-sans text-white/70 leading-relaxed">
+            <p className="text-lg font-bold text-white/70 leading-tight tracking-tight uppercase">
               {risk.text}
             </p>
           </motion.div>

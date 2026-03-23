@@ -36,6 +36,14 @@ export default {
           950: '#0a0a0a',
         },
         
+        /* Kenyan Brand Colors */
+        kenya: {
+          red: "#BB0631",
+          green: "#006400",
+          black: "#060606",
+          gold: "#F5C842", // existing gold used as accent
+        },
+
         /* Semantic tokens using CSS variables */
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -86,10 +94,10 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       
-      /* Typography - Founders Grotesk + Neue Montreal */
+      /* Typography - System Fonts */
       fontFamily: {
-        "neue-montreal": ["NeueMontreal", "sans-serif"],
-        sans: ["var(--font-neue-montreal)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
       },
       
       /* Spacing for white space - Apple HIG */

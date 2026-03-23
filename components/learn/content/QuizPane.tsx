@@ -63,29 +63,32 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
     const percent = Math.round((score / questions.length) * 100);
     
     return (
-      <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-[#0D0D14] text-center max-w-2xl mx-auto overflow-y-auto no-scrollbar">
+      <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-kenya-black text-center max-w-2xl mx-auto overflow-y-auto no-scrollbar font-sans">
         <motion.div
-           initial={{ scale: 0.8, opacity: 0 }}
-           animate={{ scale: 1, opacity: 1 }}
-           className="mb-8 p-10 rounded-[48px] bg-gradient-to-br from-[#F5C842]/20 to-[#F5C842]/5 border border-[#F5C842]/20 shadow-[0_30px_60px_rgba(0,0,0,0.4)]"
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="mb-12 p-12 rounded-none bg-white/[0.02] border border-white/10"
         >
-          <Trophy className="h-20 w-20 text-[#F5C842] mx-auto mb-6" />
-          <h2 className="text-4xl font-serif text-white mb-2">Quiz Complete!</h2>
-          <p className="text-sm text-white/50 uppercase tracking-[0.3em] font-mono">You scored {percent}%</p>
+          <div className="h-24 w-24 mx-auto mb-8 bg-kenya-gold/10 border border-kenya-gold/20 flex items-center justify-center">
+            <Trophy className="h-12 w-12 text-kenya-gold" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight uppercase">Quiz Complete!</h2>
+          <div className="text-6xl font-black text-kenya-red mb-2 tracking-tighter">{percent}%</div>
+          <p className="text-[10px] text-white/30 uppercase tracking-[0.4em] font-bold">Performance Merit</p>
         </motion.div>
 
-        <div className="w-full space-y-3">
+        <div className="w-full grid grid-cols-2 gap-4">
           <Button 
             onClick={restart}
             variant="outline"
-            className="w-full py-6 rounded-[24px] border-white/10 bg-white/5 text-white hover:bg-white/10 flex items-center justify-center gap-3"
+            className="py-8 rounded-none border-white/10 bg-white/5 text-white hover:bg-white/10 text-[11px] font-bold uppercase tracking-widest flex items-center justify-center gap-3"
           >
             <RotateCcw className="h-4 w-4" /> Try Again
           </Button>
           <Button 
-            className="w-full py-6 rounded-[24px] bg-[#F5C842] text-[#1A1200] font-bold hover:scale-[1.02] transition-transform"
+            className="py-8 rounded-none bg-kenya-green text-white font-bold hover:bg-kenya-green/90 text-[11px] uppercase tracking-widest transition-all"
           >
-            Continue Learning <ArrowRight className="h-4 w-4 ml-2" />
+            Module Done <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </div>
       </div>
@@ -95,23 +98,23 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
   const isCorrect = selectedAnswer === question.correct;
 
   return (
-    <div className="h-full w-full bg-[#0D0D14] flex flex-col p-6 lg:p-12 max-w-4xl mx-auto overflow-y-auto no-scrollbar">
-      <div className="flex items-center justify-between mb-12">
-        <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-[#9F7AEA]">
+    <div className="h-full w-full bg-kenya-black flex flex-col p-6 lg:p-16 max-w-4xl mx-auto overflow-y-auto no-scrollbar font-sans">
+      <div className="flex items-center justify-between mb-16">
+        <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-kenya-gold">
           <HelpCircle className="h-4 w-4" />
           Knowledge Check
         </div>
         <div className="text-[10px] font-bold uppercase tracking-widest text-white/20">
-          Question {currentIdx + 1} of {questions.length}
+          Question {currentIdx + 1} / {questions.length}
         </div>
       </div>
 
       <div className="flex-1">
         <motion.h2
           key={currentIdx}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="text-2xl md:text-3xl font-serif font-light leading-snug text-white mb-12"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-2xl md:text-5xl font-bold leading-tight text-white mb-16 tracking-tight"
         >
           {question.q}
         </motion.h2>
@@ -121,11 +124,11 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
             const isSelected = selectedAnswer === idx;
             const isActuallyCorrect = idx === question.correct;
             
-            let btnBg = "bg-white/5 border-white/5 text-[#F0EDE6]/80 hover:bg-white/[0.08] hover:border-white/10";
+            let btnBg = "bg-white/[0.02] border-white/10 text-white/50 hover:bg-white/[0.04] hover:border-white/20";
             if (showFeedback) {
-              if (isActuallyCorrect) btnBg = "bg-[#48BB78]/20 border-[#48BB78]/30 text-[#48BB78]";
-              else if (isSelected) btnBg = "bg-[#E53E3E]/20 border-[#E53E3E]/30 text-[#E53E3E]";
-              else btnBg = "bg-white/[0.02] border-white/5 text-white/30 opacity-60";
+              if (isActuallyCorrect) btnBg = "bg-kenya-green/10 border-kenya-green text-kenya-green";
+              else if (isSelected) btnBg = "bg-kenya-red/10 border-kenya-red text-kenya-red";
+              else btnBg = "bg-white/[0.01] border-white/5 text-white/10 opacity-40";
             }
 
             return (
@@ -137,18 +140,18 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
                 onClick={() => handleAnswer(idx)}
                 disabled={showFeedback}
                 className={cn(
-                  "relative w-full p-6 p-8 rounded-[32px] border text-left text-base transition-all flex items-center justify-between group",
+                  "relative w-full p-8 rounded-none border-2 text-left text-base transition-all duration-350 flex items-center justify-between group",
                   btnBg
                 )}
               >
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-8">
                    <div className={cn(
-                     "h-10 w-10 rounded-full border flex items-center justify-center text-xs font-mono font-bold transition-colors shadow-inner",
-                     isSelected ? "bg-currentColor" : "bg-white/5 border-white/10"
+                     "h-10 w-10 rounded-none border-t-2 border-r-2 flex items-center justify-center text-[10px] font-bold transition-colors shadow-inner",
+                     isSelected ? "bg-currentColor" : "bg-white/5 border-white/10 text-white/20"
                    )}>
                       {String.fromCharCode(65 + idx)}
                    </div>
-                   <span className="font-sans">{opt}</span>
+                   <span className="font-bold text-lg tracking-tight">{opt}</span>
                 </div>
                 {showFeedback && isActuallyCorrect && <CheckCircle2 className="h-6 w-6" />}
                 {showFeedback && isSelected && !isActuallyCorrect && <XCircle className="h-6 w-6" />}
@@ -163,33 +166,33 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-12 p-8 rounded-[40px] bg-white/[0.04] border border-white/10 flex flex-col md:flex-row items-center gap-6"
+            className="mt-16 p-10 rounded-none bg-white/[0.03] border-l-4 border-l-white/20 flex flex-col md:flex-row items-center gap-10"
           >
             <div className={cn(
-              "p-4 rounded-full flex items-center justify-center",
-              isCorrect ? "bg-[#48BB78]/20 text-[#48BB78]" : "bg-[#E53E3E]/20 text-[#E53E3E]"
+              "h-16 w-16 rounded-none flex items-center justify-center border",
+              isCorrect ? "bg-kenya-green/10 text-kenya-green border-kenya-green/20" : "bg-kenya-red/10 text-kenya-red border-kenya-red/20"
             )}>
                <Lightbulb className="h-8 w-8" />
             </div>
             
             <div className="flex-1 text-center md:text-left">
               <p className={cn(
-                "text-[10px] font-bold uppercase tracking-[0.2em] mb-1",
-                isCorrect ? "text-[#48BB78]" : "text-[#E53E3E]"
+                "text-[10px] font-bold uppercase tracking-[0.4em] mb-2",
+                isCorrect ? "text-kenya-green" : "text-kenya-red"
               )}>
-                {isCorrect ? 'Correct Answer!' : 'Needs Review'}
+                {isCorrect ? 'Correct Analysis' : 'Correction Required'}
               </p>
-              <p className="text-base text-white/70 leading-relaxed italic">
+              <p className="text-xl text-white/80 leading-tight font-bold tracking-tight italic">
                 {isCorrect ? question.fb?.c : question.fb?.w}
               </p>
             </div>
 
             <Button 
                onClick={nextQuestion}
-               className="bg-white text-black hover:bg-white/90 rounded-full px-8 py-6 uppercase font-bold text-xs tracking-widest whitespace-nowrap"
+               className="bg-white text-black hover:bg-white/90 rounded-none px-12 py-8 uppercase font-bold text-[11px] tracking-[0.2em] whitespace-nowrap transition-all active:scale-95"
             >
-               {currentIdx < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
-               <ArrowRight className="h-4 w-4 ml-2" />
+               {currentIdx < questions.length - 1 ? 'Next' : 'Finish'}
+               <ArrowRight className="h-4 w-4 ml-3" />
             </Button>
           </motion.div>
         )}

@@ -19,24 +19,22 @@ const StoryBullets: React.FC<StoryBulletsProps> = ({ slide }) => {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2 }}
-        className="text-2xl font-serif font-light leading-snug text-white mb-10"
+        className="text-3xl md:text-4xl font-black leading-tight text-white mb-12 tracking-tighter uppercase"
       >
         {slide.title}
       </motion.h2>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         {slide.bullets.map((bullet, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 + idx * 0.1 }}
-            className="flex items-start gap-4 p-4 rounded-[20px] bg-white/5 border border-white/5 shadow-inner"
+            className="flex items-start gap-5 p-6 rounded-none bg-white/[0.03] border-l-4 border-kenya-red"
           >
-            <div className="mt-1 h-5 w-5 shrink-0 rounded-full bg-[#F5C842]/20 flex items-center justify-center">
-              <CheckCircle2 className="h-3.5 w-3.5 text-[#F5C842]" />
-            </div>
-            <p className="text-sm font-sans text-white/80 leading-relaxed font-normal">
+            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-kenya-gold" />
+            <p className="text-lg font-bold text-white/70 leading-tight tracking-tight uppercase">
               {bullet}
             </p>
           </motion.div>

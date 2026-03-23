@@ -52,15 +52,15 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
   }, [module.id]);
 
   const tabs: { id: ContentType; label: string; icon: any; color: string }[] = [
-    { id: 'stories', label: 'Stories', icon: Play, color: '#FC4444' },
+    { id: 'stories', label: 'Stories', icon: Play, color: '#BB0631' },
     { id: 'learn', label: 'Lesson', icon: BookOpen, color: '#F5C842' },
-    { id: 'videos', label: 'Videos', icon: Video, color: '#38B2AC' },
-    { id: 'quiz', label: 'Quiz', icon: Lightbulb, color: '#9F7AEA' },
+    { id: 'videos', label: 'Videos', icon: Video, color: '#006400' },
+    { id: 'quiz', label: 'Quiz', icon: Lightbulb, color: '#A0AEC0' },
   ];
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#0D0D14] text-[#F0EDE6]">
+      <div className="flex h-screen items-center justify-center bg-kenya-black text-[#F0EDE6]">
         <div className="flex flex-col items-center gap-4">
           <div className="h-12 w-12 border-4 border-[#F5C842] border-t-transparent rounded-full animate-spin" />
           <p className="text-sm font-mono uppercase tracking-widest opacity-50">Loading Module...</p>
@@ -70,9 +70,9 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
   }
 
   return (
-    <div className="flex h-screen flex-col bg-[#0D0D14] text-[#F0EDE6] overflow-hidden">
+    <div className="flex h-screen flex-col bg-kenya-black text-[#F0EDE6] overflow-hidden font-sans">
       {/* Top Navigation */}
-      <nav className="h-14 flex-shrink-0 flex items-center justify-between px-4 border-b border-white/5 bg-[#13131F]/80 backdrop-blur-md z-50">
+      <nav className="h-16 flex-shrink-0 flex items-center justify-between px-6 border-b border-white/5 bg-white/[0.02] backdrop-blur-md z-50">
         <div className="flex items-center gap-4">
           <button 
             onClick={onBack}
@@ -90,19 +90,30 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
         </div>
 
         <div className="flex items-center gap-4">
-           {/* Simple overall progress */}
-           <div className="hidden md:flex items-center gap-3 bg-white/5 rounded-full px-3 py-1 border border-white/5">
-              <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden">
+           {/* Mobile progress - compact */}
+           <div className="md:hidden flex items-center gap-2 bg-white/5 rounded-full px-2 py-1 border border-white/5">
+              <div className="w-16 h-1 bg-white/10 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-to-r from-[#F5C842] to-[#38B2AC] transition-all duration-1000" 
                   style={{ width: `${progress?.progressPercent || 0}%` }}
                 />
               </div>
-              <span className="text-[10px] font-bold font-mono">{progress?.progressPercent || 0}%</span>
+              <span className="text-[9px] font-bold font-mono">{progress?.progressPercent || 0}%</span>
+           </div>
+           {/* Desktop progress */}
+           <div className="hidden md:flex items-center gap-3 bg-white/5 rounded-none px-3 py-1 border border-white/5">
+              <div className="w-24 h-1 bg-white/10 rounded-none overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-kenya-red via-kenya-gold to-kenya-green transition-all duration-1000" 
+                  style={{ width: `${progress?.progressPercent || 0}%` }}
+                />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider">{progress?.progressPercent || 0}%</span>
            </div>
            <button 
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-2 hover:bg-white/5 rounded-full transition-colors text-[#F0EDE6]/60"
+            aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
            >
              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
            </button>
@@ -110,22 +121,23 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
       </nav>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
+        {/* Sidebar - show on all screens with toggle */}
         <AnimatePresence>
           {sidebarOpen && (
             <motion.aside
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 280, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
-              className="hidden lg:flex flex-col flex-shrink-0 border-r border-white/5 bg-[#13131F] overflow-hidden"
+              className="flex flex-col flex-shrink-0 border-r border-white/5 bg-white/[0.01] overflow-hidden absolute lg:relative z-40 h-full"
+              style={{ width: '280px' }}
             >
-              <div className="p-6 border-b border-white/5">
-                <Badge className="mb-3 bg-white/5 text-[#F0EDE6]/50 border-none rounded-full px-2 py-0.5 text-[10px] uppercase font-mono">
+              <div className="p-6 border-b border-white/10">
+                <Badge className="mb-3 bg-white/5 text-[#F0EDE6]/40 border-none rounded-none px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest">
                   {module.level} · {module.category}
                 </Badge>
-                <h3 className="font-serif text-lg leading-tight mb-2">{module.title}</h3>
-                <p className="text-[11px] text-[#F0EDE6]/40 mb-4 line-clamp-2">{module.desc}</p>
-                <div className="flex items-center gap-2 text-[10px] text-[#F0EDE6]/50">
+                <h3 className="font-bold text-lg leading-tight mb-2 tracking-tight">{module.title}</h3>
+                <p className="text-[11px] text-[#F0EDE6]/40 mb-4 line-clamp-2 leading-relaxed">{module.desc}</p>
+                <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-[#F0EDE6]/30">
                   <Clock className="h-3 w-3" />
                   {module.duration} total
                 </div>
@@ -144,14 +156,14 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={cn(
-                          "w-full flex items-center gap-3 px-6 py-3 transition-all border-l-2",
+                          "w-full flex items-center gap-4 px-6 py-4 transition-all border-l-4",
                           isActive 
-                            ? "bg-white/5 text-[#F5C842] border-[#F5C842]" 
-                            : "text-[#F0EDE6]/60 border-transparent hover:bg-white/[0.02] hover:text-[#F0EDE6]"
+                            ? "bg-white/5 text-kenya-red border-kenya-red" 
+                            : "text-[#F0EDE6]/40 border-transparent hover:bg-white/[0.02] hover:text-[#F0EDE6]"
                         )}
                       >
-                        <tab.icon className={cn("h-4 w-4", isActive && "text-[#F5C842]")} />
-                        <span className="text-sm font-medium">{tab.label}</span>
+                        <tab.icon className={cn("h-4 w-4", isActive && "text-kenya-red")} />
+                        <span className="text-[11px] font-bold uppercase tracking-wider">{tab.label}</span>
                         {isActive && <ChevronRight className="ml-auto h-3 w-3" />}
                       </button>
                     );
@@ -198,7 +210,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
             })}
           </div>
 
-          <div className="flex-1 overflow-y-auto scroll-smooth no-scrollbar">
+          <div className="flex-1 scroll-smooth no-scrollbar">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
