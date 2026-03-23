@@ -37,9 +37,10 @@ export default function NewModulePage() {
     quiz: [],
   };
 
-  const handleSave = (newData: any) => {
+  const handleSave = async (newData: any) => {
     console.log("Creating new module:", newData);
-    alert(`Success! New module "${newData.module.title}" has been created. \n\nIn a production environment, this would be saved to the database.`);
+    // Simulate persistence latency for realistic UI states
+    await new Promise((resolve) => setTimeout(resolve, 850));
     router.push("/learn/admin");
   };
 

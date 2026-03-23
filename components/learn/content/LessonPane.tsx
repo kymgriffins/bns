@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { LessonSection, LessonContent } from '@/types/learn';
 import { cn } from '@/lib/utils';
+import { useHigReducedMotion, useMotionTier } from '@/components/animations/hig-motion';
 
 interface LessonPaneProps {
   sections: LessonSection[];
@@ -29,6 +30,9 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(sections.length > 0 ? [sections[0].id] : [])
   );
+  const motionTier = useMotionTier();
+  const reducedMotion = useHigReducedMotion();
+  const useMobileMotion = motionTier === "mobile" || reducedMotion;
 
   const toggleSection = (sectionId: string) => {
     const newExpanded = new Set(expandedSections);
@@ -51,7 +55,7 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
         );
       case 'text':
         return (
-          <p className="text-lg text-[#F0EDE6]/50 leading-relaxed font-medium mb-8">
+          <p className="text-base md:text-lg text-[#F0EDE6]/50 leading-relaxed font-medium mb-8">
             {content.content}
           </p>
         );
@@ -61,9 +65,10 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
             {content.content.split('\n').filter(Boolean).map((bullet, idx) => (
               <motion.li 
                 key={idx}
-                initial={{ opacity: 0, x: -10 }}
+                initial={{ opacity: 0, x: useMobileMotion ? 0 : -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.05 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ delay: useMobileMotion ? idx * 0.02 : idx * 0.05, duration: useMobileMotion ? 0.18 : 0.28 }}
                 className="flex items-start gap-4 p-6 rounded-none bg-white/[0.02] border border-white/10"
               >
                 <div className="mt-1 h-5 w-5 shrink-0 rounded-none bg-kenya-green/20 flex items-center justify-center text-kenya-green">
@@ -78,9 +83,9 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
         );
       case 'quote':
         return (
-          <div className="relative my-16 p-10 rounded-none bg-white/[0.02] border-l-4 border-kenya-gold overflow-hidden group">
+          <div className="relative my-12 md:my-16 p-6 md:p-10 rounded-none bg-white/[0.02] border-l-4 border-kenya-gold overflow-hidden group">
             <Quote className="absolute top-4 left-4 h-16 w-16 text-kenya-gold/5 group-hover:text-kenya-gold/10 transition-colors" />
-            <blockquote className="relative z-10 text-2xl md:text-3xl font-bold italic text-white/80 leading-tight tracking-tight">
+            <blockquote className="relative z-10 text-xl md:text-3xl font-bold italic text-white/80 leading-tight tracking-tight">
               &ldquo;{content.content}&rdquo;
             </blockquote>
           </div>
@@ -119,7 +124,7 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
   };
 
   return (
-    <div className="h-full w-full bg-kenya-black p-6 lg:p-16 overflow-y-auto no-scrollbar max-w-4xl mx-auto font-sans">
+    <div className="h-full w-full bg-kenya-black p-4 sm:p-6 lg:p-16 overflow-y-auto no-scrollbar max-w-4xl mx-auto font-sans pb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <div className="flex items-center gap-3 mb-16 text-[10px] font-bold uppercase tracking-[0.4em] text-kenya-gold">
         <BookOpen className="h-4 w-4" />
         Lesson Document
@@ -141,7 +146,7 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
             >
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-center justify-between p-6 md:p-8"
+                className="w-full min-h-14 flex items-center justify-between p-5 md:p-8"
               >
                 <div className="flex items-center gap-6">
                   <div className={cn(
@@ -166,7 +171,7 @@ export const LessonPane: React.FC<LessonPaneProps> = ({
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                    transition={{ duration: useMobileMotion ? 0.24 : 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                   >
                     <div className="px-6 md:px-24 pb-16 border-t border-white/10 pt-12">
                       {section.content.map((block, bIdx) => (

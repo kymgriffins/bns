@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { MODULES } from "@/lib/learn-data/modules";
 import { LearningModule, UserProgress } from "@/types/learn";
 import ModuleScreen from "./ModuleScreen";
+import { useHigReducedMotion, useMotionTier } from "@/components/animations/hig-motion";
 
 // Storage key for progress persistence
 const PROGRESS_STORAGE_KEY = 'bns_learn_progress';
@@ -38,6 +39,9 @@ export function LearnHub() {
   const [moduleProgress, setModuleProgress] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const motionTier = useMotionTier();
+  const reducedMotion = useHigReducedMotion();
+  const useMobileMotion = motionTier === "mobile" || reducedMotion;
 
   // Load progress from localStorage on mount
   useEffect(() => {
@@ -149,21 +153,25 @@ export function LearnHub() {
   return (
     <div className="min-h-screen bg-kenya-black text-[#F0EDE6] selection:bg-kenya-gold selection:text-black font-sans">
       {/* Hero Section */}
-      <section className="pt-16 pb-16 px-6 border-b border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent backdrop-blur-xl relative overflow-hidden">
+      <section className="pt-14 md:pt-16 pb-14 md:pb-16 px-4 sm:px-6 border-b border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent backdrop-blur-xl relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: useMobileMotion ? 0.35 : 0.55,
+              ease: useMobileMotion ? "easeOut" : [0.16, 1, 0.3, 1],
+            }}
             className="text-center max-w-4xl mx-auto"
           >
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.4em] text-kenya-red">
               Civic Hub · Premium Learning
             </p>
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight tracking-tight mb-8">
               Follow the Budget.<br />
               <span className="text-kenya-red">Find the Story.</span>
             </h1>
-            <p className="text-[#F0EDE6]/50 text-xl max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
+            <p className="text-[#F0EDE6]/50 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
               Premium civic education — structured as lessons, stories, and videos. Learn at your pace, on any device.
             </p>
 
@@ -193,14 +201,14 @@ export function LearnHub() {
         <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-kenya-green/5 blur-[160px] rounded-full pointer-events-none" />
       </section>
 
-      {/* sticky Navigation & Search Bar */}
-      <div className="sticky top-0 z-30 bg-kenya-black/70 backdrop-blur-md border-b border-white/5">
+      {/* Sticky Navigation & Search Bar */}
+      <div className="sticky top-0 z-30 bg-kenya-black/80 backdrop-blur-md border-b border-white/5">
         {/* Featured / Navigation */}
-        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 md:py-8 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
           {/* Mobile menu button */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-full bg-white/5 border border-white/10 text-[#F0EDE6]/60"
+            className="md:hidden min-h-11 min-w-11 p-2 rounded-full bg-white/5 border border-white/10 text-[#F0EDE6]/60"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -235,62 +243,72 @@ export function LearnHub() {
               placeholder="Search modules..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-sm py-2.5 pl-10 pr-4 text-[11px] font-bold uppercase tracking-wider text-[#F0EDE6] focus:outline-none focus:border-kenya-gold/30 transition-all placeholder:text-white/10"
+              className="w-full min-h-11 bg-white/5 border border-white/10 rounded-sm py-2.5 pl-10 pr-4 text-[11px] font-bold uppercase tracking-wider text-[#F0EDE6] focus:outline-none focus:border-kenya-gold/30 transition-all placeholder:text-white/10"
             />
           </div>
         </div>
 
-        {/* Module Grid or Empty State */}
-        {filteredModules.length === 0 ? (
-          <div className="container mx-auto px-4 py-16">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center justify-center text-center py-16"
-            >
-              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
-                <Search className="h-10 w-10 text-[#F0EDE6]/20" />
-              </div>
-              <h3 className="text-2xl font-serif text-[#F0EDE6] mb-3">No modules found</h3>
-              <p className="text-[#F0EDE6]/50 max-w-md mb-8">
-                We couldn't find any modules matching "<span className="text-[#F5C842]">{searchQuery}</span>". 
-                Try adjusting your search or browse all categories.
-              </p>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="px-6 py-2 rounded-full text-xs font-semibold bg-[#F5C842] text-[#1A1200] hover:bg-[#F5C842]/90 transition-colors"
+      </div>
+
+      {/* Module Grid or Empty State */}
+      {filteredModules.length === 0 ? (
+        <div className="container mx-auto px-4 py-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: useMobileMotion ? 0.25 : 0.45,
+              ease: "easeOut",
+            }}
+            className="flex flex-col items-center justify-center text-center py-16"
+          >
+            <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
+              <Search className="h-10 w-10 text-[#F0EDE6]/20" />
+            </div>
+            <h3 className="text-2xl font-serif text-[#F0EDE6] mb-3">No modules found</h3>
+            <p className="text-[#F0EDE6]/50 max-w-md mb-8">
+              We couldn't find any modules matching "<span className="text-[#F5C842]">{searchQuery}</span>". 
+              Try adjusting your search or browse all categories.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <button
+                onClick={() => setSearchQuery("")}
+                className="px-6 py-2 rounded-full text-xs font-semibold bg-[#F5C842] text-[#1A1200] hover:bg-[#F5C842]/90 transition-colors"
+              >
+                Clear Search
+              </button>
+              <button
+                onClick={() => setActiveCategory("All")}
+                className="px-6 py-2 rounded-full text-xs font-semibold bg-white/10 text-[#F0EDE6] border border-white/10 hover:border-white/20 transition-colors"
+              >
+                View All Modules
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container mx-auto px-4 py-16">
+          <AnimatePresence mode="popLayout">
+            {filteredModules.map((module, idx) => {
+              const progressPercent = getProgressPercentage(module);
+              const moduleCompleted = isCompleted(module.id);
+              const moduleStarted = hasStarted(module.id);
+              
+              return (
+                <motion.div
+                  key={module.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    duration: useMobileMotion ? 0.2 : 0.34,
+                    delay: useMobileMotion ? idx * 0.02 : idx * 0.045,
+                    ease: "easeOut",
+                  }}
+                  onClick={() => setSelectedModule(module)}
+                  className="group relative flex flex-col bg-white/[0.02] border border-white/10 rounded-sm overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-350 hover:bg-white/[0.04]"
                 >
-                  Clear Search
-                </button>
-                <button
-                  onClick={() => setActiveCategory("All")}
-                  className="px-6 py-2 rounded-full text-xs font-semibold bg-white/10 text-[#F0EDE6] border border-white/10 hover:border-white/20 transition-colors"
-                >
-                  View All Modules
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container mx-auto px-4 py-16">
-            <AnimatePresence mode="popLayout">
-              {filteredModules.map((module, idx) => {
-                const progressPercent = getProgressPercentage(module);
-                const moduleCompleted = isCompleted(module.id);
-                const moduleStarted = hasStarted(module.id);
-                
-                return (
-                  <motion.div
-                    key={module.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2, delay: idx * 0.05 }}
-                    onClick={() => setSelectedModule(module)}
-                    className="group relative flex flex-col bg-white/[0.02] border border-white/10 rounded-sm overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-350 hover:bg-white/[0.04]"
-                  >
                     {/* Progress indicator bar */}
                     {progressPercent > 0 && (
                       <div className="h-1 w-full bg-white/10">
@@ -386,32 +404,31 @@ export function LearnHub() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
-        )}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+      )}
 
-        {/* Footer Branding */}
-        <footer className="py-12 border-t border-white/5 text-center relative flex-shrink-0">
-          <div className="flex items-center justify-center gap-2 mb-4 grayscale opacity-30">
-            <img src="/logo.svg" alt="BNS" className="h-6 w-auto" />
-            <span className="font-bold text-[10px] uppercase tracking-[0.3em]">Budget Ndio Story</span>
-          </div>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-[#F0EDE6]/20">
-            Decentralizing Knowledge · Empowering Youth
-          </p>
-          
-          {/* Subtle Admin Link */}
-          <Link 
-            href="/learn/admin" 
-            className="absolute bottom-4 right-4 text-[8px] uppercase tracking-widest text-white/5 hover:text-[#F5C842]/40 transition-colors"
-          >
-            Admin Portal
-          </Link>
-        </footer>
-      </div>
+      {/* Footer Branding */}
+      <footer className="py-12 pb-[max(3rem,env(safe-area-inset-bottom))] border-t border-white/5 text-center relative">
+        <div className="flex items-center justify-center gap-2 mb-4 grayscale opacity-30">
+          <img src="/logo.svg" alt="BNS" className="h-6 w-auto" />
+          <span className="font-bold text-[10px] uppercase tracking-[0.3em]">Budget Ndio Story</span>
+        </div>
+        <p className="text-[10px] uppercase tracking-[0.4em] text-[#F0EDE6]/20">
+          Decentralizing Knowledge · Empowering Youth
+        </p>
+        
+        {/* Subtle Admin Link */}
+        <Link 
+          href="/learn/admin" 
+          className="absolute bottom-4 right-4 text-[8px] uppercase tracking-widest text-white/5 hover:text-[#F5C842]/40 transition-colors"
+        >
+          Admin Portal
+        </Link>
+      </footer>
     </div>
   );
 }

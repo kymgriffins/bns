@@ -177,7 +177,11 @@ export default function LearnAdminPage() {
                               <Link href={`/learn/admin/${m.id}`} className="p-2 rounded-lg bg-white/5 border border-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all">
                                  <Edit2 className="h-3.5 w-3.5" />
                               </Link>
-                              <button className="p-2 rounded-lg bg-white/5 border border-white/5 text-white/40 hover:text-[#FC4444] hover:bg-[#FC4444]/10 transition-all">
+                              <button
+                                disabled
+                                title="Delete is not enabled in this UI-only pass"
+                                className="p-2 rounded-lg bg-white/5 border border-white/5 text-white/20 cursor-not-allowed"
+                              >
                                  <Trash2 className="h-3.5 w-3.5" />
                               </button>
                            </div>

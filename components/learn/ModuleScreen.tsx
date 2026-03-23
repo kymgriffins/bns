@@ -38,7 +38,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
   onBack,
   onProgressUpdate,
 }) => {
-  const [activeTab, setActiveTab] = useState<ContentType>('stories');
+  const [activeTab, setActiveTab] = useState<ContentType>('learn');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(true);
   const [moduleData, setModuleData] = useState<any>(null);
@@ -52,8 +52,8 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
   }, [module.id]);
 
   const tabs: { id: ContentType; label: string; icon: any; color: string }[] = [
-    { id: 'stories', label: 'Stories', icon: Play, color: '#BB0631' },
     { id: 'learn', label: 'Lesson', icon: BookOpen, color: '#F5C842' },
+    { id: 'stories', label: 'Stories', icon: Play, color: '#BB0631' },
     { id: 'videos', label: 'Videos', icon: Video, color: '#006400' },
     { id: 'quiz', label: 'Quiz', icon: Lightbulb, color: '#A0AEC0' },
   ];
@@ -70,9 +70,9 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
   }
 
   return (
-    <div className="flex h-screen flex-col bg-kenya-black text-[#F0EDE6] overflow-hidden font-sans">
+    <div className="flex min-h-[100dvh] flex-col bg-kenya-black text-[#F0EDE6] overflow-hidden font-sans">
       {/* Top Navigation */}
-      <nav className="h-16 flex-shrink-0 flex items-center justify-between px-6 border-b border-white/5 bg-white/[0.02] backdrop-blur-md z-50">
+      <nav className="h-16 flex-shrink-0 flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/5 bg-white/[0.02] backdrop-blur-md z-50">
         <div className="flex items-center gap-4">
           <button 
             onClick={onBack}
@@ -112,7 +112,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
            </div>
            <button 
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-white/5 rounded-full transition-colors text-[#F0EDE6]/60"
+            className="min-h-11 min-w-11 p-2 hover:bg-white/5 rounded-full transition-colors text-[#F0EDE6]/60"
             aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
            >
              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -128,7 +128,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 280, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
-              className="flex flex-col flex-shrink-0 border-r border-white/5 bg-white/[0.01] overflow-hidden absolute lg:relative z-40 h-full"
+              className="flex flex-col flex-shrink-0 border-r border-white/5 bg-white/[0.01] overflow-hidden absolute lg:sticky lg:top-0 z-40 h-full lg:h-[calc(100dvh-4rem)]"
               style={{ width: '280px' }}
             >
               <div className="p-6 border-b border-white/10">
@@ -143,7 +143,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto py-4">
+              <div className="flex-1 overflow-y-auto overscroll-contain py-4">
                 <div className="px-6 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#F0EDE6]/30">Content</div>
                 <div className="space-y-1">
                   {tabs.map((tab) => {
@@ -197,7 +197,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "flex-1 flex flex-col items-center gap-1 py-3 px-4 min-w-[80px] transition-all border-b-2",
+                    "flex-1 flex flex-col items-center gap-1 py-3 px-4 min-h-12 min-w-[80px] transition-all border-b-2",
                     activeTab === tab.id 
                       ? "text-[#F5C842] border-[#F5C842]" 
                       : "text-[#F0EDE6]/40 border-transparent"
@@ -210,7 +210,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
             })}
           </div>
 
-          <div className="flex-1 scroll-smooth no-scrollbar">
+          <div className="flex-1 overflow-y-auto overscroll-contain scroll-smooth no-scrollbar pb-[env(safe-area-inset-bottom)]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -218,7 +218,7 @@ export const ModuleScreen: React.FC<ModuleScreenProps> = ({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="h-full"
+                className="h-full min-h-full"
               >
                 {activeTab === 'stories' && moduleData?.stories && (
                   <StoryViewer

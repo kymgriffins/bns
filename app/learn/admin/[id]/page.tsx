@@ -19,10 +19,10 @@ export default function EditModulePage({ params }: { params: Promise<{ id: strin
     setLoading(false);
   }, [id]);
 
-  const handleSave = (updatedData: any) => {
+  const handleSave = async (updatedData: any) => {
     console.log("Saving updated module data:", updatedData);
-    // Simulate persistence
-    alert(`Success! Module "${updatedData.module.title}" has been saved. \n\nCheck the console for the updated JSON payload.`);
+    // Simulate persistence latency for realistic UI states
+    await new Promise((resolve) => setTimeout(resolve, 850));
     router.push("/learn/admin");
   };
 

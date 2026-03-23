@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Save, 
@@ -31,13 +31,29 @@ import { cn } from "@/lib/utils";
 
 interface ModuleEditorProps {
   initialData: any;
-  onSave: (data: any) => void;
+  onSave: (data: any) => void | Promise<void>;
   onBack: () => void;
 }
 
 export function ModuleEditor({ initialData, onSave, onBack }: ModuleEditorProps) {
   const [data, setData] = useState(initialData);
   const [activeRootTab, setActiveRootTab] = useState<'meta' | 'lessons' | 'stories' | 'quiz' | 'videos'>('meta');
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "success" | "error">("idle");
+  const [saveMessage, setSaveMessage] = useState("");
+
+  const initialSnapshot = useMemo(() => JSON.stringify(initialData), [initialData]);
+  const [lastSavedSnapshot, setLastSavedSnapshot] = useState(initialSnapshot);
+  const isDirty = JSON.stringify(data) !== lastSavedSnapshot;
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!isDirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
 
   const updateMeta = (field: string, value: any) => {
     setData({ ...data, module: { ...data.module, [field]: value } });
@@ -64,8 +80,32 @@ export function ModuleEditor({ initialData, onSave, onBack }: ModuleEditorProps)
     setData({ ...data, stories: [...data.stories, newSlide] });
   };
 
-  const handleSave = () => {
-    onSave(data);
+  const handleSave = async () => {
+    if (!isDirty || saveState === "saving") return;
+    setSaveState("saving");
+    setSaveMessage("");
+    try {
+      await onSave(data);
+      const savedSnapshot = JSON.stringify(data);
+      setLastSavedSnapshot(savedSnapshot);
+      setSaveState("success");
+      setSaveMessage("Changes saved successfully.");
+      setTimeout(() => {
+        setSaveState((current) => (current === "success" ? "idle" : current));
+        setSaveMessage((current) => (current === "Changes saved successfully." ? "" : current));
+      }, 2000);
+    } catch {
+      setSaveState("error");
+      setSaveMessage("Save failed. Please retry.");
+    }
+  };
+
+  const handleCancel = () => {
+    if (isDirty) {
+      const shouldLeave = window.confirm("You have unsaved changes. Leave without saving?");
+      if (!shouldLeave) return;
+    }
+    onBack();
   };
 
   return (
@@ -73,7 +113,7 @@ export function ModuleEditor({ initialData, onSave, onBack }: ModuleEditorProps)
       {/* Editor Toolbar */}
       <header className="h-16 flex-shrink-0 border-b border-white/5 bg-[#0D0D14] flex items-center justify-between px-6 z-50">
         <div className="flex items-center gap-4">
-           <button onClick={onBack} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+           <button onClick={handleCancel} className="min-h-11 min-w-11 p-2 hover:bg-white/5 rounded-full transition-colors">
               <ArrowLeft className="h-4 w-4" />
            </button>
            <div className="h-4 w-[1px] bg-white/10" />
@@ -84,12 +124,35 @@ export function ModuleEditor({ initialData, onSave, onBack }: ModuleEditorProps)
         </div>
 
         <div className="flex items-center gap-3">
-           <Button variant="ghost" onClick={onBack} className="rounded-full text-xs hover:bg-white/5">Cancel</Button>
-           <Button onClick={handleSave} className="rounded-full bg-[#F5C842] text-[#1A1200] font-bold px-6 shadow-[0_10px_30px_rgba(245,200,66,0.1)]">
-              <Save className="h-4 w-4 mr-2" /> Save Changes
+           <Button variant="ghost" onClick={handleCancel} className="rounded-full text-xs hover:bg-white/5">Cancel</Button>
+           <Button
+             onClick={handleSave}
+             disabled={!isDirty || saveState === "saving"}
+             className="rounded-full bg-[#F5C842] text-[#1A1200] font-bold px-6 shadow-[0_10px_30px_rgba(245,200,66,0.1)] disabled:opacity-50"
+           >
+              <Save className="h-4 w-4 mr-2" /> {saveState === "saving" ? "Saving..." : "Save Changes"}
            </Button>
         </div>
       </header>
+
+      {(isDirty || saveMessage) && (
+        <div className="px-6 py-3 border-b border-white/5 bg-[#0A0A10] flex items-center justify-between gap-4">
+          <p className="text-[11px] uppercase tracking-wider font-bold text-white/60">
+            {isDirty ? "Unsaved changes" : "All changes saved"}
+          </p>
+          {saveMessage && (
+            <p
+              className={
+                saveState === "error"
+                  ? "text-[11px] font-semibold text-red-300"
+                  : "text-[11px] font-semibold text-emerald-300"
+              }
+            >
+              {saveMessage}
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-1 overflow-hidden">
         {/* Editor Sidebar */}

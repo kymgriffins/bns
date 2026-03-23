@@ -295,3 +295,20 @@ export const heroStagger = {
 export function useHigReducedMotion() {
   return useReducedMotion();
 }
+
+export type MotionTier = "mobile" | "desktop";
+
+export function useMotionTier(breakpointPx = 768): MotionTier {
+  const [tier, setTier] = useState<MotionTier>("desktop");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`);
+    const update = () => setTier(mq.matches ? "mobile" : "desktop");
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [breakpointPx]);
+
+  return tier;
+}

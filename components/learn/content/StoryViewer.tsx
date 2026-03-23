@@ -12,6 +12,7 @@ import StoryRisks from './story-slides/StoryRisks';
 import StoryQuiz from './story-slides/StoryQuiz';
 import StoryCTA from './story-slides/StoryCTA';
 import { cn } from '@/lib/utils';
+import { useHigReducedMotion, useMotionTier } from '@/components/animations/hig-motion';
 
 interface StoryViewerProps {
   slides: StorySlide[];
@@ -29,6 +30,9 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
   onComplete,
 }) => {
   const [direction, setDirection] = useState(0);
+  const motionTier = useMotionTier();
+  const reducedMotion = useHigReducedMotion();
+  const useMobileMotion = motionTier === "mobile" || reducedMotion;
 
   if (slides.length === 0) {
     return (
@@ -58,23 +62,23 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-      opacity: 0,
+      x: useMobileMotion ? 0 : (direction > 0 ? '100%' : '-100%'),
+      opacity: 0.25,
     }),
     center: {
       x: 0,
       opacity: 1,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.2 },
+        x: useMobileMotion ? { duration: 0.2, ease: "easeOut" } : { type: "spring", stiffness: 260, damping: 32 },
+        opacity: { duration: useMobileMotion ? 0.18 : 0.24 },
       }
     },
     exit: (direction: number) => ({
-      x: direction < 0 ? '100%' : '-100%',
+      x: useMobileMotion ? 0 : (direction < 0 ? '100%' : '-100%'),
       opacity: 0,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.2 },
+        x: useMobileMotion ? { duration: 0.15, ease: "easeOut" } : { type: "spring", stiffness: 260, damping: 32 },
+        opacity: { duration: useMobileMotion ? 0.15 : 0.2 },
       }
     }),
   };
@@ -84,24 +88,24 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
       {/* Background Animated Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
-          animate={{
+          animate={useMobileMotion ? { opacity: 0.22 } : {
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3],
             x: [0, 50, 0],
             y: [0, -30, 0],
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          transition={useMobileMotion ? { duration: 0.2 } : { duration: 10, repeat: Infinity, ease: "linear" }}
           className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full blur-[160px]"
           style={{ backgroundColor: currentSlide.orb1 || '#BB0631' }}
         />
         <motion.div 
-          animate={{
+          animate={useMobileMotion ? { opacity: 0.12 } : {
             scale: [1.2, 1, 1.2],
             opacity: [0.1, 0.2, 0.1],
             x: [0, -40, 0],
             y: [0, 60, 0],
           }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          transition={useMobileMotion ? { duration: 0.2 } : { duration: 12, repeat: Infinity, ease: "linear" }}
           className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[140px]"
           style={{ backgroundColor: currentSlide.orb2 || '#006400' }}
         />
@@ -138,7 +142,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
               initial="enter"
               animate="center"
               exit="exit"
-              className="absolute inset-0 flex flex-col p-8 pt-16 overflow-y-auto no-scrollbar"
+              className="absolute inset-0 flex flex-col p-4 sm:p-6 pt-16 overflow-hidden"
             >
               {currentSlide.type === 'cover' && <StoryCover slide={currentSlide as any} />}
               {currentSlide.type === 'bullets' && <StoryBullets slide={currentSlide as any} />}
@@ -164,7 +168,8 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
           </AnimatePresence>
 
           {/* Invisible Nav areas */}
-          <div className="absolute inset-0 z-40 flex">
+          {(currentSlide.type !== "cta" && currentSlide.type !== "quiz") && (
+            <div className="absolute inset-0 z-40 flex">
             <div 
               className="w-1/3 h-full cursor-west-resize" 
               onClick={handlePrev} 
@@ -175,7 +180,8 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
               onClick={handleNext} 
               aria-label="Next slide"
             />
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Footer info Overlay */}
