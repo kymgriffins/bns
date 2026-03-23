@@ -5,7 +5,7 @@ import "./globals.css";
 import { ScrollShell } from "@/components/scroll";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CombinedFeedbackProvider } from "@/components/feedback";
-import { ChatWidget } from "@/components/chatbot";
+// import { ChatWidget } from "@/components/chatbot";
 import { AuthProvider } from "@/hooks/useAuth";
 import { GlobalEmailPopup } from "@/components/global-email-popup";
 import { ConsentProvider } from "@/hooks/useConsent";
@@ -163,7 +163,7 @@ export default function RootLayout({
                     <AuthProvider>
                       <AppShell>{children}</AppShell>
                       <GlobalEmailPopup />
-                      <ChatWidget />
+                      {/* <ChatWidget /> */}
                       <CookieConsentBanner />
                     </AuthProvider>
                   </AnalyticsProvider>
