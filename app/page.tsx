@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { HomeLanding } from "@/components/landing";
+import { HomeLandingV2 } from "@/components/landing-v2/HomeLandingV2";
 
 export const metadata: Metadata = {
   title: "Budget Ndio Story - Kenya Budget Transparency Platform",
@@ -11,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <HomeLanding />;
+  return <HomeLandingV2 />;
 }
