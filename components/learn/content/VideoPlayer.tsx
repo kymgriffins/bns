@@ -124,7 +124,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                     className={cn(
                       "w-full flex gap-4 p-4 rounded-[32px] border transition-all text-left group",
                       isActive 
-                        ? "bg-[#13131F] border-white/10 shadow-lg" 
+                        ? "bg-[#13131F] border-white/10 shadow-2xl shadow-kenya-red/5" 
                         : "bg-white/5 border-transparent hover:bg-white/[0.08]"
                     )}
                   >

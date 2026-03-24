@@ -67,9 +67,9 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
         <motion.div
            initial={{ opacity: 0, y: 30 }}
            animate={{ opacity: 1, y: 0 }}
-           className="mb-8 p-6 sm:p-8 rounded-none bg-white/[0.02] border border-white/10 w-full"
+           className="mb-8 p-6 sm:p-8 rounded-3xl bg-white/[0.02] border border-white/5 w-full shadow-2xl"
         >
-          <div className="h-24 w-24 mx-auto mb-8 bg-kenya-gold/10 border border-kenya-gold/20 flex items-center justify-center">
+          <div className="h-24 w-24 mx-auto mb-8 bg-kenya-gold/10 border border-kenya-gold/20 flex items-center justify-center rounded-2xl">
             <Trophy className="h-12 w-12 text-kenya-gold" />
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight uppercase">Quiz Complete!</h2>
@@ -81,12 +81,12 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
           <Button 
             onClick={restart}
             variant="outline"
-            className="min-h-12 py-4 rounded-none border-white/10 bg-white/5 text-white hover:bg-white/10 text-[11px] font-bold uppercase tracking-widest flex items-center justify-center gap-2"
+            className="min-h-12 py-4 rounded-xl border-white/5 bg-white/5 text-white hover:bg-white/10 text-[11px] font-bold uppercase tracking-widest flex items-center justify-center gap-2"
           >
             <RotateCcw className="h-4 w-4" /> Try Again
           </Button>
           <Button 
-            className="min-h-12 py-4 rounded-none bg-kenya-green text-white font-bold hover:bg-kenya-green/90 text-[11px] uppercase tracking-widest transition-all"
+            className="min-h-12 py-4 rounded-xl bg-kenya-green text-white font-bold hover:bg-kenya-green/90 text-[11px] uppercase tracking-widest transition-all"
           >
             Module Done <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
@@ -140,13 +140,13 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
                 onClick={() => handleAnswer(idx)}
                 disabled={showFeedback}
                 className={cn(
-                  "relative w-full p-3 sm:p-4 rounded-none border-2 text-left text-sm sm:text-base transition-all duration-350 flex items-center justify-between group min-h-12",
+                  "relative w-full p-4 sm:p-5 rounded-2xl border-2 text-left text-sm sm:text-base transition-all duration-350 flex items-center justify-between group min-h-12 shadow-sm",
                   btnBg
                 )}
               >
                 <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                    <div className={cn(
-                     "h-8 w-8 rounded-none border-t-2 border-r-2 flex items-center justify-center text-[10px] font-bold transition-colors shadow-inner shrink-0",
+                     "h-8 w-8 rounded-xl border-t-2 border-r-2 flex items-center justify-center text-[10px] font-bold transition-colors shadow-inner shrink-0",
                      isSelected ? "bg-currentColor" : "bg-white/5 border-white/10 text-white/20"
                    )}>
                       {String.fromCharCode(65 + idx)}
@@ -166,10 +166,10 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 sm:mt-6 p-3 sm:p-4 rounded-none bg-white/[0.03] border-l-4 border-l-white/20 flex items-center gap-3 sm:gap-4"
+            className="mt-6 sm:mt-8 p-4 sm:p-5 rounded-2xl bg-white/[0.03] border-l-4 border-l-kenya-gold/20 flex items-center gap-4 shadow-xl backdrop-blur-md"
           >
             <div className={cn(
-              "h-10 w-10 rounded-none flex items-center justify-center border shrink-0",
+              "h-10 w-10 rounded-xl flex items-center justify-center border shrink-0",
               isCorrect ? "bg-kenya-green/10 text-kenya-green border-kenya-green/20" : "bg-kenya-red/10 text-kenya-red border-kenya-red/20"
             )}>
                <Lightbulb className="h-5 w-5" />
@@ -189,7 +189,7 @@ export const QuizPane: React.FC<QuizPaneProps> = ({
 
             <Button 
                onClick={nextQuestion}
-               className="bg-white text-black hover:bg-white/90 rounded-none px-4 sm:px-6 py-3 sm:py-4 uppercase font-bold text-[10px] tracking-[0.16em] whitespace-nowrap transition-all active:scale-95 min-h-11"
+               className="bg-white text-black hover:bg-white/90 rounded-xl px-4 sm:px-6 py-3 sm:py-4 uppercase font-bold text-[10px] tracking-[0.16em] whitespace-nowrap transition-all active:scale-95 min-h-11"
             >
                {currentIdx < questions.length - 1 ? 'Next' : 'Finish'}
                <ArrowRight className="h-4 w-4 ml-2" />

@@ -16,10 +16,10 @@ const StoryBullets: React.FC<StoryBulletsProps> = ({ slide }) => {
   return (
     <div className="flex-1 flex flex-col pt-12">
       <motion.h2
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="text-3xl md:text-4xl font-black leading-tight text-white mb-12 tracking-tighter uppercase"
+        className="text-4xl md:text-6xl font-black leading-[0.9] text-white mb-16 tracking-tighter uppercase border-l-8 border-kenya-red pl-6"
       >
         {slide.title}
       </motion.h2>
@@ -28,13 +28,13 @@ const StoryBullets: React.FC<StoryBulletsProps> = ({ slide }) => {
         {slide.bullets.map((bullet, idx) => (
           <motion.div
             key={idx}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 + idx * 0.1 }}
-            className="flex items-start gap-5 p-6 rounded-none bg-white/[0.03] border-l-4 border-kenya-red"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 + idx * 0.15 }}
+            className="flex items-start gap-6 p-6 rounded-3xl bg-white/[0.04] border border-white/10 hover:border-kenya-gold/30 transition-all shadow-xl group"
           >
-            <div className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-kenya-gold" />
-            <p className="text-lg font-bold text-white/70 leading-tight tracking-tight uppercase">
+            <div className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-kenya-gold shadow-[0_0_12px_rgba(245,200,66,0.6)] group-hover:scale-125 transition-transform" />
+            <p className="text-xl font-black text-white/90 leading-none tracking-tight uppercase italic drop-shadow-md">
               {bullet}
             </p>
           </motion.div>

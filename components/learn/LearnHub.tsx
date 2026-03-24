@@ -63,7 +63,7 @@ export function LearnHub() {
         setIsLoading(false);
       }
     };
-    
+
     // Simulate loading delay for better UX
     const timer = setTimeout(loadProgress, 500);
     return () => clearTimeout(timer);
@@ -107,16 +107,16 @@ export function LearnHub() {
 
   const filteredModules = MODULES.filter(m => {
     const matchesCategory = activeCategory === "All" || m.category === activeCategory;
-    const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         m.desc.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      m.desc.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   if (selectedModule) {
     const progress = getModuleProgress(selectedModule.id);
     return (
-      <ModuleScreen 
-        module={selectedModule} 
+      <ModuleScreen
+        module={selectedModule}
         progress={progress || undefined}
         onBack={() => setSelectedModule(null)}
         onProgressUpdate={(newProgress) => {
@@ -164,9 +164,16 @@ export function LearnHub() {
             }}
             className="text-center max-w-4xl mx-auto"
           >
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.4em] text-kenya-red">
-              Civic Hub · Premium Learning
-            </p>
+            <div className="flex flex-col items-center gap-2 mb-6">
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#F0EDE6]/30 mb-2">
+                <Link href="/" className="hover:text-kenya-red transition-colors">Home</Link>
+                <span className="text-white/10">/</span>
+                <span className="text-white/60">Learning Hub</span>
+              </div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-kenya-red">
+                Civic Hub · Premium Learning
+              </p>
+            </div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight tracking-tight mb-8">
               Follow the Budget.<br />
               <span className="text-kenya-red">Find the Story.</span>
@@ -195,7 +202,7 @@ export function LearnHub() {
             </div>
           </motion.div>
         </div>
-        
+
         {/* Ambient Gradients */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-kenya-red/5 blur-[160px] rounded-full pointer-events-none" />
         <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-kenya-green/5 blur-[160px] rounded-full pointer-events-none" />
@@ -206,7 +213,7 @@ export function LearnHub() {
         {/* Featured / Navigation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 md:py-8 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
           {/* Mobile menu button */}
-          <button 
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden min-h-11 min-w-11 p-2 rounded-full bg-white/5 border border-white/10 text-[#F0EDE6]/60"
           >
@@ -226,8 +233,8 @@ export function LearnHub() {
                 }}
                 className={cn(
                   "px-6 py-2 rounded-sm text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border",
-                  activeCategory === cat 
-                    ? "bg-kenya-green text-white border-kenya-green" 
+                  activeCategory === cat
+                    ? "bg-kenya-green text-white border-kenya-green"
                     : "bg-white/5 text-[#F0EDE6]/40 border-white/5 hover:border-white/10 hover:text-[#F0EDE6]"
                 )}
               >
@@ -238,7 +245,7 @@ export function LearnHub() {
 
           <div className="relative max-w-xs w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#F0EDE6]/30" />
-            <input 
+            <input
               type="text"
               placeholder="Search modules..."
               value={searchQuery}
@@ -253,7 +260,7 @@ export function LearnHub() {
       {/* Module Grid or Empty State */}
       {filteredModules.length === 0 ? (
         <div className="container mx-auto px-4 py-16">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -267,7 +274,7 @@ export function LearnHub() {
             </div>
             <h3 className="text-2xl font-serif text-[#F0EDE6] mb-3">No modules found</h3>
             <p className="text-[#F0EDE6]/50 max-w-md mb-8">
-              We couldn't find any modules matching "<span className="text-[#F5C842]">{searchQuery}</span>". 
+              We couldn't find any modules matching "<span className="text-[#F5C842]">{searchQuery}</span>".
               Try adjusting your search or browse all categories.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
@@ -293,7 +300,7 @@ export function LearnHub() {
               const progressPercent = getProgressPercentage(module);
               const moduleCompleted = isCompleted(module.id);
               const moduleStarted = hasStarted(module.id);
-              
+
               return (
                 <motion.div
                   key={module.id}
@@ -307,103 +314,103 @@ export function LearnHub() {
                     ease: "easeOut",
                   }}
                   onClick={() => setSelectedModule(module)}
-                  className="group relative flex flex-col bg-white/[0.02] border border-white/10 rounded-sm overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-350 hover:bg-white/[0.04]"
+                  className="group relative flex flex-col bg-white/[0.02]/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-kenya-red/30 transition-all duration-500 hover:bg-white/[0.04] hover:shadow-2xl hover:shadow-kenya-red/5"
                 >
-                    {/* Progress indicator bar */}
-                    {progressPercent > 0 && (
-                      <div className="h-1 w-full bg-white/10">
-                        <div 
-                          className="h-full transition-all duration-500"
-                          style={{ 
-                            width: `${progressPercent}%`,
-                            backgroundColor: moduleCompleted ? '#006400' : '#BB0631'
-                          }}
-                        />
-                      </div>
-                    )}
-                    
-                    {/* Accent Top Bar */}
-                    <div className="h-1 w-full" style={{ backgroundColor: module.catColor }} />
-                    
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex flex-col gap-1">
-                          <Badge className="bg-white/5 text-[#F0EDE6]/40 hover:bg-white/10 border-none font-bold text-[9px] uppercase tracking-[0.2em] px-2 py-1 rounded-none">
-                            {module.level} · Module {module.num}
-                          </Badge>
-                          {/* Progress badge */}
-                          {progressPercent > 0 && (
-                            <span className="text-[10px] font-mono flex items-center gap-1">
-                              {moduleCompleted ? (
-                                <>
-                                  <CheckCircle2 className="h-3 w-3 text-kenya-green" />
-                                  <span className="text-kenya-green font-bold">Completed</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Clock className="h-3 w-3 text-kenya-gold" />
-                                  <span className="text-kenya-gold font-bold">{progressPercent}% complete</span>
-                                </>
-                              )}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-lg group-hover:scale-110 transition-transform">
-                          {module.teacher.avatar}
-                        </div>
-                      </div>
+                  {/* Progress indicator bar */}
+                  {progressPercent > 0 && (
+                    <div className="h-1 w-full bg-white/10">
+                      <div
+                        className="h-full transition-all duration-500"
+                        style={{
+                          width: `${progressPercent}%`,
+                          backgroundColor: moduleCompleted ? '#006400' : '#BB0631'
+                        }}
+                      />
+                    </div>
+                  )}
 
-                      <h3 className="text-xl font-bold leading-tight mb-2 group-hover:text-kenya-red transition-colors">
-                        {module.title}
-                      </h3>
-                      
-                      <p className="text-[10px] text-[#F0EDE6]/30 font-bold uppercase tracking-wider mb-4">
-                        Credits: {module.credits}
-                      </p>
+                  {/* Accent Top Bar */}
+                  <div className="h-1 w-full" style={{ backgroundColor: module.catColor }} />
 
-                      <p className="text-sm text-[#F0EDE6]/60 leading-relaxed mb-6 line-clamp-3">
-                        {module.desc}
-                      </p>
-
-                      {/* Content Type Pills */}
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {module.types.includes('stories') && (
-                          <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-none bg-kenya-red/10 text-kenya-red border border-kenya-red/20">Stories</span>
-                        )}
-                        {module.types.includes('learn') && (
-                          <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-none bg-kenya-gold/10 text-kenya-gold border border-kenya-gold/20">Learn</span>
-                        )}
-                        {module.types.includes('videos') && (
-                          <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-none bg-kenya-green/10 text-kenya-green border border-kenya-green/20">Videos</span>
-                        )}
-                        {module.types.includes('quiz') && (
-                          <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-none bg-white/10 text-white/50 border border-white/20">Quiz</span>
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex flex-col gap-1">
+                        <Badge className="bg-white/5 text-[#F0EDE6]/40 hover:bg-white/10 border-none font-bold text-[9px] uppercase tracking-[0.2em] px-2 py-1 rounded-full">
+                          {module.level} · Module {module.num}
+                        </Badge>
+                        {/* Progress badge */}
+                        {progressPercent > 0 && (
+                          <span className="text-[10px] font-mono flex items-center gap-1">
+                            {moduleCompleted ? (
+                              <>
+                                <CheckCircle2 className="h-3 w-3 text-kenya-green" />
+                                <span className="text-kenya-green font-bold">Completed</span>
+                              </>
+                            ) : (
+                              <>
+                                <Clock className="h-3 w-3 text-kenya-gold" />
+                                <span className="text-kenya-gold font-bold">{progressPercent}% complete</span>
+                              </>
+                            )}
+                          </span>
                         )}
                       </div>
-
-                      <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-[11px] text-[#F0EDE6]/50">
-                          <Clock className="h-3 w-3" />
-                          {module.duration}
-                        </div>
-                        <div className={cn(
-                          "flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider",
-                          moduleCompleted 
-                            ? "text-kenya-green" 
-                            : moduleStarted 
-                              ? "text-kenya-gold" 
-                              : "text-kenya-red"
-                        )}>
-                          {moduleCompleted 
-                            ? "Review Module" 
-                            : moduleStarted 
-                              ? "Continue" 
-                              : "Start Module"
-                          }
-                          <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                        </div>
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-lg group-hover:scale-110 transition-transform">
+                        {module.teacher.avatar}
                       </div>
                     </div>
+
+                    <h3 className="text-xl font-bold leading-tight mb-2 group-hover:text-kenya-red transition-colors">
+                      {module.title}
+                    </h3>
+
+                    <p className="text-[10px] text-[#F0EDE6]/30 font-bold uppercase tracking-wider mb-4">
+                      Credits: {module.credits}
+                    </p>
+
+                    <p className="text-sm text-[#F0EDE6]/60 leading-relaxed mb-6 line-clamp-3">
+                      {module.desc}
+                    </p>
+
+                    {/* Content Type Pills */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {module.types.includes('stories') && (
+                        <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-kenya-red/10 text-kenya-red border border-kenya-red/20">Stories</span>
+                      )}
+                      {module.types.includes('learn') && (
+                        <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-kenya-gold/10 text-kenya-gold border border-kenya-gold/20">Learn</span>
+                      )}
+                      {module.types.includes('videos') && (
+                        <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-kenya-green/10 text-kenya-green border border-kenya-green/20">Videos</span>
+                      )}
+                      {module.types.includes('quiz') && (
+                        <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/10 text-white/50 border border-white/20">Quiz</span>
+                      )}
+                    </div>
+
+                    <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-[11px] text-[#F0EDE6]/50">
+                        <Clock className="h-3 w-3" />
+                        {module.duration}
+                      </div>
+                      <div className={cn(
+                        "flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider",
+                        moduleCompleted
+                          ? "text-kenya-green"
+                          : moduleStarted
+                            ? "text-kenya-gold"
+                            : "text-kenya-red"
+                      )}>
+                        {moduleCompleted
+                          ? "Review Module"
+                          : moduleStarted
+                            ? "Continue"
+                            : "Start Module"
+                        }
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               );
             })}
@@ -420,10 +427,10 @@ export function LearnHub() {
         <p className="text-[10px] uppercase tracking-[0.4em] text-[#F0EDE6]/20">
           Decentralizing Knowledge · Empowering Youth
         </p>
-        
+
         {/* Subtle Admin Link */}
-        <Link 
-          href="/learn/admin" 
+        <Link
+          href="/learn/admin"
           className="absolute bottom-4 right-4 text-[8px] uppercase tracking-widest text-white/5 hover:text-[#F5C842]/40 transition-colors"
         >
           Admin Portal

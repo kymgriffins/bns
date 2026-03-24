@@ -16,12 +16,13 @@ const StoryCover: React.FC<StoryCoverProps> = ({ slide }) => {
   return (
     <div className="flex-1 flex flex-col justify-center items-center text-center">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2 }}
-        className="mb-12 p-10 rounded-none bg-white/5 border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.5)]"
+        transition={{ delay: 0.2, type: 'spring' }}
+        className="mb-14 h-32 w-32 flex items-center justify-center rounded-[2rem] bg-gradient-to-br from-white/10 to-transparent border border-white/20 shadow-[0_40px_80px_rgba(0,0,0,0.6)] backdrop-blur-md relative overflow-hidden"
       >
-        <div className="text-7xl">{slide.emoji || '📖'}</div>
+        <div className="absolute inset-0 bg-kenya-red/10 animate-pulse" />
+        <div className="text-6xl relative z-10">{slide.emoji || '📖'}</div>
       </motion.div>
 
       <motion.div
@@ -34,11 +35,11 @@ const StoryCover: React.FC<StoryCoverProps> = ({ slide }) => {
           <Sparkles className="h-3 w-3" />
           Module Intro
         </div>
-        <h2 className="text-4xl md:text-5xl font-black leading-none text-white mb-4 tracking-tighter uppercase">
+        <h2 className="text-5xl md:text-7xl font-black leading-[0.9] text-white tracking-tighter uppercase mb-6 drop-shadow-2xl">
           {slide.title}
         </h2>
         {slide.subtitle && (
-          <p className="text-lg text-white/40 font-bold max-w-[280px] mx-auto leading-tight uppercase tracking-tight">
+          <p className="text-xl text-white/50 font-bold max-w-[320px] mx-auto leading-tight uppercase tracking-tight italic">
             {slide.subtitle}
           </p>
         )}

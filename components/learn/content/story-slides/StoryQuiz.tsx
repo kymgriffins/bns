@@ -67,7 +67,7 @@ const StoryQuiz: React.FC<StoryQuizProps> = ({ slide, onAnswer }) => {
               onClick={() => handleSelect(idx)}
               disabled={showFeedback}
               className={cn(
-                "w-full p-6 rounded-none border-2 text-left text-base font-bold tracking-tight transition-all flex items-center justify-between group",
+                "w-full p-6 rounded-2xl border-2 text-left text-base font-bold tracking-tight transition-all flex items-center justify-between group",
                 stateStyles
               )}
             >
@@ -84,7 +84,7 @@ const StoryQuiz: React.FC<StoryQuizProps> = ({ slide, onAnswer }) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-12 p-8 rounded-none bg-white/[0.02] border-l-4 border-l-white/10"
+            className="mt-12 p-8 rounded-2xl bg-white/[0.02] border-l-4 border-l-white/10"
           >
             <p className={cn(
               "text-[10px] font-bold uppercase tracking-[0.2em] mb-3",

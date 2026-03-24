@@ -99,8 +99,9 @@ export const getModuleData = (moduleId: string) => {
   // In a real CRUD app, these would come from a database or a mapping file
   // For now, we still use the constants but mapped by ID
   const storiesMap: Record<string, any[]> = {
+    'bps-basic': STORIES_002, // Reusing STORIES_002 as placeholder if others don't exist, or just use empty if no data
     'bps-advanced': STORIES_002,
-    // Add more mappings here or default to empty
+    'budget-county': STORIES_002, // Placeholder for now to avoid "No stories" message during testing
   };
 
   return {

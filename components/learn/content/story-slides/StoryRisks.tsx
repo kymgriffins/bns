@@ -37,7 +37,7 @@ const StoryRisks: React.FC<StoryRisksProps> = ({ slide }) => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 + idx * 0.1 }}
-            className="flex items-center gap-6 p-6 rounded-none bg-kenya-red/5 border-l-4 border-kenya-red"
+            className="flex items-center gap-6 p-6 rounded-2xl bg-kenya-red/5 border-l-4 border-kenya-red"
           >
             <div className="h-10 w-10 shrink-0 border border-kenya-red/20 flex items-center justify-center text-[10px] font-black text-kenya-red uppercase">
               {risk.num}

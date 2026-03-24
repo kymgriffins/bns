@@ -28,7 +28,7 @@ const StoryCTA: React.FC<StoryCTAProps> = ({ slide, onAction }) => {
         initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
         transition={{ delay: 0.2 }}
-        className="mb-12 p-10 rounded-none bg-white/5 border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.5)]"
+        className="mb-12 p-10 rounded-2xl bg-white/5 border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.5)]"
       >
         <div className="text-7xl">{slide.emoji || '🎉'}</div>
       </motion.div>
@@ -58,7 +58,7 @@ const StoryCTA: React.FC<StoryCTAProps> = ({ slide, onAction }) => {
             transition={{ delay: 0.6 + idx * 0.1 }}
             onClick={() => onAction?.(btn.action)}
             className={cn(
-              "w-full py-8 rounded-none flex items-center justify-center gap-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all",
+              "w-full py-8 rounded-2xl flex items-center justify-center gap-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all",
               btn.type === 'primary' 
                 ? "bg-kenya-green text-white hover:bg-kenya-green/90" 
                 : "bg-white/[0.03] text-white/40 border border-white/10 hover:bg-white/[0.08]"

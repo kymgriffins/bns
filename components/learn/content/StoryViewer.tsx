@@ -69,17 +69,14 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
       x: 0,
       opacity: 1,
       transition: {
-        x: useMobileMotion ? { duration: 0.2, ease: "easeOut" } : { type: "spring", stiffness: 260, damping: 32 },
+        x: (useMobileMotion ? { duration: 0.2, ease: "easeOut" } : { type: "spring", stiffness: 260, damping: 32 }) as any,
         opacity: { duration: useMobileMotion ? 0.18 : 0.24 },
       }
     },
     exit: (direction: number) => ({
       x: useMobileMotion ? 0 : (direction < 0 ? '100%' : '-100%'),
       opacity: 0,
-      transition: {
-        x: useMobileMotion ? { duration: 0.15, ease: "easeOut" } : { type: "spring", stiffness: 260, damping: 32 },
-        opacity: { duration: useMobileMotion ? 0.15 : 0.2 },
-      }
+      transition: (useMobileMotion ? { duration: 0.15, ease: "easeOut" } : { type: "spring", stiffness: 260, damping: 32 }) as any,
     }),
   };
 
@@ -111,21 +108,21 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
         />
       </div>
 
-      <div className="relative h-full w-full md:max-w-[420px] md:aspect-[9/19] md:max-h-[90vh] bg-kenya-black md:rounded-none md:shadow-[0_60px_120px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col border border-white/10">
+      <div className="relative h-full w-full md:max-w-[450px] md:aspect-[9/19] md:max-h-[92vh] bg-kenya-black md:rounded-[3.5rem] md:shadow-[0_80px_160px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col border-none md:border md:border-white/10">
         
-        {/* Progress Bars */}
-        <div className="absolute top-6 left-6 right-6 z-50 flex gap-2">
+        {/* Progress Bars - Premium Style */}
+        <div className="absolute top-8 left-4 right-4 z-50 flex gap-1.5 px-2">
           {slides.map((_, idx) => (
-            <div key={idx} className="h-1 flex-1 bg-white/5 rounded-none overflow-hidden">
+            <div key={idx} className="h-1.5 flex-1 bg-white/10 rounded-full overflow-hidden backdrop-blur-md">
               <motion.div 
                 initial={false}
                 animate={{ 
                   width: idx < currentSlideIdx ? '100%' : idx === currentSlideIdx ? '100%' : '0%',
                 }}
-                transition={{ duration: idx === currentSlideIdx ? 5 : 0.3, ease: "linear" }}
+                transition={{ duration: idx === currentSlideIdx ? 7 : 0.4, ease: "linear" }}
                 className={cn(
-                  "h-full rounded-none transition-colors",
-                  idx <= currentSlideIdx ? "bg-kenya-red" : "bg-transparent"
+                  "h-full rounded-full transition-colors shadow-[0_0_8px_rgba(187,6,49,0.5)]",
+                  idx <= currentSlideIdx ? "bg-gradient-to-r from-kenya-red to-kenya-gold" : "bg-transparent"
                 )}
               />
             </div>
@@ -142,7 +139,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
               initial="enter"
               animate="center"
               exit="exit"
-              className="absolute inset-0 flex flex-col p-4 sm:p-6 pt-16 overflow-hidden"
+              className="absolute inset-0 flex flex-col p-6 sm:p-8 pt-24 overflow-hidden"
             >
               {currentSlide.type === 'cover' && <StoryCover slide={currentSlide as any} />}
               {currentSlide.type === 'bullets' && <StoryBullets slide={currentSlide as any} />}
@@ -201,13 +198,13 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
         <button 
           onClick={handlePrev}
           disabled={currentSlideIdx === 0}
-          className="p-6 rounded-none bg-white/[0.02] border border-white/10 text-white/20 hover:text-white hover:bg-white/5 transition-all pointer-events-auto disabled:opacity-0"
+          className="p-6 rounded-3xl bg-white/[0.02] border border-white/10 text-white/20 hover:text-white hover:bg-white/5 transition-all pointer-events-auto disabled:opacity-0"
         >
           <ChevronLeft className="h-10 w-10" />
         </button>
         <button 
           onClick={handleNext}
-          className="p-6 rounded-none bg-white/[0.02] border border-white/10 text-white/20 hover:text-white hover:bg-white/5 transition-all pointer-events-auto"
+          className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 text-white/20 hover:text-white hover:bg-white/5 backdrop-blur-md transition-all pointer-events-auto shadow-2xl"
         >
           <ChevronRight className="h-10 w-10" />
         </button>
