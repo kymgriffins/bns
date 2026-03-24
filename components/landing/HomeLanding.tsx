@@ -25,6 +25,7 @@ import { LandingCursor } from './LandingCursor';
 import { LandingSection } from './LandingSection';
 import { FeaturedYouTubeVideo } from '@/components/youtube/YouTubeVideoCard';
 import { useYouTubeVideos } from '@/hooks/useYouTube';
+import { AnimatedFAQ } from '@/components/ui/animated-faq';
 
 const podcastUrl =
   process.env.NEXT_PUBLIC_YOUTUBE_PODCAST_URL || 'https://www.youtube.com/@budgetndiostory';
@@ -146,7 +147,7 @@ const howItWorks = [
     title: 'Show up in civic windows',
     description: 'Templates and timelines for barazas, hearings and forums.',
     icon: BarChart3,
-    href: '/reports',
+    href: '/take-action',
     badge: 'Act',
     cta: 'See where to act',
   },
@@ -174,6 +175,41 @@ const partners = [
   { name: 'The Continental Pot', logo: 'TCP', image: 'https://continentalpot.africa/wp-content/uploads/2025/02/The-Continental-Pot-Vertical.png', website: 'https://continentalpot.africa', role: 'Media lab & civic storytelling' },
   { name: 'Colour Twist Media', logo: 'CTM', image: 'https://colortwistmedia.co.ke/wp-content/uploads/2024/08/logo.png', website: 'https://colortwistmedia.co.ke', role: 'Creative studio & content' },
   { name: 'Sen Media & Events', logo: 'SME', image: '/senmedia.png', website: 'https://senmedia-events.co.ke', role: 'Events, community & organizing' },
+];
+
+const faqItems = [
+  {
+    question: "What is Budget Ndio Story?",
+    answer: "Budget Ndio Story is a Kenyan civic hub that turns national and county budget documents into clear, youth-friendly briefs, interactive learning modules, and tracking tools. We make public finance feel human — not bureaucratic.",
+  },
+  {
+    question: "Who is this platform for?",
+    answer: "Primarily for young Kenyans aged 18–35 who want to understand where public money goes and how to participate in budget processes. But our briefs and tools are useful for anyone — students, journalists, civil society, county officials, and educators.",
+  },
+  {
+    question: "How do I read a budget report?",
+    answer: "Go to the Reports page and browse by category (National, County, or Sector). Each report follows a consistent structure: what the document is, key takeaways, what changed year-over-year, why it matters for youth and communities, and questions you can ask your representatives.",
+  },
+  {
+    question: "Are your reports based on official government documents?",
+    answer: "Yes. All our briefs are derived from publicly available documents — the Budget Policy Statement, Estimates of Revenue & Expenditure, Finance Bills, and County Budget documents published by the National Treasury and county governments.",
+  },
+  {
+    question: "What is the Learn module and where do I start?",
+    answer: "The Learn section is an interactive civic education hub. Start with Budget 101 — a 12-minute guided module covering how Kenya's budget is set, who decides, and how you can show up in the process. No prior knowledge required.",
+  },
+  {
+    question: "How can my organization partner with Budget Ndio Story?",
+    answer: "We offer co-created briefs, budget literacy trainings, multimedia campaigns, public forums, and research & verification support. Reach out to info@budgetndiostory.org or visit our About page for the full list of partnership options.",
+  },
+  {
+    question: "Is the platform free to use?",
+    answer: "Yes — completely free. All reports, learning modules, and civic tools are available at no cost. We're funded through donations and consortium partnerships. If you find it valuable, you can support us on the Donate page.",
+  },
+  {
+    question: "How often are reports updated?",
+    answer: "We publish new briefs with each major budget calendar event — Budget Policy Statement (February), Estimates (April), Finance Bill (June), and mid-year reviews. County briefs follow county assembly tabling schedules.",
+  },
 ];
 const BUDGET_BARS = [
   { label: 'Education', value: 580, max: 580 },
@@ -387,9 +423,25 @@ export function HomeLanding() {
       {/* Full-bleed dark section. Four animated numbers count up on scroll.  */}
       {/* This is the single "holy shit" beat that earns the page credibility. */}
 
+      {/* ── 3. STATS STRIP ───────────────────────────────────────────────────── */}
+      <section className="border-b border-white/10 bg-[var(--hero-bg)] py-14 md:py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 md:px-8">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-0 md:divide-x md:divide-white/10">
+            {statistics.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center gap-2 text-center md:px-8">
+                <p className="text-3xl font-semibold tabular-nums text-white md:text-4xl">
+                  <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                </p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* ── 4. PODCAST ───────────────────────────────────────────────────── */}
-      {/* One video. Three lines of copy. One CTA. Nothing else.             */}
+
       <ScrollSection animation={fadeUpXs} className="h-full min-h-full snap-start">
         <LandingSection id="podcast" variant="muted" contained>
           <div className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-center md:gap-16">
@@ -443,39 +495,8 @@ export function HomeLanding() {
         </LandingSection>
       </ScrollSection>
 
-      {/* ── 5. BUDGET STORY ──────────────────────────────────────────────── */}
-      <ScrollSection animation={fadeUp} className="h-full min-h-full snap-start">
-        <LandingSection id="budget-story" contained>
-          <div className="grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-12">
-            <div className="space-y-8">
-              <SectionHeader
-                label="Budget Ndio Story"
-                title="Follow the money as a story, not a spreadsheet."
-                description="Scroll through the national, county and people stories — see how budgets move and where citizens show up."
-              />
-              <div className="space-y-3">
-                {budgetStoryChapters.map((chapter) => (
-                  <div key={chapter.id} className="flex gap-4 rounded-2xl border border-border bg-card px-4 py-4 transition-colors hover:bg-muted/40">
-                    <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
-                      {chapter.id.toString().padStart(2, '0')}
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">{chapter.label}</p>
-                      <p className="text-sm font-semibold md:text-base">{chapter.title}</p>
-                      <p className="text-xs text-muted-foreground">{chapter.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <CivicHubCard />
-          </div>
-        </LandingSection>
-      </ScrollSection>
 
-      {/* ── 6. HOW IT WORKS — 3-col grid, no redundant preview panel ────── */}
-      {/* The original right-side "live preview" was a mirror of the steps.  */}
-      {/* Steps are the product. Let them breathe on their own.              */}
+      {/* ── 5. HOW IT WORKS ─────────────────────────────────────────────── */}
       <ScrollSection animation={fadeUpSm} className="h-full min-h-full snap-start">
         <LandingSection id="how-it-works" variant="muted" contained>
           <div className="flex flex-1 flex-col gap-10 md:gap-14">
@@ -513,59 +534,16 @@ export function HomeLanding() {
         </LandingSection>
       </ScrollSection>
 
-      {/* ── 7. CIVIC HUB BAND ────────────────────────────────────────────── */}
-      <ScrollSection animation={fadeUpSm} className="h-full min-h-full snap-start">
-        <LandingSection id="civic-hub-band" variant="primary" contained className="py-16 md:py-20 lg:py-28">
-          <div className="flex min-h-0 flex-1 flex-col gap-12 md:flex-row md:items-start md:justify-between md:gap-16">
-            <div className="max-w-md space-y-6">
-              <h2 className="text-xl font-semibold leading-snug text-primary-foreground sm:text-2xl md:text-3xl">
-                One home for Kenya's budget and the stories behind it.
-              </h2>
-              <p className="text-sm text-primary-foreground/85 md:text-base">
-                Track projects, share evidence, and get briefings designed for young Kenyans — not auditors.
-              </p>
-              <Button asChild size="lg" variant="secondary" className="rounded-full bg-primary-foreground text-primary">
-                <Link href="/learn">Enter Learn <ArrowRight className="ml-2 h-4 w-4" /></Link>
-              </Button>
-            </div>
-
-            <div className="grid w-full gap-6 lg:grid-cols-[1.4fr_1fr] lg:gap-8">
-              {civicHubLearnModules.filter((m) => m.mediaType === 'video').map((mod) => (
-                <Link key={mod.id} href={mod.href} className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/20 bg-white/15 backdrop-blur-md transition-all duration-300 hover:bg-white/25 hover:shadow-xl">
-                  <div className="relative aspect-video w-full">
-                    {mod.mediaSrc && (
-                      <video className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" src={mod.mediaSrc} autoPlay muted loop playsInline />
-                    )}
-                    <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold text-white">{mod.minutes} min</span>
-                  </div>
-                  <div className="flex flex-1 flex-col justify-between p-5 md:p-6">
-                    <div>
-                      <p className="font-semibold text-primary-foreground">{mod.title}</p>
-                      <p className="mt-1 text-sm text-primary-foreground/65">{mod.subtitle}</p>
-                    </div>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary-foreground/80 transition-transform duration-300 group-hover:translate-x-0.5">
-                      Open <ArrowRight className="h-4 w-4" />
-                    </span>
-                  </div>
-                </Link>
-              ))}
-              <div className="grid grid-rows-2 gap-5 lg:gap-6">
-                {civicHubLearnModules.filter((m) => m.mediaType !== 'video').map((mod) => (
-                  <Link key={mod.id} href={mod.href} className="group flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-5 transition-all duration-300 hover:border-white/20 hover:bg-white/10">
-                    <div>
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="text-sm font-semibold text-primary-foreground">{mod.title}</p>
-                        <span className="shrink-0 rounded-full bg-background/70 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">{mod.minutes} min</span>
-                      </div>
-                      <p className="mt-2 text-sm text-primary-foreground/65">{mod.subtitle}</p>
-                    </div>
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-foreground/80 transition-transform duration-300 group-hover:translate-x-0.5">
-                      Open <ArrowRight className="h-4 w-4" />
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+      {/* ── 6. CIVIC HUB CARD ───────────────────────────────────────────── */}
+      <ScrollSection animation={fadeUp} className="h-full min-h-full snap-start">
+        <LandingSection id="civic-hub" contained>
+          <div className="grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-12">
+            <SectionHeader
+              label="Budget Ndio Story"
+              title="Follow the money as a story, not a spreadsheet."
+              description="Scroll through the national, county and people stories — see how budgets move and where citizens show up."
+            />
+            <CivicHubCard />
           </div>
         </LandingSection>
       </ScrollSection>
@@ -668,7 +646,46 @@ export function HomeLanding() {
         </LandingSection>
       </ScrollSection>
 
-      {/* ── 10. DONATE ───────────────────────────────────────────────────── */}
+      {/* ── 10. FAQ ───────────────────────────────────────────────────────── */}
+      <ScrollSection animation={fadeUpSm} className="h-full min-h-full snap-start">
+        <LandingSection id="faq" contained>
+          <div className="flex min-h-0 flex-1 flex-col gap-12 md:flex-row md:gap-20">
+            {/* Left: sticky label */}
+            <div className="shrink-0 md:w-64 md:pt-1">
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="md:sticky md:top-24"
+              >
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                  Common questions
+                </p>
+                <h2 className="text-2xl font-semibold leading-snug text-foreground md:text-3xl">
+                  Everything you need to know.
+                </h2>
+                <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                  Can't find the answer you're looking for?{' '}
+                  <a
+                    href="mailto:info@budgetndiostory.org"
+                    className="font-medium text-primary underline-offset-2 hover:underline"
+                  >
+                    Ask us directly.
+                  </a>
+                </p>
+              </motion.div>
+            </div>
+
+            {/* Right: accordion */}
+            <div className="flex-1">
+              <AnimatedFAQ items={faqItems} />
+            </div>
+          </div>
+        </LandingSection>
+      </ScrollSection>
+
+      {/* ── 11. DONATE ───────────────────────────────────────────────────── */}
       <LandingSection id="donate" align="center" contained={false} className="!bg-black">
         <div className="flex min-h-0 w-full flex-1 flex-col justify-center">
           <DonateSection variant="dark" />

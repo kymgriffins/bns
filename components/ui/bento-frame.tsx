@@ -156,6 +156,7 @@ export interface BentoSectionProps {
   className?: string;
   title?: string;
   subtitle?: string;
+  id?: string;
 }
 
 export function BentoSection({
@@ -163,9 +164,10 @@ export function BentoSection({
   className,
   title,
   subtitle,
+  id,
 }: BentoSectionProps) {
   return (
-    <section className={cn('py-12 px-4 sm:px-6 lg:px-8', className)}>
+    <section id={id} className={cn('py-12 px-4 sm:px-6 lg:px-8', className)}>
       <div className="max-w-7xl mx-auto">
         {(title || subtitle) && (
           <div className="mb-10 text-center">

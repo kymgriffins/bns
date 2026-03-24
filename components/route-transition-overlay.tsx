@@ -79,7 +79,7 @@ export function RouteTransitionOverlay() {
       if (currentKey) {
         setRouteKey(currentKey);
         setVisible(true);
-        const timer = window.setTimeout(() => setVisible(false), 1000); // 1s for a more cinematic feel
+        const timer = window.setTimeout(() => setVisible(false), 2200); // 2.2s — readable and cinematic
         previousPathRef.current = pathname;
         return () => window.clearTimeout(timer);
       }
@@ -106,7 +106,7 @@ export function RouteTransitionOverlay() {
           <motion.div 
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.15 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            transition={{ duration: 1.4, ease: "easeOut" }}
             className="absolute inset-0 pointer-events-none blur-[120px]"
             style={{ 
               background: `radial-gradient(circle at center, ${content.color}40 0%, transparent 70%)` 
@@ -173,7 +173,7 @@ export function RouteTransitionOverlay() {
               <motion.div 
                 initial={{ x: "-100%" }}
                 animate={{ x: "0%" }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
+                transition={{ duration: 1.8, ease: "easeInOut" }}
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
               />
             </div>

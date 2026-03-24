@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Users, Heart, Target, Zap } from "lucide-react";
+import { ArrowRight, Heart, Target, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { heroStagger, useHigReducedMotion, higTransition } from "@/components/animations/hig-motion";
 
@@ -92,25 +92,7 @@ export function AboutHero() {
             ))}
           </motion.div>
         </motion.div>
-        <motion.div
-          className="mt-12 flex justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <div className="flex -space-x-2 rounded-full border-2 border-background bg-muted p-1">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary"
-                aria-hidden
-              >
-                <Users className="h-5 w-5" />
-              </div>
-            ))}
-          </div>
-          <span className="sr-only">Consortium partners</span>
-        </motion.div>
+
       </div>
     </section>
   );
